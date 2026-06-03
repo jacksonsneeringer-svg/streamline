@@ -200,16 +200,14 @@ strong { font-weight: 500; }
 }
 .logo-tagline {
   font-family: var(--font-body);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 400;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
   display: block;
-  width: 100%;
-  text-align: justify;
-  text-align-last: justify;
-  letter-spacing: 1.5em;
-  word-spacing: 0.3em;
+  letter-spacing: 0.28em;
+  word-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 /* ── Layout ── */
@@ -815,14 +813,23 @@ section { padding: 6rem 0; }
   gap: 3rem;
 }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-.footer-col h5, .footer-newsletter h5 {
+.footer-col h5 {
   font-family: var(--font-body);
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.65);
   margin-bottom: 1rem;
+}
+.footer-newsletter-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 .footer-col a {
   font-size: 0.84rem;
@@ -1562,7 +1569,6 @@ section { padding: 6rem 0; }
   <div class="hero-inner">
     <div class="hero-copy">
       <div class="hero-tag">
-        <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor" opacity="0.7"/></svg>
         Swim Sets • Dryland Workouts • Nutrition Advice
       </div>
       <h1>Fix your catch.<br/>Build your base.<br/>Swim faster.</h1>
@@ -1719,27 +1725,6 @@ section { padding: 6rem 0; }
     </div>
   </div>
 </section>
-
-<div class="newsletter-section">
-  <div class="newsletter-inner">
-    <div class="newsletter-copy">
-      <span class="eyebrow on-dark">Weekly · Every Monday</span>
-      <h2>The Fast Lane</h2>
-      <div class="accent-bar"></div>
-      <p>Swimming world news, major events, new gear worth knowing about, and technique updates, delivered weekly. Same for every subscriber, no paywall.</p>
-    </div>
-    <div>
-      <form class="newsletter-form" onsubmit="return false;">
-        <div class="newsletter-input-row">
-          <input type="text" placeholder="First name" class="newsletter-input" style="max-width:155px;" />
-          <input type="email" placeholder="Email address" class="newsletter-input" />
-        </div>
-        <button class="btn btn-gold btn-full" type="submit">Subscribe to The Fast Lane</button>
-        <p class="newsletter-note">Published every Monday. Unsubscribe anytime. We don't share your address.</p>
-      </form>
-    </div>
-  </div>
-</div>
 
 
 </div><!-- end page-home -->
@@ -2871,12 +2856,13 @@ section { padding: 6rem 0; }
       </ul>
     </div>
     <div class="footer-newsletter">
-      <h5>The Fast Lane</h5>
-      <p>Weekly swimming news, gear, and technique delivered every Monday.</p>
+      <div class="footer-newsletter-title">Newsletter</div>
+      <p>Weekly swimming news, gear, and words of wisdom.</p>
       <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:0.6rem;">
         <input type="email" placeholder="Email address" class="newsletter-input" style="font-size:0.84rem;" />
-        <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe</button>
+        <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe to the fast lane.</button>
       </form>
+      <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of STREAMLINE, and to STREAMLINE's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
   </div>
   <div class="footer-bottom">
