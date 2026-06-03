@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Lift Workouts · STREAMLINE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    @media print { .site-nav, .no-print, .page-hero-sm { display:none !important; } body { background:white; } }
+    .level-tab { font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:0.9rem 1.5rem; border:none; background:none; color:var(--gray-400); border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; cursor:pointer; transition:all 0.15s; }
+    .level-tab.active { color:var(--pool-400); border-bottom-color:var(--pool-400); font-weight:700; }
+    .ex-table { width:100%; border-collapse:collapse; }
+    .ex-table th { font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); text-align:left; padding:0.6rem 1rem; border-bottom:2px solid var(--gray-100); background:var(--gray-50); }
+    .ex-table td { padding:0.85rem 1rem; border-bottom:1px solid var(--gray-100); font-size:0.88rem; color:var(--text); vertical-align:top; }
+    .ex-table tr:last-child td { border-bottom:none; }
+    .ex-table tr:hover td { background:var(--off-white); }
+    .mtag { display:inline-block; font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:var(--gray-100); color:var(--pool-500); border:1px solid var(--gray-200); }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+    <ul class="nav-links">
+      <li><a href="daily-swim.html">Daily Swim Sets</a></li>
+      <li><a href="daily-lift.html" class="active">Daily Lift Workouts</a></li>
+      <li><a href="blog/index.html">Blog</a></li>
+      <li><a href="dashboard.html">My Training</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="dashboard.html" class="nav-signin">Sign In</a>
+      <a href="dive-in.html" class="btn btn-gold btn-sm">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-200);">Daily Programming</span>
+    <h1>Daily Lift Workouts</h1>
+    <p class="sub">Dryland sessions designed around the movements that transfer to the water. Updated daily with the swim training focus in mind.</p>
+  </div>
+</div>
+
+<section style="background:var(--off-white); padding:3rem 0 5rem;">
+  <div class="container">
+
+    <div style="display:flex; gap:0; border-bottom:1px solid var(--gray-200); margin-bottom:3rem; overflow-x:auto;">
+      <button class="level-tab active" id="tab-foundation" onclick="showLevel('foundation')">Foundation</button>
+      <button class="level-tab" id="tab-strength" onclick="showLevel('strength')">Strength</button>
+      <button class="level-tab" id="tab-performance" onclick="showLevel('performance')">Performance</button>
+    </div>
+
+    <!-- Foundation -->
+    <div id="level-foundation">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+        <div>
+          <span class="eyebrow">Tuesday, June 2, 2026 · Foundation Level</span>
+          <h2 style="font-size:1.75rem; color:var(--navy-800); margin-top:0.25rem;">Upper Pull &amp; Core Stability</h2>
+          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~40 min &nbsp;·&nbsp; Minimal equipment (resistance band) &nbsp;·&nbsp; Focus: Lat activation, rotator cuff, anti-rotation core</p>
+        </div>
+        <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print
+        </button>
+      </div>
+
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.25rem;">
+        <div style="background:var(--navy-800); padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--pool-200); font-size:0.78rem;">Warm-Up</span>
+          <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">8–10 min</span>
+        </div>
+        <div style="padding:1.25rem 1.5rem;">
+          <table class="ex-table">
+            <thead><tr><th>Exercise</th><th>Duration / Reps</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Arm circles (fwd/back)</td><td>20 each direction</td><td>Shoulder mobility</td></tr>
+              <tr><td>Band pull-aparts</td><td>3 × 15</td><td>Light resistance band, scapular retraction</td></tr>
+              <tr><td>90/90 hip stretch</td><td>60 sec each side</td><td>Hip mobility for kick range</td></tr>
+              <tr><td>Cat-cow + thoracic rotation</td><td>10 each</td><td>Spine prep, rotation warm-up</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.25rem;">
+        <div style="background:var(--navy-600); padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--pool-200); font-size:0.78rem;">Main Circuit · 3 Rounds</span>
+          <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">25–28 min · 60 sec rest between rounds</span>
+        </div>
+        <div style="padding:1.25rem 1.5rem;">
+          <table class="ex-table">
+            <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Target</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Band rows</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Anchor band at waist height. Row with high elbows, pause at finish.</span></td><td>3 × 12</td><td><span class="mtag">Lats</span> <span class="mtag">Mid back</span></td></tr>
+              <tr><td><strong>Push-up + scapular push</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">At the top, actively push the floor away to spread shoulder blades.</span></td><td>3 × 10–12</td><td><span class="mtag">Serratus</span> <span class="mtag">Chest</span></td></tr>
+              <tr><td><strong>Pallof press</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Band anchored to side. Press straight forward, hold 2 sec. Anti-rotation.</span></td><td>3 × 10 each side</td><td><span class="mtag">Core</span> <span class="mtag">Obliques</span></td></tr>
+              <tr><td><strong>Prone Y-T-W</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Lie face down. Lift arms into each shape. Slow: small muscles, no momentum.</span></td><td>3 × 8 each</td><td><span class="mtag">Rotator cuff</span> <span class="mtag">Lower trap</span></td></tr>
+              <tr><td><strong>Dead bug</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Flat back throughout. Extend opposite arm/leg. Don't let the low back arch.</span></td><td>3 × 8 each side</td><td><span class="mtag">Deep core</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.5rem;">
+        <div style="background:var(--navy-500); padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--pool-200); font-size:0.78rem;">Cool-Down Stretch</span>
+          <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">5–8 min</span>
+        </div>
+        <div style="padding:1.25rem 1.5rem;">
+          <table class="ex-table">
+            <thead><tr><th>Stretch</th><th>Duration</th></tr></thead>
+            <tbody>
+              <tr><td>Doorway chest stretch</td><td>45 sec each side</td></tr>
+              <tr><td>Lat stretch (band or doorframe)</td><td>45 sec each side</td></tr>
+              <tr><td>Child's pose with shoulder reach</td><td>60 sec</td></tr>
+              <tr><td>Supine twist</td><td>45 sec each side</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="background:var(--gold-pale); border:1px solid rgba(212,168,67,0.3); border-radius:var(--r-lg); padding:1.25rem 1.5rem; display:flex; gap:1rem; align-items:flex-start;">
+        <span style="font-size:1.2rem; flex-shrink:0;">💡</span>
+        <div>
+          <p style="font-size:0.85rem; font-weight:700; color:var(--navy-700); margin-bottom:0.2rem;">Why these exercises?</p>
+          <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">Today's swim focus is aerobic base and kick mechanics. This session targets the pull-side muscles that support a high-elbow catch, plus the rotational core stability that keeps hips elevated during long aerobic sets.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want a dryland program built around your swim schedule and goals?</p>
+        <a href="dive-in.html" class="btn btn-gold btn-sm">Create a Free Account →</a>
+      </div>
+    </div>
+
+    <div id="level-strength" style="display:none;">
+      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+        <div class="placeholder-icon">💪</div>
+        <h3>Strength Level: Coming Soon</h3>
+        <p>Strength-level sessions with barbell and cable movements for gym-trained swimmers.</p>
+        <a href="dive-in.html" class="btn btn-gold btn-sm">Get personalized workouts with an account</a>
+      </div>
+    </div>
+
+    <div id="level-performance" style="display:none;">
+      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+        <div class="placeholder-icon">⚡</div>
+        <h3>Performance Level: Coming Soon</h3>
+        <p>Performance programming for competitive swimmers: power development and sport-specific conditioning.</p>
+        <a href="dive-in.html" class="btn btn-gold btn-sm">Get personalized workouts with an account</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+      <p>An all-inclusive swim coaching platform for every level of swimmer.</p>
+    </div>
+    <div class="footer-col"><h5>Workouts</h5><ul><li><a href="daily-swim.html">Daily Swim Sets</a></li><li><a href="daily-lift.html">Daily Lift Workouts</a></li></ul></div>
+    <div class="footer-col"><h5>Content</h5><ul><li><a href="blog/index.html">Blog</a></li></ul></div>
+    <div class="footer-col"><h5>Account</h5><ul><li><a href="dive-in.html">Create Account</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Streamline. All rights reserved.</span>
+    <span><a href="#">Health Disclaimer</a> · <a href="#">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<script>
+function showLevel(level) {
+  ['foundation','strength','performance'].forEach(l => {
+    document.getElementById('level-' + l).style.display = (l === level) ? 'block' : 'none';
+    document.getElementById('tab-' + l).classList.toggle('active', l === level);
+  });
+}
+</script>
+</body>
+</html>

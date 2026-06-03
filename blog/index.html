@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog · STREAMLINE</title>
+  <meta name="description" content="Technique breakdowns, training guidance, and swim science from Streamline." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+    <ul class="nav-links">
+      <li><a href="../daily-swim.html">Daily Swim Sets</a></li>
+      <li><a href="../daily-lift.html">Daily Lift Workouts</a></li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../dashboard.html">My Training</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="../dashboard.html" class="nav-signin">Sign In</a>
+      <a href="../dive-in.html" class="btn btn-gold btn-sm">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-200);">Streamline</span>
+    <h1>Blog</h1>
+    <p class="sub">Technique breakdowns, training methodology, and swim science, written for swimmers who want clear, evidence-based guidance.</p>
+  </div>
+</div>
+
+<!-- Filter tabs -->
+<div style="border-bottom:1px solid var(--gray-200); background:var(--white); position:sticky; top:66px; z-index:90;">
+  <div class="container" style="display:flex; gap:0; overflow-x:auto;">
+    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-family:var(--font-condensed); font-weight:700; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--pool-400); border-bottom:2px solid var(--pool-400); margin-bottom:-1px; white-space:nowrap;">All Posts</a>
+    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-family:var(--font-condensed); font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Technique</a>
+    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-family:var(--font-condensed); font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Training</a>
+    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-family:var(--font-condensed); font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Gear</a>
+    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-family:var(--font-condensed); font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Guides</a>
+  </div>
+</div>
+
+<!-- Featured post -->
+<section style="padding:3rem 0 2rem;">
+  <div class="container">
+    <p class="eyebrow" style="margin-bottom:1rem;">Featured Post</p>
+    <div style="background:var(--navy-800); border-radius:var(--r-xl); overflow:hidden; display:grid; grid-template-columns:1fr 1.3fr; gap:0; box-shadow:var(--shadow-lg);">
+      <div style="background:linear-gradient(150deg,var(--navy-900),var(--navy-700)); display:flex; align-items:center; justify-content:center; min-height:280px; padding:2rem; background-image:var(--pattern-waves);">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.4)" stroke-width="1" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div style="padding:2.75rem; display:flex; flex-direction:column; justify-content:center; gap:1rem;">
+        <div style="display:flex; gap:0.6rem; align-items:center;">
+          <span style="font-family:var(--font-condensed); font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; background:rgba(255,255,255,0.08); color:var(--pool-200); border:1px solid rgba(255,255,255,0.12); padding:0.2rem 0.6rem; border-radius:3px;">Technique</span>
+          <span style="color:rgba(255,255,255,0.3); font-size:0.78rem;">8 min read</span>
+        </div>
+        <h2 style="color:#fff; font-size:1.6rem; margin:0;">7 Common Freestyle Errors and How to Fix Them</h2>
+        <p style="color:rgba(255,255,255,0.55); font-size:0.92rem; line-height:1.7; margin:0;">A systematic look at the technique errors that appear most frequently in lap swimmers, with evidence-based corrections for each. Head position, kick mechanics, catch angle, hip rotation, and more.</p>
+        <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-top:0.25rem;">
+          <a href="7-things-swimmers-do-wrong.html" class="btn btn-gold">Read Post →</a>
+          <span style="color:rgba(255,255,255,0.3); font-size:0.8rem;">May 20, 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Post grid -->
+<section style="padding:2rem 0 5rem; background:var(--off-white);">
+  <div class="container">
+    <div class="grid-3">
+
+      <div class="blog-card">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--navy-900),var(--navy-700)); background-image:var(--pattern-waves);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="cat-badge">Technique</span>
+          <h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3>
+          <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;">
+            <a href="7-things-swimmers-do-wrong.html" class="btn btn-outline-dark btn-sm">Read →</a>
+            <span style="font-size:0.75rem; color:var(--gray-400);">8 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--navy-800),#1a6fa8);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="cat-badge">How-To</span>
+          <h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3>
+          <p class="blog-card-excerpt">From approach to breakout: complete mechanics with troubleshooting for the most common errors.</p>
+          <span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--navy-800),#165c84);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="cat-badge">Gear</span>
+          <h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3>
+          <p class="blog-card-excerpt">Lens type, fit, anti-fog performance: the factors that matter and how to evaluate them.</p>
+          <span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--navy-900),var(--navy-700));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="cat-badge">Technique</span>
+          <h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3>
+          <p class="blog-card-excerpt">How breathing patterns affect stroke timing and performance, and how to find the right balance for training versus racing.</p>
+          <span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--navy-800),#1a6fa8);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="cat-badge">Training</span>
+          <h3 class="blog-card-title">Dryland Training for Swimmers: What Transfers</h3>
+          <p class="blog-card-excerpt">Which exercises and movement patterns have the strongest correlation with in-water performance.</p>
+          <span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--navy-900),var(--navy-800));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(72,202,228,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="cat-badge">Training</span>
+          <h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3>
+          <p class="blog-card-excerpt">How to set and use pace-based zones in pool training, and why aerobic base work is the most under-used tool in recreational swimming.</p>
+          <span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter-section">
+  <div class="container" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;">
+    <div>
+      <span class="eyebrow" style="color:var(--pool-200);">Stay Current</span>
+      <h2 style="color:#fff; font-size:2rem; margin-top:0.4rem;">New posts, directly to you</h2>
+      <p style="color:rgba(255,255,255,0.5); margin-top:0.6rem;">A notification when new content is published. No more than once per week, no filler.</p>
+    </div>
+    <form style="display:flex; flex-direction:column; gap:0.75rem;" onsubmit="return false;">
+      <input type="email" placeholder="your@email.com" style="padding:0.8rem 1.1rem; border-radius:var(--r-md); border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#fff; font-size:0.9rem; outline:none; font-family:var(--font-body);" />
+      <button class="btn btn-gold" type="submit">Subscribe →</button>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="../index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+      <p>An all-inclusive swim coaching platform for every level of swimmer.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Workouts</h5>
+      <ul>
+        <li><a href="../daily-swim.html">Daily Swim Sets</a></li>
+        <li><a href="../daily-lift.html">Daily Lift Workouts</a></li>
+        <li><a href="../dashboard.html">My Training Plan</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Content</h5>
+      <ul>
+        <li><a href="index.html">Blog</a></li>
+        <li><a href="7-things-swimmers-do-wrong.html">Freestyle Errors Guide</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Account</h5>
+      <ul>
+        <li><a href="../dive-in.html">Create Account</a></li>
+        <li><a href="../dashboard.html">Sign In</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Streamline. All rights reserved.</span>
+    <span><a href="#">Affiliate Disclosure</a> · <a href="#">Health Disclaimer</a> · <a href="#">Privacy Policy</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

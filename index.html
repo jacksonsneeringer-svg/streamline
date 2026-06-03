@@ -1,11 +1,547 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Streamline</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streamline · Precision swim coaching</title>
+  <meta name="description" content="Daily programming, technique depth, and personalized plans for swimmers who want to understand what they're doing in the water, and systematically get better at it." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Streamline</h1>
+
+<!-- ══════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+    <ul class="nav-links">
+      <li><a href="daily-swim.html">Daily Swim Sets</a></li>
+      <li><a href="daily-lift.html">Daily Lift Workouts</a></li>
+      <li><a href="blog/index.html">Blog</a></li>
+      <li><a href="dashboard.html">My Training</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" title="Search" onclick="document.getElementById('search-overlay').style.display='flex'">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <a href="dashboard.html" class="nav-signin">Sign In</a>
+      <a href="dive-in.html" class="btn btn-gold btn-sm">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Search overlay -->
+<div id="search-overlay" style="display:none; position:fixed; inset:0; background:rgba(13,79,71,0.94); z-index:9999; align-items:center; justify-content:center; padding:2rem;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="width:100%; max-width:600px;">
+    <div style="position:relative;">
+      <input type="text" placeholder="Search workouts, articles…" style="width:100%; background:rgba(93,219,201,0.07); border:1.5px solid rgba(93,219,201,0.2); border-radius:6px; padding:1.1rem 3rem 1.1rem 1.5rem; font-size:1rem; color:white; outline:none; font-family:'DM Sans',sans-serif; font-weight:300;" autofocus />
+      <button onclick="document.getElementById('search-overlay').style.display='none'" style="position:absolute; right:1rem; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.4); font-size:1.4rem; cursor:pointer; line-height:1;">×</button>
+    </div>
+    <p style="color:rgba(255,255,255,0.22); font-size:0.75rem; margin-top:0.75rem; font-family:'DM Sans',sans-serif; font-weight:300; letter-spacing:0.08em;">Press Escape to close</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section class="hero" style="padding:0;">
+  <!-- Swimmer line art -->
+  <svg class="hero-swimmer-art" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 200 Q87.5 185 175 200 Q262.5 215 350 200 Q437.5 185 525 200 Q612.5 215 700 200" stroke-width="1.5"/>
+    <path d="M0 215 Q87.5 202 175 215 Q262.5 228 350 215 Q437.5 202 525 215 Q612.5 228 700 215" stroke-width="0.8" opacity="0.5"/>
+    <path d="M0 228 Q87.5 217 175 228 Q262.5 239 350 228 Q437.5 217 525 228 Q612.5 239 700 228" stroke-width="0.5" opacity="0.3"/>
+    <path d="M550 175 Q480 168 420 178 Q360 188 300 182 Q240 176 200 186 Q170 192 155 196" stroke-width="2.5"/>
+    <path d="M550 175 Q520 155 490 148 Q450 138 410 140 Q370 142 340 145 Q310 148 285 152 Q265 155 250 158" stroke-width="2.5"/>
+    <path d="M500 175 Q485 148 465 132 Q445 118 420 115 Q395 113 370 120 Q345 127 325 138" stroke-width="2.5"/>
+    <ellipse cx="575" cy="172" rx="22" ry="18" stroke-width="2"/>
+    <path d="M565 168 Q570 163 578 162" stroke-width="1.5"/>
+    <path d="M300 182 Q270 188 240 196 Q210 203 185 200 Q170 198 155 196" stroke-width="2"/>
+    <path d="M155 196 Q130 200 110 208 Q90 218 75 222" stroke-width="2.5"/>
+    <path d="M160 190 Q138 188 118 183 Q100 179 85 178" stroke-width="2.5"/>
+    <path d="M75 222 Q70 226 65 224" stroke-width="2"/>
+    <path d="M85 178 Q80 175 76 178" stroke-width="2"/>
+    <line x1="0" y1="350" x2="700" y2="350" stroke-width="0.8" stroke-dasharray="20 8" opacity="0.4"/>
+    <line x1="0" y1="365" x2="700" y2="365" stroke-width="0.8" stroke-dasharray="20 8" opacity="0.25"/>
+    <circle cx="255" cy="162" r="3" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="262" cy="168" r="2" stroke-width="1" opacity="0.4"/>
+    <circle cx="248" cy="170" r="1.5" stroke-width="1" opacity="0.4"/>
+    <path d="M78 218 Q72 210 68 212" stroke-width="1.2" opacity="0.5"/>
+    <path d="M82 214 Q77 206 73 209" stroke-width="1.2" opacity="0.4"/>
+  </svg>
+
+  <div class="hero-lane-lines"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-tag">
+        <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor" opacity="0.7"/></svg>
+        Swim · Dryland · Nutrition
+      </div>
+      <h1>Fix your catch.<br/>Build your base.<br/>Swim faster.</h1>
+      <p class="hero-sub">Streamline is a coaching platform for swimmers who want to understand what they're actually doing in the water, and systematically get better at it.</p>
+      <div class="hero-cta">
+        <a href="dive-in.html" class="btn btn-gold btn-lg">Start Here</a>
+        <a href="#about" class="btn btn-outline-light btn-lg">How it works</a>
+      </div>
+      <div class="hero-scroll-hint">
+        <span class="hero-scroll-line"></span>
+        Scroll to explore
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1.25rem;">What the platform covers</p>
+      <ul class="hero-features-list">
+        <li class="hero-feature-item">
+          <div class="hero-feature-icon">🏊</div>
+          <div class="hero-feature-text">
+            <strong>Daily swim &amp; dryland sets</strong>
+            <span>New sessions every day, across all skill levels, structured, printable, and connected to each other</span>
+          </div>
+        </li>
+        <li class="hero-feature-item">
+          <div class="hero-feature-icon">📬</div>
+          <div class="hero-feature-text">
+            <strong>Your morning briefing</strong>
+            <span>Local weather, open pools, and today's workout, delivered before you leave for the pool</span>
+          </div>
+        </li>
+        <li class="hero-feature-item">
+          <div class="hero-feature-icon">🥗</div>
+          <div class="hero-feature-text">
+            <strong>Nutrition, matched to training</strong>
+            <span>Daily meal guidance built around your body, your goals, and what you're actually doing in the water</span>
+          </div>
+        </li>
+        <li class="hero-feature-item">
+          <div class="hero-feature-icon">📊</div>
+          <div class="hero-feature-text">
+            <strong>Workout log &amp; progress</strong>
+            <span>Track every session, see trends over time, and keep your training honest</span>
+          </div>
+        </li>
+        <li class="hero-feature-item">
+          <div class="hero-feature-icon">📖</div>
+          <div class="hero-feature-text">
+            <strong>Technique &amp; methodology depth</strong>
+            <span>Blog, guides, and coaching notes: the reasoning behind every set and drill, explained clearly</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     ABOUT / WHO IS THIS FOR
+══════════════════════════════════════════════ -->
+<section id="about" style="background:var(--white); position:relative;">
+  <div class="container">
+    <div class="about-grid" style="position:relative;">
+      <div class="about-deco-line"></div>
+
+      <div>
+        <span class="eyebrow">About Streamline</span>
+        <h2>Structured around how swimmers actually improve.</h2>
+        <div class="accent-bar"></div>
+        <p style="margin-top:1.5rem; font-size:1rem; line-height:1.85;">Most swimmers plateau not because they lack effort, but because they lack structure. They swim the same moderate pace three times a week, never developing a high-elbow catch, never deliberately working on their kick, never doing the dryland sessions that would make both matter.</p>
+        <p style="font-size:1rem; line-height:1.85;">Streamline gives you the structure. Daily sets with defined intensities. Dryland work timed to your water sessions. Technique guidance that explains the mechanics, not just the drill. Nutrition that accounts for what training actually demands.</p>
+        <p style="font-size:1rem; line-height:1.85;">Built specifically for aquatic training, not a generic fitness app with a swimming filter.</p>
+      </div>
+
+      <div>
+        <span class="eyebrow">Who it's for</span>
+        <h2>Swimmers with something to improve.</h2>
+        <div class="accent-bar"></div>
+        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">From returning to the water after years away, to chasing a masters podium. Streamline works at any level; the programming scales, the technique explanations are universal.</p>
+        <div class="for-who-grid">
+          <div class="for-who-card">
+            <h4>Masters competitors</h4>
+            <p>Periodized plans built around target events, with race-specific intervals and proper tapers.</p>
+          </div>
+          <div class="for-who-card">
+            <h4>Lap swimmers</h4>
+            <p>Structured sessions with a technique focus. Replace guesswork with programming that actually progresses.</p>
+          </div>
+          <div class="for-who-card">
+            <h4>Triathletes</h4>
+            <p>Swim-specific work that fits around bike and run training without compounding fatigue.</p>
+          </div>
+          <div class="for-who-card">
+            <h4>Returning swimmers</h4>
+            <p>Technique-first ramp-up programs for swimmers rebuilding after time away from the water.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     RESOURCES
+══════════════════════════════════════════════ -->
+<section class="resources-section">
+  <div style="position:absolute; top:3rem; right:2rem; opacity:0.035; pointer-events:none;">
+    <svg width="320" height="180" viewBox="0 0 320 180" fill="none" stroke="white" stroke-linecap="round" stroke-width="1.5">
+      <path d="M260 80 Q220 72 185 80 Q150 88 120 82 Q90 76 70 83 Q55 88 45 92"/>
+      <path d="M260 80 Q240 62 215 56 Q185 50 160 54 Q135 58 115 64 Q95 70 80 75"/>
+      <path d="M240 80 Q225 55 205 46 Q182 37 158 43 Q135 49 115 60"/>
+      <ellipse cx="275" cy="77" rx="14" ry="11"/>
+      <path d="M45 92 Q30 96 18 102 Q8 108 3 110"/>
+      <path d="M48 87 Q34 84 22 80 Q12 77 6 76"/>
+    </svg>
+  </div>
+
+  <div class="container" style="position:relative;">
+    <div class="section-header center on-dark">
+      <span class="eyebrow on-dark">Free daily content</span>
+      <h2 style="color:var(--white);">Daily programming,<br/>available to everyone.</h2>
+      <div class="accent-bar center"></div>
+      <p class="sub" style="color:rgba(255,255,255,0.42); margin-top:1.25rem;">No account needed. Create one to unlock personalized versions built around your goals, schedule, and profile.</p>
+    </div>
+
+    <div class="resources-grid">
+
+      <div class="resource-card">
+        <div class="resource-card-header">
+          <div class="resource-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/>
+              <path d="M2 6a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/>
+            </svg>
+          </div>
+          <div>
+            <span class="resource-card-label">Daily · Pool</span>
+            <div class="resource-card-title">Swim Sets</div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <p>New sessions posted every morning, organized by skill level with yardage, pace guidance, and drill cues. Printable layout included.</p>
+          <div class="resource-previews">
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Beginner · ~2,400 yards</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intermediate · ~4,200 yards</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Advanced · ~6,000+ yards</div>
+          </div>
+          <a href="daily-swim.html" class="btn btn-primary btn-sm">View today's sets</a>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-card-header">
+          <div class="resource-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/>
+            </svg>
+          </div>
+          <div>
+            <span class="resource-card-label">Daily · Dryland</span>
+            <div class="resource-card-title">Lift Workouts</div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <p>Dryland sessions designed around what swim performance actually demands: pulling mechanics, shoulder stability, hip drive, and rotational core control.</p>
+          <div class="resource-previews">
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Upper pull &amp; lat activation</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Rotational core &amp; hip drive</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Shoulder stability &amp; cuff health</div>
+          </div>
+          <a href="daily-lift.html" class="btn btn-primary btn-sm">View today's lift</a>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-card-header">
+          <div class="resource-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+          </div>
+          <div>
+            <span class="resource-card-label">Technique · Training</span>
+            <div class="resource-card-title">Blog &amp; Guides</div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <p>Technique breakdowns, training methodology, and gear reviews, written to give you something you can act on. No filler, no vague advice.</p>
+          <div class="resource-previews">
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Catch mechanics &amp; drill progressions</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intensity zone structure</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Gear reviews &amp; swim news</div>
+          </div>
+          <a href="blog/index.html" class="btn btn-primary btn-sm">Read the blog</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Personal plan callout -->
+    <div style="margin-top:2.5rem; background:rgba(93,219,201,0.06); border:1px solid rgba(93,219,201,0.15); border-radius:var(--r-xl); padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
+      <div>
+        <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin-bottom:0.4rem; opacity:0.8;">Free account</p>
+        <h3 style="color:var(--white); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Your personal daily plan.</h3>
+        <p style="color:rgba(255,255,255,0.4); font-size:0.88rem; margin:0; font-weight:300;">Workouts calibrated to your goals, a morning briefing with your local pool schedule and weather, and a meal plan built around your training load.</p>
+      </div>
+      <a href="dive-in.html" class="btn btn-gold" style="flex-shrink:0;">Create free account</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     BLOG
+══════════════════════════════════════════════ -->
+<section style="background:var(--surface);">
+  <div class="container">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3rem; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <span class="eyebrow">From the blog</span>
+        <h2 style="color:var(--deep);">Pull mechanics,<br/><em class="serif-italic" style="color:var(--teal);">explained.</em></h2>
+        <div class="accent-bar"></div>
+      </div>
+      <a href="blog/index.html" style="font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); display:flex; align-items:center; gap:0.35rem;">All posts →</a>
+    </div>
+
+    <div class="blog-grid">
+
+      <div class="blog-card">
+        <div class="blog-card-thumb">
+          <div class="blog-card-thumb-pattern"></div>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta">
+            <span class="cat-badge">Technique</span>
+            <span class="blog-card-date">May 20, 2026</span>
+          </div>
+          <div class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</div>
+          <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, each one diagnosed and corrected.</p>
+          <a href="blog/7-things-swimmers-do-wrong.html" class="blog-card-link">Read article →</a>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.55; pointer-events:none;">
+        <div class="blog-card-thumb" style="background:var(--teal);">
+          <div class="blog-card-thumb-pattern"></div>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta">
+            <span class="cat-badge">Training</span>
+            <span class="blog-card-date">Coming soon</span>
+          </div>
+          <div class="blog-card-title">Understanding Training Intensity Zones for Swimmers</div>
+          <p class="blog-card-excerpt">How pace-based zones structure a training week, and why most recreational swimmers are stuck in no man's land.</p>
+          <span style="font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:300; color:var(--gray-400); letter-spacing:0.08em; text-transform:uppercase;">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.55; pointer-events:none;">
+        <div class="blog-card-thumb" style="background:var(--teal-2);">
+          <div class="blog-card-thumb-pattern"></div>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta">
+            <span class="cat-badge">Nutrition</span>
+            <span class="blog-card-date">Coming soon</span>
+          </div>
+          <div class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</div>
+          <p class="blog-card-excerpt">Pre-workout timing for 5am pools, easy options that work, and what the evidence says about training fasted.</p>
+          <span style="font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:300; color:var(--gray-400); letter-spacing:0.08em; text-transform:uppercase;">Coming soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     NEWSLETTER
+══════════════════════════════════════════════ -->
+<div class="newsletter-section">
+  <div class="newsletter-inner">
+    <div class="newsletter-copy">
+      <span class="eyebrow on-dark">Weekly · Every Monday</span>
+      <h2>The Fast Lane</h2>
+      <div class="accent-bar"></div>
+      <p>Swimming world news, major events, new gear worth knowing about, and technique updates, delivered weekly. Same for every subscriber, no paywall.</p>
+    </div>
+    <div>
+      <form class="newsletter-form" onsubmit="return false;">
+        <div class="newsletter-input-row">
+          <input type="text" placeholder="First name" class="newsletter-input" style="max-width:155px;" />
+          <input type="email" placeholder="Email address" class="newsletter-input" />
+        </div>
+        <button class="btn btn-gold btn-full" type="submit">Subscribe to The Fast Lane</button>
+        <p class="newsletter-note">Published every Monday. Unsubscribe anytime. We don't share your address.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     DISCLAIMER
+══════════════════════════════════════════════ -->
+<div class="disclaimer-strip">
+  <p><strong style="font-weight:400;">Affiliate disclosure:</strong> Some links on this site are affiliate links. If you purchase through one, Streamline may earn a small commission at no additional cost to you. This doesn't influence what we recommend. &nbsp;|&nbsp; <strong style="font-weight:400;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Streamline is not a licensed medical provider or registered dietitian. Consult a qualified healthcare professional before beginning any new exercise or dietary program. &nbsp;|&nbsp; <a href="contact.html">Contact</a> &nbsp;·&nbsp; <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Use</a></p>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+      <p>Precision swim coaching: daily programming, technique depth, and personalized plans for swimmers who train with intention.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Workouts</h5>
+      <ul>
+        <li><a href="daily-swim.html">Daily Swim Sets</a></li>
+        <li><a href="daily-lift.html">Daily Lift Workouts</a></li>
+        <li><a href="dashboard.html">My Training Plan</a></li>
+        <li><a href="dashboard.html">Log a Workout</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Content</h5>
+      <ul>
+        <li><a href="blog/index.html">Blog</a></li>
+        <li><a href="blog/index.html">Technique Guides</a></li>
+        <li><a href="blog/index.html">Gear Reviews</a></li>
+        <li><a href="blog/index.html">Nutrition</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Account</h5>
+      <ul>
+        <li><a href="dive-in.html">Create Account</a></li>
+        <li><a href="dashboard.html">Sign In</a></li>
+        <li><a href="dashboard.html">My Meal Plan</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Streamline. All rights reserved.</span>
+    <span>
+      <a href="#">Affiliate Disclosure</a> &nbsp;·&nbsp;
+      <a href="#">Health Disclaimer</a> &nbsp;·&nbsp;
+      <a href="#">Privacy Policy</a> &nbsp;·&nbsp;
+      <a href="#">Terms of Use</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      document.getElementById('search-overlay').style.display = 'flex';
+    }
+    if (e.key === 'Escape') {
+      document.getElementById('search-overlay').style.display = 'none';
+    }
+  });
+</script>
+
 </body>
 </html>

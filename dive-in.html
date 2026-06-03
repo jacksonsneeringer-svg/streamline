@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Your Account · STREAMLINE</title>
+  <meta name="description" content="Set up your Streamline account to unlock personalized training plans, daily newsletters, and meal planning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Extra local overrides for dive-in page */
+    body { background: var(--off-white); }
+    .chip-grid .chip { transition: all 0.12s; }
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A95AE' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+    .unit-input { position: relative; }
+    .unit-input .form-input { padding-right: 3rem; }
+    .unit-label { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--gray-400); pointer-events: none; }
+    .required-dot::after { content: ' *'; color: var(--pool-400); }
+  </style>
+</head>
+<body>
+
+<!-- Minimal nav for setup flow -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-top-row">
+        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <defs>
+            <radialGradient id="slg" cx="40%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <radialGradient id="srg" cx="60%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#1a7a6e"/>
+              <stop offset="100%" stop-color="#091f1c"/>
+            </radialGradient>
+            <clipPath id="sll">
+              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+            </clipPath>
+            <clipPath id="srl">
+              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+            </clipPath>
+          </defs>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+          <g clip-path="url(#sll)">
+            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <g clip-path="url(#srl)">
+            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
+            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
+            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+          </g>
+          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
+      </div>
+      <span class="logo-tagline">Train for the Fast Lane</span>
+      </a>
+    <div class="nav-actions" style="margin-left:auto;">
+      <span style="font-size:0.82rem; color:rgba(255,255,255,0.35);">Already have an account?</span>
+      <a href="dashboard.html" class="nav-signin">Sign In</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Setup layout -->
+<div class="setup-layout">
+
+  <!-- ─── Sidebar ─── -->
+  <aside class="setup-sidebar">
+    <div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem;">Setting up your profile</p>
+      <h2 style="color:var(--white); font-size:1.75rem; letter-spacing:0.02em;">Build your<br/>training base.</h2>
+      <p style="color:rgba(255,255,255,0.35); font-size:0.84rem; margin-top:0.75rem; line-height:1.65;">The more we know about you, the more personalized your experience. Every field helps us build better workouts and meal recommendations for your specific situation.</p>
+    </div>
+
+    <div class="setup-steps">
+      <div class="setup-step">
+        <div class="step-num active" id="step-num-1">1</div>
+        <div class="step-info">
+          <h4 class="active" id="step-label-1">Your Account</h4>
+          <p>Name &amp; login credentials</p>
+        </div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num" id="step-num-2">2</div>
+        <div class="step-info">
+          <h4 id="step-label-2">Body Profile</h4>
+          <p>Age, height, weight, gender</p>
+        </div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num" id="step-num-3">3</div>
+        <div class="step-info">
+          <h4 id="step-label-3">Your Goals</h4>
+          <p>Fitness, swimming, focus areas</p>
+        </div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num" id="step-num-4">4</div>
+        <div class="step-info">
+          <h4 id="step-label-4">Schedule &amp; Preferences</h4>
+          <p>Training days, diet, location</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:auto; padding-top:3rem;">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:25%;"></div>
+      </div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-top:0.5rem;" id="progress-label">Step 1 of 4</p>
+    </div>
+  </aside>
+
+  <!-- ─── Main content ─── -->
+  <main class="setup-content">
+
+    <!-- ── STEP 1: Account ── -->
+    <div class="setup-step-content active" id="step-1">
+      <div class="setup-step-header">
+        <span class="eyebrow">Step 1 of 4</span>
+        <h2>Create your account</h2>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">This is how you'll sign in and how we'll reach you with your daily plan.</p>
+      </div>
+
+      <div class="setup-fields">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label required-dot">First Name</label>
+            <input type="text" class="form-input" placeholder="Alex" />
+          </div>
+          <div class="form-group">
+            <label class="form-label required-dot">Last Name</label>
+            <input type="text" class="form-input" placeholder="Johnson" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label required-dot">Email Address</label>
+          <input type="email" class="form-input" placeholder="you@example.com" />
+          <p class="form-hint">Used for your daily briefing email and account access. We don't share it.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label required-dot">Password</label>
+          <input type="password" class="form-input" placeholder="8+ characters" />
+        </div>
+        <div class="form-group">
+          <label class="form-label required-dot">Confirm Password</label>
+          <input type="password" class="form-input" placeholder="Repeat password" />
+        </div>
+
+        <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
+          <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;">
+            <input type="checkbox" style="margin-top:0.2rem; flex-shrink:0;" />
+            <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. I understand this platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setup-nav">
+        <span style="font-size:0.8rem; color:var(--gray-400);">Fields marked * are required</span>
+        <button class="btn btn-gold" onclick="goToStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Body Profile ── -->
+    <div class="setup-step-content" id="step-2">
+      <div class="setup-step-header">
+        <span class="eyebrow">Step 2 of 4</span>
+        <h2>Your body profile</h2>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p>
+      </div>
+
+      <div class="setup-fields">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label required-dot">Date of Birth</label>
+            <input type="date" class="form-input" />
+            <p class="form-hint">Age affects training zone calculations.</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label required-dot">Biological Sex</label>
+            <select class="form-input form-select">
+              <option value="" disabled selected>Select…</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Prefer not to say</option>
+            </select>
+            <p class="form-hint">Used for metabolic and nutritional calculations only.</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label required-dot">Height</label>
+            <div class="unit-input">
+              <input type="number" class="form-input" placeholder="70" min="48" max="96" />
+              <span class="unit-label">in</span>
+            </div>
+            <p class="form-hint">Inches (e.g., 70 = 5'10")</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label required-dot">Weight</label>
+            <div class="unit-input">
+              <input type="number" class="form-input" placeholder="160" min="80" max="400" />
+              <span class="unit-label">lbs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required-dot">Current Swim Skill Level</label>
+          <div class="chip-grid" style="margin-top:0.5rem;">
+            <div class="chip" onclick="toggleChip(this, 'skill')">Beginner, learning basics, building comfort</div>
+            <div class="chip" onclick="toggleChip(this, 'skill')">Novice, can swim laps, building fitness</div>
+            <div class="chip" onclick="toggleChip(this, 'skill')">Intermediate, consistent technique, structured sets</div>
+            <div class="chip" onclick="toggleChip(this, 'skill')">Advanced, competitive background or high mileage</div>
+            <div class="chip" onclick="toggleChip(this, 'skill')">Elite / Masters competitor</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Current Fitness Level (General)</label>
+          <select class="form-input form-select">
+            <option value="" disabled selected>Select…</option>
+            <option>Sedentary (mostly inactive)</option>
+            <option>Lightly active, some exercise per week</option>
+            <option>Moderately active, regular structured workouts</option>
+            <option>Very active, intense training, multiple sessions/week</option>
+            <option>Athlete-level, high-performance training year-round</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="setup-nav">
+        <button class="btn btn-outline-dark" onclick="goToStep(1)">← Back</button>
+        <button class="btn btn-gold" onclick="goToStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Goals ── -->
+    <div class="setup-step-content" id="step-3">
+      <div class="setup-step-header">
+        <span class="eyebrow">Step 3 of 4</span>
+        <h2>Your goals</h2>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">We use these to set your training plan direction, select appropriate intensities, and tailor your meal recommendations.</p>
+      </div>
+
+      <div class="setup-fields">
+
+        <div class="form-group">
+          <label class="form-label required-dot">Primary Fitness Goal</label>
+          <p class="form-hint" style="margin-bottom:0.6rem;">Select one.</p>
+          <div class="chip-grid">
+            <div class="chip" onclick="toggleChip(this, 'fitness-goal')">Lose body fat</div>
+            <div class="chip" onclick="toggleChip(this, 'fitness-goal')">Build lean muscle</div>
+            <div class="chip" onclick="toggleChip(this, 'fitness-goal')">Improve cardiovascular fitness</div>
+            <div class="chip" onclick="toggleChip(this, 'fitness-goal')">General health &amp; longevity</div>
+            <div class="chip" onclick="toggleChip(this, 'fitness-goal')">Athletic performance</div>
+            <div class="chip" onclick="toggleChip(this, 'fitness-goal')">Injury recovery / return to sport</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required-dot">Primary Swimming Goal</label>
+          <p class="form-hint" style="margin-bottom:0.6rem;">Select one.</p>
+          <div class="chip-grid">
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Build general fitness through swimming</div>
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Improve stroke technique</div>
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Increase distance or endurance</div>
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Build race-pace speed</div>
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Train for a triathlon swim leg</div>
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Compete in masters swimming</div>
+            <div class="chip" onclick="toggleChip(this, 'swim-goal')">Open water swimming</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Focus Areas in the Water</label>
+          <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply. We'll weight your drills and technique content toward these.</p>
+          <div class="chip-grid">
+            <div class="chip selected" onclick="toggleChip(this, 'focus')">Freestyle technique</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Backstroke</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Breaststroke</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Butterfly</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Flip turns</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Starts &amp; breakouts</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Kick mechanics</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Breathing patterns</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Pacing &amp; race strategy</div>
+            <div class="chip" onclick="toggleChip(this, 'focus')">Open water skills</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Target Event (optional)</label>
+          <input type="text" class="form-input" placeholder="e.g., Masters 200 Free, Sprint Triathlon, Open water 5K" />
+          <p class="form-hint">If you're training toward a specific event, enter it here. We'll use it to structure your peaking and taper.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Target Event Date (optional)</label>
+          <input type="date" class="form-input" />
+        </div>
+
+      </div>
+
+      <div class="setup-nav">
+        <button class="btn btn-outline-dark" onclick="goToStep(2)">← Back</button>
+        <button class="btn btn-gold" onclick="goToStep(4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: Schedule & Preferences ── -->
+    <div class="setup-step-content" id="step-4">
+      <div class="setup-step-header">
+        <span class="eyebrow">Step 4 of 4</span>
+        <h2>Schedule &amp; preferences</h2>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Your training schedule, dietary needs, and location for pool-finder and weather features in your daily email.</p>
+      </div>
+
+      <div class="setup-fields">
+
+        <div class="form-group">
+          <label class="form-label required-dot">Training Days Per Week</label>
+          <p class="form-hint" style="margin-bottom:0.6rem;">Select the days you plan to train. Your plan will schedule workouts on these days.</p>
+          <div class="chip-grid">
+            <div class="chip" onclick="this.classList.toggle('selected')">Monday</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Tuesday</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Wednesday</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Thursday</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Friday</div>
+            <div class="chip selected" onclick="this.classList.toggle('selected')">Saturday</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Sunday</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Swim Days Per Week</label>
+            <select class="form-input form-select">
+              <option value="" disabled selected>Select…</option>
+              <option>2 days</option>
+              <option>3 days</option>
+              <option>4 days</option>
+              <option>5 days</option>
+              <option>6 days</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Lift Days Per Week</label>
+            <select class="form-input form-select">
+              <option value="" disabled selected>Select…</option>
+              <option>0 days (swim only)</option>
+              <option>1 day</option>
+              <option>2 days</option>
+              <option>3 days</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Preferred Workout Time</label>
+          <div class="chip-grid">
+            <div class="chip selected" onclick="toggleChip(this, 'time')">Early morning (before 7am)</div>
+            <div class="chip" onclick="toggleChip(this, 'time')">Morning (7–10am)</div>
+            <div class="chip" onclick="toggleChip(this, 'time')">Midday (10am–2pm)</div>
+            <div class="chip" onclick="toggleChip(this, 'time')">Afternoon (2–6pm)</div>
+            <div class="chip" onclick="toggleChip(this, 'time')">Evening (after 6pm)</div>
+            <div class="chip" onclick="toggleChip(this, 'time')">Varies</div>
+          </div>
+        </div>
+
+        <!-- Separator -->
+        <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--navy-700); margin-bottom:1.25rem;">Nutrition &amp; Dietary Preferences</p>
+
+          <div class="form-group">
+            <label class="form-label">Dietary Style</label>
+            <select class="form-input form-select">
+              <option value="" disabled selected>Select…</option>
+              <option>No restrictions / omnivore</option>
+              <option>Vegetarian</option>
+              <option>Vegan</option>
+              <option>Pescatarian</option>
+              <option>Gluten-free</option>
+              <option>Dairy-free</option>
+              <option>Paleo / whole foods</option>
+              <option>Other (specify below)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem;">
+            <label class="form-label">Allergies &amp; Foods to Avoid</label>
+            <input type="text" class="form-input" placeholder="e.g., peanuts, shellfish, tree nuts, soy" />
+            <p class="form-hint">We will not include these in your meal recommendations.</p>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem;">
+            <label class="form-label">Additional Dietary Notes</label>
+            <textarea class="form-input form-textarea" rows="2" placeholder="Any other preferences or restrictions we should know about…" style="resize:vertical;"></textarea>
+          </div>
+        </div>
+
+        <!-- Separator -->
+        <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--navy-700); margin-bottom:1.25rem;">Location (for Pool Finder &amp; Weather)</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required-dot">City</label>
+              <input type="text" class="form-input" placeholder="Chicago" />
+            </div>
+            <div class="form-group">
+              <label class="form-label required-dot">Zip / Postal Code</label>
+              <input type="text" class="form-input" placeholder="60601" />
+            </div>
+          </div>
+          <p class="form-hint" style="margin-top:0.5rem;">Used only to surface nearby open pools and local weather conditions in your daily briefing email. Never shared or sold.</p>
+        </div>
+
+        <!-- Daily email preference -->
+        <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1.5rem;">
+          <h4 style="font-size:0.95rem; margin-bottom:1rem;">Daily Briefing Email</h4>
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;">
+              <input type="checkbox" checked style="margin-top:0.2rem; flex-shrink:0;" />
+              <div>
+                <span style="font-size:0.88rem; font-weight:600; color:var(--navy-700); display:block;">Today's personalized workout</span>
+                <span style="font-size:0.78rem; color:var(--gray-500);">Your swim and/or lift session for the day, formatted for easy reading</span>
+              </div>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;">
+              <input type="checkbox" checked style="margin-top:0.2rem; flex-shrink:0;" />
+              <div>
+                <span style="font-size:0.88rem; font-weight:600; color:var(--navy-700); display:block;">Open pools near you</span>
+                <span style="font-size:0.78rem; color:var(--gray-500);">Local public and club pools with today's hours</span>
+              </div>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;">
+              <input type="checkbox" checked style="margin-top:0.2rem; flex-shrink:0;" />
+              <div>
+                <span style="font-size:0.88rem; font-weight:600; color:var(--navy-700); display:block;">Weather conditions</span>
+                <span style="font-size:0.78rem; color:var(--gray-500);">For outdoor swimming safety, flagged automatically when conditions are unsafe</span>
+              </div>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;">
+              <input type="checkbox" checked style="margin-top:0.2rem; flex-shrink:0;" />
+              <div>
+                <span style="font-size:0.88rem; font-weight:600; color:var(--navy-700); display:block;">Today's meal plan</span>
+                <span style="font-size:0.78rem; color:var(--gray-500);">Daily nutritional recommendations based on your goals and today's training load</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="setup-nav">
+        <button class="btn btn-outline-dark" onclick="goToStep(3)">← Back</button>
+        <a href="dashboard.html" class="btn btn-gold btn-lg">
+          Create My Account &amp; Dive In →
+        </a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const totalSteps = 4;
+  let currentStep = 1;
+
+  function goToStep(n) {
+    // Hide current
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    document.getElementById('step-num-' + currentStep).classList.remove('active');
+    if (n > currentStep) {
+      document.getElementById('step-num-' + currentStep).classList.add('done');
+      document.getElementById('step-num-' + currentStep).textContent = '✓';
+    } else {
+      document.getElementById('step-num-' + currentStep).classList.remove('done');
+      document.getElementById('step-num-' + currentStep).textContent = currentStep;
+    }
+    document.getElementById('step-label-' + currentStep).classList.remove('active');
+
+    currentStep = n;
+
+    // Show new
+    document.getElementById('step-' + currentStep).classList.add('active');
+    document.getElementById('step-num-' + currentStep).classList.add('active');
+    document.getElementById('step-num-' + currentStep).classList.remove('done');
+    document.getElementById('step-num-' + currentStep).textContent = currentStep;
+    document.getElementById('step-label-' + currentStep).classList.add('active');
+
+    // Update progress bar
+    const pct = (currentStep / totalSteps) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = 'Step ' + currentStep + ' of ' + totalSteps;
+
+    // Scroll setup-content to top
+    document.querySelector('.setup-content').scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleChip(el, group) {
+    // For single-select groups, deselect others
+    const singleSelect = ['skill', 'fitness-goal', 'swim-goal', 'time'];
+    if (singleSelect.includes(group)) {
+      document.querySelectorAll('[onclick*="' + group + '"]').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    } else {
+      el.classList.toggle('selected');
+    }
+  }
+</script>
+
+</body>
+</html>
