@@ -193,8 +193,9 @@ strong { font-weight: 500; }
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
   display: block;
-  letter-spacing: 0.22em;
-  word-spacing: 0.1em;
+  width: 100%;
+  text-align: justify;
+  text-align-last: justify;
 }
 
 /* ── Layout ── */
@@ -284,9 +285,8 @@ section { padding: 6rem 0; }
   border-bottom: 1px solid rgba(93,219,201,0.08);
 }
 .nav-inner {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: 100%;
+  padding: 0 2.5rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -390,9 +390,9 @@ section { padding: 6rem 0; }
 .hero-inner {
   position: relative;
   z-index: 1;
-  max-width: var(--max-w);
+  max-width: 1500px;
   margin: 0 auto;
-  padding: 4rem 2rem 6rem;
+  padding: 4rem 2.5rem 6rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
