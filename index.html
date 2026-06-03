@@ -200,12 +200,12 @@ strong { font-weight: 500; }
 }
 .logo-tagline {
   font-family: var(--font-body);
-  font-size: 0.55rem;
+  font-size: 0.64rem;
   font-weight: 400;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
   display: block;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.36em;
   word-spacing: 0.1em;
   white-space: nowrap;
 }
@@ -214,7 +214,7 @@ strong { font-weight: 500; }
 .container {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 4rem;
 }
 section { padding: 6rem 0; }
 
@@ -298,7 +298,7 @@ section { padding: 6rem 0; }
 }
 .nav-inner {
   width: 100%;
-  padding: 0 3rem;
+  padding: 0 4rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -308,7 +308,7 @@ section { padding: 6rem 0; }
   display: flex;
   gap: 0.25rem;
   list-style: none;
-  margin-left: 1.5rem;
+  margin-left: auto;
 }
 .nav-links a {
   font-family: var(--font-body);
@@ -330,7 +330,6 @@ section { padding: 6rem 0; }
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-left: auto;
 }
 .nav-icon-btn {
   width: 34px; height: 34px;
@@ -404,7 +403,7 @@ section { padding: 6rem 0; }
   z-index: 1;
   max-width: 1500px;
   margin: 0 auto;
-  padding: 4rem 3.5rem 6rem;
+  padding: 4rem 4rem 6rem;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
@@ -824,12 +823,12 @@ section { padding: 6rem 0; }
 }
 .footer-newsletter-title {
   font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 400;
-  color: var(--white);
+  font-size: 1.85rem;
+  font-weight: 500;
+  color: var(--lap);
   margin-bottom: 0.6rem;
-  line-height: 1.2;
-  letter-spacing: 0;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
 }
 .footer-col a {
   font-size: 0.84rem;
@@ -861,21 +860,32 @@ section { padding: 6rem 0; }
 .footer-bottom a:hover { color: rgba(255,255,255,0.5); }
 
 /* ── Nav inline search ── */
-.nav-search-wrap { display: flex; align-items: center; }
+.nav-search-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+  align-self: stretch;
+}
 .nav-search-field {
   display: none;
   align-items: center;
-  background: rgba(93,219,201,0.07);
-  border: 1.5px solid rgba(93,219,201,0.2);
-  border-radius: 6px;
+  background: var(--deep);
+  border: 1.5px solid rgba(93,219,201,0.25);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
   overflow: hidden;
-  width: 220px;
+  width: 280px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 300;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .nav-search-field input {
   flex: 1;
   background: none;
   border: none;
-  padding: 0.42rem 0.75rem;
+  padding: 0.65rem 0.75rem;
   font-size: 0.85rem;
   color: white;
   outline: none;
@@ -888,7 +898,7 @@ section { padding: 6rem 0; }
   border: none;
   color: rgba(255,255,255,0.4);
   font-size: 1.2rem;
-  padding: 0 0.5rem;
+  padding: 0 0.6rem;
   cursor: pointer;
   line-height: 1;
 }
@@ -2860,7 +2870,7 @@ section { padding: 6rem 0; }
       <p>Weekly swimming news, gear, and words of wisdom.</p>
       <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:0.6rem;">
         <input type="email" placeholder="Email address" class="newsletter-input" style="font-size:0.84rem;" />
-        <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe to the fast lane.</button>
+        <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe to the fast lane</button>
       </form>
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of STREAMLINE, and to STREAMLINE's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
