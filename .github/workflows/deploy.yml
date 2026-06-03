@@ -16,7 +16,6 @@ jobs:
     name: Deploy CloudFormation + Sync S3
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # for OIDC
       contents: read
 
     steps:
@@ -26,7 +25,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy CloudFormation stack
@@ -36,7 +36,6 @@ jobs:
             --stack-name ${{ env.STACK_NAME }} \
             --parameter-overrides \
               DomainName=${{ env.DOMAIN_NAME }} \
-              HostedZoneId=${{ secrets.ROUTE53_HOSTED_ZONE_ID }} \
             --capabilities CAPABILITY_IAM \
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset

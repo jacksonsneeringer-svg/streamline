@@ -6,10 +6,6 @@ Parameters:
     Type: String
     Default: streamline.snurray.com
 
-  HostedZoneId:
-    Type: String
-    Description: Route 53 Hosted Zone ID for snurray.com
-
 Resources:
 
   # S3 bucket - private, accessed only via CloudFront OAC
@@ -52,14 +48,13 @@ Resources:
                 AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
 
   # ACM certificate - must be in us-east-1 for CloudFront
+  # After stack creation, complete DNS validation manually using the CNAME
+  # record shown in the ACM console for your DNS provider.
   Certificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: !Ref DomainName
       ValidationMethod: DNS
-      DomainValidationOptions:
-        - DomainName: !Ref DomainName
-          HostedZoneId: !Ref HostedZoneId
 
   # CloudFront distribution
   Distribution:
@@ -96,17 +91,6 @@ Resources:
         HttpVersion: http2and3
         PriceClass: PriceClass_100
 
-  # Route 53 alias record
-  DNSRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref HostedZoneId
-      Name: !Ref DomainName
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt Distribution.DomainName
-        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone (always this value)
-        EvaluateTargetHealth: false
 
 Outputs:
   BucketName:
