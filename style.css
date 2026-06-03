@@ -45,7 +45,7 @@
 
   /* Layout */
   --max-w:  1120px;
-  --nav-h:  68px;
+  --nav-h:  88px;
 
   /* Radius */
   --r-sm:  4px;
@@ -196,8 +196,8 @@ strong { font-weight: 500; }
   width: 100%;
   text-align: justify;
   text-align-last: justify;
-  letter-spacing: 0.55em;
-  word-spacing: 0.4em;
+  letter-spacing: 0.9em;
+  word-spacing: 2.5em;
 }
 
 /* ── Layout ── */
