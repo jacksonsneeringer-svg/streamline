@@ -208,8 +208,8 @@ strong { font-weight: 500; }
   width: 100%;
   text-align: justify;
   text-align-last: justify;
-  letter-spacing: 0.9em;
-  word-spacing: 2.5em;
+  letter-spacing: 1.5em;
+  word-spacing: 0.3em;
 }
 
 /* ── Layout ── */
@@ -300,7 +300,7 @@ section { padding: 6rem 0; }
 }
 .nav-inner {
   width: 100%;
-  padding: 0 2rem;
+  padding: 0 3rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -406,9 +406,9 @@ section { padding: 6rem 0; }
   z-index: 1;
   max-width: 1500px;
   margin: 0 auto;
-  padding: 4rem 2.5rem 6rem;
+  padding: 4rem 3.5rem 6rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
   gap: 3rem;
 }
@@ -809,20 +809,21 @@ section { padding: 6rem 0; }
 .footer-inner {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 3rem;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1.5fr;
   gap: 3rem;
 }
-.footer-brand p {
-  font-size: 0.84rem;
-  font-weight: 300;
-  color: rgba(255,255,255,0.28);
-  margin-top: 1rem;
-  line-height: 1.8;
-  max-width: 300px;
-}
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.footer-col h5, .footer-newsletter h5 {
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1rem;
+}
 .footer-col a {
   font-size: 0.84rem;
   font-weight: 300;
@@ -830,22 +831,60 @@ section { padding: 6rem 0; }
   transition: color 0.15s;
 }
 .footer-col a:hover { color: rgba(255,255,255,0.8); }
+.footer-newsletter p {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.28);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
 .footer-bottom {
   max-width: var(--max-w);
   margin: 3rem auto 0;
-  padding: 1.25rem 2rem;
+  padding: 1.25rem 3rem;
   border-top: 1px solid rgba(93,219,201,0.06);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-size: 0.72rem;
   font-weight: 300;
   color: rgba(255,255,255,0.18);
-  flex-wrap: wrap;
-  gap: 0.75rem;
 }
 .footer-bottom a { color: rgba(255,255,255,0.18); }
 .footer-bottom a:hover { color: rgba(255,255,255,0.5); }
+
+/* ── Nav inline search ── */
+.nav-search-wrap { display: flex; align-items: center; }
+.nav-search-field {
+  display: none;
+  align-items: center;
+  background: rgba(93,219,201,0.07);
+  border: 1.5px solid rgba(93,219,201,0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  width: 220px;
+}
+.nav-search-field input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.42rem 0.75rem;
+  font-size: 0.85rem;
+  color: white;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+.nav-search-field input::placeholder { color: rgba(255,255,255,0.3); }
+.nav-search-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
 
 /* ── Form styles (shared) ── */
 .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -1471,35 +1510,30 @@ section { padding: 6rem 0; }
       <span class="logo-tagline">Train for the Fast Lane</span>
     </a>
     <ul class="nav-links" id="nav-links-main">
-      <li><a href="#daily-swim" id="nav-daily-swim">Daily Swim Sets</a></li>
-      <li><a href="#daily-lift" id="nav-daily-lift">Daily Lift Workouts</a></li>
+      <li><a href="#swim-sets" id="nav-swim-sets">Swim Sets</a></li>
+      <li><a href="#dryland-workouts" id="nav-dryland-workouts">Lift Workouts</a></li>
       <li><a href="#blog" id="nav-blog">Blog</a></li>
-      <li><a href="#dashboard" id="nav-dashboard">My Training</a></li>
+      <li><a href="#my-training" id="nav-my-training">My Training</a></li>
       <li><a href="#contact" id="nav-contact">Contact</a></li>
     </ul>
     <div class="nav-actions" id="nav-actions-main">
-      <button class="nav-icon-btn" title="Search" onclick="document.getElementById('search-overlay').style.display='flex'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </button>
-      <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Create Account</a>
+      <div class="nav-search-wrap">
+        <button class="nav-icon-btn" id="nav-search-btn" title="Search" onclick="toggleNavSearch()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <div class="nav-search-field" id="nav-search-field">
+          <input type="text" id="nav-search-input" placeholder="Search workouts, articles…" />
+          <button class="nav-search-close" onclick="closeNavSearch()">×</button>
+        </div>
+      </div>
+      <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create Account | Log In</a>
     </div>
     <div class="nav-actions" id="nav-actions-divein" style="display:none; margin-left:auto;">
       <span style="font-size:0.82rem; color:rgba(255,255,255,0.35);">Already have an account?</span>
-      <a href="#dashboard" class="nav-signin" onclick="navigate('dashboard')">Sign In</a>
+      <a href="#my-training" class="nav-signin" onclick="navigate('my-training')">Sign In</a>
     </div>
   </div>
 </nav>
-
-<!-- Search overlay -->
-<div id="search-overlay" style="display:none; position:fixed; inset:0; background:rgba(13,79,71,0.94); z-index:9999; align-items:center; justify-content:center; padding:2rem;" onclick="if(event.target===this)this.style.display='none'">
-  <div style="width:100%; max-width:600px;">
-    <div style="position:relative;">
-      <input type="text" placeholder="Search workouts, articles…" style="width:100%; background:rgba(93,219,201,0.07); border:1.5px solid rgba(93,219,201,0.2); border-radius:6px; padding:1.1rem 3rem 1.1rem 1.5rem; font-size:1rem; color:white; outline:none; font-family:'DM Sans',sans-serif; font-weight:300;" autofocus />
-      <button onclick="document.getElementById('search-overlay').style.display='none'" style="position:absolute; right:1rem; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.4); font-size:1.4rem; cursor:pointer; line-height:1;">×</button>
-    </div>
-    <p style="color:rgba(255,255,255,0.22); font-size:0.75rem; margin-top:0.75rem; font-family:'DM Sans',sans-serif; font-weight:300; letter-spacing:0.08em;">Press Escape to close</p>
-  </div>
-</div>
 
 <!-- PAGES -->
 
@@ -1529,43 +1563,17 @@ section { padding: 6rem 0; }
     <div class="hero-copy">
       <div class="hero-tag">
         <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor" opacity="0.7"/></svg>
-        Swim · Dryland · Nutrition
+        Swim Sets • Dryland Workouts • Nutrition Advice
       </div>
       <h1>Fix your catch.<br/>Build your base.<br/>Swim faster.</h1>
-      <p class="hero-sub">Streamline is a coaching platform for swimmers who want to understand what they're actually doing in the water, and systematically get better at it.</p>
       <div class="hero-cta">
-        <a href="#dive-in" class="btn btn-gold btn-lg" onclick="navigate('dive-in')">Start Here</a>
+        <a href="#get-started" class="btn btn-gold btn-lg" onclick="navigate('get-started')">Get Started</a>
         <a href="#about" class="btn btn-outline-light btn-lg">How it works</a>
       </div>
       <div class="hero-scroll-hint">
         <span class="hero-scroll-line"></span>
         Scroll to explore
       </div>
-    </div>
-    <div class="hero-panel">
-      <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1.25rem;">What the platform covers</p>
-      <ul class="hero-features-list">
-        <li class="hero-feature-item">
-          <div class="hero-feature-icon">🏊</div>
-          <div class="hero-feature-text"><strong>Daily swim &amp; dryland sets</strong><span>New sessions every day, across all skill levels, structured, printable, and connected to each other</span></div>
-        </li>
-        <li class="hero-feature-item">
-          <div class="hero-feature-icon">📬</div>
-          <div class="hero-feature-text"><strong>Your morning briefing</strong><span>Local weather, open pools, and today's workout, delivered before you leave for the pool</span></div>
-        </li>
-        <li class="hero-feature-item">
-          <div class="hero-feature-icon">🥗</div>
-          <div class="hero-feature-text"><strong>Nutrition, matched to training</strong><span>Daily meal guidance built around your body, your goals, and what you're actually doing in the water</span></div>
-        </li>
-        <li class="hero-feature-item">
-          <div class="hero-feature-icon">📊</div>
-          <div class="hero-feature-text"><strong>Workout log &amp; progress</strong><span>Track every session, see trends over time, and keep your training honest</span></div>
-        </li>
-        <li class="hero-feature-item">
-          <div class="hero-feature-icon">📖</div>
-          <div class="hero-feature-text"><strong>Technique &amp; methodology depth</strong><span>Blog, guides, and coaching notes: the reasoning behind every set and drill, explained clearly</span></div>
-        </li>
-      </ul>
     </div>
   </div>
 </section>
@@ -1595,6 +1603,9 @@ section { padding: 6rem 0; }
         </div>
       </div>
     </div>
+    <div style="margin-top:3rem; padding-top:2.5rem; border-top:1px solid var(--gray-100); font-size:0.78rem; font-weight:300; color:var(--gray-400); line-height:1.8;">
+      <strong style="font-weight:500; color:var(--gray-500);">Affiliate disclosure:</strong> Some links on this site are affiliate links. If you purchase through one, Streamline may earn a small commission at no additional cost to you. &nbsp;|&nbsp; <strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
+    </div>
   </div>
 </section>
 
@@ -1604,8 +1615,8 @@ section { padding: 6rem 0; }
   </div>
   <div class="container" style="position:relative;">
     <div class="section-header center on-dark">
-      <span class="eyebrow on-dark">Free daily content</span>
-      <h2 style="color:var(--white);">Daily programming,<br/>available to everyone.</h2>
+      <span class="eyebrow on-dark">Features</span>
+      <h2 style="color:var(--white);">Everything you need<br/>to train smarter.</h2>
       <div class="accent-bar center"></div>
       <p class="sub" style="color:rgba(255,255,255,0.42); margin-top:1.25rem;">No account needed. Create one to unlock personalized versions built around your goals, schedule, and profile.</p>
     </div>
@@ -1622,7 +1633,7 @@ section { padding: 6rem 0; }
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intermediate · ~4,200 yards</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Advanced · ~6,000+ yards</div>
           </div>
-          <a href="#daily-swim" class="btn btn-primary btn-sm" onclick="navigate('daily-swim')">View today's sets</a>
+          <a href="#swim-sets" class="btn btn-primary btn-sm" onclick="navigate('swim-sets')">View today's sets</a>
         </div>
       </div>
       <div class="resource-card">
@@ -1637,7 +1648,7 @@ section { padding: 6rem 0; }
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Rotational core &amp; hip drive</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Shoulder stability &amp; cuff health</div>
           </div>
-          <a href="#daily-lift" class="btn btn-primary btn-sm" onclick="navigate('daily-lift')">View today's lift</a>
+          <a href="#dryland-workouts" class="btn btn-primary btn-sm" onclick="navigate('dryland-workouts')">View today's lift</a>
         </div>
       </div>
       <div class="resource-card">
@@ -1662,7 +1673,7 @@ section { padding: 6rem 0; }
         <h3 style="color:var(--white); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Your personal daily plan.</h3>
         <p style="color:rgba(255,255,255,0.4); font-size:0.88rem; margin:0; font-weight:300;">Workouts calibrated to your goals, a morning briefing with your local pool schedule and weather, and a meal plan built around your training load.</p>
       </div>
-      <a href="#dive-in" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('dive-in')">Create free account</a>
+      <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Create free account</a>
     </div>
   </div>
 </section>
@@ -1684,7 +1695,7 @@ section { padding: 6rem 0; }
           <div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span></div>
           <div class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</div>
           <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, each one diagnosed and corrected.</p>
-          <a href="#post-7-things" class="blog-card-link" onclick="navigate('post-7-things')">Read article →</a>
+          <a href="#freestyle-errors" class="blog-card-link" onclick="navigate('freestyle-errors')">Read article →</a>
         </div>
       </div>
       <div class="blog-card" style="opacity:0.55; pointer-events:none;">
@@ -1730,14 +1741,11 @@ section { padding: 6rem 0; }
   </div>
 </div>
 
-<div class="disclaimer-strip">
-  <p><strong style="font-weight:400;">Affiliate disclosure:</strong> Some links on this site are affiliate links. If you purchase through one, Streamline may earn a small commission at no additional cost to you. &nbsp;|&nbsp; <strong style="font-weight:400;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program. &nbsp;|&nbsp; <a href="#contact" onclick="navigate('contact')">Contact</a> &nbsp;·&nbsp; <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Use</a></p>
-</div>
 
 </div><!-- end page-home -->
 
-<!-- ══ DAILY SWIM PAGE ══ -->
-<div class="page" id="page-daily-swim">
+<!-- ══ SWIM SETS PAGE ══ -->
+<div class="page" id="page-swim-sets">
 <div class="page-hero-sm">
   <div class="container">
     <span class="eyebrow" style="color:var(--pool-100);">Daily Programming</span>
@@ -1812,7 +1820,7 @@ section { padding: 6rem 0; }
       </div>
       <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
         <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
-        <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Create a Free Account →</a>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
       </div>
     </div>
     <div id="swim-level-intermediate" style="display:none;">
@@ -1820,7 +1828,7 @@ section { padding: 6rem 0; }
         <div class="placeholder-icon">🏊</div>
         <h3>Intermediate Sets: Coming Soon</h3>
         <p>Intermediate daily workouts (~4,000–5,500 yards) will be posted here each morning, with interval targets and pace zones.</p>
-        <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Get personalized sets with an account</a>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
       </div>
     </div>
     <div id="swim-level-advanced" style="display:none;">
@@ -1828,15 +1836,15 @@ section { padding: 6rem 0; }
         <div class="placeholder-icon">⚡</div>
         <h3>Advanced Sets: Coming Soon</h3>
         <p>Advanced daily workouts (~6,000–8,500 yards) will be posted here each morning, with event-specific intervals and race-pace sets.</p>
-        <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Get personalized sets with an account</a>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
       </div>
     </div>
   </div>
 </section>
-</div><!-- end page-daily-swim -->
+</div><!-- end page-swim-sets -->
 
-<!-- ══ DAILY LIFT PAGE ══ -->
-<div class="page" id="page-daily-lift">
+<!-- ══ DRYLAND WORKOUTS PAGE ══ -->
+<div class="page" id="page-dryland-workouts">
 <div class="page-hero-sm">
   <div class="container">
     <span class="eyebrow" style="color:var(--pool-100);">Daily Programming</span>
@@ -1921,7 +1929,7 @@ section { padding: 6rem 0; }
       </div>
       <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
         <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want a dryland program built around your swim schedule and goals?</p>
-        <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Create a Free Account →</a>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
       </div>
     </div>
     <div id="lift-level-strength" style="display:none;">
@@ -1929,7 +1937,7 @@ section { padding: 6rem 0; }
         <div class="placeholder-icon">💪</div>
         <h3>Strength Level: Coming Soon</h3>
         <p>Strength-level sessions with barbell and cable movements for gym-trained swimmers.</p>
-        <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Get personalized workouts with an account</a>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized workouts with an account</a>
       </div>
     </div>
     <div id="lift-level-performance" style="display:none;">
@@ -1937,12 +1945,12 @@ section { padding: 6rem 0; }
         <div class="placeholder-icon">⚡</div>
         <h3>Performance Level: Coming Soon</h3>
         <p>Performance programming for competitive swimmers: power development and sport-specific conditioning.</p>
-        <a href="#dive-in" class="btn btn-gold btn-sm" onclick="navigate('dive-in')">Get personalized workouts with an account</a>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized workouts with an account</a>
       </div>
     </div>
   </div>
 </section>
-</div><!-- end page-daily-lift -->
+</div><!-- end page-dryland-workouts -->
 
 <!-- ══ BLOG INDEX PAGE ══ -->
 <div class="page" id="page-blog">
@@ -1977,7 +1985,7 @@ section { padding: 6rem 0; }
         <h2 style="color:#fff; font-size:1.6rem; margin:0;">7 Common Freestyle Errors and How to Fix Them</h2>
         <p style="color:rgba(255,255,255,0.55); font-size:0.92rem; line-height:1.7; margin:0;">A systematic look at the technique errors that appear most frequently in lap swimmers, with evidence-based corrections for each.</p>
         <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-top:0.25rem;">
-          <a href="#post-7-things" class="btn btn-gold" onclick="navigate('post-7-things')">Read Post →</a>
+          <a href="#freestyle-errors" class="btn btn-gold" onclick="navigate('freestyle-errors')">Read Post →</a>
           <span style="color:rgba(255,255,255,0.3); font-size:0.8rem;">May 20, 2026</span>
         </div>
       </div>
@@ -1996,7 +2004,7 @@ section { padding: 6rem 0; }
           <h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3>
           <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p>
           <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;">
-            <a href="#post-7-things" class="btn btn-outline-dark btn-sm" onclick="navigate('post-7-things')">Read →</a>
+            <a href="#freestyle-errors" class="btn btn-outline-dark btn-sm" onclick="navigate('freestyle-errors')">Read →</a>
             <span style="font-size:0.75rem; color:var(--gray-400);">8 min</span>
           </div>
         </div>
@@ -2040,7 +2048,7 @@ section { padding: 6rem 0; }
 </div><!-- end page-blog -->
 
 <!-- ══ POST: 7 THINGS ══ -->
-<div class="page" id="page-post-7-things">
+<div class="page" id="page-freestyle-errors">
 <div class="post-header">
   <div class="container">
     <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Technique</p>
@@ -2068,7 +2076,7 @@ section { padding: 6rem 0; }
   <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Dropped-elbow catch</h3><p>The catch is the moment at which the hand and forearm engage with the water to begin generating propulsion. A high-elbow catch maximizes the surface area pushing against the water. A dropped elbow reduces that surface area significantly and limits the power of the pull.</p></div></div>
   <p><strong>The correction:</strong> This is among the most neuromuscularly demanding corrections in freestyle technique. The key is to "pin" the elbow at the surface before initiating the pull, feeling the forearm press against the water vertically before the hand sweeps back. Useful drills include doggy paddle with exaggerated high-elbow positioning, and fingertip drag.</p>
   <div class="post-number"><div class="post-number-badge">6</div><div class="post-number-body"><h3>Training at a single intensity</h3><p>Many recreational swimmers default to a moderate-hard effort for every session, fast enough to be tiring but not structured in a way that systematically develops different energy systems. The result is a training effect that plateaus relatively quickly.</p></div></div>
-  <p><strong>The correction:</strong> Effective swim training uses a distribution of intensities across the training week. A substantial portion of volume should be genuinely aerobic. Streamline's <a href="#daily-swim" onclick="navigate('daily-swim')">daily swim sets</a> are structured with this in mind; each workout specifies the intended intensity zone and why.</p>
+  <p><strong>The correction:</strong> Effective swim training uses a distribution of intensities across the training week. A substantial portion of volume should be genuinely aerobic. Streamline's <a href="#swim-sets" onclick="navigate('swim-sets')">daily swim sets</a> are structured with this in mind; each workout specifies the intended intensity zone and why.</p>
   <div class="post-number"><div class="post-number-badge">7</div><div class="post-number-body"><h3>Inefficient turns</h3><p>The push-off from the wall is the fastest phase of swimming in a pool. An open turn, a weak flip turn, or a flip turn that sends the swimmer off-axis wastes a portion of that speed on every length. Over the course of a 1500-meter swim, this accumulates to a meaningful amount of time.</p></div></div>
   <p><strong>The correction:</strong> A well-executed flip turn involves a consistent approach (counting strokes from the flags), a tight tuck, a clean rotation, feet planted at mid-pool-depth on the wall, and a streamlined push-off transitioning to a controlled breakout.</p>
   <hr />
@@ -2080,7 +2088,7 @@ section { padding: 6rem 0; }
       <h3>Daily Swim Sets (free)</h3>
       <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and updated with the swim training focus in mind.</p>
     </div>
-    <a href="#daily-swim" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('daily-swim')">View Today's Set →</a>
+    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
 </article>
 <section style="background:var(--off-white); padding:4rem 0;">
@@ -2096,7 +2104,7 @@ section { padding: 6rem 0; }
     </div>
   </div>
 </section>
-</div><!-- end page-post-7-things -->
+</div><!-- end page-freestyle-errors -->
 
 <!-- ══ CONTACT PAGE ══ -->
 <div class="page" id="page-contact">
@@ -2164,7 +2172,7 @@ section { padding: 6rem 0; }
 </div><!-- end page-contact -->
 
 <!-- ══ DASHBOARD PAGE ══ -->
-<div class="page" id="page-dashboard">
+<div class="page" id="page-my-training">
 <div class="dashboard-layout">
   <aside class="dashboard-sidebar">
     <p style="font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:0.25rem;">My Training</p>
@@ -2186,24 +2194,24 @@ section { padding: 6rem 0; }
         <p style="color:rgba(255,255,255,0.45); font-size:0.9rem; margin-top:0.4rem;">Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.</p>
       </div>
       <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-        <a href="#dive-in" class="btn btn-gold" onclick="navigate('dive-in')">Create Account</a>
+        <a href="#get-started" class="btn btn-gold" onclick="navigate('get-started')">Create Account</a>
         <a href="#" class="btn btn-outline-light btn-sm">Sign In</a>
       </div>
     </div>
     <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-400); margin-bottom:1rem;">Preview: sign in to personalize</p>
     <div class="dash-grid">
-      <div class="dash-card"><p class="dash-card-label">📬 Daily Briefing</p><h3>Your Morning Plan</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily email briefing: local weather, open pools near you, and today's workout.</p><a href="#dive-in" class="btn btn-primary btn-sm" onclick="navigate('dive-in')">Unlock</a></div></div>
-      <div class="dash-card"><p class="dash-card-label">🏊 Today's Swim</p><h3>Personal Swim Workout</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your swim set for today, customized to your skill level and today's training focus.</p><a href="#daily-swim" class="btn btn-outline-dark btn-sm" onclick="navigate('daily-swim')">View Generic Set</a></div></div>
-      <div class="dash-card"><p class="dash-card-label">💪 Today's Lift</p><h3>Dryland Workout</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your dryland session matched to today's swim training focus and your schedule.</p><a href="#daily-lift" class="btn btn-outline-dark btn-sm" onclick="navigate('daily-lift')">View Generic Lift</a></div></div>
-      <div class="dash-card"><p class="dash-card-label">🥗 Meal Plan</p><h3>Today's Nutrition</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Daily meal recommendations based on your body profile, training load, and dietary preferences.</p><a href="#dive-in" class="btn btn-primary btn-sm" onclick="navigate('dive-in')">Set Up Profile</a></div></div>
-      <div class="dash-card span-2"><p class="dash-card-label">📊 Progress</p><h3>Training Log &amp; Trends</h3><div class="lock-overlay" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#dive-in" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('dive-in')">Create Free Account</a></div></div></div>
+      <div class="dash-card"><p class="dash-card-label">📬 Daily Briefing</p><h3>Your Morning Plan</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily email briefing: local weather, open pools near you, and today's workout.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Unlock</a></div></div>
+      <div class="dash-card"><p class="dash-card-label">🏊 Today's Swim</p><h3>Personal Swim Workout</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your swim set for today, customized to your skill level and today's training focus.</p><a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View Generic Set</a></div></div>
+      <div class="dash-card"><p class="dash-card-label">💪 Today's Lift</p><h3>Dryland Workout</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your dryland session matched to today's swim training focus and your schedule.</p><a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View Generic Lift</a></div></div>
+      <div class="dash-card"><p class="dash-card-label">🥗 Meal Plan</p><h3>Today's Nutrition</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Daily meal recommendations based on your body profile, training load, and dietary preferences.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Set Up Profile</a></div></div>
+      <div class="dash-card span-2"><p class="dash-card-label">📊 Progress</p><h3>Training Log &amp; Trends</h3><div class="lock-overlay" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div></div>
     </div>
   </main>
 </div>
-</div><!-- end page-dashboard -->
+</div><!-- end page-my-training -->
 
-<!-- ══ DIVE-IN PAGE ══ -->
-<div class="page" id="page-dive-in" style="background:var(--off-white);">
+<!-- ══ GET STARTED PAGE ══ -->
+<div class="page" id="page-get-started" style="background:var(--off-white);">
 <div class="setup-layout">
   <aside class="setup-sidebar">
     <div>
@@ -2365,11 +2373,11 @@ section { padding: 6rem 0; }
           </div>
         </div>
       </div>
-      <div class="setup-nav"><button class="btn btn-outline-dark" onclick="goToStep(3)">← Back</button><a href="#dashboard" class="btn btn-gold btn-lg" onclick="navigate('dashboard')">Create My Account &amp; Dive In →</a></div>
+      <div class="setup-nav"><button class="btn btn-outline-dark" onclick="goToStep(3)">← Back</button><a href="#my-training" class="btn btn-gold btn-lg" onclick="navigate('my-training')">Create My Account &amp; Dive In →</a></div>
     </div>
   </main>
 </div>
-</div><!-- end page-dive-in -->
+</div><!-- end page-get-started -->
 
 
 <div class="page" id="page-gear">
@@ -2766,89 +2774,118 @@ section { padding: 6rem 0; }
 
 </div><!-- end page-products -->
 
-<!-- ── Shared Footer (hidden on dashboard/dive-in via JS) ── -->
+<!-- ══ PRIVACY POLICY PAGE ══ -->
+<div class="page" id="page-privacy-policy">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Legal</span>
+    <h1>Privacy Policy</h1>
+    <p class="sub">Last updated: June 1, 2026</p>
+  </div>
+</div>
+<section style="background:var(--white); padding:3rem 0 5rem;">
+  <div class="container" style="max-width:760px;">
+    <div style="font-size:0.95rem; line-height:1.85; color:var(--text-muted);">
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">1. Information We Collect</h2>
+      <p style="margin-bottom:1.5rem;">When you create an account or subscribe to The Fast Lane newsletter, we collect information you provide directly: your name, email address, fitness goals, and training preferences. We also collect standard web analytics data such as pages visited, time on site, and device type through privacy-respecting tools.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">2. How We Use Your Information</h2>
+      <p style="margin-bottom:0.75rem;">We use the information we collect to:</p>
+      <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
+        <li>Deliver your personalized daily training plan and morning briefing</li>
+        <li>Send The Fast Lane newsletter if you have subscribed</li>
+        <li>Improve the content, structure, and features of Streamline</li>
+        <li>Respond to questions submitted through the contact form</li>
+      </ul>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">3. Affiliate Links</h2>
+      <p style="margin-bottom:1.5rem;">Some links on this site are affiliate links. If you click one and make a purchase, Streamline may receive a small commission at no additional cost to you. We only recommend products we genuinely believe are useful. Affiliate relationships do not influence editorial content.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">4. Data Sharing</h2>
+      <p style="margin-bottom:1.5rem;">We do not sell, rent, or trade your personal information to third parties. We may share data with service providers who help us operate the platform (such as email delivery services), subject to confidentiality agreements. We may also disclose information if required by law.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">5. Cookies</h2>
+      <p style="margin-bottom:1.5rem;">We use cookies to keep you signed in and to understand how visitors use the site. You can disable cookies in your browser settings, though some site features may not function correctly without them.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">6. Data Retention</h2>
+      <p style="margin-bottom:1.5rem;">We retain your account data as long as your account is active. If you close your account or unsubscribe from the newsletter, we will delete your personal information within 30 days, except where retention is required by law.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">7. Your Rights</h2>
+      <p style="margin-bottom:1.5rem;">You may request access to, correction of, or deletion of your personal data at any time by contacting us through the <a href="#contact" onclick="navigate('contact')">contact form</a>. We will respond within 30 days.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">8. Changes to This Policy</h2>
+      <p style="margin-bottom:1.5rem;">We may update this policy from time to time. We will notify newsletter subscribers of material changes. Continued use of Streamline after changes are posted constitutes acceptance of the updated policy.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">9. Contact</h2>
+      <p>If you have questions about this policy, please reach out through the <a href="#contact" onclick="navigate('contact')">contact page</a>.</p>
+    </div>
+  </div>
+</section>
+</div><!-- end page-privacy-policy -->
+
+<!-- ══ TERMS OF USE PAGE ══ -->
+<div class="page" id="page-terms-of-use">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Legal</span>
+    <h1>Terms of Use</h1>
+    <p class="sub">Last updated: June 1, 2026</p>
+  </div>
+</div>
+<section style="background:var(--white); padding:3rem 0 5rem;">
+  <div class="container" style="max-width:760px;">
+    <div style="font-size:0.95rem; line-height:1.85; color:var(--text-muted);">
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">1. Acceptance of Terms</h2>
+      <p style="margin-bottom:1.5rem;">By accessing or using Streamline (streamline.snurray.com), you agree to be bound by these Terms of Use. If you do not agree, please do not use the site.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">2. Use of Content</h2>
+      <p style="margin-bottom:1.5rem;">All content on Streamline — including workouts, articles, nutrition guidance, and coaching notes — is for personal, non-commercial use only. You may not reproduce, redistribute, or sell any content from this site without express written permission.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">3. Health and Fitness Disclaimer</h2>
+      <p style="margin-bottom:1.5rem;">The workouts, nutrition information, and training guidance on this site are for general informational purposes only and do not constitute medical advice. Always consult a qualified healthcare professional before beginning any new exercise or dietary program. Streamline is not responsible for any injury or health complication arising from the use of content on this site.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">4. Affiliate Disclosure</h2>
+      <p style="margin-bottom:1.5rem;">Some links on this site are affiliate links. Streamline may earn a commission if you make a purchase through one of these links. This does not affect the price you pay or our editorial independence.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">5. Accounts</h2>
+      <p style="margin-bottom:1.5rem;">You are responsible for maintaining the security of your account credentials and for all activity that occurs under your account. We reserve the right to terminate accounts that violate these terms.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">6. Intellectual Property</h2>
+      <p style="margin-bottom:1.5rem;">All content, design, logos, and code on this site are the property of Streamline and are protected by applicable intellectual property laws. The "Streamline" name and logo may not be used without permission.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">7. Limitation of Liability</h2>
+      <p style="margin-bottom:1.5rem;">Streamline is provided "as is." We make no warranties regarding accuracy, completeness, or fitness for a particular purpose. To the maximum extent permitted by law, Streamline and its operators are not liable for any indirect, incidental, or consequential damages arising from use of this site.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">8. Changes to These Terms</h2>
+      <p style="margin-bottom:1.5rem;">We may update these terms from time to time. Continued use of the site after changes are posted constitutes acceptance of the updated terms.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">9. Contact</h2>
+      <p>Questions about these terms? Use the <a href="#contact" onclick="navigate('contact')">contact page</a>.</p>
+    </div>
+  </div>
+</section>
+</div><!-- end page-terms-of-use -->
+
+<!-- ── Shared Footer (hidden on my-training/get-started via JS) ── -->
 <footer class="site-footer" id="site-footer">
   <div class="footer-inner">
-    <div class="footer-brand">
-      <a href="#home" class="site-logo" onclick="navigate('home')">
-      <div class="logo-top-row">
-        <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
-          <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
-          <defs>
-            <radialGradient id="slg-f" cx="40%" cy="45%" r="60%">
-              <stop offset="0%" stop-color="#1a7a6e"/>
-              <stop offset="100%" stop-color="#091f1c"/>
-            </radialGradient>
-            <radialGradient id="srg-f" cx="60%" cy="45%" r="60%">
-              <stop offset="0%" stop-color="#1a7a6e"/>
-              <stop offset="100%" stop-color="#091f1c"/>
-            </radialGradient>
-            <clipPath id="sll-f">
-              <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
-            </clipPath>
-            <clipPath id="srl-f">
-              <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
-            </clipPath>
-          </defs>
-          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg-f)"/>
-          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg-f)"/>
-          <g clip-path="url(#sll-f)">
-            <line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
-            <line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
-            <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
-            <circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
-            <path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
-          </g>
-          <g clip-path="url(#srl-f)">
-            <line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
-            <line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>
-            <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
-            <circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>
-            <path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>
-          </g>
-          <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
-          <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
-          <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-        <span class="logo-wordmark">S<span class="t-r-a-i-n">T</span><span class="t-r-a-i-n">R</span>E<span class="t-r-a-i-n">A</span>ML<span class="t-r-a-i-n">I</span><span class="t-r-a-i-n">N</span>E</span>
-      </div>
-      <span class="logo-tagline">Train for the Fast Lane</span>
-      </a>
-      <p>An all-inclusive swim coaching platform for every level of swimmer.</p>
-    </div>
-    <div class="footer-col">
-      <h5>Workouts</h5>
-      <ul>
-        <li><a href="#daily-swim" onclick="navigate('daily-swim')">Daily Swim Sets</a></li>
-        <li><a href="#daily-lift" onclick="navigate('daily-lift')">Daily Lift Workouts</a></li>
-        <li><a href="#dashboard" onclick="navigate('dashboard')">My Training Plan</a></li>
-      </ul>
-    </div>
     <div class="footer-col">
       <h5>Content</h5>
       <ul>
+        <li><a href="#swim-sets" onclick="navigate('swim-sets')">Swim Sets</a></li>
+        <li><a href="#dryland-workouts" onclick="navigate('dryland-workouts')">Dryland Workouts</a></li>
         <li><a href="#blog" onclick="navigate('blog')">Blog</a></li>
-        <li><a href="#post-7-things" onclick="navigate('post-7-things')">Freestyle Errors Guide</a></li>
+        <li><a href="#my-training" onclick="navigate('my-training')">My Training</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h5>Account</h5>
+      <h5>Information</h5>
       <ul>
-        <li><a href="#dive-in" onclick="navigate('dive-in')">Create Account</a></li>
-        <li><a href="#dashboard" onclick="navigate('dashboard')">Sign In</a></li>
+        <li><a href="#privacy-policy" onclick="navigate('privacy-policy')">Privacy Policy</a></li>
+        <li><a href="#terms-of-use" onclick="navigate('terms-of-use')">Terms of Use</a></li>
         <li><a href="#contact" onclick="navigate('contact')">Contact</a></li>
       </ul>
+    </div>
+    <div class="footer-newsletter">
+      <h5>The Fast Lane</h5>
+      <p>Weekly swimming news, gear, and technique delivered every Monday.</p>
+      <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:0.6rem;">
+        <input type="email" placeholder="Email address" class="newsletter-input" style="font-size:0.84rem;" />
+        <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe</button>
+      </form>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Streamline. All rights reserved.</span>
-    <span><a href="#">Affiliate Disclosure</a> · <a href="#">Health Disclaimer</a> · <a href="#">Privacy Policy</a></span>
   </div>
 </footer>
 
 <script>
-const NO_FOOTER_PAGES = new Set(['dashboard', 'dive-in']);
+const NO_FOOTER_PAGES = new Set(['my-training', 'get-started']);
 
 function navigate(pageId) {
   // Hide all pages
@@ -2864,11 +2901,11 @@ function navigate(pageId) {
     const href = a.getAttribute('href');
     if (href === '#' + pageId) a.classList.add('active');
   });
-  // Nav variant: dive-in page uses its own nav actions
+  // Nav variant: get-started page uses its own nav actions
   const mainActions = document.getElementById('nav-actions-main');
   const diveinActions = document.getElementById('nav-actions-divein');
   if (mainActions && diveinActions) {
-    if (pageId === 'dive-in') {
+    if (pageId === 'get-started') {
       mainActions.style.display = 'none';
       diveinActions.style.display = 'flex';
     } else {
@@ -2894,58 +2931,58 @@ function routeFromHash() {
 window.addEventListener('popstate', routeFromHash);
 window.addEventListener('DOMContentLoaded', routeFromHash);
 
-// Search overlay keyboard shortcut
+// Inline nav search
+function toggleNavSearch() {
+  const field = document.getElementById('nav-search-field');
+  const btn = document.getElementById('nav-search-btn');
+  if (field && btn) {
+    field.style.display = 'flex';
+    btn.style.display = 'none';
+    const input = document.getElementById('nav-search-input');
+    if (input) input.focus();
+  }
+}
+function closeNavSearch() {
+  const field = document.getElementById('nav-search-field');
+  const btn = document.getElementById('nav-search-btn');
+  if (field && btn) {
+    field.style.display = 'none';
+    btn.style.display = 'flex';
+    const input = document.getElementById('nav-search-input');
+    if (input) input.value = '';
+  }
+}
 document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeNavSearch();
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
-    const overlay = document.getElementById('search-overlay');
-    if (overlay) {
-      overlay.style.display = 'flex';
-      const input = overlay.querySelector('input');
-      if (input) input.focus();
-    }
+    toggleNavSearch();
   }
-  if (e.key === 'Escape') {
-    const overlay = document.getElementById('search-overlay');
-    if (overlay) overlay.style.display = 'none';
-  }
-});
-
-// Search button in nav
-document.querySelectorAll('.nav-icon-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const overlay = document.getElementById('search-overlay');
-    if (overlay) {
-      overlay.style.display = 'flex';
-      const input = overlay.querySelector('input');
-      if (input) input.focus();
-    }
-  });
 });
 
 function showSwimLevel(level) {
-  document.querySelectorAll('#page-daily-swim .set-block').forEach(b => {
+  document.querySelectorAll('#page-swim-sets .set-block').forEach(b => {
     b.style.display = b.dataset.level === level ? 'block' : 'none';
   });
-  document.querySelectorAll('#page-daily-swim .level-tab').forEach(t => {
+  document.querySelectorAll('#page-swim-sets .level-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.level === level);
   });
 }
 
 function showLiftLevel(level) {
-  document.querySelectorAll('#page-daily-lift .set-block').forEach(b => {
+  document.querySelectorAll('#page-dryland-workouts .set-block').forEach(b => {
     b.style.display = b.dataset.level === level ? 'block' : 'none';
   });
-  document.querySelectorAll('#page-daily-lift .level-tab').forEach(t => {
+  document.querySelectorAll('#page-dryland-workouts .level-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.level === level);
   });
 }
 
 function goToStep(n) {
-  document.querySelectorAll('#page-dive-in .setup-step').forEach(s => {
+  document.querySelectorAll('#page-get-started .setup-step').forEach(s => {
     s.style.display = parseInt(s.dataset.step) === n ? 'block' : 'none';
   });
-  document.querySelectorAll('#page-dive-in .step-dot').forEach(d => {
+  document.querySelectorAll('#page-get-started .step-dot').forEach(d => {
     const idx = parseInt(d.dataset.step);
     d.classList.toggle('active', idx === n);
     d.classList.toggle('done', idx < n);
