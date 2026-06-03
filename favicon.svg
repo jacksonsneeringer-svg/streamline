@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 0 148 33" fill="none">
-  <rect x="-14" y="0" width="148" height="33" fill="#0d4f47"/>
-  <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 35" fill="none">
+  <rect width="120" height="35" rx="4" fill="#0d4f47"/>
   <defs>
     <radialGradient id="slg" cx="40%" cy="45%" r="60%">
       <stop offset="0%" stop-color="#1a7a6e"/>
@@ -11,21 +10,21 @@
       <stop offset="100%" stop-color="#091f1c"/>
     </radialGradient>
     <clipPath id="sll">
-      <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/>
+      <path d="M52 17.5 C51 11 41 3 25 3 C14 3 9 9 9 17.5 C9 26 14 32 25 32 C41 32 51 24 52 17.5 Z"/>
     </clipPath>
     <clipPath id="srl">
-      <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/>
+      <path d="M68 17.5 C69 11 79 3 95 3 C106 3 111 9 111 17.5 C111 26 106 32 95 32 C79 32 69 24 68 17.5 Z"/>
     </clipPath>
   </defs>
-  <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>
-  <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>
+  <path d="M52 17.5 C51 11 41 3 25 3 C14 3 9 9 9 17.5 C9 26 14 32 25 32 C41 32 51 24 52 17.5 Z" fill="url(#slg)"/>
+  <path d="M68 17.5 C69 11 79 3 95 3 C106 3 111 9 111 17.5 C111 26 106 32 95 32 C79 32 69 24 68 17.5 Z" fill="url(#srg)"/>
   <g clip-path="url(#sll)">
-    <path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+    <path d="M10 20 Q18 13 28 17 Q34 19 40 15" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
   </g>
   <g clip-path="url(#srl)">
-    <path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
+    <path d="M70 15 Q76 19 86 17 Q96 13 104 20" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>
   </g>
-  <path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
-  <path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
-  <path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M52 17.5 C51 11 41 3 25 3 C14 3 9 9 9 17.5 C9 26 14 32 25 32 C41 32 51 24 52 17.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+  <path d="M68 17.5 C69 11 79 3 95 3 C106 3 111 9 111 17.5 C111 26 106 32 95 32 C79 32 69 24 68 17.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>
+  <path d="M53 17.5 Q60 18.3 67 17.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>
 </svg>
