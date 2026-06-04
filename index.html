@@ -1667,6 +1667,35 @@ section { padding: 6rem 0; }
 @media (max-width: 768px) { .contact-layout { grid-template-columns: 1fr; } }
 .contact-aside-sticky { position: sticky; top: 5.5rem; }
 .reason-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-lg); padding: 0.9rem 1rem; margin-bottom: 0.6rem; }
+/* Swim level layout with sticky sidebar */
+.swim-level-layout { display: flex; gap: 2rem; align-items: flex-start; }
+.swim-level-main { flex: 1; min-width: 0; }
+.swim-sidebar {
+  width: 258px; flex-shrink: 0; position: sticky; top: 5.5rem;
+  background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-lg); overflow: hidden;
+}
+.swim-sidebar-section { padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--gray-100); }
+.swim-sidebar-section:last-child { border-bottom: none; }
+.swim-sidebar-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 0.75rem; }
+.swim-sched-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.35rem 0; border-bottom: 1px solid var(--gray-100); }
+.swim-sched-row:last-child { border-bottom: none; }
+.swim-sched-day { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--lap); width: 64px; flex-shrink: 0; }
+.swim-sched-focus { font-size: 0.8rem; color: var(--text); }
+/* Set archives page */
+.archive-filter-bar { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; margin-bottom: 2rem; padding: 1.5rem; background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-lg); }
+.archive-filter-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.archive-filter-group label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); }
+.archive-filter-group select { font-family: var(--font-body); font-size: 0.85rem; color: var(--text); border: 1px solid var(--gray-200); border-radius: var(--r-sm); padding: 0.5rem 0.75rem; background: var(--off-white); cursor: pointer; }
+.archive-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-lg); padding: 1.25rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.archive-card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.archive-tag { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 3px; background: var(--gray-100); color: var(--pool-500); border: 1px solid var(--gray-200); }
+.archive-section-header { display: flex; align-items: center; gap: 0.75rem; margin: 2.5rem 0 1rem; }
+.archive-section-header h3 { font-size: 1rem; color: var(--deep); margin: 0; }
+.archive-section-divider { flex: 1; height: 1px; background: var(--gray-100); }
+@media (max-width: 900px) {
+  .swim-level-layout { flex-direction: column; }
+  .swim-sidebar { width: 100%; position: static; }
+}
 .reason-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
 .reason-card-header h4 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin: 0; }
 .reason-card-icon { width: 15px; height: 15px; color: var(--teal); flex-shrink: 0; }
@@ -1987,103 +2016,179 @@ section { padding: 6rem 0; }
 <div class="page-hero-sm">
   <div class="container">
     <span class="eyebrow" style="color:var(--pool-100);">Daily Programming</span>
-    <h1>Daily Swim Sets</h1>
-    <p class="sub">Today's swim sets across all skill levels. Updated every day. Pick your level, print the workout, and go.</p>
+    <h1>Swim Sets</h1>
+    <p class="sub">Swim sets across all skill levels, updated every day. Pick your level, print the workout, and go. Or, access the set archives for each level to find specific distances and set types.</p>
   </div>
 </div>
 <section style="background:var(--off-white); padding:3rem 0 5rem;">
   <div class="container">
-    <div style="display:flex; gap:0; border-bottom:1px solid var(--gray-200); margin-bottom:3rem; overflow-x:auto;">
+    <div style="display:flex; gap:0; border-bottom:1px solid var(--gray-200); margin-bottom:3rem;">
       <button class="level-tab active" id="swim-tab-beginner" onclick="showSwimLevel('beginner')">Beginner</button>
       <button class="level-tab" id="swim-tab-intermediate" onclick="showSwimLevel('intermediate')">Intermediate</button>
       <button class="level-tab" id="swim-tab-advanced" onclick="showSwimLevel('advanced')">Advanced</button>
       <button class="level-tab" id="swim-tab-pro" onclick="showSwimLevel('pro')">Pro</button>
     </div>
     <div id="swim-level-beginner">
-      <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-        <div>
-          <span class="eyebrow">Tuesday, June 2, 2026 · Beginner</span>
-          <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Aerobic Foundation #1</h2>
-          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~1,000 yards &nbsp;·&nbsp; Est. 25–35 min &nbsp;·&nbsp; Focus: Building comfort in the water + basic stroke mechanics</p>
+      <div class="swim-level-layout">
+        <div class="swim-level-main">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+            <div>
+              <span class="eyebrow">Tuesday, June 2, 2026 · Beginner</span>
+              <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Aerobic Foundation #1</h2>
+              <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~1,000 yards &nbsp;·&nbsp; Est. 25–35 min &nbsp;·&nbsp; Focus: Building comfort in the water + basic stroke mechanics</p>
+            </div>
+            <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print
+            </button>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+            <div class="set-block">
+              <div class="set-block-header" style="background:var(--deep);">
+                <span class="set-label">Warm-Up</span><span class="set-yds">200 yds</span>
+              </div>
+              <div class="set-rows">
+                <div class="set-row">100 Free, easy, focus on breathing every 3 strokes</div>
+                <div class="set-row">2 × 50 Kick on board, rest as needed</div>
+              </div>
+            </div>
+            <div class="set-block">
+              <div class="set-block-header" style="background:var(--teal);">
+                <span class="set-label">Drill Set</span><span class="set-yds">200 yds</span>
+              </div>
+              <div class="set-rows">
+                <div class="set-row">4 × 50 (25 drill / 25 free), 20 sec rest</div>
+                <div class="set-note">Drill: catch-up or fingertip drag. Rest as needed between reps — this is about form, not fitness.</div>
+              </div>
+            </div>
+            <div class="set-block" style="grid-column:1 / -1;">
+              <div class="set-block-header" style="background:var(--teal-2);">
+                <span class="set-label">Main Set</span><span class="set-yds">400 yds</span>
+              </div>
+              <div class="set-rows">
+                <div class="set-row"><strong>4 × 50 Free</strong>, 30 sec rest between each. Aim for comfortable, steady breathing.</div>
+                <div class="set-row"><strong>2 × 100 Free</strong>, 45 sec rest. Take it easy — if you need to stop mid-length, that's fine.</div>
+                <div class="set-note">If a 100 feels too long, break it into two 50s with a 20 sec rest in between.</div>
+              </div>
+            </div>
+            <div class="set-block" style="grid-column:1 / -1;">
+              <div class="set-block-header" style="background:var(--navy-700, #1a7a6e);">
+                <span class="set-label">Cool-Down</span><span class="set-yds">200 yds</span>
+              </div>
+              <div class="set-rows">
+                <div class="set-row">4 × 50 easy, alternate Free / Back</div>
+                <div class="set-note">No rush. Loose, unhurried tempo. Let your heart rate come all the way down.</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:rgba(93,219,201,0.07); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-lg); padding:1.25rem 1.5rem; margin-top:1.5rem; display:flex; gap:1rem; align-items:flex-start;">
+            <span style="font-size:1.2rem; flex-shrink:0;">💡</span>
+            <div>
+              <p style="font-size:0.85rem; font-weight:500; color:var(--teal); margin-bottom:0.2rem;">Today's focus cue</p>
+              <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">On every length, check your head position at the halfway mark. Eyes should point toward the pool floor, not the far wall. If you can see the far end clearly, your head is too high — and a high head means sinking hips, which makes everything harder.</p>
+            </div>
+          </div>
+          <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
+            <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
+            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
+          </div>
         </div>
-        <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print
-        </button>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
-        <div class="set-block">
-          <div class="set-block-header" style="background:var(--deep);">
-            <span class="set-label">Warm-Up</span><span class="set-yds">200 yds</span>
+        <div class="swim-sidebar no-print">
+          <div class="swim-sidebar-section">
+            <div class="swim-sidebar-label">Weekly Schedule</div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Distance Freestyle</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Breaststroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Backstroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Butterfly</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">IM</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Sprints &amp; Dives</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Mid-Distance Choice Stroke</span></div>
           </div>
-          <div class="set-rows">
-            <div class="set-row">100 Free, easy, focus on breathing every 3 strokes</div>
-            <div class="set-row">2 × 50 Kick on board, rest as needed</div>
-          </div>
-        </div>
-        <div class="set-block">
-          <div class="set-block-header" style="background:var(--teal);">
-            <span class="set-label">Drill Set</span><span class="set-yds">200 yds</span>
-          </div>
-          <div class="set-rows">
-            <div class="set-row">4 × 50 (25 drill / 25 free), 20 sec rest</div>
-            <div class="set-note">Drill: catch-up or fingertip drag. Rest as needed between reps — this is about form, not fitness.</div>
+          <div class="swim-sidebar-section">
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Set Archives</button>
           </div>
         </div>
-        <div class="set-block" style="grid-column:1 / -1;">
-          <div class="set-block-header" style="background:var(--teal-2);">
-            <span class="set-label">Main Set</span><span class="set-yds">400 yds</span>
-          </div>
-          <div class="set-rows">
-            <div class="set-row"><strong>4 × 50 Free</strong>, 30 sec rest between each. Aim for comfortable, steady breathing.</div>
-            <div class="set-row"><strong>2 × 100 Free</strong>, 45 sec rest. Take it easy — if you need to stop mid-length, that's fine.</div>
-            <div class="set-note">If a 100 feels too long, break it into two 50s with a 20 sec rest in between.</div>
-          </div>
-        </div>
-        <div class="set-block" style="grid-column:1 / -1;">
-          <div class="set-block-header" style="background:var(--navy-700, #1a7a6e);">
-            <span class="set-label">Cool-Down</span><span class="set-yds">200 yds</span>
-          </div>
-          <div class="set-rows">
-            <div class="set-row">4 × 50 easy, alternate Free / Back</div>
-            <div class="set-note">No rush. Loose, unhurried tempo. Let your heart rate come all the way down.</div>
-          </div>
-        </div>
-      </div>
-      <div style="background:rgba(93,219,201,0.07); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-lg); padding:1.25rem 1.5rem; margin-top:1.5rem; display:flex; gap:1rem; align-items:flex-start;">
-        <span style="font-size:1.2rem; flex-shrink:0;">💡</span>
-        <div>
-          <p style="font-size:0.85rem; font-weight:500; color:var(--teal); margin-bottom:0.2rem;">Today's focus cue</p>
-          <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">On every length, check your head position at the halfway mark. Eyes should point toward the pool floor, not the far wall. If you can see the far end clearly, your head is too high — and a high head means sinking hips, which makes everything harder.</p>
-        </div>
-      </div>
-      <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
-        <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
-        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
       </div>
     </div>
     <div id="swim-level-intermediate" style="display:none;">
-      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-        <div class="placeholder-icon">🏊</div>
-        <h3>Intermediate Sets: Coming Soon</h3>
-        <p>Intermediate daily workouts (~2,500 yards) will be posted here each morning, with interval targets and pace zones.</p>
-        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+      <div class="swim-level-layout">
+        <div class="swim-level-main">
+          <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+            <div class="placeholder-icon">🏊</div>
+            <h3>Intermediate Sets: Coming Soon</h3>
+            <p>Intermediate workouts (~2,500 yards) will be posted here each morning, with interval targets and pace zones.</p>
+            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+          </div>
+        </div>
+        <div class="swim-sidebar no-print">
+          <div class="swim-sidebar-section">
+            <div class="swim-sidebar-label">Weekly Schedule</div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Distance Freestyle</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Breaststroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Backstroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Butterfly</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">IM</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Sprints &amp; Dives</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Mid-Distance Choice Stroke</span></div>
+          </div>
+          <div class="swim-sidebar-section">
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Set Archives</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="swim-level-advanced" style="display:none;">
-      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-        <div class="placeholder-icon">⚡</div>
-        <h3>Advanced Sets: Coming Soon</h3>
-        <p>Advanced daily workouts (~4,500 yards) will be posted here each morning, with event-specific intervals and race-pace sets.</p>
-        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+      <div class="swim-level-layout">
+        <div class="swim-level-main">
+          <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+            <div class="placeholder-icon">⚡</div>
+            <h3>Advanced Sets: Coming Soon</h3>
+            <p>Advanced workouts (~4,500 yards) will be posted here each morning, with event-specific intervals and race-pace sets.</p>
+            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+          </div>
+        </div>
+        <div class="swim-sidebar no-print">
+          <div class="swim-sidebar-section">
+            <div class="swim-sidebar-label">Weekly Schedule</div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Distance Freestyle</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Breaststroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Backstroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Butterfly</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">IM</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Sprints &amp; Dives</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Mid-Distance Choice Stroke</span></div>
+          </div>
+          <div class="swim-sidebar-section">
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Set Archives</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="swim-level-pro" style="display:none;">
-      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-        <div class="placeholder-icon">🥇</div>
-        <h3>Pro Sets: Coming Soon</h3>
-        <p>Pro daily workouts (~7,000+ yards) will be posted here each morning, with high-volume training blocks, race-specific sets, and precision pace targets.</p>
-        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+      <div class="swim-level-layout">
+        <div class="swim-level-main">
+          <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+            <div class="placeholder-icon">🥇</div>
+            <h3>Pro Sets: Coming Soon</h3>
+            <p>Pro workouts (~7,000+ yards) will be posted here each morning, with high-volume training blocks, race-specific sets, and precision pace targets.</p>
+            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+          </div>
+        </div>
+        <div class="swim-sidebar no-print">
+          <div class="swim-sidebar-section">
+            <div class="swim-sidebar-label">Weekly Schedule</div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Distance Freestyle</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Breaststroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Backstroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Butterfly</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">IM</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Sprints &amp; Dives</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Mid-Distance Choice Stroke</span></div>
+          </div>
+          <div class="swim-sidebar-section">
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Set Archives</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2095,7 +2200,7 @@ section { padding: 6rem 0; }
 <div class="page-hero-sm">
   <div class="container">
     <span class="eyebrow" style="color:var(--pool-100);">Daily Programming</span>
-    <h1>Daily Lift Workouts</h1>
+    <h1>Lift Workouts</h1>
     <p class="sub">Dryland sessions designed around the movements that transfer to the water. Updated daily with the swim training focus in mind.</p>
   </div>
 </div>
@@ -2198,6 +2303,317 @@ section { padding: 6rem 0; }
   </div>
 </section>
 </div><!-- end page-dryland-workouts -->
+
+<!-- ══ SET ARCHIVES PAGE ══ -->
+<div class="page" id="page-set-archives">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Swim Sets</span>
+    <h1>Set Archives</h1>
+    <p class="sub">Browse and filter every set in the library by level, distance, stroke, and intensity. Find the right workout for where you are today.</p>
+  </div>
+</div>
+<section style="background:var(--off-white); padding:3rem 0 5rem;">
+  <div class="container">
+
+    <!-- Filter bar -->
+    <div class="archive-filter-bar">
+      <div class="archive-filter-group">
+        <label for="af-level">Level</label>
+        <select id="af-level" onchange="filterArchive()">
+          <option value="">All Levels</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+          <option value="pro">Pro</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="af-distance">Distance</label>
+        <select id="af-distance" onchange="filterArchive()">
+          <option value="">Any Distance</option>
+          <option value="short">Short (under 1,500 yds)</option>
+          <option value="mid">Mid (1,500–3,000 yds)</option>
+          <option value="long">Long (3,000–5,000 yds)</option>
+          <option value="ultra">Ultra (5,000+ yds)</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="af-stroke">Stroke Focus</label>
+        <select id="af-stroke" onchange="filterArchive()">
+          <option value="">Any Stroke</option>
+          <option value="freestyle">Freestyle</option>
+          <option value="breaststroke">Breaststroke</option>
+          <option value="backstroke">Backstroke</option>
+          <option value="butterfly">Butterfly</option>
+          <option value="im">IM</option>
+          <option value="choice">Choice Stroke</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="af-intensity">Intensity</label>
+        <select id="af-intensity" onchange="filterArchive()">
+          <option value="">Any Intensity</option>
+          <option value="aerobic">Aerobic / Easy</option>
+          <option value="threshold">Threshold</option>
+          <option value="sprint">Sprint / Race Pace</option>
+          <option value="recovery">Recovery</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="af-type">Set Type</label>
+        <select id="af-type" onchange="filterArchive()">
+          <option value="">Any Type</option>
+          <option value="drill">Drill-Heavy</option>
+          <option value="kick">Kick Focus</option>
+          <option value="pull">Pull / Catch Focus</option>
+          <option value="race">Race-Pace</option>
+          <option value="endurance">Endurance Block</option>
+          <option value="technique">Technique</option>
+        </select>
+      </div>
+      <div style="margin-left:auto;">
+        <button class="btn btn-outline-dark btn-sm" onclick="clearArchiveFilters()">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Results list -->
+    <div id="archive-results">
+
+      <!-- Beginner -->
+      <div class="archive-section-header"><h3>Beginner</h3><div class="archive-section-divider"></div></div>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="aerobic" data-type="drill">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Aerobic Foundation #1</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~1,000 yds &nbsp;·&nbsp; 25–35 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Beginner</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Aerobic</span>
+            <span class="archive-tag">Drill</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="backstroke" data-intensity="aerobic" data-type="technique">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Backstroke Introduction</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~900 yds &nbsp;·&nbsp; 25–30 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Beginner</span>
+            <span class="archive-tag">Backstroke</span>
+            <span class="archive-tag">Aerobic</span>
+            <span class="archive-tag">Technique</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="recovery" data-type="kick">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Easy Kick & Breathe</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~800 yds &nbsp;·&nbsp; 20–25 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Beginner</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Recovery</span>
+            <span class="archive-tag">Kick</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <!-- Intermediate -->
+      <div class="archive-section-header"><h3>Intermediate</h3><div class="archive-section-divider"></div></div>
+
+      <div class="archive-card" data-level="intermediate" data-distance="mid" data-stroke="freestyle" data-intensity="threshold" data-type="endurance">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Threshold Base Builder</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~2,500 yds &nbsp;·&nbsp; 45–55 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Intermediate</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Threshold</span>
+            <span class="archive-tag">Endurance</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="intermediate" data-distance="mid" data-stroke="im" data-intensity="aerobic" data-type="drill">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">IM Rotation</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~2,200 yds &nbsp;·&nbsp; 40–50 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Intermediate</span>
+            <span class="archive-tag">IM</span>
+            <span class="archive-tag">Aerobic</span>
+            <span class="archive-tag">Drill</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="intermediate" data-distance="mid" data-stroke="breaststroke" data-intensity="threshold" data-type="pull">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Breaststroke Pull Power</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~2,400 yds &nbsp;·&nbsp; 45–55 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Intermediate</span>
+            <span class="archive-tag">Breaststroke</span>
+            <span class="archive-tag">Threshold</span>
+            <span class="archive-tag">Pull</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <!-- Advanced -->
+      <div class="archive-section-header"><h3>Advanced</h3><div class="archive-section-divider"></div></div>
+
+      <div class="archive-card" data-level="advanced" data-distance="long" data-stroke="freestyle" data-intensity="sprint" data-type="race">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Race-Pace Sprint Block</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~4,500 yds &nbsp;·&nbsp; 70–85 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Advanced</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Sprint</span>
+            <span class="archive-tag">Race-Pace</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="advanced" data-distance="long" data-stroke="butterfly" data-intensity="threshold" data-type="drill">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Butterfly Threshold Series</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~4,000 yds &nbsp;·&nbsp; 65–80 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Advanced</span>
+            <span class="archive-tag">Butterfly</span>
+            <span class="archive-tag">Threshold</span>
+            <span class="archive-tag">Drill</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <!-- Pro -->
+      <div class="archive-section-header"><h3>Pro</h3><div class="archive-section-divider"></div></div>
+
+      <div class="archive-card" data-level="pro" data-distance="ultra" data-stroke="freestyle" data-intensity="sprint" data-type="race">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Volume Sprint Block</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~7,500 yds &nbsp;·&nbsp; 110–130 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Pro</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Sprint</span>
+            <span class="archive-tag">Race-Pace</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="pro" data-distance="ultra" data-stroke="im" data-intensity="threshold" data-type="endurance">
+        <div>
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Full IM Endurance</div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~8,000 yds &nbsp;·&nbsp; 120–140 min</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">Pro</span>
+            <span class="archive-tag">IM</span>
+            <span class="archive-tag">Threshold</span>
+            <span class="archive-tag">Endurance</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <!-- Limited Mobility / Injury Recovery -->
+      <div class="archive-section-header" style="margin-top:3rem;">
+        <h3 style="color:var(--teal);">Limited Mobility &amp; Injury Recovery</h3>
+        <div class="archive-section-divider"></div>
+      </div>
+      <p style="font-size:0.85rem; color:var(--gray-400); margin-bottom:1.5rem; max-width:680px;">These sets are designed for swimmers returning from injury, managing chronic pain, or working around limited range of motion. All sets minimize impact on common problem areas and can be adapted further — notes in each set indicate modifications.</p>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="backstroke" data-intensity="recovery" data-type="technique">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Shoulder Recovery Swim</div>
+            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Shoulder-Safe</span>
+          </div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~700 yds &nbsp;·&nbsp; 20–25 min &nbsp;·&nbsp; No fly, no overhead butterfly arms</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">All Levels</span>
+            <span class="archive-tag">Backstroke</span>
+            <span class="archive-tag">Recovery</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="recovery" data-type="kick">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Knee-Friendly Kick Focus</div>
+            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Knee-Safe</span>
+          </div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~600 yds &nbsp;·&nbsp; 15–20 min &nbsp;·&nbsp; Flutter kick only, no breaststroke kick</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">All Levels</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Recovery</span>
+            <span class="archive-tag">Kick</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="aerobic" data-type="pull">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Pull Buoy Only — Low Back Relief</div>
+            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Back-Safe</span>
+          </div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~1,000 yds &nbsp;·&nbsp; 25–35 min &nbsp;·&nbsp; Pull buoy throughout, no kick</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">All Levels</span>
+            <span class="archive-tag">Freestyle</span>
+            <span class="archive-tag">Aerobic</span>
+            <span class="archive-tag">Pull</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="backstroke" data-intensity="recovery" data-type="technique">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Wrist &amp; Forearm Recovery Set</div>
+            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Wrist-Safe</span>
+          </div>
+          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~800 yds &nbsp;·&nbsp; 20–30 min &nbsp;·&nbsp; Fist drills, minimized hand load</div>
+          <div class="archive-card-meta">
+            <span class="archive-tag">All Levels</span>
+            <span class="archive-tag">Backstroke</span>
+            <span class="archive-tag">Recovery</span>
+          </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      </div>
+
+      <div id="archive-no-results" style="display:none; padding:3rem; text-align:center; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl); margin-top:1rem;">
+        <p style="font-size:0.88rem; color:var(--gray-400);">No sets match the selected filters. Try broadening your search.</p>
+        <button class="btn btn-outline-dark btn-sm" style="margin-top:1rem;" onclick="clearArchiveFilters()">Clear Filters</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div><!-- end page-set-archives -->
 
 <!-- ══ BLOG INDEX PAGE ══ -->
 <div class="page" id="page-blog">
@@ -3401,6 +3817,37 @@ function navigate(pageId) {
   return false;
 }
 
+function filterArchive() {
+  const level = document.getElementById('af-level').value;
+  const distance = document.getElementById('af-distance').value;
+  const stroke = document.getElementById('af-stroke').value;
+  const intensity = document.getElementById('af-intensity').value;
+  const type = document.getElementById('af-type').value;
+  const cards = document.querySelectorAll('#archive-results .archive-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const match =
+      (!level || card.dataset.level === level) &&
+      (!distance || card.dataset.distance === distance) &&
+      (!stroke || card.dataset.stroke === stroke) &&
+      (!intensity || card.dataset.intensity === intensity) &&
+      (!type || card.dataset.type === type);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.querySelectorAll('#archive-results .archive-section-header, #archive-results > p').forEach(el => {
+    el.style.display = (level || distance || stroke || intensity || type) ? 'none' : '';
+  });
+  document.getElementById('archive-no-results').style.display = visible === 0 ? '' : 'none';
+}
+
+function clearArchiveFilters() {
+  ['af-level','af-distance','af-stroke','af-intensity','af-type'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  filterArchive();
+}
+
 function routeFromHash() {
   const hash = location.hash.replace('#', '') || 'home';
   showPage(hash);
@@ -3438,6 +3885,13 @@ const SEARCH_SUGGESTIONS = [
   { text: '2000 yard workout', page: 'swim-sets' },
   { text: '3000 yard workout', page: 'swim-sets' },
   { text: '5000 yard workout', page: 'swim-sets' },
+  // Set archives
+  { text: 'set archives', page: 'set-archives' },
+  { text: 'swim set library', page: 'set-archives' },
+  { text: 'injury recovery swim sets', page: 'set-archives' },
+  { text: 'limited mobility swim', page: 'set-archives' },
+  { text: 'shoulder recovery swim', page: 'set-archives' },
+  { text: 'browse swim sets', page: 'set-archives' },
   // Dryland
   { text: 'dryland workouts', page: 'dryland-workouts' },
   { text: 'dryland training for swimmers', page: 'dryland-workouts' },
