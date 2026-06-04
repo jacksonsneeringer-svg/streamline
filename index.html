@@ -932,6 +932,32 @@ section { padding: 6rem 0; }
   cursor: pointer;
   line-height: 1;
 }
+.nav-search-results {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  width: 320px;
+  background: var(--deep);
+  border: 1.5px solid rgba(93,219,201,0.2);
+  border-radius: 0 0 10px 10px;
+  z-index: 301;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  display: none;
+}
+.nav-search-results.visible { display: block; }
+.search-result-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.15s;
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover { background: rgba(93,219,201,0.08); }
+.search-result-item h5 { margin: 0 0 0.2rem; font-size: 0.82rem; color: #fff; font-weight: 600; }
+.search-result-item p { margin: 0; font-size: 0.73rem; color: rgba(255,255,255,0.45); line-height: 1.4; }
+.search-result-loading { padding: 1rem; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+.search-result-empty { padding: 1rem; text-align: center; color: rgba(255,255,255,0.35); font-size: 0.8rem; }
 
 /* ── Form styles (shared) ── */
 .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -1571,9 +1597,10 @@ section { padding: 6rem 0; }
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </button>
         <div class="nav-search-field" id="nav-search-field">
-          <input type="text" id="nav-search-input" placeholder="Search workouts, articles…" />
+          <input type="text" id="nav-search-input" placeholder="Search workouts, articles…" oninput="onSearchInput(this.value)" />
           <button class="nav-search-close" onclick="closeNavSearch()">×</button>
         </div>
+        <div class="nav-search-results" id="nav-search-results"></div>
       </div>
       <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create Account | Log In</a>
     </div>
@@ -2074,9 +2101,9 @@ section { padding: 6rem 0; }
       <h2 style="color:#fff; font-size:2rem; margin-top:0.4rem;">New posts, directly to you</h2>
       <p style="color:rgba(255,255,255,0.5); margin-top:0.6rem;">A notification when new content is published. No more than once per week, no filler.</p>
     </div>
-    <form style="display:flex; flex-direction:column; gap:0.75rem;" onsubmit="return false;">
-      <input type="email" placeholder="your@email.com" style="padding:0.8rem 1.1rem; border-radius:var(--r-md); border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#fff; font-size:0.9rem; outline:none; font-family:var(--font-body);" />
-      <button class="btn btn-gold" type="submit">Subscribe →</button>
+    <form id="newsletter-hero-form" style="display:flex; flex-direction:column; gap:0.75rem;" onsubmit="handleNewsletterSubmit(event,'hero')">
+      <input type="email" id="newsletter-hero-email" placeholder="your@email.com" style="padding:0.8rem 1.1rem; border-radius:var(--r-md); border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#fff; font-size:0.9rem; outline:none; font-family:var(--font-body);" required />
+      <button class="btn btn-gold" type="submit" id="newsletter-hero-btn">Subscribe →</button>
     </form>
   </div>
 </section>
@@ -2908,9 +2935,9 @@ section { padding: 6rem 0; }
     <div class="footer-newsletter">
       <div class="footer-newsletter-title">Newsletter</div>
       <p>Weekly swimming news, gear, and words of wisdom.</p>
-      <form onsubmit="return false;">
-        <input type="email" placeholder="Email address" class="newsletter-input footer-email-input" />
-        <button class="btn btn-gold btn-sm" type="submit">Subscribe to the fast lane</button>
+      <form id="newsletter-footer-form" onsubmit="handleNewsletterSubmit(event,'footer')">
+        <input type="email" id="newsletter-footer-email" placeholder="Email address" class="newsletter-input footer-email-input" required />
+        <button class="btn btn-gold btn-sm" type="submit" id="newsletter-footer-btn">Subscribe to the fast lane</button>
       </form>
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem; max-width:26rem; margin-left:auto; margin-right:auto;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of STREAMLINE, and to STREAMLINE's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
@@ -2920,6 +2947,7 @@ section { padding: 6rem 0; }
   </div>
 </footer>
 
+<script src="/api-config.js"></script>
 <script>
 const NO_FOOTER_PAGES = new Set(['my-training', 'get-started']);
 
@@ -2973,9 +3001,7 @@ function toggleNavSearch() {
   if (field) {
     const isOpen = field.style.display === 'flex';
     if (isOpen) {
-      field.style.display = 'none';
-      const input = document.getElementById('nav-search-input');
-      if (input) input.value = '';
+      closeNavSearch();
     } else {
       field.style.display = 'flex';
       const input = document.getElementById('nav-search-input');
@@ -2990,7 +3016,55 @@ function closeNavSearch() {
     const input = document.getElementById('nav-search-input');
     if (input) input.value = '';
   }
+  const results = document.getElementById('nav-search-results');
+  if (results) { results.innerHTML = ''; results.classList.remove('visible'); }
 }
+
+let _searchTimer = null;
+function onSearchInput(value) {
+  clearTimeout(_searchTimer);
+  const results = document.getElementById('nav-search-results');
+  if (!value || value.trim().length < 2) {
+    results.innerHTML = '';
+    results.classList.remove('visible');
+    return;
+  }
+  results.innerHTML = '<div class="search-result-loading">Searching…</div>';
+  results.classList.add('visible');
+  _searchTimer = setTimeout(() => performSearch(value.trim()), 400);
+}
+
+async function performSearch(query) {
+  const results = document.getElementById('nav-search-results');
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) {
+    results.innerHTML = '<div class="search-result-empty">Search unavailable.</div>';
+    return;
+  }
+  try {
+    const res = await fetch(`${apiUrl}/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    const items = data.results || [];
+    if (!items.length) {
+      results.innerHTML = '<div class="search-result-empty">No results found.</div>';
+      return;
+    }
+    results.innerHTML = items.map(r => `
+      <div class="search-result-item" onclick="closeNavSearch(); navigate('${r.page}');">
+        <h5>${escHtml(r.title)}</h5>
+        <p>${escHtml(r.description)}</p>
+      </div>`).join('');
+  } catch (err) {
+    results.innerHTML = '<div class="search-result-empty">Search unavailable.</div>';
+  }
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-search-wrap')) closeNavSearch();
+});
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeNavSearch();
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -3038,13 +3112,72 @@ function toggleChip(el, group) {
   }
 }
 
-function handleContactSubmit(event) {
+async function handleContactSubmit(event) {
   event.preventDefault();
   const form = event.target;
-  const success = form.closest('.contact-layout') ? form.closest('.contact-layout').querySelector('.success-state') : document.querySelector('#page-contact .success-state');
-  if (success) {
-    form.style.display = 'none';
-    success.style.display = 'flex';
+  const btn = form.querySelector('[type="submit"]');
+  const originalText = btn.textContent;
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  const payload = {
+    firstName: document.getElementById('fname').value.trim(),
+    lastName: document.getElementById('lname').value.trim(),
+    email: document.getElementById('cemail').value.trim(),
+    subject: document.getElementById('csubject').value,
+    message: document.getElementById('cmessage').value.trim(),
+    newsletterOptIn: document.getElementById('newsletter-opt').checked
+  };
+
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  try {
+    if (apiUrl) {
+      const res = await fetch(`${apiUrl}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Server error');
+    }
+    const wrap = document.getElementById('contact-form-wrap');
+    const success = document.getElementById('contact-success-state');
+    if (wrap) wrap.style.display = 'none';
+    if (success) success.style.display = 'flex';
+  } catch (err) {
+    btn.textContent = originalText;
+    btn.disabled = false;
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+async function handleNewsletterSubmit(event, source) {
+  event.preventDefault();
+  const form = event.target;
+  const emailId = source === 'footer' ? 'newsletter-footer-email' : 'newsletter-hero-email';
+  const btnId = source === 'footer' ? 'newsletter-footer-btn' : 'newsletter-hero-btn';
+  const email = document.getElementById(emailId).value.trim();
+  const btn = document.getElementById(btnId);
+  if (!email || !email.includes('@')) return;
+  const originalText = btn.textContent;
+  btn.textContent = 'Subscribing…';
+  btn.disabled = true;
+
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  try {
+    if (apiUrl) {
+      await fetch(`${apiUrl}/newsletter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source })
+      });
+    }
+    btn.textContent = 'Subscribed ✓';
+    form.reset();
+    setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 3000);
+  } catch (err) {
+    btn.textContent = originalText;
+    btn.disabled = false;
+    alert('Something went wrong. Please try again.');
   }
 }
 </script>
