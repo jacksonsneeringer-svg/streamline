@@ -1616,9 +1616,10 @@ section { padding: 6rem 0; }
         <div class="resource-card-body">
           <p>New sessions posted every morning, organized by skill level with yardage, pace guidance, and drill cues. Printable layout included.</p>
           <div class="resource-previews">
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Beginner · ~2,400 yards</div>
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intermediate · ~4,200 yards</div>
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Advanced · ~6,000+ yards</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Beginner · ~1,000 yards</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intermediate · ~2,500 yards</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Advanced · ~4,500 yards</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Pro · ~7,000+ yards</div>
           </div>
           <a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View today's sets</a>
         </div>
@@ -1713,17 +1714,17 @@ section { padding: 6rem 0; }
       <div class="about-deco-line"></div>
       <div>
         <span class="eyebrow">About Streamline</span>
-        <h2>Structured around how swimmers actually improve.</h2>
+        <h2>Not every swimmer has the luxury of an all-in-one coach, personal trainer, and nutritionist. But you do.</h2>
         <div class="accent-bar"></div>
-        <p style="margin-top:1.5rem; font-size:1rem; line-height:1.85;">Most swimmers plateau not because they lack effort, but because they lack structure. They swim the same moderate pace three times a week, never developing a high-elbow catch, never deliberately working on their kick, never doing the dryland sessions that would make both matter.</p>
-        <p style="font-size:1rem; line-height:1.85;">Streamline gives you the structure. Daily sets with defined intensities. Dryland work timed to your water sessions. Technique guidance that explains the mechanics, not just the drill. Nutrition that accounts for what training actually demands.</p>
-        <p style="font-size:1rem; line-height:1.85;">Built specifically for aquatic training, not a generic fitness app with a swimming filter.</p>
+        <p style="margin-top:1.5rem; font-size:1rem; line-height:1.85;">Elite swimmers don't just show up and swim laps. They work with coaches who design every session, strength trainers who build power out of the water, and nutritionists who fuel their training properly. That level of support used to be reserved for the few.</p>
+        <p style="font-size:1rem; line-height:1.85;">Streamline puts all of it in one place. Daily sets with defined intensities and a clear purpose. Dryland work synced to your water sessions. Technique breakdowns that explain the mechanics behind the drill — not just what to do, but why it matters. Nutrition guidance built around what training actually demands from your body.</p>
+        <p style="font-size:1rem; line-height:1.85;">Everything your training has been missing. No coaching staff required.</p>
       </div>
       <div>
         <span class="eyebrow">Who it's for</span>
-        <h2>Swimmers with something to improve.</h2>
+        <h2>Everyone. And we mean everyone.</h2>
         <div class="accent-bar"></div>
-        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">From returning to the water after years away, to chasing a masters podium. Streamline works at any level; the programming scales, the technique explanations are universal.</p>
+        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">Don't be intimidated — even if you can swim just two lengths of a lap pool without stopping, there is training and advice on here for you. Streamline scales from absolute beginners finding their stroke all the way up to masters competitors chasing podiums. The programming adjusts. The technique explanations are universal. Wherever you're starting, you belong here.</p>
         <div class="for-who-grid">
           <div class="for-who-card"><h4>Masters competitors</h4><p>Periodized plans built around target events, with race-specific intervals and proper tapers.</p></div>
           <div class="for-who-card"><h4>Lap swimmers</h4><p>Structured sessions with a technique focus. Replace guesswork with programming that actually progresses.</p></div>
@@ -1755,13 +1756,14 @@ section { padding: 6rem 0; }
       <button class="level-tab active" id="swim-tab-beginner" onclick="showSwimLevel('beginner')">Beginner</button>
       <button class="level-tab" id="swim-tab-intermediate" onclick="showSwimLevel('intermediate')">Intermediate</button>
       <button class="level-tab" id="swim-tab-advanced" onclick="showSwimLevel('advanced')">Advanced</button>
+      <button class="level-tab" id="swim-tab-pro" onclick="showSwimLevel('pro')">Pro</button>
     </div>
     <div id="swim-level-beginner">
       <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
         <div>
           <span class="eyebrow">Tuesday, June 2, 2026 · Beginner</span>
           <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Aerobic Foundation #1</h2>
-          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~2,400 yards &nbsp;·&nbsp; Est. 45–55 min &nbsp;·&nbsp; Focus: Steady aerobic pace + kick mechanics</p>
+          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~1,000 yards &nbsp;·&nbsp; Est. 25–35 min &nbsp;·&nbsp; Focus: Building comfort in the water + basic stroke mechanics</p>
         </div>
         <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
@@ -1771,39 +1773,39 @@ section { padding: 6rem 0; }
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
         <div class="set-block">
           <div class="set-block-header" style="background:var(--deep);">
-            <span class="set-label">Warm-Up</span><span class="set-yds">400 yds</span>
+            <span class="set-label">Warm-Up</span><span class="set-yds">200 yds</span>
           </div>
           <div class="set-rows">
-            <div class="set-row">200 Free, easy, focus on long strokes</div>
-            <div class="set-row">4 × 50 Kick on board, 20 sec rest</div>
+            <div class="set-row">100 Free, easy, focus on breathing every 3 strokes</div>
+            <div class="set-row">2 × 50 Kick on board, rest as needed</div>
           </div>
         </div>
         <div class="set-block">
           <div class="set-block-header" style="background:var(--teal);">
-            <span class="set-label">Drill Set</span><span class="set-yds">400 yds</span>
+            <span class="set-label">Drill Set</span><span class="set-yds">200 yds</span>
           </div>
           <div class="set-rows">
-            <div class="set-row">4 × 100 (50 drill / 50 free), 30 sec rest</div>
-            <div class="set-note">Drill: fingertip drag or side-kick. Keep head down throughout.</div>
+            <div class="set-row">4 × 50 (25 drill / 25 free), 20 sec rest</div>
+            <div class="set-note">Drill: catch-up or fingertip drag. Rest as needed between reps — this is about form, not fitness.</div>
           </div>
         </div>
         <div class="set-block" style="grid-column:1 / -1;">
           <div class="set-block-header" style="background:var(--teal-2);">
-            <span class="set-label">Main Set</span><span class="set-yds">1,200 yds</span>
+            <span class="set-label">Main Set</span><span class="set-yds">400 yds</span>
           </div>
           <div class="set-rows">
-            <div class="set-row"><strong>3 × 200 Free</strong>, 45 sec rest between each. Aim for a steady, conversational pace.</div>
-            <div class="set-row"><strong>3 × 200 Pull</strong> (pull buoy), 30 sec rest. Focus on catch mechanics, no kick.</div>
-            <div class="set-note">If 200s feel too long, break the pull set into 4 × 100 with 20 sec rest.</div>
+            <div class="set-row"><strong>4 × 50 Free</strong>, 30 sec rest between each. Aim for comfortable, steady breathing.</div>
+            <div class="set-row"><strong>2 × 100 Free</strong>, 45 sec rest. Take it easy — if you need to stop mid-length, that's fine.</div>
+            <div class="set-note">If a 100 feels too long, break it into two 50s with a 20 sec rest in between.</div>
           </div>
         </div>
         <div class="set-block" style="grid-column:1 / -1;">
           <div class="set-block-header" style="background:var(--navy-700, #1a7a6e);">
-            <span class="set-label">Cool-Down</span><span class="set-yds">400 yds</span>
+            <span class="set-label">Cool-Down</span><span class="set-yds">200 yds</span>
           </div>
           <div class="set-rows">
-            <div class="set-row">4 × 100 easy, alternate Free / Back</div>
-            <div class="set-note">Relaxed breathing, unhurried tempo. Let your heart rate come down gradually.</div>
+            <div class="set-row">4 × 50 easy, alternate Free / Back</div>
+            <div class="set-note">No rush. Loose, unhurried tempo. Let your heart rate come all the way down.</div>
           </div>
         </div>
       </div>
@@ -1811,7 +1813,7 @@ section { padding: 6rem 0; }
         <span style="font-size:1.2rem; flex-shrink:0;">💡</span>
         <div>
           <p style="font-size:0.85rem; font-weight:500; color:var(--teal); margin-bottom:0.2rem;">Today's focus cue</p>
-          <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">On every 200, check your head position at the 75-yard mark. Eyes should point toward the pool floor, not the far wall. If you can see the wall clearly, your head is too high.</p>
+          <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">On every length, check your head position at the halfway mark. Eyes should point toward the pool floor, not the far wall. If you can see the far end clearly, your head is too high — and a high head means sinking hips, which makes everything harder.</p>
         </div>
       </div>
       <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
@@ -1823,7 +1825,7 @@ section { padding: 6rem 0; }
       <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
         <div class="placeholder-icon">🏊</div>
         <h3>Intermediate Sets: Coming Soon</h3>
-        <p>Intermediate daily workouts (~4,000–5,500 yards) will be posted here each morning, with interval targets and pace zones.</p>
+        <p>Intermediate daily workouts (~2,500 yards) will be posted here each morning, with interval targets and pace zones.</p>
         <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
       </div>
     </div>
@@ -1831,7 +1833,15 @@ section { padding: 6rem 0; }
       <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
         <div class="placeholder-icon">⚡</div>
         <h3>Advanced Sets: Coming Soon</h3>
-        <p>Advanced daily workouts (~6,000–8,500 yards) will be posted here each morning, with event-specific intervals and race-pace sets.</p>
+        <p>Advanced daily workouts (~4,500 yards) will be posted here each morning, with event-specific intervals and race-pace sets.</p>
+        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+      </div>
+    </div>
+    <div id="swim-level-pro" style="display:none;">
+      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+        <div class="placeholder-icon">🥇</div>
+        <h3>Pro Sets: Coming Soon</h3>
+        <p>Pro daily workouts (~7,000+ yards) will be posted here each morning, with high-volume training blocks, race-specific sets, and precision pace targets.</p>
         <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
       </div>
     </div>
@@ -2961,11 +2971,11 @@ document.addEventListener('keydown', function(e) {
 });
 
 function showSwimLevel(level) {
-  document.querySelectorAll('#page-swim-sets .set-block').forEach(b => {
-    b.style.display = b.dataset.level === level ? 'block' : 'none';
-  });
-  document.querySelectorAll('#page-swim-sets .level-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.level === level);
+  ['beginner', 'intermediate', 'advanced', 'pro'].forEach(l => {
+    const panel = document.getElementById('swim-level-' + l);
+    if (panel) panel.style.display = l === level ? 'block' : 'none';
+    const tab = document.getElementById('swim-tab-' + l);
+    if (tab) tab.classList.toggle('active', l === level);
   });
 }
 
