@@ -775,6 +775,13 @@ section { padding: 6rem 0; }
 }
 .newsletter-input::placeholder { color: rgba(255,255,255,0.25); }
 .newsletter-input:focus { border-color: var(--lap); }
+.footer-email-input {
+  background: rgba(255,255,255,0.92);
+  border: 1.5px solid rgba(255,255,255,0.85);
+  color: var(--text);
+}
+.footer-email-input::placeholder { color: var(--gray-400); }
+.footer-email-input:focus { border-color: var(--lap); background: var(--white); }
 .newsletter-note {
   font-size: 0.72rem;
   font-weight: 300;
@@ -807,12 +814,12 @@ section { padding: 6rem 0; }
   border-top: 1px solid rgba(93,219,201,0.07);
 }
 .footer-inner {
-  max-width: var(--max-w);
+  max-width: 70%;
   margin: 0 auto;
-  padding: 0 5.5rem;
+  padding: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr;
-  gap: 3rem;
+  grid-template-columns: auto auto 1fr;
+  gap: 6rem;
 }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
 .footer-col h5 {
@@ -2880,7 +2887,7 @@ section { padding: 6rem 0; }
       <div class="footer-newsletter-title">Newsletter</div>
       <p>Weekly swimming news, gear, and words of wisdom.</p>
       <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:0.6rem;">
-        <input type="email" placeholder="Email address" class="newsletter-input" style="font-size:0.84rem;" />
+        <input type="email" placeholder="Email address" class="newsletter-input footer-email-input" style="font-size:0.84rem;" />
         <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe to the fast lane</button>
       </form>
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of STREAMLINE, and to STREAMLINE's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
