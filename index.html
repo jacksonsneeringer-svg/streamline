@@ -365,36 +365,14 @@ section { padding: 6rem 0; }
 .hero {
   min-height: calc(100vh - var(--nav-h));
   background-color: var(--deep);
+  background-image:
+    linear-gradient(160deg, rgba(93,219,201,0.06) 0%, transparent 55%),
+    var(--pattern-waves);
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
   overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  background-image: url('swimmer2-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  transform: rotate(90deg);
-  z-index: 0;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right,
-    rgba(13,79,71,0.80) 0%,
-    rgba(13,79,71,0.80) 30%,
-    rgba(13,79,71,0.10) 60%,
-    rgba(13,79,71,0.10) 100%
-  );
-  z-index: 1;
 }
 .hero-swimmer-art {
   position: absolute;
