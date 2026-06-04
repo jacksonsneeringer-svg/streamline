@@ -1667,12 +1667,12 @@ section { padding: 6rem 0; }
 .reason-card-icon { width: 15px; height: 15px; color: var(--teal); flex-shrink: 0; }
 .reason-card p { font-size: 0.78rem; color: var(--gray-400); margin: 0; }
 /* Contact page hero override */
-#page-contact .page-hero-sm { background: var(--off-white); background-image: none; padding: 2.5rem 0 2rem; }
+#page-contact .page-hero-sm { background: var(--off-white); background-image: var(--pattern-waves); padding: 2.5rem 0 2rem; }
 #page-contact .page-hero-sm h1 { color: var(--deep); }
-#page-contact .page-hero-sm .sub { color: var(--teal); opacity: 0.8; }
+#page-contact .page-hero-sm .sub { color: var(--teal); opacity: 0.8; max-width: 100%; }
 #page-contact .page-hero-sm .eyebrow { color: var(--teal) !important; }
 #page-contact .page-hero-sm .container { max-width: 1060px; padding: 0 2rem; }
-#page-contact > section { background-color: var(--off-white); background-image: radial-gradient(circle, rgba(26,122,110,0.07) 1.5px, transparent 1.5px); background-size: 24px 24px; }
+#page-contact > section { background-color: var(--off-white); background-image: var(--pattern-waves); }
 .contact-hero-divider { width: 40px; height: 2.5px; background: var(--lap); border-radius: 2px; margin-top: 1.5rem; }
 /* Captcha */
 .captcha-wrap { border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; margin-bottom: 1.25rem; }
@@ -2516,7 +2516,7 @@ section { padding: 6rem 0; }
 <!-- ══ CONTACT PAGE ══ -->
 <div class="page" id="page-contact">
 <div class="page-hero-sm">
-  <div class="container" style="max-width:860px;">
+  <div class="container">
     <span class="eyebrow">Get in Touch</span>
     <h1>Contact</h1>
     <p class="sub">Questions, feedback, blog topic requests, or just want to say hello? Fill out the form below and we will get back to you shortly. We read everything, but response time during high-volume periods may be a bit longer, and we appreciate your patience.</p>
@@ -3674,16 +3674,13 @@ async function handleContactSubmit(event) {
     newsletterOptIn: document.getElementById('newsletter-opt').checked
   };
 
-  const apiUrl = (window.STREAMLINE_API_URL || '');
   try {
-    if (apiUrl) {
-      const res = await fetch(`${apiUrl}/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) throw new Error('Server error');
-    }
+    const res = await fetch('https://formspree.io/f/xqeoaqpp', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Server error');
     const wrap = document.getElementById('contact-form-wrap');
     const success = document.getElementById('contact-success-state');
     if (wrap) wrap.style.display = 'none';
