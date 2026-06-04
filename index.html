@@ -896,6 +896,15 @@ section { padding: 6rem 0; }
   position: relative;
   align-self: stretch;
 }
+.nav-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 300;
+  width: 320px;
+}
 .nav-search-field {
   display: none;
   align-items: center;
@@ -904,11 +913,7 @@ section { padding: 6rem 0; }
   border-top: none;
   border-radius: 0 0 8px 8px;
   overflow: hidden;
-  width: 280px;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 300;
+  width: 100%;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .nav-search-field input {
@@ -933,14 +938,11 @@ section { padding: 6rem 0; }
   line-height: 1;
 }
 .nav-search-results {
-  position: absolute;
-  top: calc(100% + 2px);
-  left: 0;
-  width: 320px;
+  width: 100%;
   background: var(--deep);
   border: 1.5px solid rgba(93,219,201,0.2);
+  border-top: none;
   border-radius: 0 0 10px 10px;
-  z-index: 301;
   overflow: hidden;
   box-shadow: 0 12px 32px rgba(0,0,0,0.5);
   display: none;
@@ -1614,11 +1616,13 @@ section { padding: 6rem 0; }
         <button class="nav-icon-btn" id="nav-search-btn" title="Search" onclick="toggleNavSearch()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </button>
-        <div class="nav-search-field" id="nav-search-field">
-          <input type="text" id="nav-search-input" placeholder="Search workouts, articles…" oninput="onSearchInput(this.value)" />
-          <button class="nav-search-close" onclick="closeNavSearch()">×</button>
+        <div class="nav-search-dropdown">
+          <div class="nav-search-field" id="nav-search-field">
+            <input type="text" id="nav-search-input" placeholder="Search workouts, articles…" oninput="onSearchInput(this.value)" />
+            <button class="nav-search-close" onclick="closeNavSearch()">×</button>
+          </div>
+          <div class="nav-search-results" id="nav-search-results"></div>
         </div>
-        <div class="nav-search-results" id="nav-search-results"></div>
       </div>
       <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create Account | Log In</a>
     </div>
