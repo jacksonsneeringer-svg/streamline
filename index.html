@@ -3379,13 +3379,15 @@ function showPage(pageId) {
   if (footer) {
     footer.style.display = NO_FOOTER_PAGES.has(pageId) ? 'none' : '';
   }
+  // Always land at the top of the newly shown page
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
 function navigate(pageId) {
   showPage(pageId);
   history.pushState(null, '', '#' + pageId);
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
   return false;
 }
 
