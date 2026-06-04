@@ -1,0 +1,70 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  STACK_NAME: streamline-website
+  DOMAIN_NAME: streamline.snurray.com
+
+jobs:
+  deploy:
+    name: Deploy CloudFormation + Sync S3
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file cloudformation/template.yml \
+            --stack-name ${{ env.STACK_NAME }} \
+            --parameter-overrides \
+              DomainName=${{ env.DOMAIN_NAME }} \
+              CertificateArn=${{ secrets.ACM_CERTIFICATE_ARN }} \
+            --capabilities CAPABILITY_IAM \
+            --region ${{ env.AWS_REGION }} \
+            --no-fail-on-empty-changeset
+
+      - name: Get stack outputs
+        id: stack
+        run: |
+          BUCKET=$(aws cloudformation describe-stacks \
+            --stack-name ${{ env.STACK_NAME }} \
+            --query "Stacks[0].Outputs[?OutputKey=='BucketName'].OutputValue" \
+            --output text)
+          DIST_ID=$(aws cloudformation describe-stacks \
+            --stack-name ${{ env.STACK_NAME }} \
+            --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" \
+            --output text)
+          echo "bucket=$BUCKET" >> "$GITHUB_OUTPUT"
+          echo "distribution_id=$DIST_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Sync website files to S3
+        run: |
+          aws s3 sync . s3://${{ steps.stack.outputs.bucket }} \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "cloudformation/*" \
+            --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.stack.outputs.distribution_id }} \
+            --paths "/*"
