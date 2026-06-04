@@ -747,7 +747,7 @@ section { padding: 6rem 0; }
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch;
 }
 .blog-feature-card {
   display: flex;
@@ -791,6 +791,13 @@ section { padding: 6rem 0; }
   display: flex;
   flex-direction: column;
   gap: 0;
+  height: 100%;
+}
+.blog-side-col .blog-side-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .blog-side-card {
   padding: 1.25rem 1.5rem;
@@ -1763,7 +1770,7 @@ section { padding: 6rem 0; }
       </div>
       <h1>Fix your catch.<br/>Build your base.<br/>Swim faster.</h1>
       <div class="hero-cta">
-        <a href="#get-started" class="btn btn-gold btn-lg" onclick="navigate('get-started')">Get Started</a>
+        <a href="#get-started" class="btn btn-gold btn-lg" onclick="navigate('get-started')">Dive In</a>
         <a href="#about" class="btn btn-outline-light btn-lg" onclick="event.preventDefault(); document.getElementById('about').scrollIntoView({behavior:'smooth'});">How it works</a>
       </div>
       <div class="hero-scroll-hint">
@@ -1782,7 +1789,7 @@ section { padding: 6rem 0; }
     <div class="section-header center">
       <h2 style="color:var(--deep);">Features &amp; Resources</h2>
       <div class="accent-bar center"></div>
-      <p class="sub" style="color:var(--gray-500); margin-top:1.25rem;">All the best workouts, guidance, and gear to train smarter, swim faster while feeling and looking your best.</p>
+      <p class="sub" style="color:var(--gray-500); margin-top:1.25rem; white-space:nowrap;">All the best workouts, guidance, and gear to train smarter, swim faster while feeling and looking your best.</p>
     </div>
     <div class="resources-grid">
       <div class="resource-card">
@@ -1870,21 +1877,21 @@ section { padding: 6rem 0; }
       <!-- Right: three compact posts -->
       <div class="blog-side-col">
         <div class="blog-side-card">
-          <a class="blog-side-title" style="pointer-events:none; opacity:0.55;">Understanding Training Intensity Zones for Swimmers</a>
+          <a class="blog-side-title" style="pointer-events:none;">Understanding Training Intensity Zones for Swimmers</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Training</span><span class="blog-card-date">Coming soon</span>
+            <span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span>
           </div>
         </div>
         <div class="blog-side-card">
-          <a class="blog-side-title" style="pointer-events:none; opacity:0.55;">What Swimmers Should Eat Before a Morning Practice</a>
+          <a class="blog-side-title" style="pointer-events:none;">What Swimmers Should Eat Before a Morning Practice</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Nutrition</span><span class="blog-card-date">Coming soon</span>
+            <span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span>
           </div>
         </div>
         <div class="blog-side-card">
-          <a class="blog-side-title" style="pointer-events:none; opacity:0.55;">How to Build a Race-Week Taper That Actually Works</a>
+          <a class="blog-side-title" style="pointer-events:none;">How to Build a Race-Week Taper That Actually Works</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Training</span><span class="blog-card-date">Coming soon</span>
+            <span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span>
           </div>
         </div>
       </div>
@@ -1918,6 +1925,7 @@ section { padding: 6rem 0; }
           <div class="for-who-card"><h4>Triathletes</h4><p>Swim-specific work that fits around bike and run training without compounding fatigue.</p></div>
           <div class="for-who-card"><h4>Returning swimmers</h4><p>Technique-first ramp-up programs for swimmers rebuilding after time away from the water.</p></div>
         </div>
+        <p style="margin-top:1.75rem; font-size:0.72rem; font-weight:300; color:var(--gray-400); line-height:1.7;">* If you cannot swim two lengths of a lap pool nonstop, we strongly recommend finding in-person coaching to build very basic yet necessary swimming skills before attempting these workouts.</p>
       </div>
     </div>
   </div>
