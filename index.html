@@ -1379,6 +1379,34 @@ section { padding: 6rem 0; }
   text-align: center;
   padding: 4rem 2rem;
 }
+.swim-set-loading {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--gray-400);
+  font-size: 0.9rem;
+}
+.swim-set-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.swim-set-error {
+  background: var(--white);
+  border: 1px dashed var(--gray-200);
+  border-radius: var(--r-xl);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--gray-400);
+}
+.swim-set-error h3 { color: var(--gray-400); font-size: 1rem; font-weight: 400; margin-bottom: 0.5rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .placeholder-icon { font-size: 3rem; opacity: 0.3; }
 .placeholder-content h3 { color: var(--gray-400); font-size: 1.05rem; font-weight: 400; }
 .placeholder-content p { color: var(--gray-400); font-size: 0.88rem; font-weight: 300; max-width: 360px; }
@@ -2113,11 +2141,11 @@ section { padding: 6rem 0; }
     <div id="swim-level-intermediate" style="display:none;">
       <div class="swim-level-layout">
         <div class="swim-level-main">
-          <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-            <div class="placeholder-icon">🏊</div>
-            <h3>Intermediate Sets: Coming Soon</h3>
-            <p>Intermediate workouts (~2,500 yards) will be posted here each morning, with interval targets and pace zones.</p>
-            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+          <div id="swim-set-content-intermediate">
+            <div class="swim-set-loading" id="swim-set-loading-intermediate">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's intermediate set…</p>
+            </div>
           </div>
         </div>
         <div class="swim-sidebar no-print">
@@ -2140,11 +2168,11 @@ section { padding: 6rem 0; }
     <div id="swim-level-advanced" style="display:none;">
       <div class="swim-level-layout">
         <div class="swim-level-main">
-          <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-            <div class="placeholder-icon">⚡</div>
-            <h3>Advanced Sets: Coming Soon</h3>
-            <p>Advanced workouts (~4,500 yards) will be posted here each morning, with event-specific intervals and race-pace sets.</p>
-            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+          <div id="swim-set-content-advanced">
+            <div class="swim-set-loading" id="swim-set-loading-advanced">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's advanced set…</p>
+            </div>
           </div>
         </div>
         <div class="swim-sidebar no-print">
@@ -2167,11 +2195,11 @@ section { padding: 6rem 0; }
     <div id="swim-level-pro" style="display:none;">
       <div class="swim-level-layout">
         <div class="swim-level-main">
-          <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-            <div class="placeholder-icon">🥇</div>
-            <h3>Pro Sets: Coming Soon</h3>
-            <p>Pro workouts (~7,000+ yards) will be posted here each morning, with high-volume training blocks, race-specific sets, and precision pace targets.</p>
-            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized sets with an account</a>
+          <div id="swim-set-content-pro">
+            <div class="swim-set-loading" id="swim-set-loading-pro">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's pro set…</p>
+            </div>
           </div>
         </div>
         <div class="swim-sidebar no-print">
@@ -2379,6 +2407,20 @@ section { padding: 6rem 0; }
 
     <!-- Results list -->
     <div id="archive-results">
+
+      <!-- Dynamic generated sets (loaded from API) -->
+      <div id="archive-dynamic-wrap" style="display:none;">
+        <div class="archive-section-header"><h3>Generated Sets</h3><div class="archive-section-divider"></div></div>
+        <div id="archive-dynamic-cards"></div>
+        <div id="archive-dynamic-empty" style="display:none; color:var(--gray-400); font-size:0.9rem; padding:1rem 0 2rem;">No generated sets match the current filters.</div>
+      </div>
+      <div id="archive-dynamic-loading" style="padding:2rem 0; text-align:center; color:var(--gray-400); font-size:0.9rem; display:none;">
+        <div class="swim-set-loading-spinner" style="margin:0 auto 0.75rem;"></div>
+        Loading archived sets…
+      </div>
+
+      <!-- Sample Sets (static) -->
+      <div class="archive-section-header" id="archive-static-header"><h3>Sample Sets</h3><div class="archive-section-divider"></div></div>
 
       <!-- Beginner -->
       <div class="archive-section-header"><h3>Beginner</h3><div class="archive-section-divider"></div></div>
@@ -3809,6 +3851,9 @@ function showPage(pageId) {
   }
   // Ensure we're at the top of the newly shown page (instant, no animation).
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+  // Trigger dynamic content loading when relevant pages are shown
+  if (pageId === 'set-archives') loadArchives();
 }
 
 function navigate(pageId) {
@@ -3817,33 +3862,10 @@ function navigate(pageId) {
   return false;
 }
 
-function filterArchive() {
-  const level = document.getElementById('af-level').value;
-  const distance = document.getElementById('af-distance').value;
-  const stroke = document.getElementById('af-stroke').value;
-  const intensity = document.getElementById('af-intensity').value;
-  const type = document.getElementById('af-type').value;
-  const cards = document.querySelectorAll('#archive-results .archive-card');
-  let visible = 0;
-  cards.forEach(card => {
-    const match =
-      (!level || card.dataset.level === level) &&
-      (!distance || card.dataset.distance === distance) &&
-      (!stroke || card.dataset.stroke === stroke) &&
-      (!intensity || card.dataset.intensity === intensity) &&
-      (!type || card.dataset.type === type);
-    card.style.display = match ? '' : 'none';
-    if (match) visible++;
-  });
-  document.querySelectorAll('#archive-results .archive-section-header, #archive-results > p').forEach(el => {
-    el.style.display = (level || distance || stroke || intensity || type) ? 'none' : '';
-  });
-  document.getElementById('archive-no-results').style.display = visible === 0 ? '' : 'none';
-}
-
 function clearArchiveFilters() {
   ['af-level','af-distance','af-stroke','af-intensity','af-type'].forEach(id => {
-    document.getElementById(id).value = '';
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
   filterArchive();
 }
@@ -4173,6 +4195,200 @@ function showSwimLevel(level) {
     if (panel) panel.style.display = l === level ? 'block' : 'none';
     const tab = document.getElementById('swim-tab-' + l);
     if (tab) tab.classList.toggle('active', l === level);
+  });
+  if (level !== 'beginner') loadSwimSet(level);
+}
+
+const _swimSetCache = {};
+
+async function loadSwimSet(level) {
+  if (_swimSetCache[level]) return; // already loaded
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) {
+    renderSwimSetError(level, 'Set generator not connected yet — check back soon.');
+    return;
+  }
+  try {
+    const res = await fetch(`${apiUrl}/daily-sets?level=${level}`);
+    if (res.status === 404) {
+      renderSwimSetError(level, "Today's set hasn't been generated yet — check back after 5 AM ET.");
+      return;
+    }
+    if (!res.ok) throw new Error('Server error');
+    const data = await res.json();
+    _swimSetCache[level] = data;
+    renderSwimSet(level, data);
+  } catch (err) {
+    renderSwimSetError(level, 'Unable to load today\'s set. Please try again in a moment.');
+  }
+}
+
+const SECTION_COLORS = {
+  'Warm-Up':    'var(--deep)',
+  'Drill Set':  'var(--teal)',
+  'Pre-Main':   'var(--teal)',
+  'Main Set':   'var(--teal-2)',
+  'Second Main':'#1a6b9b',
+  'Third Main': '#5a3d8a',
+  'Post-Main':  '#8a5c1e',
+  'Cool-Down':  '#1a7a6e'
+};
+
+function renderSwimSet(level, data) {
+  const container = document.getElementById('swim-set-content-' + level);
+  if (!container) return;
+
+  const today = new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
+  const levelLabel = level.charAt(0).toUpperCase() + level.slice(1);
+  const sections = data.sections || [];
+
+  let sectionsHtml = '';
+  sections.forEach((sec, idx) => {
+    const color = SECTION_COLORS[sec.name] || 'var(--teal-2)';
+    const span = idx < 2 ? '' : 'grid-column:1 / -1;';
+    const items = (sec.items || []).map(item => {
+      let h = `<div class="set-row">${escHtml(item.text)}</div>`;
+      if (item.note) h += `<div class="set-note">${escHtml(item.note)}</div>`;
+      return h;
+    }).join('');
+    sectionsHtml += `<div class="set-block" style="${span}">
+      <div class="set-block-header" style="background:${color};">
+        <span class="set-label">${escHtml(sec.name)}</span><span class="set-yds">${sec.yards} yds</span>
+      </div>
+      <div class="set-rows">${items}</div>
+    </div>`;
+  });
+
+  const focusCueHtml = data.focusCue ? `<div style="background:rgba(93,219,201,0.07); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-lg); padding:1.25rem 1.5rem; margin-top:1.5rem; display:flex; gap:1rem; align-items:flex-start;">
+    <span style="font-size:1.2rem; flex-shrink:0;">💡</span>
+    <div>
+      <p style="font-size:0.85rem; font-weight:500; color:var(--teal); margin-bottom:0.2rem;">Today's focus cue</p>
+      <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">${escHtml(data.focusCue)}</p>
+    </div>
+  </div>` : '';
+
+  container.innerHTML = `<div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+    <div>
+      <span class="eyebrow">${today} · ${levelLabel}</span>
+      <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title)}</h2>
+      <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${data.totalYards} yards &nbsp;·&nbsp; Est. ${data.estimatedMinutes} min</p>
+    </div>
+    <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print
+    </button>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">${sectionsHtml}</div>
+  ${focusCueHtml}
+  <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
+    <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
+    <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
+  </div>`;
+}
+
+function renderSwimSetError(level, msg) {
+  const container = document.getElementById('swim-set-content-' + level);
+  if (!container) return;
+  container.innerHTML = `<div class="swim-set-error">
+    <h3>Set not available</h3>
+    <p>${escHtml(msg)}</p>
+    <p style="margin-top:1.5rem;"><a href="#set-archives" class="btn btn-outline-dark btn-sm" onclick="navigate('set-archives')">Browse Set Archives</a></p>
+  </div>`;
+}
+
+// ── Archive dynamic loading ──────────────────────────────────────────────────
+
+let _archiveLoaded = false;
+
+async function loadArchives() {
+  if (_archiveLoaded) return;
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) return;
+  const loadingEl = document.getElementById('archive-dynamic-loading');
+  if (loadingEl) loadingEl.style.display = 'block';
+  try {
+    const res = await fetch(`${apiUrl}/archives`);
+    if (!res.ok) throw new Error();
+    const { items } = await res.json();
+    _archiveLoaded = true;
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (!items || items.length === 0) return;
+    renderArchiveCards(items);
+  } catch (e) {
+    if (loadingEl) loadingEl.style.display = 'none';
+  }
+}
+
+function renderArchiveCards(items) {
+  const wrap = document.getElementById('archive-dynamic-wrap');
+  const cardsEl = document.getElementById('archive-dynamic-cards');
+  if (!wrap || !cardsEl) return;
+  wrap.style.display = 'block';
+
+  const STROKE_LABEL = {freestyle:'Freestyle',backstroke:'Backstroke',butterfly:'Butterfly',breaststroke:'Breaststroke',im:'IM',choice:'Choice'};
+  const INTENSITY_LABEL = {aerobic:'Aerobic',threshold:'Threshold',sprint:'Sprint',recovery:'Recovery'};
+  const TYPE_LABEL = {drill:'Drill',kick:'Kick',pull:'Pull/Catch',race:'Race-Pace',endurance:'Endurance',technique:'Technique'};
+
+  cardsEl.innerHTML = items.map(item => {
+    const lvl = item.level || '';
+    const dist = item.distanceCategory || '';
+    const stroke = item.strokeFocus || '';
+    const intensity = item.intensity || '';
+    const type = item.setType || '';
+    const dateStr = item.date ? new Date(item.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    const yds = item.totalYards ? `~${item.totalYards} yds` : '';
+    const mins = item.estimatedMinutes ? `${item.estimatedMinutes} min` : '';
+    const meta = [yds, mins].filter(Boolean).join(' · ');
+    const tags = [lvl, STROKE_LABEL[stroke], INTENSITY_LABEL[intensity], TYPE_LABEL[type]].filter(Boolean);
+    return `<div class="archive-card" data-level="${escHtml(lvl)}" data-distance="${escHtml(dist)}" data-stroke="${escHtml(stroke)}" data-intensity="${escHtml(intensity)}" data-type="${escHtml(type)}">
+      <div>
+        <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(item.title)}</div>
+        <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(meta)}${dateStr ? ` &nbsp;·&nbsp; ${escHtml(dateStr)}` : ''}</div>
+        <div class="archive-card-meta">${tags.map(t=>`<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
+      </div>
+      <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets'); showSwimLevel('${escHtml(lvl)}')">View Level</button>
+    </div>`;
+  }).join('');
+
+  filterArchive();
+}
+
+function filterArchive() {
+  const level = (document.getElementById('af-level') || {}).value || '';
+  const distance = (document.getElementById('af-distance') || {}).value || '';
+  const stroke = (document.getElementById('af-stroke') || {}).value || '';
+  const intensity = (document.getElementById('af-intensity') || {}).value || '';
+  const type = (document.getElementById('af-type') || {}).value || '';
+
+  let anyVisible = false;
+  document.querySelectorAll('#archive-results .archive-card').forEach(card => {
+    const show = (!level || card.dataset.level === level)
+      && (!distance || card.dataset.distance === distance)
+      && (!stroke || card.dataset.stroke === stroke)
+      && (!intensity || card.dataset.intensity === intensity)
+      && (!type || card.dataset.type === type);
+    card.style.display = show ? '' : 'none';
+    if (show) anyVisible = true;
+  });
+
+  // dynamic empty state
+  const dynCards = document.querySelectorAll('#archive-dynamic-cards .archive-card');
+  const dynVisible = Array.from(dynCards).some(c => c.style.display !== 'none');
+  const dynEmpty = document.getElementById('archive-dynamic-empty');
+  const dynWrap = document.getElementById('archive-dynamic-wrap');
+  if (dynWrap && dynWrap.style.display !== 'none') {
+    if (dynEmpty) dynEmpty.style.display = dynVisible ? 'none' : 'block';
+  }
+
+  // section headers — hide if all cards in that section are hidden
+  document.querySelectorAll('#archive-results .archive-section-header').forEach(header => {
+    let next = header.nextElementSibling;
+    let sectionHasVisible = false;
+    while (next && !next.classList.contains('archive-section-header')) {
+      if (next.classList.contains('archive-card') && next.style.display !== 'none') sectionHasVisible = true;
+      next = next.nextElementSibling;
+    }
+    header.style.display = sectionHasVisible ? '' : 'none';
   });
 }
 
