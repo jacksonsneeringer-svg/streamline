@@ -2965,7 +2965,7 @@ section { padding: 6rem 0; }
   </div>
 </footer>
 
-<script src="/api-config.js"></script>
+<script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
 const NO_FOOTER_PAGES = new Set(['my-training', 'get-started']);
 
