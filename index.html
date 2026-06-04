@@ -3338,6 +3338,9 @@ section { padding: 6rem 0; }
 const NO_FOOTER_PAGES = new Set(['my-training', 'get-started']);
 
 function showPage(pageId) {
+  // Unknown page id: do nothing rather than hiding every page and leaving a
+  // blank screen. Guards bad hashes and any stale links.
+  if (!document.getElementById('page-' + pageId)) return;
   // Reset contact form when navigating away from it
   const currentPage = document.querySelector('.page.active');
   if (currentPage && currentPage.id === 'page-contact' && pageId !== 'contact') {
@@ -3359,7 +3362,7 @@ function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   // Show target page
   const target = document.getElementById('page-' + pageId);
-  if (target) target.classList.add('active');
+  target.classList.add('active');
   // Update nav active links
   document.querySelectorAll('.nav-links a').forEach(a => {
     a.classList.remove('active');
@@ -3442,13 +3445,13 @@ const SEARCH_SUGGESTIONS = [
   { text: 'push exercises for swimmers', page: 'dryland-workouts' },
   { text: 'core stability for swimmers', page: 'dryland-workouts' },
   // Pace clock
-  { text: 'pace clock', page: 'pace-clock' },
-  { text: 'how to read a pace clock', page: 'pace-clock' },
-  { text: 'pace clock intervals', page: 'pace-clock' },
-  { text: 'send-off intervals', page: 'pace-clock' },
-  { text: 'swim intervals 1:00', page: 'pace-clock' },
-  { text: 'swim intervals 1:30', page: 'pace-clock' },
-  { text: 'structured swim sets', page: 'pace-clock' },
+  { text: 'pace clock', page: 'swim-sets' },
+  { text: 'how to read a pace clock', page: 'swim-sets' },
+  { text: 'pace clock intervals', page: 'swim-sets' },
+  { text: 'send-off intervals', page: 'swim-sets' },
+  { text: 'swim intervals 1:00', page: 'swim-sets' },
+  { text: 'swim intervals 1:30', page: 'swim-sets' },
+  { text: 'structured swim sets', page: 'swim-sets' },
   // My training / account
   { text: 'my training plan', page: 'my-training' },
   { text: 'personalized swim plan', page: 'my-training' },
@@ -3466,6 +3469,73 @@ const SEARCH_SUGGESTIONS = [
   { text: 'contact us', page: 'contact' },
   { text: 'report a bug', page: 'contact' },
 ];
+
+// Friendly result titles. Pages not listed fall back to their first heading.
+const PAGE_TITLE_OVERRIDES = {
+  home: 'Home',
+  'my-training': 'My Training',
+  'get-started': 'Create Account / Log In',
+};
+
+// Built once on load: a lightweight full-text index of every page so search
+// can scan the actual site content, not just a fixed suggestion list.
+let SEARCH_INDEX = [];
+function buildSearchIndex() {
+  SEARCH_INDEX = [];
+  document.querySelectorAll('.page').forEach(pageEl => {
+    const page = pageEl.id.replace(/^page-/, '');
+    if (!page) return;
+    const heading = pageEl.querySelector('h1, h2, h3');
+    const title = PAGE_TITLE_OVERRIDES[page]
+      || (heading ? heading.textContent.replace(/\s+/g, ' ').trim() : page);
+    const text = (pageEl.textContent || '').replace(/\s+/g, ' ').trim();
+    SEARCH_INDEX.push({ page, title, titleLower: title.toLowerCase(), text, textLower: text.toLowerCase() });
+  });
+}
+window.addEventListener('DOMContentLoaded', buildSearchIndex);
+
+// Score a page against the query: title matches weigh most, then a whole-phrase
+// match in the body, then how often the individual terms appear.
+function scoreEntry(entry, phrase, terms) {
+  let score = 0;
+  if (entry.titleLower === phrase) score += 120;
+  else if (entry.titleLower.includes(phrase)) score += 60;
+  if (phrase.length >= 3 && entry.textLower.includes(phrase)) score += 25;
+  terms.forEach(term => {
+    if (entry.titleLower.includes(term)) score += 15;
+    let idx = entry.textLower.indexOf(term), hits = 0;
+    while (idx !== -1 && hits < 6) { score += 2; hits++; idx = entry.textLower.indexOf(term, idx + term.length); }
+  });
+  return score;
+}
+
+// Pull a short snippet from the body around the first matching term.
+function buildSnippet(entry, terms) {
+  let pos = -1;
+  terms.forEach(term => {
+    const i = entry.textLower.indexOf(term);
+    if (i !== -1 && (pos === -1 || i < pos)) pos = i;
+  });
+  if (pos === -1) pos = 0;
+  const start = Math.max(0, pos - 45);
+  let snip = entry.text.slice(start, start + 150).trim();
+  if (start > 0) snip = '… ' + snip;
+  if (start + 150 < entry.text.length) snip += ' …';
+  return snip;
+}
+
+// Scan the indexed site content and return the best-matching pages.
+function searchSite(query) {
+  const phrase = query.toLowerCase().trim();
+  if (phrase.length < 2) return [];
+  const terms = phrase.split(/\s+/).filter(Boolean);
+  return SEARCH_INDEX
+    .map(entry => ({ entry, score: scoreEntry(entry, phrase, terms) }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5)
+    .map(x => ({ page: x.entry.page, title: x.entry.title, description: buildSnippet(x.entry, terms) }));
+}
 
 function toggleNavSearch() {
   const field = document.getElementById('nav-search-field');
@@ -3511,6 +3581,19 @@ function highlightMatch(text, query) {
 function renderSuggestions(query, aiResults) {
   const results = document.getElementById('nav-search-results');
   const suggestions = getSuggestions(query);
+
+  // Primary results come from scanning the actual site content. If the optional
+  // AI backend is configured and returns extra pages, merge those in (dedup'd).
+  let matches = searchSite(query);
+  if (Array.isArray(aiResults)) {
+    aiResults.forEach(r => {
+      if (r && r.page && !matches.some(m => m.page === r.page)) {
+        matches.push({ page: r.page, title: r.title || r.page, description: r.description || '' });
+      }
+    });
+  }
+  matches = matches.slice(0, 6);
+
   let html = '';
 
   if (suggestions.length) {
@@ -3524,23 +3607,19 @@ function renderSuggestions(query, aiResults) {
     html += '</div>';
   }
 
-  if (aiResults === 'loading') {
+  if (matches.length) {
+    html += '<div class="search-results-section">';
+    if (suggestions.length) html += '<div class="search-section-label">Results</div>';
+    html += matches.map(r => `
+      <div class="search-result-item" onclick="closeNavSearch(); navigate('${escHtml(r.page)}');">
+        <h5>${escHtml(r.title)}</h5>
+        ${r.description ? `<p>${escHtml(r.description)}</p>` : ''}
+      </div>`).join('');
+    html += '</div>';
+  } else if (aiResults === 'loading') {
     html += '<div class="search-result-loading">Searching…</div>';
-  } else if (aiResults === 'unavailable') {
-    if (!suggestions.length) html += '<div class="search-result-empty">Search unavailable.</div>';
-  } else if (Array.isArray(aiResults)) {
-    if (aiResults.length) {
-      html += '<div class="search-results-section">';
-      if (suggestions.length) html += '<div class="search-section-label">Results</div>';
-      html += aiResults.map(r => `
-        <div class="search-result-item" onclick="closeNavSearch(); navigate('${escHtml(r.page)}');">
-          <h5>${escHtml(r.title)}</h5>
-          <p>${escHtml(r.description)}</p>
-        </div>`).join('');
-      html += '</div>';
-    } else if (!suggestions.length) {
-      html += '<div class="search-result-empty">No results found.</div>';
-    }
+  } else if (!suggestions.length) {
+    html += '<div class="search-result-empty">No results found.</div>';
   }
 
   if (!html) { results.classList.remove('visible'); results.innerHTML = ''; return; }
@@ -3555,13 +3634,11 @@ function updateSuggestionHighlight() {
 }
 
 function selectSuggestion(el) {
-  const text = el.dataset.text;
-  const input = document.getElementById('nav-search-input');
-  if (input) input.value = text;
-  _currentQuery = text;
-  renderSuggestions(text, 'loading');
+  // Clicking (or pressing Enter on) a suggestion takes you to its page.
+  const page = el.dataset.page;
   clearTimeout(_searchTimer);
-  performSearch(text);
+  closeNavSearch();
+  if (page) navigate(page);
 }
 
 function onSearchInput(value) {
@@ -3574,22 +3651,25 @@ function onSearchInput(value) {
     results.classList.remove('visible');
     return;
   }
-  // Instant suggestions, deferred AI search
-  renderSuggestions(value, value.trim().length >= 2 ? 'loading' : null);
-  if (value.trim().length >= 2) {
+  // Instant local results from scanning the site; optionally enrich with the
+  // AI backend if one is configured.
+  const useAi = !!(window.STREAMLINE_API_URL) && value.trim().length >= 2;
+  renderSuggestions(value, useAi ? 'loading' : null);
+  if (useAi) {
     _searchTimer = setTimeout(() => performSearch(value.trim()), 350);
   }
 }
 
 async function performSearch(query) {
   const apiUrl = (window.STREAMLINE_API_URL || '');
-  if (!apiUrl) { renderSuggestions(query, 'unavailable'); return; }
+  if (!apiUrl) { renderSuggestions(query, null); return; }
   try {
     const res = await fetch(`${apiUrl}/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
     if (query === _currentQuery.trim()) renderSuggestions(query, data.results || []);
   } catch (err) {
-    if (query === _currentQuery.trim()) renderSuggestions(query, 'unavailable');
+    // Backend failure is non-fatal — local site-scan results still show.
+    if (query === _currentQuery.trim()) renderSuggestions(query, null);
   }
 }
 
@@ -3618,11 +3698,12 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     const active = document.querySelector('.search-suggestion-item.active');
     if (active) { selectSuggestion(active); return; }
+    // No suggestion highlighted: jump straight to the best match.
     const input = document.getElementById('nav-search-input');
-    if (input && input.value.trim().length >= 2) {
-      clearTimeout(_searchTimer);
-      renderSuggestions(input.value, 'loading');
-      performSearch(input.value.trim());
+    const q = input ? input.value.trim() : '';
+    if (q.length >= 2) {
+      const top = searchSite(q)[0] || getSuggestions(q)[0];
+      if (top) { clearTimeout(_searchTimer); closeNavSearch(); navigate(top.page); }
     }
   }
 });
