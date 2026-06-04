@@ -72,7 +72,7 @@
   --shadow-xl: 0 24px 64px rgba(13,79,71,0.22);
 
   /* SVG Patterns — teal-tinted strokes */
-  --pattern-waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M0 20 Q15 10 30 20 Q45 30 60 20 Q75 10 90 20 Q105 30 120 20' fill='none' stroke='%235ddbc9' stroke-width='0.6' opacity='0.08'/%3E%3Cpath d='M0 30 Q15 20 30 30 Q45 40 60 30 Q75 20 90 30 Q105 40 120 30' fill='none' stroke='%235ddbc9' stroke-width='0.6' opacity='0.05'/%3E%3Cpath d='M0 10 Q15 0 30 10 Q45 20 60 10 Q75 0 90 10 Q105 20 120 10' fill='none' stroke='%235ddbc9' stroke-width='0.6' opacity='0.04'/%3E%3C/svg%3E");
+  --pattern-waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M0 20 Q15 10 30 20 Q45 30 60 20 Q75 10 90 20 Q105 30 120 20' fill='none' stroke='%235ddbc9' stroke-width='1.4' opacity='0.22'/%3E%3Cpath d='M0 30 Q15 20 30 30 Q45 40 60 30 Q75 20 90 30 Q105 40 120 30' fill='none' stroke='%235ddbc9' stroke-width='1.1' opacity='0.14'/%3E%3Cpath d='M0 10 Q15 0 30 10 Q45 20 60 10 Q75 0 90 10 Q105 20 120 10' fill='none' stroke='%235ddbc9' stroke-width='1.0' opacity='0.10'/%3E%3C/svg%3E");
   --pattern-hatch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cpath d='M0 30 L30 0' stroke='%235ddbc9' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M-15 30 L15 0' stroke='%235ddbc9' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M15 30 L45 0' stroke='%235ddbc9' stroke-width='0.5' opacity='0.06'/%3E%3C/svg%3E");
   --pattern-grid:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0 L0 0 L0 40' fill='none' stroke='%235ddbc9' stroke-width='0.4' opacity='0.06'/%3E%3C/svg%3E");
   --pattern-dots:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='1.2' fill='%235ddbc9' opacity='0.12'/%3E%3C/svg%3E");
@@ -2519,7 +2519,7 @@ section { padding: 6rem 0; }
   <div class="container">
     <span class="eyebrow">Get in Touch</span>
     <h1>Contact</h1>
-    <p class="sub">Questions, feedback, blog topic requests, or just want to say hello? Fill out the form below and we will get back to you shortly. We read everything, but response time during high-volume periods may be a bit longer, and we appreciate your patience.</p>
+    <p class="sub" style="max-width:35rem;">Questions, feedback, blog topic requests, or just want to say hello? Fill out the form and we'll be in touch within 2 business days. We read everything and appreciate your patience.</p>
     <div class="contact-hero-divider"></div>
   </div>
 </div>
@@ -3337,6 +3337,19 @@ section { padding: 6rem 0; }
 const NO_FOOTER_PAGES = new Set(['my-training', 'get-started']);
 
 function navigate(pageId) {
+  // Reset contact form when navigating away from it
+  const currentPage = document.querySelector('.page.active');
+  if (currentPage && currentPage.id === 'page-contact' && pageId !== 'contact') {
+    const form = document.getElementById('contact-form');
+    if (form) form.reset();
+    captchaVerified = false;
+    const box = document.getElementById('captcha-box');
+    if (box) box.classList.remove('checked');
+    const wrap = document.getElementById('contact-form-wrap');
+    const success = document.getElementById('contact-success-state');
+    if (wrap) wrap.style.display = '';
+    if (success) { success.style.display = ''; success.classList.remove('show'); }
+  }
   // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   // Show target page
@@ -3681,6 +3694,16 @@ async function handleContactSubmit(event) {
       body: JSON.stringify(payload)
     });
     if (!res.ok) throw new Error('Server error');
+    if (payload.newsletterOptIn) {
+      const apiUrl = (window.STREAMLINE_API_URL || '');
+      if (apiUrl) {
+        fetch(`${apiUrl}/newsletter`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: payload.email, source: 'contact' })
+        }).catch(() => {});
+      }
+    }
     const wrap = document.getElementById('contact-form-wrap');
     const success = document.getElementById('contact-success-state');
     if (wrap) wrap.style.display = 'none';
