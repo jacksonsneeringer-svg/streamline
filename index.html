@@ -76,6 +76,7 @@
   --pattern-hatch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cpath d='M0 30 L30 0' stroke='%235ddbc9' stroke-width='0.4' opacity='0.03'/%3E%3Cpath d='M-15 30 L15 0' stroke='%235ddbc9' stroke-width='0.4' opacity='0.03'/%3E%3Cpath d='M15 30 L45 0' stroke='%235ddbc9' stroke-width='0.4' opacity='0.03'/%3E%3C/svg%3E");
   --pattern-grid:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0 L0 0 L0 40' fill='none' stroke='%235ddbc9' stroke-width='0.4' opacity='0.06'/%3E%3C/svg%3E");
   --pattern-dots:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='1.2' fill='%235ddbc9' opacity='0.12'/%3E%3C/svg%3E");
+  --pattern-fish:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='130'%3E%3Cellipse cx='55' cy='32' rx='22' ry='9' fill='none' stroke='%235ddbc9' stroke-width='1.1' opacity='0.13'/%3E%3Cpolygon points='33,32 21,23 21,41' fill='none' stroke='%235ddbc9' stroke-width='1.1' opacity='0.13'/%3E%3Ccircle cx='69' cy='29' r='1.8' fill='%235ddbc9' opacity='0.13'/%3E%3Cellipse cx='160' cy='90' rx='18' ry='7' fill='none' stroke='%235ddbc9' stroke-width='0.9' opacity='0.09'/%3E%3Cpolygon points='178,90 190,83 190,97' fill='none' stroke='%235ddbc9' stroke-width='0.9' opacity='0.09'/%3E%3Ccircle cx='147' cy='87' r='1.5' fill='%235ddbc9' opacity='0.09'/%3E%3Cellipse cx='145' cy='22' rx='12' ry='5' fill='none' stroke='%235ddbc9' stroke-width='0.8' opacity='0.07'/%3E%3Cpolygon points='133,22 124,17 124,27' fill='none' stroke='%235ddbc9' stroke-width='0.8' opacity='0.07'/%3E%3Ccircle cx='154' cy='20' r='1.2' fill='%235ddbc9' opacity='0.07'/%3E%3Cellipse cx='30' cy='100' rx='14' ry='5.5' fill='none' stroke='%235ddbc9' stroke-width='0.8' opacity='0.08'/%3E%3Cpolygon points='44,100 54,94 54,106' fill='none' stroke='%235ddbc9' stroke-width='0.8' opacity='0.08'/%3E%3Ccircle cx='20' cy='98' r='1.4' fill='%235ddbc9' opacity='0.08'/%3E%3C/svg%3E");
 
   /* ── Legacy aliases (backward-compat for pages with old inline styles) ── */
   --navy-900:      #091f1c;   /* → --text */
@@ -218,7 +219,11 @@ strong { font-weight: 500; }
 }
 #page-swim-sets .container,
 #page-dryland-workouts .container,
-#page-blog .container {
+#page-blog .container,
+#page-blog-technique .container,
+#page-blog-training .container,
+#page-blog-gear .container,
+#page-blog-guides .container {
   padding: 0 5.5rem;
 }
 section { padding: 6rem 0; }
@@ -676,10 +681,17 @@ section { padding: 6rem 0; }
   overflow: hidden;
 }
 .blog-card-thumb-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: var(--pattern-waves);
-  opacity: 0.7;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.blog-card-thumb-pattern svg {
+  position: relative;
+  z-index: 1;
 }
 .blog-card-thumb svg {
   position: relative;
@@ -746,6 +758,82 @@ section { padding: 6rem 0; }
 }
 .blog-card-link:hover { color: var(--deep); gap: 0.6rem; }
 .all-posts-link:hover { color: var(--white) !important; }
+
+/* ── Blog category section headers (news-style all posts) ── */
+.blog-section-row {
+  padding: 3rem 0 0;
+}
+.blog-section-row:first-child { padding-top: 2rem; }
+.blog-section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--deep);
+  padding-bottom: 0.6rem;
+  margin-bottom: 1.75rem;
+}
+.blog-section-divider h2 {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--deep);
+  margin: 0;
+}
+.blog-section-divider a {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+/* ── Blog category page title ── */
+.blog-category-title-section {
+  padding: 4rem 0 3rem;
+  text-align: center;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+}
+.blog-category-title-section h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--deep);
+}
+#page-blog-technique .blog-nav-bar,
+#page-blog-training .blog-nav-bar,
+#page-blog-gear .blog-nav-bar,
+#page-blog-guides .blog-nav-bar {
+  top: 88px;
+}
+
+/* ── Blog nav (no overflow scroll) ── */
+.blog-nav-bar {
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--white);
+  position: sticky;
+  top: 88px;
+  z-index: 90;
+}
+.blog-nav-inner {
+  display: flex;
+  gap: 0;
+}
+.blog-nav-link {
+  display: block;
+  padding: 0.9rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+.blog-nav-link:hover { color: var(--deep); }
+.blog-nav-link.active { color: var(--lap); border-bottom-color: var(--lap); font-weight: 700; }
 
 /* ── Homepage blog layout ── */
 .blog-grid-home {
@@ -1356,6 +1444,10 @@ section { padding: 6rem 0; }
   background-color: var(--deep);
   background-image: var(--pattern-waves);
   padding: 4.5rem 0 3.5rem;
+}
+#page-swim-sets .page-hero-sm {
+  background-image: var(--pattern-fish);
+  background-size: 220px 130px;
 }
 .page-hero-sm h1 {
   font-size: clamp(2.2rem, 5vw, 3.5rem);
@@ -2665,43 +2757,178 @@ section { padding: 6rem 0; }
 <div class="page" id="page-blog">
 <div class="page-hero-sm">
   <div class="container">
-    <span class="eyebrow" style="color:var(--pool-100);">Streamline</span>
+    <span class="eyebrow" style="color:var(--pool-100);">Athlete Advice</span>
     <h1>Blog</h1>
-    <p class="sub">Technique breakdowns, training methodology, and swim science, written for swimmers who want clear, evidence-based guidance.</p>
+    <p class="sub">Technique breakdowns, training methodology, swim science, gear recommendations, and all things swimming related to give you the best evidence-based guidance for your training.</p>
   </div>
 </div>
-<div style="border-bottom:1px solid var(--gray-200); background:var(--white); position:sticky; top:88px; z-index:90;">
-  <div class="container" style="display:flex; gap:0; overflow-x:auto;">
-    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-weight:700; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--lap); border-bottom:2px solid var(--lap); margin-bottom:-1px; white-space:nowrap;">All Posts</a>
-    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Technique</a>
-    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Training</a>
-    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Gear</a>
-    <a href="#" style="display:block; padding:0.9rem 1.5rem; font-weight:600; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); white-space:nowrap;">Guides</a>
+<div class="blog-nav-bar">
+  <div class="container blog-nav-inner">
+    <span class="blog-nav-link active">All Posts</span>
+    <span class="blog-nav-link" onclick="navigate('blog-technique')">Technique</span>
+    <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
+    <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
+    <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
   </div>
 </div>
-<section style="padding:3rem 0 2rem;">
+<!-- Featured post -->
+<section style="padding:3rem 0 2rem; background:var(--white);">
   <div class="container">
-    <p class="eyebrow" style="margin-bottom:1rem;">Featured Post</p>
-    <div style="background:var(--deep); border-radius:var(--r-xl); overflow:hidden; display:grid; grid-template-columns:1fr 1.3fr; gap:0; box-shadow:var(--shadow-lg);">
-      <div style="background:linear-gradient(150deg,var(--text),var(--teal)); display:flex; align-items:center; justify-content:center; min-height:280px; padding:2rem; background-image:var(--pattern-waves);">
+    <div style="background:var(--deep); border-radius:var(--r-xl); overflow:hidden; display:grid; grid-template-columns:1fr 1.5fr; gap:0; box-shadow:var(--shadow-lg);">
+      <div style="background:linear-gradient(150deg,var(--text),var(--teal)); display:flex; align-items:center; justify-content:center; min-height:300px; padding:2rem; background-image:var(--pattern-waves);">
         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.4)" stroke-width="1" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div style="padding:2.75rem; display:flex; flex-direction:column; justify-content:center; gap:1rem;">
         <div style="display:flex; gap:0.6rem; align-items:center;">
           <span style="font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; background:rgba(255,255,255,0.08); color:var(--pool-100); border:1px solid rgba(255,255,255,0.12); padding:0.2rem 0.6rem; border-radius:3px;">Technique</span>
-          <span style="color:rgba(255,255,255,0.3); font-size:0.78rem;">8 min read</span>
+          <span style="color:rgba(255,255,255,0.3); font-size:0.78rem;">8 min read · May 20, 2026</span>
         </div>
-        <h2 style="color:#fff; font-size:1.6rem; margin:0;">7 Common Freestyle Errors and How to Fix Them</h2>
+        <h2 style="color:#fff; font-size:1.7rem; margin:0; line-height:1.2;">7 Common Freestyle Errors and How to Fix Them</h2>
         <p style="color:rgba(255,255,255,0.55); font-size:0.92rem; line-height:1.7; margin:0;">A systematic look at the technique errors that appear most frequently in lap swimmers, with evidence-based corrections for each.</p>
-        <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-top:0.25rem;">
+        <div style="margin-top:0.25rem;">
           <a href="#freestyle-errors" class="btn btn-gold" onclick="navigate('freestyle-errors')">Read Post →</a>
-          <span style="color:rgba(255,255,255,0.3); font-size:0.8rem;">May 20, 2026</span>
         </div>
       </div>
     </div>
   </div>
 </section>
-<section style="padding:2rem 0 5rem; background:var(--off-white);">
+
+<!-- News-style sections -->
+<section style="padding:1rem 0 5rem; background:var(--off-white);">
+  <div class="container">
+
+    <!-- Technique section -->
+    <div class="blog-section-row">
+      <div class="blog-section-divider">
+        <h2>Technique</h2>
+        <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-technique')">View all →</span>
+      </div>
+      <div class="grid-3">
+        <div class="blog-card">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="blog-card-body">
+            <span class="cat-badge">Technique</span>
+            <h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3>
+            <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;">
+              <a href="#freestyle-errors" class="btn btn-outline-dark btn-sm" onclick="navigate('freestyle-errors')">Read →</a>
+              <span style="font-size:0.75rem; color:var(--gray-400);">8 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><p class="blog-card-excerpt">How breathing patterns affect stroke timing and performance.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3><p class="blog-card-excerpt">From approach to breakout: complete mechanics with troubleshooting for the most common errors.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Training section -->
+    <div class="blog-section-row">
+      <div class="blog-section-divider">
+        <h2>Training</h2>
+        <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-training')">View all →</span>
+      </div>
+      <div class="grid-3">
+        <div class="blog-card">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones to develop every energy system systematically.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#training-intensity-zones" class="btn btn-outline-dark btn-sm" onclick="navigate('training-intensity-zones')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">7 min</span></div></div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><p class="blog-card-excerpt">Reducing volume, maintaining intensity, and arriving at the blocks race-ready.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#race-week-taper" class="btn btn-outline-dark btn-sm" onclick="navigate('race-week-taper')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">6 min</span></div></div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gear section -->
+    <div class="blog-section-row">
+      <div class="blog-section-divider">
+        <h2>Gear</h2>
+        <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-gear')">View all →</span>
+      </div>
+      <div class="grid-3">
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><p class="blog-card-excerpt">Lens type, fit, anti-fog performance: the factors that matter and how to evaluate them.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">Best Training Fins for Every Level</h3><p class="blog-card-excerpt">Short blade vs. long blade: what the research says and what to buy.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">Pool vs. Open Water Wetsuits Explained</h3><p class="blog-card-excerpt">What separates a triathlon wetsuit from a swim skin and when each is worth it.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guides section -->
+    <div class="blog-section-row" style="padding-bottom:3rem;">
+      <div class="blog-section-divider">
+        <h2>Guides</h2>
+        <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-guides')">View all →</span>
+      </div>
+      <div class="grid-3">
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><p class="blog-card-excerpt">Everything you need to know before getting in the water: etiquette, gear, and first workouts.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">How to Build a 12-Week Swim Base</h3><p class="blog-card-excerpt">A structured progression plan for swimmers returning to training or building aerobic capacity from scratch.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+        <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+          <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">Race Prep: A Week-by-Week Countdown</h3><p class="blog-card-excerpt">From 8 weeks out to race morning: the exact adjustments that keep you sharp and ready.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="newsletter-section">
+  <div class="container" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; max-width:40%;">
+    <div>
+      <span class="eyebrow" style="color:var(--pool-100);">Stay Current</span>
+      <h2 style="color:#fff; font-size:2rem; margin-top:0.4rem;">New posts, directly to you</h2>
+      <p style="color:rgba(255,255,255,0.5); margin-top:0.6rem;">A notification when new content is published. No more than once per week, no filler.</p>
+    </div>
+    <form id="newsletter-hero-form" style="display:flex; flex-direction:column; gap:0.75rem;" onsubmit="handleNewsletterSubmit(event,'hero')">
+      <input type="email" id="newsletter-hero-email" placeholder="your@email.com" style="padding:0.8rem 1.1rem; border-radius:var(--r-md); border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#fff; font-size:0.9rem; outline:none; font-family:var(--font-body);" required />
+      <button class="btn btn-gold" type="submit" id="newsletter-hero-btn">Subscribe →</button>
+    </form>
+  </div>
+</section>
+</div><!-- end page-blog -->
+
+<!-- ══ BLOG CATEGORY: TECHNIQUE ══ -->
+<div class="page" id="page-blog-technique">
+<div class="blog-nav-bar">
+  <div class="container blog-nav-inner">
+    <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
+    <span class="blog-nav-link active">Technique</span>
+    <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
+    <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
+    <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
+  </div>
+</div>
+<div class="blog-category-title-section">
+  <div class="container">
+    <h1>Technique</h1>
+  </div>
+</div>
+<section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
       <div class="blog-card">
@@ -2719,21 +2946,37 @@ section { padding: 6rem 0; }
         </div>
       </div>
       <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">How-To</span><h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3><p class="blog-card-excerpt">From approach to breakout: complete mechanics with troubleshooting for the most common errors.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
-      </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><p class="blog-card-excerpt">Lens type, fit, anti-fog performance: the factors that matter and how to evaluate them.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
-      </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><p class="blog-card-excerpt">How breathing patterns affect stroke timing and performance.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
       </div>
-      <div class="blog-card">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div>
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3><p class="blog-card-excerpt">From approach to breakout: complete mechanics with troubleshooting for the most common errors.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
       </div>
+    </div>
+  </div>
+</section>
+</div><!-- end page-blog-technique -->
+
+<!-- ══ BLOG CATEGORY: TRAINING ══ -->
+<div class="page" id="page-blog-training">
+<div class="blog-nav-bar">
+  <div class="container blog-nav-inner">
+    <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
+    <span class="blog-nav-link" onclick="navigate('blog-technique')">Technique</span>
+    <span class="blog-nav-link active">Training</span>
+    <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
+    <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
+  </div>
+</div>
+<div class="blog-category-title-section">
+  <div class="container">
+    <h1>Training</h1>
+  </div>
+</div>
+<section style="padding:3rem 0 5rem; background:var(--off-white);">
+  <div class="container">
+    <div class="grid-3">
       <div class="blog-card">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
         <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones to develop every energy system systematically.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#training-intensity-zones" class="btn btn-outline-dark btn-sm" onclick="navigate('training-intensity-zones')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">7 min</span></div></div>
@@ -2742,23 +2985,86 @@ section { padding: 6rem 0; }
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><p class="blog-card-excerpt">Reducing volume, maintaining intensity, and arriving at the blocks race-ready.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#race-week-taper" class="btn btn-outline-dark btn-sm" onclick="navigate('race-week-taper')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">6 min</span></div></div>
       </div>
+      <div class="blog-card">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div>
+      </div>
     </div>
   </div>
 </section>
-<section class="newsletter-section">
-  <div class="container" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; max-width:40%;">
-    <div>
-      <span class="eyebrow" style="color:var(--pool-100);">Stay Current</span>
-      <h2 style="color:#fff; font-size:2rem; margin-top:0.4rem;">New posts, directly to you</h2>
-      <p style="color:rgba(255,255,255,0.5); margin-top:0.6rem;">A notification when new content is published. No more than once per week, no filler.</p>
+</div><!-- end page-blog-training -->
+
+<!-- ══ BLOG CATEGORY: GEAR ══ -->
+<div class="page" id="page-blog-gear">
+<div class="blog-nav-bar">
+  <div class="container blog-nav-inner">
+    <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
+    <span class="blog-nav-link" onclick="navigate('blog-technique')">Technique</span>
+    <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
+    <span class="blog-nav-link active">Gear</span>
+    <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
+  </div>
+</div>
+<div class="blog-category-title-section">
+  <div class="container">
+    <h1>Gear</h1>
+  </div>
+</div>
+<section style="padding:3rem 0 5rem; background:var(--off-white);">
+  <div class="container">
+    <div class="grid-3">
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><p class="blog-card-excerpt">Lens type, fit, anti-fog performance: the factors that matter and how to evaluate them.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      </div>
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">Best Training Fins for Every Level</h3><p class="blog-card-excerpt">Short blade vs. long blade: what the research says and what to buy.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      </div>
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">Pool vs. Open Water Wetsuits Explained</h3><p class="blog-card-excerpt">What separates a triathlon wetsuit from a swim skin and when each is worth it.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      </div>
     </div>
-    <form id="newsletter-hero-form" style="display:flex; flex-direction:column; gap:0.75rem;" onsubmit="handleNewsletterSubmit(event,'hero')">
-      <input type="email" id="newsletter-hero-email" placeholder="your@email.com" style="padding:0.8rem 1.1rem; border-radius:var(--r-md); border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#fff; font-size:0.9rem; outline:none; font-family:var(--font-body);" required />
-      <button class="btn btn-gold" type="submit" id="newsletter-hero-btn">Subscribe →</button>
-    </form>
   </div>
 </section>
-</div><!-- end page-blog -->
+</div><!-- end page-blog-gear -->
+
+<!-- ══ BLOG CATEGORY: GUIDES ══ -->
+<div class="page" id="page-blog-guides">
+<div class="blog-nav-bar">
+  <div class="container blog-nav-inner">
+    <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
+    <span class="blog-nav-link" onclick="navigate('blog-technique')">Technique</span>
+    <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
+    <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
+    <span class="blog-nav-link active">Guides</span>
+  </div>
+</div>
+<div class="blog-category-title-section">
+  <div class="container">
+    <h1>Guides</h1>
+  </div>
+</div>
+<section style="padding:3rem 0 5rem; background:var(--off-white);">
+  <div class="container">
+    <div class="grid-3">
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><p class="blog-card-excerpt">Everything you need to know before getting in the water: etiquette, gear, and first workouts.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      </div>
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">How to Build a 12-Week Swim Base</h3><p class="blog-card-excerpt">A structured progression plan for swimmers returning to training or building aerobic capacity from scratch.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      </div>
+      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">Race Prep: A Week-by-Week Countdown</h3><p class="blog-card-excerpt">From 8 weeks out to race morning: the exact adjustments that keep you sharp and ready.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- end page-blog-guides -->
 
 <!-- ══ POST: 7 THINGS ══ -->
 <div class="page" id="page-freestyle-errors">
