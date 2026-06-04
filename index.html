@@ -435,7 +435,7 @@ section { padding: 6rem 0; }
   margin-bottom: 1.75rem;
   opacity: 0.85;
 }
-.hero h1 { margin-bottom: 1.5rem; }
+.hero h1 { margin-bottom: 3.5rem; }
 .hero-sub {
   font-size: 1rem;
   font-weight: 300;
@@ -449,17 +449,17 @@ section { padding: 6rem 0; }
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255,255,255,0.18);
+  color: rgba(200,200,200,0.5);
   font-size: 0.7rem;
   font-family: var(--font-body);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-top: 4rem;
+  margin-top: 2rem;
   font-weight: 400;
 }
 .hero-scroll-line {
   width: 28px; height: 1px;
-  background: rgba(255,255,255,0.18);
+  background: rgba(200,200,200,0.5);
 }
 .hero-panel {
   background: rgba(255,255,255,0.025);
@@ -560,9 +560,9 @@ section { padding: 6rem 0; }
 .for-who-card h4 { font-size: 0.88rem; margin-bottom: 0.3rem; color: var(--deep); }
 .for-who-card p { font-size: 0.82rem; color: var(--gray-500); margin: 0; line-height: 1.6; }
 
-/* ── Resources section (dark with pattern) ── */
+/* ── Resources section (light with pattern) ── */
 .resources-section {
-  background-color: var(--deep);
+  background-color: var(--surface);
   background-image: var(--pattern-waves), var(--pattern-hatch);
   position: relative;
   overflow: hidden;
@@ -574,14 +574,14 @@ section { padding: 6rem 0; }
   gap: 1.5rem;
 }
 .resource-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(93,219,201,0.1);
+  background: var(--white);
+  border: 1px solid var(--gray-100);
   border-radius: var(--r-xl);
   overflow: hidden;
 }
 .resource-card-header {
   padding: 2rem 2rem 1.5rem;
-  border-bottom: 1px solid rgba(93,219,201,0.07);
+  border-bottom: 1px solid var(--gray-100);
   display: flex;
   align-items: center;
   gap: 1.1rem;
@@ -600,22 +600,22 @@ section { padding: 6rem 0; }
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--lap);
+  color: var(--teal-2);
   display: block;
   margin-bottom: 0.2rem;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 .resource-card-title {
   font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 400;
-  color: var(--white);
+  color: var(--deep);
   line-height: 1.2;
   letter-spacing: 0;
 }
 .resource-card-body { padding: 1.5rem 2rem 2rem; }
 .resource-card-body p {
-  color: rgba(255,255,255,0.42);
+  color: var(--gray-500);
   font-size: 0.88rem;
   font-weight: 300;
   line-height: 1.75;
@@ -633,12 +633,12 @@ section { padding: 6rem 0; }
   gap: 0.6rem;
   font-size: 0.78rem;
   font-weight: 300;
-  color: rgba(255,255,255,0.38);
+  color: var(--gray-500);
 }
 .resource-preview-dot {
   width: 3px; height: 3px;
   border-radius: 50%;
-  background: var(--lap);
+  background: var(--teal-2);
   flex-shrink: 0;
   opacity: 0.6;
 }
@@ -1598,14 +1598,14 @@ section { padding: 6rem 0; }
 </section>
 
 <section class="resources-section">
-  <div style="position:absolute; top:3rem; right:2rem; opacity:0.035; pointer-events:none;">
-    <svg width="320" height="180" viewBox="0 0 320 180" fill="none" stroke="white" stroke-linecap="round" stroke-width="1.5"><path d="M260 80 Q220 72 185 80 Q150 88 120 82 Q90 76 70 83 Q55 88 45 92"/><path d="M260 80 Q240 62 215 56 Q185 50 160 54 Q135 58 115 64 Q95 70 80 75"/><path d="M240 80 Q225 55 205 46 Q182 37 158 43 Q135 49 115 60"/><ellipse cx="275" cy="77" rx="14" ry="11"/><path d="M45 92 Q30 96 18 102 Q8 108 3 110"/><path d="M48 87 Q34 84 22 80 Q12 77 6 76"/></svg>
+  <div style="position:absolute; top:3rem; right:2rem; opacity:0.05; pointer-events:none;">
+    <svg width="320" height="180" viewBox="0 0 320 180" fill="none" stroke="var(--deep)" stroke-linecap="round" stroke-width="1.5"><path d="M260 80 Q220 72 185 80 Q150 88 120 82 Q90 76 70 83 Q55 88 45 92"/><path d="M260 80 Q240 62 215 56 Q185 50 160 54 Q135 58 115 64 Q95 70 80 75"/><path d="M240 80 Q225 55 205 46 Q182 37 158 43 Q135 49 115 60"/><ellipse cx="275" cy="77" rx="14" ry="11"/><path d="M45 92 Q30 96 18 102 Q8 108 3 110"/><path d="M48 87 Q34 84 22 80 Q12 77 6 76"/></svg>
   </div>
   <div class="container" style="position:relative;">
-    <div class="section-header center on-dark">
-      <h2 style="color:var(--white);">Features</h2>
+    <div class="section-header center">
+      <h2 style="color:var(--deep);">Features</h2>
       <div class="accent-bar center"></div>
-      <p class="sub" style="color:rgba(255,255,255,0.42); margin-top:1.25rem;">Everything you need to train smarter.</p>
+      <p class="sub" style="color:var(--gray-500); margin-top:1.25rem;">Everything you need to train smarter.</p>
     </div>
     <div class="resources-grid">
       <div class="resource-card">
@@ -1620,7 +1620,7 @@ section { padding: 6rem 0; }
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intermediate · ~4,200 yards</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Advanced · ~6,000+ yards</div>
           </div>
-          <a href="#swim-sets" class="btn btn-outline-light btn-sm" onclick="navigate('swim-sets')">View today's sets</a>
+          <a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View today's sets</a>
         </div>
       </div>
       <div class="resource-card">
@@ -1635,7 +1635,7 @@ section { padding: 6rem 0; }
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Rotational core &amp; hip drive</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Shoulder stability &amp; cuff health</div>
           </div>
-          <a href="#dryland-workouts" class="btn btn-outline-light btn-sm" onclick="navigate('dryland-workouts')">View today's lift</a>
+          <a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View today's lift</a>
         </div>
       </div>
       <div class="resource-card">
@@ -1650,30 +1650,30 @@ section { padding: 6rem 0; }
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intensity zone structure</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Gear reviews &amp; swim news</div>
           </div>
-          <a href="#blog" class="btn btn-outline-light btn-sm" onclick="navigate('blog')">Read the blog</a>
+          <a href="#blog" class="btn btn-outline-dark btn-sm" onclick="navigate('blog')">Read the blog</a>
         </div>
       </div>
     </div>
-    <div style="margin-top:2.5rem; background:rgba(93,219,201,0.06); border:1px solid rgba(93,219,201,0.15); border-radius:var(--r-xl); padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
+    <div style="margin-top:2.5rem; background:rgba(93,219,201,0.06); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-xl); padding:2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
       <div>
-        <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin-bottom:0.4rem; opacity:0.8;">Free account</p>
-        <h3 style="color:var(--white); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Your personal daily plan.</h3>
-        <p style="color:rgba(255,255,255,0.4); font-size:0.88rem; margin:0; font-weight:300;">Workouts calibrated to your goals, a morning briefing with your local pool schedule and weather, and a meal plan built around your training load.</p>
+        <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal-2); margin-bottom:0.4rem; opacity:0.85;">Free account</p>
+        <h3 style="color:var(--deep); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Your personal daily plan.</h3>
+        <p style="color:var(--gray-500); font-size:0.88rem; margin:0; font-weight:300;">Workouts calibrated to your goals, a morning briefing with your local pool schedule and weather, and a meal plan built around your training load.</p>
       </div>
       <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Create free account</a>
     </div>
   </div>
 </section>
 
-<section style="background:var(--surface);">
+<section style="background:var(--deep); background-image:var(--pattern-waves), var(--pattern-hatch);">
   <div class="container">
     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3rem; flex-wrap:wrap; gap:1rem;">
       <div>
-        <span class="eyebrow">From the blog</span>
-        <h2 style="color:var(--deep);">Pull mechanics,<br/><em class="serif-italic" style="color:var(--teal);">explained.</em></h2>
+        <span class="eyebrow on-dark">From the blog</span>
+        <h2 style="color:var(--white);">Latest tips, tricks,<br/><em class="serif-italic" style="color:var(--lap);">and training advice.</em></h2>
         <div class="accent-bar"></div>
       </div>
-      <a href="#blog" class="all-posts-link" style="font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); display:flex; align-items:center; gap:0.35rem; transition:color 0.15s;" onclick="navigate('blog')">All posts →</a>
+      <a href="#blog" class="all-posts-link" style="font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--lap); display:flex; align-items:center; gap:0.35rem; transition:color 0.15s;" onclick="navigate('blog')">All posts →</a>
     </div>
     <div class="blog-grid">
       <div class="blog-card">
