@@ -3384,7 +3384,8 @@ function showPage(pageId) {
 function navigate(pageId) {
   showPage(pageId);
   history.pushState(null, '', '#' + pageId);
-  window.scrollTo({top: 0, behavior: 'instant'});
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   return false;
 }
 
