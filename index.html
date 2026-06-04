@@ -810,17 +810,17 @@ section { padding: 6rem 0; }
 /* ── Footer ── */
 .site-footer {
   background: var(--deep);
-  padding: 2.5rem 0 0;
+  padding: 3rem 0 0;
   border-top: 1px solid rgba(93,219,201,0.07);
 }
 .footer-inner {
-  max-width: 70%;
+  width: 70%;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 0 2.5rem;
   display: grid;
-  grid-template-columns: auto auto auto;
-  gap: 6rem;
-  justify-content: center;
+  grid-template-columns: 1fr 1fr 3fr;
+  gap: 3rem;
+  text-align: center;
 }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
 .footer-col h5 {
@@ -835,16 +835,24 @@ section { padding: 6rem 0; }
 .footer-newsletter-title {
   font-family: var(--font-display);
   font-size: 1.85rem;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--white);
   margin-bottom: 0.6rem;
   line-height: 1.15;
   letter-spacing: 0.01em;
 }
 .footer-newsletter {
-  zoom: 0.6;
+  text-align: center;
+}
+.footer-newsletter form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 26rem;
+  margin: 0 auto;
 }
 .footer-col a {
+  font-family: var(--font-body);
   font-size: 0.84rem;
   font-weight: 300;
   color: rgba(255,255,255,0.38);
@@ -852,6 +860,7 @@ section { padding: 6rem 0; }
 }
 .footer-col a:hover { color: rgba(255,255,255,0.8); }
 .footer-newsletter p {
+  font-family: var(--font-body);
   font-size: 0.82rem;
   font-weight: 300;
   color: rgba(255,255,255,0.28);
@@ -859,14 +868,15 @@ section { padding: 6rem 0; }
   margin-bottom: 1rem;
 }
 .footer-bottom {
-  max-width: var(--max-w);
-  margin: 3rem auto 0;
-  padding: 1.25rem 3rem;
-  border-top: 1px solid rgba(93,219,201,0.06);
+  width: 70%;
+  margin: 0 auto;
+  padding: 1.1rem 0;
+  border-top: 1px solid rgba(93,219,201,0.09);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.72rem;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
   font-weight: 300;
   color: rgba(255,255,255,0.18);
 }
@@ -1319,8 +1329,9 @@ section { padding: 6rem 0; }
   .blog-grid,
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .newsletter-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-  .footer-brand { grid-column: 1 / -1; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; width: 90%; }
+  .footer-inner .footer-newsletter { grid-column: 1 / -1; }
+  .footer-bottom { width: 90%; }
   .setup-layout { grid-template-columns: 1fr; }
   .setup-sidebar { display: none; }
   .setup-content { padding: 2rem 1.5rem; }
@@ -1344,7 +1355,8 @@ section { padding: 6rem 0; }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem; }
   .hero { min-height: auto; padding: 3rem 0 4rem; }
-  .footer-inner { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; width: 92%; }
+  .footer-bottom { width: 92%; }
 }
 
 /* ── Extended tokens for gear/products pages ── */
@@ -2890,15 +2902,15 @@ section { padding: 6rem 0; }
     <div class="footer-newsletter">
       <div class="footer-newsletter-title">Newsletter</div>
       <p>Weekly swimming news, gear, and words of wisdom.</p>
-      <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:0.6rem;">
-        <input type="email" placeholder="Email address" class="newsletter-input footer-email-input" style="font-size:0.84rem;" />
-        <button class="btn btn-gold btn-sm" type="submit" style="width:100%;">Subscribe to the fast lane</button>
+      <form onsubmit="return false;">
+        <input type="email" placeholder="Email address" class="newsletter-input footer-email-input" />
+        <button class="btn btn-gold btn-sm" type="submit">Subscribe to the fast lane</button>
       </form>
-      <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of STREAMLINE, and to STREAMLINE's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
+      <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem; max-width:26rem; margin-left:auto; margin-right:auto;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of STREAMLINE, and to STREAMLINE's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Streamline. All rights reserved.</span>
+    <span>© 2026 STREAMLINE. All rights reserved.</span>
   </div>
 </footer>
 
