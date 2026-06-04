@@ -417,7 +417,7 @@ section { padding: 6rem 0; }
   align-items: center;
   gap: 3rem;
 }
-.hero-copy { max-width: 560px; }
+.hero-copy { max-width: 640px; }
 .hero-tag {
   display: inline-flex;
   align-items: center;
@@ -1768,7 +1768,7 @@ section { padding: 6rem 0; }
       <div class="hero-tag">
         Swim Sets • Dryland Workouts • Nutrition Advice
       </div>
-      <h1>Train smarter.<br/>Recover stronger.<br/>Race faster.</h1>
+      <h1>Train smarter.<br/><span style="white-space:nowrap;">Recover stronger.</span><br/>Race faster.</h1>
       <div class="hero-cta">
         <a href="#get-started" class="btn btn-gold btn-lg" onclick="navigate('get-started')">Dive In</a>
         <a href="#about" class="btn btn-outline-light btn-lg" onclick="event.preventDefault(); document.getElementById('about').scrollIntoView({behavior:'smooth'});">How it works</a>
@@ -1798,7 +1798,7 @@ section { padding: 6rem 0; }
           <div><span class="resource-card-label">Daily · Pool</span><div class="resource-card-title">Swim Sets</div></div>
         </div>
         <div class="resource-card-body">
-          <p>New sessions posted every morning, organized by skill level with yardage, pace guidance, and drill cues. Printable layout included.</p>
+          <p>New sessions posted <strong>every morning</strong>, organized by <strong>skill level</strong> with yardage, pace guidance, and drill cues. Printable layout included.</p>
           <div class="resource-previews">
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Beginner · ~1,000 yards</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Intermediate · ~2,500 yards</div>
@@ -1814,11 +1814,11 @@ section { padding: 6rem 0; }
           <div><span class="resource-card-label">Daily · Lift</span><div class="resource-card-title">Dryland</div></div>
         </div>
         <div class="resource-card-body">
-          <p>Dryland sessions designed around what swim performance actually demands: pulling mechanics, shoulder stability, hip drive, and rotational core control.</p>
+          <p>Dryland sessions designed around what <strong>swim performance actually demands</strong>: pulling mechanics, shoulder stability, hip drive, and rotational core control.</p>
           <div class="resource-previews">
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Upper pull &amp; lat activation</div>
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Rotational core &amp; hip drive</div>
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Shoulder stability &amp; cuff health</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Bodyweight workouts</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Gym lifts</div>
+            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Free weights sets</div>
           </div>
           <a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View today's lift</a>
         </div>
@@ -1829,7 +1829,7 @@ section { padding: 6rem 0; }
           <div><span class="resource-card-label">Technique · Training</span><div class="resource-card-title">Blog &amp; Guides</div></div>
         </div>
         <div class="resource-card-body">
-          <p>Racing breakdowns, training methodology, gear reviews, and random swimmer quirks from one pro athlete to another. No filler or vague advice, written to give you something tangible to act on.</p>
+          <p>Racing breakdowns, training methodology, gear reviews, and swimmer insights from one pro athlete to another. <strong>No filler or vague advice</strong>, written to give you <strong>something tangible to act on</strong>.</p>
           <div class="resource-previews">
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Technique &amp; training</div>
             <div class="resource-preview-item"><span class="resource-preview-dot"></span>Nutrition &amp; fitness</div>
@@ -1843,7 +1843,7 @@ section { padding: 6rem 0; }
       <div>
         <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal-2); margin-bottom:0.4rem; opacity:0.85;">Specialized coaching</p>
         <h3 style="color:var(--deep); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Daily training &amp; nutrition. Built for your current abilities, progressing toward your future goals.</h3>
-        <p style="color:var(--gray-500); font-size:0.88rem; margin:0; font-weight:300;">Daily swim sets, lift workouts, meal plans, and bodyweight dryland you can do in your bedroom. All calibrated to what you can do, building up to what you want to do. No subscription, no fees.</p>
+        <p style="color:var(--gray-500); font-size:0.88rem; margin:0; font-weight:300;">Daily swim sets, lift workouts, meal plans, and bodyweight dryland you can do in your bedroom. All <strong>calibrated to what you can do</strong>, building up to what you want to do. <strong>No subscription, no fees.</strong></p>
       </div>
       <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Try it out!</a>
     </div>
@@ -1863,9 +1863,19 @@ section { padding: 6rem 0; }
     <div class="blog-grid-home">
       <!-- Left: featured post with photo -->
       <div class="blog-feature-card">
-        <div class="blog-feature-thumb">
-          <div class="blog-card-thumb-pattern"></div>
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div class="blog-feature-thumb" style="background:linear-gradient(160deg, #0a3d37 0%, #1a7a6e 50%, #0d4f47 100%); position:relative; overflow:hidden;">
+          <div style="position:absolute; inset:0; background-image:var(--pattern-waves); opacity:0.18;"></div>
+          <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem;">
+            <svg width="72" height="72" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(93,219,201,0.55)" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7;">
+              <path d="M0 200 Q87.5 185 175 200 Q262.5 215 350 200 Q437.5 185 525 200 Q612.5 215 700 200" stroke-width="8"/>
+              <path d="M550 175 Q480 168 420 178 Q360 188 300 182 Q240 176 200 186 Q170 192 155 196" stroke-width="14"/>
+              <path d="M550 175 Q520 155 490 148 Q450 138 410 140 Q370 142 340 145 Q310 148 285 152 Q265 155 250 158" stroke-width="14"/>
+              <ellipse cx="575" cy="172" rx="22" ry="18" stroke-width="10"/>
+              <path d="M155 196 Q130 200 110 208 Q90 218 75 222" stroke-width="14"/>
+              <path d="M160 190 Q138 188 118 183 Q100 179 85 178" stroke-width="14"/>
+            </svg>
+            <span style="font-family:'DM Sans',sans-serif; font-size:0.62rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:rgba(93,219,201,0.5);">Featured Post</span>
+          </div>
         </div>
         <div class="blog-feature-body">
           <a href="#freestyle-errors" class="blog-feature-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Errors and How to Fix Them</a>
@@ -1877,19 +1887,19 @@ section { padding: 6rem 0; }
       <!-- Right: three compact posts -->
       <div class="blog-side-col">
         <div class="blog-side-card">
-          <a class="blog-side-title" style="pointer-events:none;">Understanding Training Intensity Zones for Swimmers</a>
+          <a class="blog-side-title" href="#training-intensity-zones" onclick="navigate('training-intensity-zones')">Understanding Training Intensity Zones for Swimmers</a>
           <div class="blog-side-meta">
             <span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span>
           </div>
         </div>
         <div class="blog-side-card">
-          <a class="blog-side-title" style="pointer-events:none;">What Swimmers Should Eat Before a Morning Practice</a>
+          <a class="blog-side-title" href="#morning-practice-nutrition" onclick="navigate('morning-practice-nutrition')">What Swimmers Should Eat Before a Morning Practice</a>
           <div class="blog-side-meta">
             <span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span>
           </div>
         </div>
         <div class="blog-side-card">
-          <a class="blog-side-title" style="pointer-events:none;">How to Build a Race-Week Taper That Actually Works</a>
+          <a class="blog-side-title" href="#race-week-taper" onclick="navigate('race-week-taper')">How to Build a Race-Week Taper That Actually Works</a>
           <div class="blog-side-meta">
             <span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span>
           </div>
@@ -1905,11 +1915,11 @@ section { padding: 6rem 0; }
       <div style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, transparent, var(--lap) 15%, var(--lap) 85%, transparent); opacity:0.45; transform:translateX(-50%); pointer-events:none;"></div>
       <div style="padding-right:3rem;">
         <span class="eyebrow">About Streamline</span>
-        <h2>Not every swimmer has a coach, strength trainer, and nutritionist. You do.</h2>
+        <h2>Not all swimmers have a coach, strength trainer, and nutritionist. You do.</h2>
         <div class="accent-bar"></div>
-        <p style="margin-top:1.5rem; font-size:1rem; line-height:1.85;">Elite swimmers succeed because they have a full support system: coaches who design every session, strength trainers who build power out of the water, and nutritionists who fuel it all. That kind of support has always been reserved for the few.</p>
-        <p style="font-size:1rem; line-height:1.85;">STREAMLINE changes that. With purposeful daily sets organized by intensities, dryland work synced to your pool sessions, technique breakdowns that go beyond what to do and explain why it matters, and nutrition guidance built around what your training actually demands, you're set up for success both in the pool and in life.</p>
-        <p style="font-size:1rem; line-height:1.85;">If you try us out and it doesn't work for you, no harm, no foul. Drop some feedback and freestyle your own thing. But we are everything your training has been missing.</p>
+        <p style="margin-top:1.5rem; font-size:1rem; line-height:1.85;">Elite swimmers succeed because they have a <strong>full support system</strong>: coaches who design every session, strength trainers who build power out of the water, and nutritionists who fuel it all. That kind of support has always been <strong>reserved for the few</strong>.</p>
+        <p style="font-size:1rem; line-height:1.85;">STREAMLINE changes that. With <strong>purposeful daily sets</strong> organized by intensities, <strong>dryland work synced to your pool sessions</strong>, technique breakdowns that go beyond what to do and explain why it matters, and <strong>nutrition guidance built around what your training actually demands</strong>, you're set up for success both in the pool and in life.</p>
+        <p style="font-size:1rem; line-height:1.85;">If you try us out and it doesn't work for you, no harm, no foul. Drop some feedback and freestyle your own thing. But <strong>we are everything your training has been missing.</strong></p>
         <div style="margin-top:1.75rem; padding-top:1.5rem; border-top:1px solid var(--gray-100); font-size:0.72rem; font-weight:300; color:var(--gray-400); line-height:1.7;">
           <strong style="font-weight:500; color:var(--gray-500);">Affiliate disclosure:</strong> Some links on this site are affiliate links. If you purchase through one, we may earn a small commission at no additional cost to you. &nbsp;<strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
         </div>
@@ -1918,7 +1928,7 @@ section { padding: 6rem 0; }
         <span class="eyebrow">Who it's for</span>
         <h2>Everyone. And we mean everyone.</h2>
         <div class="accent-bar"></div>
-        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">Don't be intimidated — even if you can swim just two lengths of a lap pool without stopping, there is training and advice on here for you. Streamline scales from absolute beginners finding their stroke all the way up to masters competitors chasing podiums. The programming adjusts. The technique explanations are universal. Wherever you're starting, you belong here.</p>
+        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">Don't be intimidated — even if you can swim just two lengths of a lap pool without stopping, <strong>there is training and advice on here for you</strong>. Streamline scales from <strong>absolute beginners</strong> finding their stroke all the way up to <strong>masters competitors chasing podiums</strong>. The programming adjusts. The technique explanations are universal. Wherever you're starting, <strong>you belong here.</strong></p>
         <div class="for-who-grid">
           <div class="for-who-card"><h4>Masters competitors</h4><p>Periodized plans built around target events, with race-specific intervals and proper tapers.</p></div>
           <div class="for-who-card"><h4>Lap swimmers</h4><p>Structured sessions with a technique focus. Replace guesswork with programming that actually progresses.</p></div>
@@ -2219,13 +2229,17 @@ section { padding: 6rem 0; }
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><p class="blog-card-excerpt">How breathing patterns affect stroke timing and performance.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
       </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Dryland Training for Swimmers: What Transfers</h3><p class="blog-card-excerpt">Which exercises and movement patterns have the strongest correlation with in-water performance.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      <div class="blog-card">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div>
       </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones in pool training.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+      <div class="blog-card">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones to develop every energy system systematically.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#training-intensity-zones" class="btn btn-outline-dark btn-sm" onclick="navigate('training-intensity-zones')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">7 min</span></div></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><p class="blog-card-excerpt">Reducing volume, maintaining intensity, and arriving at the blocks race-ready.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#race-week-taper" class="btn btn-outline-dark btn-sm" onclick="navigate('race-week-taper')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">6 min</span></div></div>
       </div>
     </div>
   </div>
@@ -2303,6 +2317,168 @@ section { padding: 6rem 0; }
   </div>
 </section>
 </div><!-- end page-freestyle-errors -->
+
+<!-- ══ POST: TRAINING INTENSITY ZONES ══ -->
+<div class="page" id="page-training-intensity-zones">
+<div class="post-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Training</p>
+    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Training</span>
+    <h1 style="margin-top:0.75rem;">Understanding Training<br/>Intensity Zones for Swimmers</h1>
+    <div class="post-meta">
+      <span>Streamline</span><span class="dot"></span><span>Jun 2, 2026</span><span class="dot"></span><span>7 min read</span>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p>
+  <p>The answer, almost always, is that the body has adapted to the single stimulus you keep giving it. Training with intention means exposing your energy systems to different demands on a systematic basis. That requires understanding what those systems are and how to target them.</p>
+  <blockquote>"Training harder isn't the same as training smarter. The swimmers who improve most consistently are the ones who understand what they're asking their body to do on a given day."</blockquote>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Zone 1 — Active Recovery</h3><p>Very easy effort, 50–60% of maximum heart rate. The point is not to develop fitness; it's to promote blood flow, flush metabolic waste, and allow the nervous system to recover without adding stress. Most swimmers skip this zone entirely, which is a mistake after hard sessions or during high-volume weeks.</p></div></div>
+  <p><strong>When to use it:</strong> The day after a hard set, during warm-up and cool-down, or on low-priority training days where the goal is to stay in the water without accumulating fatigue.</p>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Zone 2 — Aerobic Base</h3><p>The most underused zone in recreational swimming and the most important for long-term development. Zone 2 sits at a comfortable but deliberate effort — conversational pace, 60–70% max heart rate, roughly 70–75% of your best 1,000-yard time. You should be able to hold this pace for a very long time without going anaerobic.</p></div></div>
+  <p><strong>When to use it:</strong> The majority of your training volume should live here. Zone 2 builds the aerobic engine that all other intensities depend on. Swimmers who skip zone 2 in favor of constant moderate-to-hard efforts often hit performance ceilings earlier than those who build a strong aerobic base first.</p>
+  <p>A practical marker: if you can't easily carry on a conversation at your current pace, you're above zone 2.</p>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Zone 3 — Threshold</h3><p>This is the pace you can hold for roughly 20–60 minutes at maximum sustained effort. It sits at lactate threshold — the point at which lactate production begins to exceed the body's ability to clear it. Training at and slightly above this zone shifts the threshold upward over time, meaning you can sustain faster speeds before tipping into anaerobic territory.</p></div></div>
+  <p><strong>When to use it:</strong> Threshold sets typically make up 10–15% of total weekly volume. Classic formats include long cruise intervals at T-pace (your threshold pace per 100), or straight swims of 1,000–2,000 yards at a sustained effort.</p>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Zone 4 — VO2 Max</h3><p>Short, intense intervals that push your cardiovascular system to its ceiling. Typical durations are 2–8 minutes at maximum aerobic effort, with recovery intervals of equal or greater length. This zone develops your aerobic capacity — the absolute size of your engine — and is where significant speed gains occur.</p></div></div>
+  <p><strong>When to use it:</strong> Once or twice per week maximum during hard training blocks. These sessions are demanding and require full recovery between sessions. A representative set: 6 × 200 on 3:30, descending pace with the last two swum at or near best effort.</p>
+  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Zone 5 — Anaerobic / Sprint</h3><p>All-out efforts lasting 10–60 seconds. Zone 5 develops the anaerobic capacity used in race finishes and sprint events. Recovery requirements are high — full rest between repetitions is not optional here. Incomplete recovery turns a sprint set into a threshold set, which defeats the purpose.</p></div></div>
+  <p><strong>When to use it:</strong> Sprint work belongs in a periodized plan, not in every session. It's most productive in race-prep phases after a solid aerobic base has been established. A typical sprint set: 10 × 25 on 2:00, all-out from a push, focusing on maximum stroke rate and breakout distance.</p>
+  <hr />
+  <h2>How to apply zones in practice</h2>
+  <p>A useful weekly structure distributes effort roughly as follows: 70–75% zone 2, 10–15% zone 3, 10% zone 4, and 5% zone 5. This distribution is consistent with what research shows in elite endurance athletes across multiple sports and is often called the polarized or pyramidal model depending on the exact ratios.</p>
+  <p>The mistake most recreational swimmers make is spending the majority of their training in the zone 3–4 range — hard enough to be tiring, not hard enough to be maximally productive. This "black hole" of training produces fatigue without the specific adaptations of either base work or true high-intensity training.</p>
+  <p>Streamline's daily swim sets specify the intended intensity zone for each segment. Use the pace targets as a guide and adjust to your current fitness level.</p>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Daily Swim Sets (free)</h3>
+      <p>Each workout includes intensity zone markers so you know exactly what energy system you're targeting. Updated every morning across all levels.</p>
+    </div>
+    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#freestyle-errors" class="btn btn-outline-dark btn-sm" onclick="navigate('freestyle-errors')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">8 min</span></div></div></div>
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div></div>
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><p class="blog-card-excerpt">Reducing volume and maintaining intensity in the days before competition.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#race-week-taper" class="btn btn-outline-dark btn-sm" onclick="navigate('race-week-taper')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">6 min</span></div></div></div>
+    </div>
+    <div class="text-center mt-md">
+      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
+    </div>
+  </div>
+</section>
+</div><!-- end page-training-intensity-zones -->
+
+<!-- ══ POST: MORNING PRACTICE NUTRITION ══ -->
+<div class="page" id="page-morning-practice-nutrition">
+<div class="post-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Nutrition</p>
+    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Nutrition</span>
+    <h1 style="margin-top:0.75rem;">What Swimmers Should Eat<br/>Before a Morning Practice</h1>
+    <div class="post-meta">
+      <span>Streamline</span><span class="dot"></span><span>May 28, 2026</span><span class="dot"></span><span>5 min read</span>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.</p>
+  <p>The right approach depends on when practice starts and what kind of session it is.</p>
+  <blockquote>"The goal before a morning practice isn't a perfect meal. It's enough substrate to fuel the work without creating GI problems in the water."</blockquote>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>The case for eating something</h3><p>Glycogen stores — the liver's carbohydrate reservoir — are partially depleted after an overnight fast. For a short, easy aerobic session, this may not matter much. For anything involving threshold work, sprint sets, or sessions longer than 60 minutes, starting with depleted glycogen limits performance and accelerates fatigue. The argument for training fasted ("fat adaptation") is real for specific, low-intensity training blocks, but it does not apply across all session types.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>30–60 minutes before practice</h3><p>With limited time before hitting the water, the priority is quick-digesting carbohydrate with minimal fat and fiber, both of which slow gastric emptying and increase the risk of GI discomfort. Good options at this window: a banana, a small serving of white rice or plain toast, a few dates, or a sports drink with glucose. Keep portions small — 150–250 calories is usually sufficient.</p></div></div>
+  <p><strong>What to avoid:</strong> High-fat foods (nut butters in large amounts, full dairy), high-fiber foods (bran, most raw vegetables, whole grain breads), and large protein-heavy meals. These are appropriate post-workout, not pre.</p>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>90+ minutes before practice</h3><p>A larger window allows a more balanced small meal. A combination of moderate-glycemic carbohydrate and a small amount of protein supports blood sugar stability and provides amino acids for muscle protein synthesis after training. A bowl of oatmeal with a small amount of fruit, eggs on toast, or Greek yogurt with granola are all practical options that most athletes tolerate well.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Hydration before and during</h3><p>Mild dehydration — as little as 2% body weight in fluid deficit — measurably impairs endurance performance. Waking up mildly dehydrated after 7–8 hours without fluids is normal. 12–16 oz of water in the 30–60 minutes before practice is a reasonable starting point. During the session, most swimmers need 12–20 oz per hour of moderate training, more in warm conditions or during high-intensity work.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>After the session</h3><p>The post-workout window is where most of the nutritional work happens. Within 30–60 minutes of finishing, prioritize carbohydrate to replenish glycogen and protein to support muscle repair. A ratio of roughly 3:1 or 4:1 carbohydrate to protein is well-supported by research. Practical examples: chocolate milk (genuinely a solid recovery option), a smoothie with fruit and protein powder, eggs and rice, or a sandwich with lean meat.</p></div></div>
+  <hr />
+  <h2>A note on individual variation</h2>
+  <p>GI sensitivity during exercise is highly individual. Some swimmers train at high intensity on an empty stomach without issues; others need 90 minutes of digestion time before any hard effort. Experimentation during low-stakes training sessions is the only reliable way to calibrate your own pre-practice nutrition strategy. Do not try something new before a race or important time trial.</p>
+  <p>The guidance above represents a reasonable starting framework for most swimmers. Adjust based on your own GI tolerance, training intensity, and how your body responds.</p>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Nutrition guidance built for swimmers</h3>
+      <p>Create a free account to get meal timing and fueling recommendations calibrated to your training schedule and goals.</p>
+    </div>
+    <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Get Started →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#freestyle-errors" class="btn btn-outline-dark btn-sm" onclick="navigate('freestyle-errors')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">8 min</span></div></div></div>
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones to develop every energy system systematically.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#training-intensity-zones" class="btn btn-outline-dark btn-sm" onclick="navigate('training-intensity-zones')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">7 min</span></div></div></div>
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><p class="blog-card-excerpt">Reducing volume and maintaining intensity in the days before competition.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#race-week-taper" class="btn btn-outline-dark btn-sm" onclick="navigate('race-week-taper')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">6 min</span></div></div></div>
+    </div>
+    <div class="text-center mt-md">
+      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
+    </div>
+  </div>
+</section>
+</div><!-- end page-morning-practice-nutrition -->
+
+<!-- ══ POST: RACE-WEEK TAPER ══ -->
+<div class="page" id="page-race-week-taper">
+<div class="post-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Training</p>
+    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Training</span>
+    <h1 style="margin-top:0.75rem;">How to Build a Race-Week Taper<br/>That Actually Works</h1>
+    <div class="post-meta">
+      <span>Streamline</span><span class="dot"></span><span>May 24, 2026</span><span class="dot"></span><span>6 min read</span>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish. Neither extreme produces optimal performance.</p>
+  <p>A well-constructed taper reduces accumulated fatigue while maintaining the physiological adaptations built during training. The result, when executed correctly, is that you race faster than you've swum in practice. Here's how to build one.</p>
+  <blockquote>"The taper doesn't create fitness. It reveals the fitness that was already there by removing the fatigue obscuring it."</blockquote>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Volume down, intensity preserved</h3><p>The defining principle of an effective taper: volume drops significantly while intensity is maintained or slightly increased. Research consistently shows that reducing training volume by 40–60% over 7–14 days, while keeping intensity close to race pace, produces the best performance outcomes. Swimmers who reduce both volume and intensity — essentially resting — show smaller performance gains than those who maintain sharpness through quality work.</p></div></div>
+  <p><strong>In practice:</strong> Your total yardage per session should be roughly half of peak training volume, but the pace of key intervals should be at or near race pace. The body needs the neural stimulus of fast swimming to stay sharp.</p>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Race-pace work every day</h3><p>During taper week, include a short block of race-pace swimming in every session — even easy days. The goal isn't training load; it's neuromuscular priming. Short, fast efforts keep the fast-twitch fiber recruitment patterns active and ensure the nervous system is ready to produce speed on race day. A few 25s or 50s at race pace, with full recovery between each, is enough.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>The 7-day structure</h3><p>A practical race-week structure for a swimmer targeting Saturday competition:</p></div></div>
+  <p><strong>Sunday (7 days out):</strong> Last moderate-volume session. 3,000–4,000 yards, mix of aerobic base and threshold. Get the work done.</p>
+  <p><strong>Monday:</strong> 2,000–2,500 yards. Mostly aerobic. 4–6 × 50 at race pace with full rest.</p>
+  <p><strong>Tuesday:</strong> 2,000 yards. Drill work, stroke focus, some speed. Leave the water feeling good.</p>
+  <p><strong>Wednesday:</strong> 1,500–2,000 yards. Race simulation: warm-up, then 1–2 race-distance efforts at goal pace. Warm down thoroughly.</p>
+  <p><strong>Thursday:</strong> 1,200–1,500 yards. Easy swimming. A few short fast efforts. Focus on feel, not pace.</p>
+  <p><strong>Friday (day before):</strong> 800–1,000 yards. Activation only. 10–12 minutes of easy swimming, 4 × 25 at race pace from a push. Done.</p>
+  <p><strong>Saturday (race day):</strong> Warm-up per your event schedule. Standard pool warm-up protocol for your event group.</p>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Sleep, nutrition, and logistics</h3><p>The taper is not only a physical process. Consistently prioritizing 8–9 hours of sleep per night during taper week has a larger performance impact than most swimmers realize. Sleep is when adaptation consolidates, hormonal balance normalizes, and nervous system recovery occurs. Cutting sleep short during taper week is one of the most reliable ways to leave performance on the table.</p></div></div>
+  <p>Nutrition during taper week should increase slightly in carbohydrate to top off glycogen stores. Muscle glycogen loading — increasing carbohydrate intake by 20–30% in the 48–72 hours before competition — is well-supported by research for events lasting more than 90 seconds. For sprint events, the effect is smaller but still positive.</p>
+  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Managing taper anxiety</h3><p>Most competitive swimmers experience some form of taper anxiety: irritability, restlessness, the sense that reduced training is costing them fitness. It isn't. These feelings are normal and partly biochemical — reduced training load changes cortisol and adrenaline patterns. They are not evidence that the taper is failing.</p></div></div>
+  <p>The antidote is trust in the process. Review your training log. The fitness is there. The taper is revealing it.</p>
+  <hr />
+  <h2>Adapting for longer tapers</h2>
+  <p>For major competitions — a championship meet, an important masters race — a two-week taper may be appropriate. The structure is similar: reduce volume in week one by roughly 30%, then apply the race-week protocol above in week two. Maintain intensity throughout both weeks.</p>
+  <p>For shorter events or less important competitions, a three-to-four-day mini-taper applies the same principles compressed into a shorter window.</p>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Periodized training plans</h3>
+      <p>Create a free account to get a training plan built around your competition schedule, with taper phases automatically built in.</p>
+    </div>
+    <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Get Started →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#freestyle-errors" class="btn btn-outline-dark btn-sm" onclick="navigate('freestyle-errors')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">8 min</span></div></div></div>
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones to develop every energy system systematically.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#training-intensity-zones" class="btn btn-outline-dark btn-sm" onclick="navigate('training-intensity-zones')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">7 min</span></div></div></div>
+      <div class="blog-card"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div></div>
+    </div>
+    <div class="text-center mt-md">
+      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
+    </div>
+  </div>
+</section>
+</div><!-- end page-race-week-taper -->
 
 <!-- ══ CONTACT PAGE ══ -->
 <div class="page" id="page-contact">
