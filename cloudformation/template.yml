@@ -110,6 +110,30 @@ Resources:
         - AttributeName: email
           KeyType: HASH
 
+  DailySetsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: streamline-daily-sets
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: level
+          AttributeType: S
+      KeySchema:
+        - AttributeName: level
+          KeyType: HASH
+
+  SetArchivesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: streamline-set-archives
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: setId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: setId
+          KeyType: HASH
+
   # ─── IAM ROLE FOR LAMBDA ───────────────────────────────────────────────────
 
   LambdaExecutionRole:
@@ -133,9 +157,13 @@ Resources:
                   - dynamodb:PutItem
                   - dynamodb:GetItem
                   - dynamodb:UpdateItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
                 Resource:
                   - !GetAtt ContactsTable.Arn
                   - !GetAtt SubscribersTable.Arn
+                  - !GetAtt DailySetsTable.Arn
+                  - !GetAtt SetArchivesTable.Arn
               - Effect: Allow
                 Action:
                   - bedrock:InvokeModel
@@ -336,6 +364,167 @@ Resources:
             except Exception as e:
               return {'statusCode': 500, 'headers': CORS, 'body': json.dumps({'error': str(e), 'results': []})}
 
+  GenerateSetsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-generate-sets
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+      Code:
+        ZipFile: |
+          import json, boto3, uuid
+          from datetime import datetime, timezone
+
+          bedrock = boto3.client('bedrock-runtime', region_name='us-east-1')
+          dynamo = boto3.resource('dynamodb')
+          daily_tbl = dynamo.Table('streamline-daily-sets')
+          arch_tbl = dynamo.Table('streamline-set-archives')
+
+          SCHED = {0:'Distance Freestyle',1:'Breaststroke',2:'Backstroke',3:'Butterfly',4:'IM',5:'Sprints & Dives',6:'Mid-Distance Choice Stroke'}
+          STROKE = {0:'freestyle',1:'breaststroke',2:'backstroke',3:'butterfly',4:'im',5:'freestyle',6:'choice'}
+
+          LEVELS = [
+            ('beginner', 1000,
+             'Warm-Up, Drill Set, Main Set, Cool-Down',
+             'Beginner: knows basic freestyle, maybe backstroke. No flip turns. No jargon (no "hypoxic", no "descend"). Max single piece: 100 yards. Use plain rest like "30 sec rest" not intervals.'),
+            ('intermediate', 2500,
+             'Warm-Up, Pre-Main, Main Set, Cool-Down',
+             'Intermediate: all 4 strokes, flip turns, reads a pace clock. Comfortable up to 200 per piece. Basic terms OK: descend, build, easy/moderate/fast. Intervals like @1:30.'),
+            ('advanced', 4500,
+             'Warm-Up, Pre-Main, Main Set, Second Main, Cool-Down',
+             'Advanced: race-trained, knows hypoxic sets, descend/negative split/lactate threshold. Comfortable up to 400+ per piece. All standard coaching terms fine.'),
+            ('pro', 7000,
+             'Warm-Up, Pre-Main, Main Set, Second Main, Third Main, Cool-Down',
+             'Pro/elite: use all technical terms freely. VO2, threshold blocks, race pace, breakout distance, underwaters, tempo sets. Pieces up to 1000. Precision pace targets.')
+          ]
+
+          PROMPT = """You are an elite competitive swim coach writing today's practice for a real team. Write sets exactly as a coach would — varied distances, smart intervals, purposeful pieces.
+          Day: {day}. Focus stroke/theme: {focus}. Level: {level}. Target distance: ~{yards} yards.
+          Sections to include (in order): {sections}
+          Level notes: {notes}
+          Interval format (use exactly): "4x 200 free @2:45" or "200 back @1:30" or "8x 50 fly @:55 w/ :15 rest" or "4x (100 free + 50 back) @2:30".
+          Stroke abbreviations: free, back, fly, breast, IM, choice.
+          Make each section serve a specific purpose (breath work, turns, head position, race pace, endurance, technique, etc.) and note it in the coaching notes.
+          Return ONLY valid JSON with no markdown, no preamble, no explanation:
+          {{"title":"descriptive set title based on stroke/intensity/theme","totalYards":{yards},"estimatedMinutes":N,"strokeFocus":"freestyle|backstroke|butterfly|breaststroke|im|choice","intensity":"aerobic|threshold|sprint|recovery","setType":"drill|kick|pull|race|endurance|technique","distanceCategory":"short|mid|long|ultra","focusCue":"2-3 sentence coaching cue that a coach would say at the start of practice — level-appropriate language","sections":[{{"name":"section name","yards":N,"items":[{{"text":"interval line exactly as written on a whiteboard","note":"coaching note for this piece or null"}}]}}]}}"""
+
+          def invoke(prompt):
+            r = bedrock.invoke_model(
+              modelId='anthropic.claude-3-5-sonnet-20241022-v2:0',
+              body=json.dumps({'anthropic_version':'bedrock-2023-05-31','max_tokens':2500,'messages':[{'role':'user','content':prompt}]})
+            )
+            return json.loads(r['body'].read())['content'][0]['text'].strip()
+
+          def handler(event, context):
+            now = datetime.now(timezone.utc)
+            date_str = now.strftime('%Y-%m-%d')
+            dow = now.weekday()
+            focus = SCHED[dow]
+            results = []
+            for level, yards, sections, notes in LEVELS:
+              try:
+                p = PROMPT.format(day=now.strftime('%A'), focus=focus, level=level, yards=yards, sections=sections, notes=notes)
+                raw = invoke(p)
+                s = raw.find('{'); e = raw.rfind('}') + 1
+                data = json.loads(raw[s:e])
+                sid = str(uuid.uuid4())
+                data.update({'date': date_str, 'level': level, 'setId': sid})
+                daily_tbl.put_item(Item={'level': level, 'setData': json.dumps(data), 'date': date_str, 'generatedAt': now.isoformat()})
+                arch_tbl.put_item(Item={
+                  'setId': sid, 'level': level, 'date': date_str,
+                  'title': data.get('title', ''), 'totalYards': data.get('totalYards', yards),
+                  'estimatedMinutes': data.get('estimatedMinutes', 0),
+                  'strokeFocus': data.get('strokeFocus', STROKE[dow]),
+                  'intensity': data.get('intensity', 'aerobic'),
+                  'setType': data.get('setType', 'endurance'),
+                  'distanceCategory': data.get('distanceCategory', 'mid'),
+                  'setData': json.dumps(data), 'generatedAt': now.isoformat()
+                })
+                results.append({'level': level, 'status': 'ok'})
+              except Exception as ex:
+                results.append({'level': level, 'status': 'error', 'error': str(ex)})
+            return {'statusCode': 200, 'body': json.dumps({'results': results, 'date': date_str})}
+
+  GetDailySetsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-get-daily-sets
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 15
+      Code:
+        ZipFile: |
+          import json, boto3
+          dynamo = boto3.resource('dynamodb')
+          tbl = dynamo.Table('streamline-daily-sets')
+          CORS = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json'}
+          VALID = ('beginner','intermediate','advanced','pro')
+          def handler(event, context):
+            if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
+              return {'statusCode':200,'headers':CORS,'body':''}
+            p = (event.get('queryStringParameters') or {})
+            level = (p.get('level') or '').strip().lower()
+            if level not in VALID:
+              return {'statusCode':400,'headers':CORS,'body':json.dumps({'error':'level must be one of: ' + ', '.join(VALID)})}
+            try:
+              r = tbl.get_item(Key={'level':level})
+              if 'Item' not in r:
+                return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
+              return {'statusCode':200,'headers':CORS,'body':r['Item']['setData']}
+            except Exception as e:
+              return {'statusCode':500,'headers':CORS,'body':json.dumps({'error':str(e)})}
+
+  GetArchivesFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-get-archives
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 30
+      Code:
+        ZipFile: |
+          import json, boto3, decimal
+          from boto3.dynamodb.conditions import Attr
+          dynamo = boto3.resource('dynamodb')
+          tbl = dynamo.Table('streamline-set-archives')
+          CORS = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json'}
+          def dec(o):
+            if isinstance(o, decimal.Decimal):
+              return int(o) if o % 1 == 0 else float(o)
+            raise TypeError
+          def handler(event, context):
+            if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
+              return {'statusCode':200,'headers':CORS,'body':''}
+            p = (event.get('queryStringParameters') or {})
+            fe = None
+            def add(f):
+              nonlocal fe
+              fe = f if fe is None else fe & f
+            lv=p.get('level',''); sk=p.get('stroke',''); ins=p.get('intensity',''); st=p.get('type',''); ds=p.get('distance','')
+            if lv: add(Attr('level').eq(lv))
+            if sk: add(Attr('strokeFocus').eq(sk))
+            if ins: add(Attr('intensity').eq(ins))
+            if st: add(Attr('setType').eq(st))
+            if ds: add(Attr('distanceCategory').eq(ds))
+            proj = 'setId,#lv,#dt,title,totalYards,estimatedMinutes,strokeFocus,intensity,setType,distanceCategory'
+            kw = {'ProjectionExpression':proj,'ExpressionAttributeNames':{'#lv':'level','#dt':'date'}}
+            if fe: kw['FilterExpression'] = fe
+            try:
+              items = []
+              r = tbl.scan(**kw)
+              items += r['Items']
+              while 'LastEvaluatedKey' in r:
+                r = tbl.scan(**kw, ExclusiveStartKey=r['LastEvaluatedKey'])
+                items += r['Items']
+              items.sort(key=lambda x: x.get('date',''), reverse=True)
+              return {'statusCode':200,'headers':CORS,'body':json.dumps({'items':items},default=dec)}
+            except Exception as e:
+              return {'statusCode':500,'headers':CORS,'body':json.dumps({'error':str(e)})}
+
   # ─── API GATEWAY HTTP API ──────────────────────────────────────────────────
 
   HttpApi:
@@ -432,6 +621,75 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/search"
+
+  # Daily sets route
+  GetDailySetsIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt GetDailySetsFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  GetDailySetsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "GET /daily-sets"
+      Target: !Sub "integrations/${GetDailySetsIntegration}"
+
+  GetDailySetsFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GetDailySetsFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/daily-sets"
+
+  # Archives route
+  GetArchivesIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt GetArchivesFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  GetArchivesRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "GET /archives"
+      Target: !Sub "integrations/${GetArchivesIntegration}"
+
+  GetArchivesFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GetArchivesFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/archives"
+
+  # ─── EVENTBRIDGE SCHEDULER ─────────────────────────────────────────────────
+
+  GenerateSetsSchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: streamline-generate-sets-daily
+      Description: Generate daily swim sets for all levels at 9 AM UTC (5 AM ET)
+      ScheduleExpression: "cron(0 9 * * ? *)"
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt GenerateSetsFunction.Arn
+          Id: GenerateSetsTarget
+
+  GenerateSetsEventPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GenerateSetsFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt GenerateSetsSchedule.Arn
 
 
 Outputs:
