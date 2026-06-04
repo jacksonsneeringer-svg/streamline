@@ -740,7 +740,106 @@ section { padding: 6rem 0; }
   margin-top: auto;
 }
 .blog-card-link:hover { color: var(--deep); gap: 0.6rem; }
-.all-posts-link:hover { color: var(--deep) !important; }
+.all-posts-link:hover { color: var(--white) !important; }
+
+/* ── Homepage blog layout ── */
+.blog-grid-home {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.blog-feature-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--white);
+}
+.blog-feature-thumb {
+  height: 300px;
+  background: var(--deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.blog-feature-body {
+  padding: 1.5rem;
+  background: var(--white);
+}
+.blog-feature-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--deep);
+  line-height: 1.35;
+  display: inline;
+  text-decoration: none;
+  background-image: linear-gradient(var(--deep), var(--deep));
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.25s ease;
+}
+.blog-feature-title:hover {
+  background-size: 100% 1px;
+}
+.blog-side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.blog-side-card {
+  padding: 1.25rem 1.5rem;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+}
+.blog-side-card:first-child {
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+.blog-side-card:last-child {
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  border-bottom: none;
+}
+.blog-side-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--deep);
+  line-height: 1.35;
+  display: inline;
+  text-decoration: none;
+  background-image: linear-gradient(var(--deep), var(--deep));
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.25s ease;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.blog-side-title:hover {
+  background-size: 100% 1px;
+}
+.blog-side-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.45rem;
+}
+@media (max-width: 1020px) {
+  .blog-grid-home { grid-template-columns: 1fr; }
+  .blog-side-col { flex-direction: row; flex-wrap: wrap; }
+  .blog-side-card { flex: 1 1 200px; border-right: 1px solid var(--gray-100); border-bottom: none; }
+  .blog-side-card:last-child { border-right: none; }
+}
+@media (max-width: 768px) {
+  .blog-side-col { flex-direction: column; }
+  .blog-side-card { border-right: none; border-bottom: 1px solid var(--gray-100); }
+}
 
 /* ── Newsletter strip ── */
 .newsletter-section {
@@ -1754,32 +1853,39 @@ section { padding: 6rem 0; }
       </div>
       <a href="#blog" class="all-posts-link" style="font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--lap); display:flex; align-items:center; gap:0.35rem; transition:color 0.15s;" onclick="navigate('blog')">All posts →</a>
     </div>
-    <div class="blog-grid">
-      <div class="blog-card">
-        <div class="blog-card-thumb"><div class="blog-card-thumb-pattern"></div><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-        <div class="blog-card-body">
-          <div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span></div>
-          <div class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</div>
-          <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, each one diagnosed and corrected.</p>
-          <a href="#freestyle-errors" class="blog-card-link" onclick="navigate('freestyle-errors')">Read article →</a>
+    <div class="blog-grid-home">
+      <!-- Left: featured post with photo -->
+      <div class="blog-feature-card">
+        <div class="blog-feature-thumb">
+          <div class="blog-card-thumb-pattern"></div>
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="blog-feature-body">
+          <a href="#freestyle-errors" class="blog-feature-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Errors and How to Fix Them</a>
+          <div class="blog-side-meta" style="margin-top:0.65rem;">
+            <span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span>
+          </div>
         </div>
       </div>
-      <div class="blog-card" style="opacity:0.55; pointer-events:none;">
-        <div class="blog-card-thumb" style="background:var(--teal);"><div class="blog-card-thumb-pattern"></div><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <div class="blog-card-body">
-          <div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Coming soon</span></div>
-          <div class="blog-card-title">Understanding Training Intensity Zones for Swimmers</div>
-          <p class="blog-card-excerpt">How pace-based zones structure a training week, and why most recreational swimmers are stuck in no man's land.</p>
-          <span style="font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:300; color:var(--gray-400); letter-spacing:0.08em; text-transform:uppercase;">Coming soon</span>
+      <!-- Right: three compact posts -->
+      <div class="blog-side-col">
+        <div class="blog-side-card">
+          <a class="blog-side-title" style="pointer-events:none; opacity:0.55;">Understanding Training Intensity Zones for Swimmers</a>
+          <div class="blog-side-meta">
+            <span class="cat-badge">Training</span><span class="blog-card-date">Coming soon</span>
+          </div>
         </div>
-      </div>
-      <div class="blog-card" style="opacity:0.55; pointer-events:none;">
-        <div class="blog-card-thumb" style="background:var(--teal-2);"><div class="blog-card-thumb-pattern"></div><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.45)" stroke-width="1.2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <div class="blog-card-body">
-          <div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Coming soon</span></div>
-          <div class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</div>
-          <p class="blog-card-excerpt">Pre-workout timing for 5am pools, easy options that work, and what the evidence says about training fasted.</p>
-          <span style="font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:300; color:var(--gray-400); letter-spacing:0.08em; text-transform:uppercase;">Coming soon</span>
+        <div class="blog-side-card">
+          <a class="blog-side-title" style="pointer-events:none; opacity:0.55;">What Swimmers Should Eat Before a Morning Practice</a>
+          <div class="blog-side-meta">
+            <span class="cat-badge">Nutrition</span><span class="blog-card-date">Coming soon</span>
+          </div>
+        </div>
+        <div class="blog-side-card">
+          <a class="blog-side-title" style="pointer-events:none; opacity:0.55;">How to Build a Race-Week Taper That Actually Works</a>
+          <div class="blog-side-meta">
+            <span class="cat-badge">Training</span><span class="blog-card-date">Coming soon</span>
+          </div>
         </div>
       </div>
     </div>
