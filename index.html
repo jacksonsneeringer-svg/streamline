@@ -1667,7 +1667,9 @@ section { padding: 6rem 0; }
 }
 /* Page-specific local styles */
 @media print {
-  .site-nav, .no-print, .page-hero-sm { display: none !important; }
+  body * { visibility: hidden; }
+  .swim-print-area, .swim-print-area * { visibility: visible; }
+  .swim-print-area { position: absolute; top: 0; left: 0; width: 100%; }
   body { background: white; }
 }
 .level-tab {
@@ -2059,6 +2061,7 @@ section { padding: 6rem 0; }
     <div id="swim-level-beginner">
       <div class="swim-level-layout">
         <div class="swim-level-main">
+          <div class="swim-print-area">
           <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
             <div>
               <span class="eyebrow">Tuesday, June 2, 2026 · Beginner</span>
@@ -2116,6 +2119,7 @@ section { padding: 6rem 0; }
               <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">On every length, check your head position at the halfway mark. Eyes should point toward the pool floor, not the far wall. If you can see the far end clearly, your head is too high — and a high head means sinking hips, which makes everything harder.</p>
             </div>
           </div>
+          </div><!-- /.swim-print-area -->
           <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
             <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
             <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
@@ -4267,7 +4271,8 @@ function renderSwimSet(level, data) {
     </div>
   </div>` : '';
 
-  container.innerHTML = `<div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+  container.innerHTML = `<div class="swim-print-area">
+  <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
     <div>
       <span class="eyebrow">${today} · ${levelLabel}</span>
       <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title)}</h2>
@@ -4280,6 +4285,7 @@ function renderSwimSet(level, data) {
   </div>
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">${sectionsHtml}</div>
   ${focusCueHtml}
+  </div>
   <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
     <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
     <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
