@@ -142,6 +142,11 @@ Resources:
                 Resource: "*"
               - Effect: Allow
                 Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource: "*"
+              - Effect: Allow
+                Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
@@ -165,12 +170,16 @@ Resources:
           dynamo = boto3.resource('dynamodb')
           contacts = dynamo.Table('streamline-contacts')
           subscribers = dynamo.Table('streamline-subscribers')
+          ses = boto3.client('ses', region_name='us-east-1')
 
           CORS = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Content-Type': 'application/json'
           }
+
+          NOTIFY_TO = 'jackson@snurray.com'
+          NOTIFY_FROM = 'Streamline Contact <noreply@snurray.com>'
 
           def handler(event, context):
             if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
@@ -181,23 +190,48 @@ Resources:
               if not email or '@' not in email:
                 return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Valid email required'})}
               now = datetime.now(timezone.utc).isoformat()
+              first = (body.get('firstName') or '').strip()
+              last = (body.get('lastName') or '').strip()
+              subject = (body.get('subject') or '').strip()
+              message = (body.get('message') or '').strip()
+              newsletter = bool(body.get('newsletterOptIn'))
               item = {
                 'id': str(uuid.uuid4()),
                 'timestamp': now,
-                'firstName': (body.get('firstName') or '').strip(),
-                'lastName': (body.get('lastName') or '').strip(),
+                'firstName': first,
+                'lastName': last,
                 'email': email,
-                'subject': (body.get('subject') or '').strip(),
-                'message': (body.get('message') or '').strip(),
-                'newsletterOptIn': bool(body.get('newsletterOptIn'))
+                'subject': subject,
+                'message': message,
+                'newsletterOptIn': newsletter
               }
               contacts.put_item(Item=item)
-              if item['newsletterOptIn']:
+              if newsletter:
                 subscribers.put_item(Item={
                   'email': email,
                   'source': 'contact-form',
                   'timestamp': now
                 })
+              try:
+                email_body = (
+                  f"Name: {first} {last}\n"
+                  f"Email: {email}\n"
+                  f"Subject: {subject}\n"
+                  f"Newsletter opt-in: {'Yes' if newsletter else 'No'}\n"
+                  f"Submitted: {now}\n\n"
+                  f"--- Message ---\n{message}"
+                )
+                ses.send_email(
+                  Source=NOTIFY_FROM,
+                  Destination={'ToAddresses': [NOTIFY_TO]},
+                  Message={
+                    'Subject': {'Data': f'[Streamline] {subject or "New contact message"}'},
+                    'Body': {'Text': {'Data': email_body}}
+                  },
+                  ReplyToAddresses=[email]
+                )
+              except Exception:
+                pass
               return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'success': True})}
             except Exception as e:
               return {'statusCode': 500, 'headers': CORS, 'body': json.dumps({'error': str(e)})}
