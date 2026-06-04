@@ -3351,6 +3351,10 @@ function showPage(pageId) {
     if (wrap) wrap.style.display = '';
     if (success) { success.style.display = ''; success.classList.remove('show'); }
   }
+  // Jump to the top instantly BEFORE swapping pages so the new page is never
+  // shown at the old scroll position and there's no animated scroll.
+  // behavior:'instant' overrides the global `scroll-behavior: smooth`.
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   // Show target page
@@ -3379,10 +3383,8 @@ function showPage(pageId) {
   if (footer) {
     footer.style.display = NO_FOOTER_PAGES.has(pageId) ? 'none' : '';
   }
-  // Always land at the top of the newly shown page
-  window.scrollTo(0, 0);
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  // Ensure we're at the top of the newly shown page (instant, no animation).
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
 
 function navigate(pageId) {
