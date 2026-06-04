@@ -263,12 +263,14 @@ Resources:
           SITE_KNOWLEDGE = """Streamline is a competitive swimming resource site. Pages and content:
 
           home - Landing page, overview of the platform
-          swim-sets - Daily swim workouts: Beginner (2000-2500y), Intermediate (3000-4000y), Advanced (5000-6000y). Each has warmup, drill set, main set, cooldown.
-          dryland-workouts - Strength/conditioning for swimmers: Upper Body Push, Upper Body Pull, Lower Body, Core & Stability workouts with sets/reps.
-          blog - Articles: "7 Common Freestyle Errors and How to Fix Them" (page: freestyle-errors) covers head position, kick, glide, body rotation, catch, intensity, turns. "How to Read a Pace Clock" (page: pace-clock) covers reading the clock face, common intervals (1:00, 1:15, 1:30 send-offs), using it for structured sets.
-          contact - Contact form for questions, bug reports, blog requests, partnership inquiries
-          my-training - Personal dashboard: daily swim plan, dryland workout, meal plan, progress tracking (requires account)
-          get-started - Create a free account for personalized plans"""
+          swim-sets - Daily swim workouts: Beginner (2000-2500y), Intermediate (3000-4000y), Advanced (5000-6000y). Each has warmup, drill set, main set, cooldown. Keywords: interval training, yardage, lap swimming.
+          dryland-workouts - Strength/conditioning for swimmers: Upper Body Push (bench, shoulder press, triceps), Upper Body Pull (rows, pull-ups, biceps), Lower Body (squats, lunges, hamstrings), Core & Stability (planks, rotational work). Keywords: gym, strength, conditioning, land training.
+          blog - Articles index page
+          freestyle-errors - Blog article: "7 Common Freestyle Errors and How to Fix Them". Covers: head position (looking forward vs neutral), kick (6-beat, 2-beat, ankle flexibility), over-gliding, body rotation (hip-driven vs shoulder-driven), high-elbow catch, going too hard too early, flip turns and open turns. Keywords: stroke technique, efficiency, form, tips, mistakes.
+          pace-clock - Blog article: "How to Read a Pace Clock". Covers: reading the clock face (seconds hand, top of clock), common send-off intervals (1:00, 1:15, 1:30), calculating rest, using the pace clock for structured sets and negative splits. Keywords: clock, intervals, send-off, timing, rest.
+          contact - Contact form for questions, bug reports, blog article requests, partnership inquiries
+          my-training - Personal dashboard: today's swim plan, dryland workout, meal plan, progress tracking, streak. Requires a free account.
+          get-started - Create a free account for personalized daily training plans"""
 
           def handler(event, context):
             params = (event.get('queryStringParameters') or {})
@@ -279,9 +281,10 @@ Resources:
 
           User searched: "{query}"
 
-          Return a JSON array of up to 4 relevant results. Each item: {{"title": "...", "description": "one sentence", "page": "page-id"}}
-          Use these page IDs: home, swim-sets, dryland-workouts, blog, freestyle-errors, pace-clock, contact, my-training, get-started
-          Return ONLY the JSON array."""
+          Match the query (even if it is a partial word or fragment) to the most relevant pages on this site.
+          Return a JSON array of up to 4 results, best match first. Each item: {{"title": "concise page/topic title", "description": "one sentence explaining what the user will find", "page": "page-id"}}
+          Valid page IDs: home, swim-sets, dryland-workouts, blog, freestyle-errors, pace-clock, contact, my-training, get-started
+          Return ONLY the JSON array, no other text."""
             try:
               resp = bedrock.invoke_model(
                 modelId='anthropic.claude-3-haiku-20240307-v1:0',

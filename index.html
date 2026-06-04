@@ -958,6 +958,24 @@ section { padding: 6rem 0; }
 .search-result-item p { margin: 0; font-size: 0.73rem; color: rgba(255,255,255,0.45); line-height: 1.4; }
 .search-result-loading { padding: 1rem; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.8rem; }
 .search-result-empty { padding: 1rem; text-align: center; color: rgba(255,255,255,0.35); font-size: 0.8rem; }
+.search-suggestion-item {
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.75);
+}
+.search-suggestion-item:last-child { border-bottom: none; }
+.search-suggestion-item:hover, .search-suggestion-item.active { background: rgba(93,219,201,0.1); color: #fff; }
+.search-suggestion-item svg { flex-shrink: 0; opacity: 0.4; }
+.search-suggestion-item mark { background: none; color: #5ddbca; font-weight: 600; }
+.search-suggestions-section { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.search-results-section { }
+.search-section-label { padding: 0.4rem 1rem 0.2rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.25); font-weight: 500; }
 
 /* ── Form styles (shared) ── */
 .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -2996,6 +3014,71 @@ window.addEventListener('popstate', routeFromHash);
 window.addEventListener('DOMContentLoaded', routeFromHash);
 
 // Inline nav search
+
+const SEARCH_SUGGESTIONS = [
+  // Freestyle / technique
+  { text: 'freestyle errors', page: 'freestyle-errors' },
+  { text: 'freestyle technique tips', page: 'freestyle-errors' },
+  { text: 'freestyle drills', page: 'freestyle-errors' },
+  { text: 'freestyle kick technique', page: 'freestyle-errors' },
+  { text: 'freestyle body rotation', page: 'freestyle-errors' },
+  { text: 'freestyle catch and pull', page: 'freestyle-errors' },
+  { text: 'freestyle head position', page: 'freestyle-errors' },
+  { text: 'freestyle flip turns', page: 'freestyle-errors' },
+  { text: 'freestyle glide', page: 'freestyle-errors' },
+  { text: 'common freestyle mistakes', page: 'freestyle-errors' },
+  // Swim sets
+  { text: 'swim sets', page: 'swim-sets' },
+  { text: 'beginner swim sets', page: 'swim-sets' },
+  { text: 'intermediate swim sets', page: 'swim-sets' },
+  { text: 'advanced swim sets', page: 'swim-sets' },
+  { text: 'pro swim sets', page: 'swim-sets' },
+  { text: 'daily swim workout', page: 'swim-sets' },
+  { text: 'swim warmup', page: 'swim-sets' },
+  { text: 'swim cooldown', page: 'swim-sets' },
+  { text: 'main set workout', page: 'swim-sets' },
+  { text: 'drill set swimming', page: 'swim-sets' },
+  { text: 'interval swim training', page: 'swim-sets' },
+  { text: '2000 yard workout', page: 'swim-sets' },
+  { text: '3000 yard workout', page: 'swim-sets' },
+  { text: '5000 yard workout', page: 'swim-sets' },
+  // Dryland
+  { text: 'dryland workouts', page: 'dryland-workouts' },
+  { text: 'dryland training for swimmers', page: 'dryland-workouts' },
+  { text: 'upper body workout for swimmers', page: 'dryland-workouts' },
+  { text: 'lower body workout for swimmers', page: 'dryland-workouts' },
+  { text: 'core workout for swimmers', page: 'dryland-workouts' },
+  { text: 'strength training for swimmers', page: 'dryland-workouts' },
+  { text: 'swimmer conditioning', page: 'dryland-workouts' },
+  { text: 'pull exercises for swimmers', page: 'dryland-workouts' },
+  { text: 'push exercises for swimmers', page: 'dryland-workouts' },
+  { text: 'core stability for swimmers', page: 'dryland-workouts' },
+  // Pace clock
+  { text: 'pace clock', page: 'pace-clock' },
+  { text: 'how to read a pace clock', page: 'pace-clock' },
+  { text: 'pace clock intervals', page: 'pace-clock' },
+  { text: 'send-off intervals', page: 'pace-clock' },
+  { text: 'swim intervals 1:00', page: 'pace-clock' },
+  { text: 'swim intervals 1:30', page: 'pace-clock' },
+  { text: 'structured swim sets', page: 'pace-clock' },
+  // My training / account
+  { text: 'my training plan', page: 'my-training' },
+  { text: 'personalized swim plan', page: 'my-training' },
+  { text: 'daily training schedule', page: 'my-training' },
+  { text: 'meal plan for swimmers', page: 'my-training' },
+  { text: 'progress tracking', page: 'my-training' },
+  { text: 'training dashboard', page: 'my-training' },
+  { text: 'get started', page: 'get-started' },
+  { text: 'create account', page: 'get-started' },
+  { text: 'free account', page: 'get-started' },
+  { text: 'sign up', page: 'get-started' },
+  // Blog / general
+  { text: 'blog articles', page: 'blog' },
+  { text: 'swimming tips', page: 'blog' },
+  { text: 'contact us', page: 'contact' },
+  { text: 'report a bug', page: 'contact' },
+];
+
 function toggleNavSearch() {
   const field = document.getElementById('nav-search-field');
   if (field) {
@@ -3018,44 +3101,107 @@ function closeNavSearch() {
   }
   const results = document.getElementById('nav-search-results');
   if (results) { results.innerHTML = ''; results.classList.remove('visible'); }
+  _searchActiveIndex = -1;
 }
 
 let _searchTimer = null;
+let _searchActiveIndex = -1;
+let _currentQuery = '';
+
+function getSuggestions(q) {
+  const lower = q.toLowerCase().trim();
+  if (!lower) return [];
+  return SEARCH_SUGGESTIONS.filter(s => s.text.includes(lower)).slice(0, 5);
+}
+
+function highlightMatch(text, query) {
+  const idx = text.toLowerCase().indexOf(query.toLowerCase().trim());
+  if (idx < 0) return escHtml(text);
+  return escHtml(text.slice(0, idx)) + '<mark>' + escHtml(text.slice(idx, idx + query.trim().length)) + '</mark>' + escHtml(text.slice(idx + query.trim().length));
+}
+
+function renderSuggestions(query, aiResults) {
+  const results = document.getElementById('nav-search-results');
+  const suggestions = getSuggestions(query);
+  let html = '';
+
+  if (suggestions.length) {
+    html += '<div class="search-suggestions-section">';
+    html += suggestions.map((s, i) => `
+      <div class="search-suggestion-item" data-idx="${i}" data-page="${escHtml(s.page)}" data-text="${escHtml(s.text)}"
+           onclick="selectSuggestion(this)" onmouseenter="_searchActiveIndex=${i};updateSuggestionHighlight()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        ${highlightMatch(s.text, query)}
+      </div>`).join('');
+    html += '</div>';
+  }
+
+  if (aiResults === 'loading') {
+    html += '<div class="search-result-loading">Searching…</div>';
+  } else if (aiResults === 'unavailable') {
+    if (!suggestions.length) html += '<div class="search-result-empty">Search unavailable.</div>';
+  } else if (Array.isArray(aiResults)) {
+    if (aiResults.length) {
+      html += '<div class="search-results-section">';
+      if (suggestions.length) html += '<div class="search-section-label">Results</div>';
+      html += aiResults.map(r => `
+        <div class="search-result-item" onclick="closeNavSearch(); navigate('${escHtml(r.page)}');">
+          <h5>${escHtml(r.title)}</h5>
+          <p>${escHtml(r.description)}</p>
+        </div>`).join('');
+      html += '</div>';
+    } else if (!suggestions.length) {
+      html += '<div class="search-result-empty">No results found.</div>';
+    }
+  }
+
+  if (!html) { results.classList.remove('visible'); results.innerHTML = ''; return; }
+  results.innerHTML = html;
+  results.classList.add('visible');
+}
+
+function updateSuggestionHighlight() {
+  document.querySelectorAll('.search-suggestion-item').forEach((el, i) => {
+    el.classList.toggle('active', i === _searchActiveIndex);
+  });
+}
+
+function selectSuggestion(el) {
+  const text = el.dataset.text;
+  const input = document.getElementById('nav-search-input');
+  if (input) input.value = text;
+  _currentQuery = text;
+  renderSuggestions(text, 'loading');
+  clearTimeout(_searchTimer);
+  performSearch(text);
+}
+
 function onSearchInput(value) {
   clearTimeout(_searchTimer);
+  _currentQuery = value;
+  _searchActiveIndex = -1;
   const results = document.getElementById('nav-search-results');
-  if (!value || value.trim().length < 2) {
+  if (!value || value.trim().length < 1) {
     results.innerHTML = '';
     results.classList.remove('visible');
     return;
   }
-  results.innerHTML = '<div class="search-result-loading">Searching…</div>';
-  results.classList.add('visible');
-  _searchTimer = setTimeout(() => performSearch(value.trim()), 400);
+  // Instant suggestions, deferred AI search
+  renderSuggestions(value, value.trim().length >= 2 ? 'loading' : null);
+  if (value.trim().length >= 2) {
+    _searchTimer = setTimeout(() => performSearch(value.trim()), 350);
+  }
 }
 
 async function performSearch(query) {
-  const results = document.getElementById('nav-search-results');
   const apiUrl = (window.STREAMLINE_API_URL || '');
-  if (!apiUrl) {
-    results.innerHTML = '<div class="search-result-empty">Search unavailable.</div>';
-    return;
-  }
+  if (!apiUrl) { renderSuggestions(query, 'unavailable'); return; }
   try {
     const res = await fetch(`${apiUrl}/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
-    const items = data.results || [];
-    if (!items.length) {
-      results.innerHTML = '<div class="search-result-empty">No results found.</div>';
-      return;
-    }
-    results.innerHTML = items.map(r => `
-      <div class="search-result-item" onclick="closeNavSearch(); navigate('${r.page}');">
-        <h5>${escHtml(r.title)}</h5>
-        <p>${escHtml(r.description)}</p>
-      </div>`).join('');
+    if (query === _currentQuery.trim()) renderSuggestions(query, data.results || []);
   } catch (err) {
-    results.innerHTML = '<div class="search-result-empty">Search unavailable.</div>';
+    if (query === _currentQuery.trim()) renderSuggestions(query, 'unavailable');
   }
 }
 
@@ -3070,6 +3216,26 @@ document.addEventListener('keydown', function(e) {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     toggleNavSearch();
+  }
+  // Arrow key navigation in suggestions
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    const items = document.querySelectorAll('.search-suggestion-item');
+    if (!items.length) return;
+    e.preventDefault();
+    _searchActiveIndex = e.key === 'ArrowDown'
+      ? Math.min(_searchActiveIndex + 1, items.length - 1)
+      : Math.max(_searchActiveIndex - 1, 0);
+    updateSuggestionHighlight();
+  }
+  if (e.key === 'Enter') {
+    const active = document.querySelector('.search-suggestion-item.active');
+    if (active) { selectSuggestion(active); return; }
+    const input = document.getElementById('nav-search-input');
+    if (input && input.value.trim().length >= 2) {
+      clearTimeout(_searchTimer);
+      renderSuggestions(input.value, 'loading');
+      performSearch(input.value.trim());
+    }
   }
 });
 
