@@ -814,12 +814,12 @@ section { padding: 6rem 0; }
   border-top: 1px solid rgba(93,219,201,0.07);
 }
 .footer-inner {
-  max-width: 70%;
+  max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0;
+  padding: 0 2rem;
   display: grid;
-  grid-template-columns: auto auto auto;
-  gap: 6rem;
+  grid-template-columns: 1fr 1fr 1.6fr;
+  gap: 4rem;
   justify-content: center;
 }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -842,8 +842,6 @@ section { padding: 6rem 0; }
   letter-spacing: 0.01em;
 }
 .footer-newsletter {
-  transform: scaleX(0.6);
-  transform-origin: left center;
 }
 .footer-col a {
   font-size: 0.84rem;
@@ -862,7 +860,7 @@ section { padding: 6rem 0; }
 .footer-bottom {
   max-width: var(--max-w);
   margin: 3rem auto 0;
-  padding: 1.25rem 3rem;
+  padding: 1.25rem 2rem;
   border-top: 1px solid rgba(93,219,201,0.06);
   display: flex;
   justify-content: center;
