@@ -36,6 +36,7 @@ jobs:
             --stack-name ${{ env.STACK_NAME }} \
             --parameter-overrides \
               DomainName=${{ env.DOMAIN_NAME }} \
+              CertificateArn=${{ secrets.ACM_CERTIFICATE_ARN }} \
             --capabilities CAPABILITY_IAM \
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset

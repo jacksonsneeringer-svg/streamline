@@ -6,6 +6,10 @@ Parameters:
     Type: String
     Default: streamline.snurray.com
 
+  CertificateArn:
+    Type: String
+    Description: ACM certificate ARN (must be in us-east-1)
+
 Resources:
 
   # S3 bucket - private, accessed only via CloudFront OAC
@@ -47,15 +51,6 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
 
-  # ACM certificate - must be in us-east-1 for CloudFront
-  # After stack creation, complete DNS validation manually using the CNAME
-  # record shown in the ACM console for your DNS provider.
-  Certificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Ref DomainName
-      ValidationMethod: DNS
-
   # CloudFront distribution
   Distribution:
     Type: AWS::CloudFront::Distribution
@@ -67,7 +62,7 @@ Resources:
         Aliases:
           - !Ref DomainName
         ViewerCertificate:
-          AcmCertificateArn: !Ref Certificate
+          AcmCertificateArn: !Ref CertificateArn
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
         Origins:
