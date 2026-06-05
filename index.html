@@ -225,7 +225,20 @@ strong { font-weight: 500; }
 #page-blog-training .container,
 #page-blog-nutrition .container,
 #page-blog-gear .container,
-#page-blog-guides .container {
+#page-blog-guides .container,
+#page-freestyle-errors .container,
+#page-training-intensity-zones .container,
+#page-morning-practice-nutrition .container,
+#page-race-week-taper .container,
+#page-breathing-mechanics .container,
+#page-goggles-guide .container,
+#page-training-fins-guide .container,
+#page-swim-paddles-guide .container,
+#page-pool-wetsuit-guide .container,
+#page-post-workout-nutrition .container,
+#page-dryland-training .container,
+#page-beginners-lap-swimming .container,
+#page-pull-buoys-guide .container {
   padding: 0 5.5rem;
 }
 section { padding: 6rem 0; }
@@ -1585,7 +1598,7 @@ section { padding: 6rem 0; }
   top: 0;
   bottom: 0;
   width: 1.5px;
-  background: rgba(210, 85, 85, 0.45);
+  background: rgba(93, 219, 201, 0.45);
   pointer-events: none;
   z-index: 1;
 }
@@ -1598,12 +1611,12 @@ section { padding: 6rem 0; }
   content: '';
   position: absolute;
   left: 22px;
-  top: calc(50% - 52px);
+  top: calc(50% - 80px);
   width: 22px;
   height: 22px;
   border-radius: 50%;
   background: rgba(6, 20, 30, 0.55);
-  box-shadow: 0 104px 0 0 rgba(6, 20, 30, 0.55);
+  box-shadow: 0 160px 0 0 rgba(6, 20, 30, 0.55);
   pointer-events: none;
   z-index: 1;
 }
@@ -1663,35 +1676,52 @@ section { padding: 6rem 0; }
 
 /* ── Post / Article ── */
 .post-header {
-  background-color: var(--deep);
-  background-image: var(--pattern-waves);
-  padding: 5rem 0 4rem;
+  padding: 4rem 0 2.5rem;
+  text-align: center;
+  background: #fff;
 }
 .post-header h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
-  margin-top: 0.75rem;
-  max-width: 720px;
+  max-width: 820px;
+  margin: 0 auto 1.75rem;
+  color: var(--deep);
 }
+.post-header-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+}
+.post-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--teal);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.post-back-btn:hover { opacity: 0.7; }
 .post-meta {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  margin-top: 1.25rem;
-  color: rgba(255,255,255,0.32);
+  color: var(--text-muted);
   font-size: 0.8rem;
   font-weight: 300;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .post-meta .dot {
   width: 3px; height: 3px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.25);
+  background: rgba(6,20,30,0.2);
 }
-.breadcrumb { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.3); }
-.breadcrumb a { color: rgba(255,255,255,0.35); }
-.breadcrumb a:hover { color: var(--lap); }
 .post-body {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 4rem 2rem 5rem;
 }
@@ -3156,9 +3186,9 @@ section { padding: 6rem 0; }
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
         <div class="blog-card-body"><h3 class="blog-card-title">Pool vs. Open Water Wetsuits Explained</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 24, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Open water swimmers face a decision that pool swimmers don't: whether to wear a wetsuit, and which kind. The options range from full tri suits to swim skins to just a swimsuit, and the right choice depends on water temperature, race rules, your level, and what you're optimizing for.</p></div>
       </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM12 8v4M12 16h.01"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">How to Choose a Swim Cap</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Swim caps are often an afterthought, but they affect drag, ear protection, and goggle stability more than most swimmers realize. The right cap depends on your hair length, the water temperature, your sensitivity to pressure, and whether you're training or racing.</p></div>
+      <div class="blog-card" onclick="navigate('pull-buoys-guide')" style="cursor:pointer;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg></div>
+        <div class="blog-card-body"><h3 class="blog-card-title">Pull Buoys: How to Use Them Without Developing Bad Habits</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 17, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">The pull buoy is one of the most common pieces of equipment in a swimmer's bag, and one of the most misused. Used correctly, it isolates the upper body and lets swimmers focus on catch mechanics and pulling power.</p></div>
       </div>
     </div>
   </div>
@@ -3247,11 +3277,10 @@ section { padding: 6rem 0; }
 <div class="page" id="page-freestyle-errors">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Technique</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Technique</span>
-    <h1 style="margin-top:0.75rem;">7 Common Freestyle Errors<br/>and How to Fix Them</h1>
-    <div class="post-meta">
-      <span>Streamline</span><span class="dot"></span><span>May 20, 2026</span><span class="dot"></span><span>8 min read</span>
+    <h1>7 Common Freestyle Errors<br/>and How to Fix Them</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-technique')">← Technique</span>
+      <div class="post-meta"><span>May 20, 2026</span><span class="dot"></span><span>8 min read</span></div>
     </div>
   </div>
 </div>
@@ -3291,12 +3320,9 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">The flip turn is the fastest phase of every lap swim, and most recreational swimmers execute it poorly. A poorly timed or off-axis turn sacrifices the most valuable propulsive moment in the pool — the push-off from the wall.</p></div></div>
       <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long.</p></div></div>
       <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
-    </div>
-    <div class="text-center mt-md">
-      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
+      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
     </div>
   </div>
 </section>
@@ -3306,11 +3332,10 @@ section { padding: 6rem 0; }
 <div class="page" id="page-training-intensity-zones">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Training</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Training</span>
-    <h1 style="margin-top:0.75rem;">Understanding Training<br/>Intensity Zones for Swimmers</h1>
-    <div class="post-meta">
-      <span>Streamline</span><span class="dot"></span><span>Jun 2, 2026</span><span class="dot"></span><span>7 min read</span>
+    <h1>Understanding Training<br/>Intensity Zones for Swimmers</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-training')">← Training</span>
+      <div class="post-meta"><span>Jun 2, 2026</span><span class="dot"></span><span>7 min read</span></div>
     </div>
   </div>
 </div>
@@ -3346,12 +3371,9 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 5, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction affects both performance and recovery.</p></div></div>
       <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div></div>
-    </div>
-    <div class="text-center mt-md">
-      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
+      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
+      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
     </div>
   </div>
 </section>
@@ -3361,11 +3383,10 @@ section { padding: 6rem 0; }
 <div class="page" id="page-morning-practice-nutrition">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Nutrition</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Nutrition</span>
-    <h1 style="margin-top:0.75rem;">What Swimmers Should Eat<br/>Before a Morning Practice</h1>
-    <div class="post-meta">
-      <span>Streamline</span><span class="dot"></span><span>May 28, 2026</span><span class="dot"></span><span>5 min read</span>
+    <h1>What Swimmers Should Eat<br/>Before a Morning Practice</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-nutrition')">← Nutrition</span>
+      <div class="post-meta"><span>May 28, 2026</span><span class="dot"></span><span>5 min read</span></div>
     </div>
   </div>
 </div>
@@ -3395,12 +3416,9 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
+      <div class="blog-card" onclick="navigate('post-workout-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Mar 17, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.</p></div></div>
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
       <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div></div>
-    </div>
-    <div class="text-center mt-md">
-      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
     </div>
   </div>
 </section>
@@ -3410,11 +3428,10 @@ section { padding: 6rem 0; }
 <div class="page" id="page-race-week-taper">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Training</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Training</span>
-    <h1 style="margin-top:0.75rem;">How to Build a Race-Week Taper<br/>That Actually Works</h1>
-    <div class="post-meta">
-      <span>Streamline</span><span class="dot"></span><span>May 24, 2026</span><span class="dot"></span><span>6 min read</span>
+    <h1>How to Build a Race-Week Taper<br/>That Actually Works</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-training')">← Training</span>
+      <div class="post-meta"><span>May 24, 2026</span><span class="dot"></span><span>6 min read</span></div>
     </div>
   </div>
 </div>
@@ -3453,12 +3470,9 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 5, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction affects both performance and recovery.</p></div></div>
-    </div>
-    <div class="text-center mt-md">
-      <a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a>
+      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction affects both performance and recovery.</p></div></div>
+      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
     </div>
   </div>
 </section>
@@ -3468,10 +3482,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-breathing-mechanics">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Technique</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Technique</span>
-    <h1 style="margin-top:0.75rem;">Breathing Mechanics and<br/>Frequency in Freestyle</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Apr 28, 2026</span><span class="dot"></span><span>6 min read</span></div>
+    <h1>Breathing Mechanics and<br/>Frequency in Freestyle</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-technique')">← Technique</span>
+      <div class="post-meta"><span>Apr 28, 2026</span><span class="dot"></span><span>6 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3497,10 +3512,9 @@ section { padding: 6rem 0; }
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
+      <div class="blog-card" onclick="navigate('beginners-lap-swimming')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date">Mar 3, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected — breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.</p></div></div>
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-breathing-mechanics -->
@@ -3509,10 +3523,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-goggles-guide">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Gear</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Gear</span>
-    <h1 style="margin-top:0.75rem;">How to Choose Goggles:<br/>A Practical Guide</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Apr 14, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    <h1>How to Choose Goggles:<br/>A Practical Guide</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
+      <div class="post-meta"><span>Apr 14, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3537,10 +3552,9 @@ section { padding: 6rem 0; }
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('training-fins-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Best Training Fins for Every Level</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 7, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.</p></div></div>
-      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div></div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
+      <div class="blog-card" onclick="navigate('beginners-lap-swimming')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date">Mar 3, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. Goggles, gear selection, pool etiquette, and how to build from zero — all covered.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-goggles-guide -->
@@ -3549,10 +3563,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-training-fins-guide">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Gear</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Gear</span>
-    <h1 style="margin-top:0.75rem;">Best Training Fins<br/>for Every Level</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Apr 7, 2026</span><span class="dot"></span><span>6 min read</span></div>
+    <h1>Best Training Fins<br/>for Every Level</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
+      <div class="post-meta"><span>Apr 7, 2026</span><span class="dot"></span><span>6 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3576,11 +3591,10 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
-      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div></div>
+      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5H5V9zM13 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5h-6V9z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div></div>
+      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-training-fins-guide -->
@@ -3589,10 +3603,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-swim-paddles-guide">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Gear</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Gear</span>
-    <h1 style="margin-top:0.75rem;">Hand Paddles: How to Use Them<br/>Without Wrecking Your Shoulders</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Mar 31, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    <h1>Hand Paddles: How to Use Them<br/>Without Wrecking Your Shoulders</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
+      <div class="post-meta"><span>Mar 31, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3617,9 +3632,8 @@ section { padding: 6rem 0; }
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
-      <div class="blog-card" onclick="navigate('pool-wetsuit-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Pool vs. Open Water Wetsuits Explained</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 24, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Open water swimmers face a decision that pool swimmers don't: whether to wear a wetsuit, and which kind. The options range from full tri suits to swim skins to just a swimsuit, and the right choice depends on water temperature, race rules, your level, and what you're optimizing for.</p></div></div>
+      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-swim-paddles-guide -->
@@ -3628,10 +3642,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-pool-wetsuit-guide">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Gear</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Gear</span>
-    <h1 style="margin-top:0.75rem;">Pool vs. Open Water<br/>Wetsuits Explained</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Mar 24, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    <h1>Pool vs. Open Water<br/>Wetsuits Explained</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
+      <div class="post-meta"><span>Mar 24, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3657,9 +3672,8 @@ section { padding: 6rem 0; }
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
       <div class="blog-card" onclick="navigate('training-fins-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Best Training Fins for Every Level</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 7, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
+      <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-pool-wetsuit-guide -->
@@ -3668,10 +3682,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-post-workout-nutrition">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Nutrition</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Nutrition</span>
-    <h1 style="margin-top:0.75rem;">Post-Workout Recovery<br/>Nutrition for Swimmers</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Mar 17, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    <h1>Post-Workout Recovery<br/>Nutrition for Swimmers</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-nutrition')">← Nutrition</span>
+      <div class="post-meta"><span>Mar 17, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3694,11 +3709,10 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 5, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction affects both performance and recovery.</p></div></div>
+      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction affects both performance and recovery.</p></div></div>
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Race week nutrition and training load interact — getting one wrong affects the other. Here's how to build a taper that actually works.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-post-workout-nutrition -->
@@ -3707,10 +3721,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-dryland-training">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Training</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Training</span>
-    <h1 style="margin-top:0.75rem;">Dryland Training for Swimmers:<br/>What Actually Transfers</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Mar 10, 2026</span><span class="dot"></span><span>7 min read</span></div>
+    <h1>Dryland Training for Swimmers:<br/>What Actually Transfers</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-training')">← Training</span>
+      <div class="post-meta"><span>Mar 10, 2026</span><span class="dot"></span><span>7 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3738,7 +3753,6 @@ section { padding: 6rem 0; }
       <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div></div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-dryland-training -->
@@ -3747,10 +3761,11 @@ section { padding: 6rem 0; }
 <div class="page" id="page-beginners-lap-swimming">
 <div class="post-header">
   <div class="container">
-    <p class="breadcrumb"><a href="#blog" onclick="navigate('blog')">Blog</a> &nbsp;/&nbsp; Guides</p>
-    <span class="cat-badge" style="background:rgba(255,255,255,0.08); color:var(--pool-100); border-color:rgba(255,255,255,0.12); margin-top:0.5rem;">Guide</span>
-    <h1 style="margin-top:0.75rem;">The Complete Beginner's<br/>Guide to Lap Swimming</h1>
-    <div class="post-meta"><span>Streamline</span><span class="dot"></span><span>Mar 3, 2026</span><span class="dot"></span><span>8 min read</span></div>
+    <h1>The Complete Beginner's<br/>Guide to Lap Swimming</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-guides')">← Guides</span>
+      <div class="post-meta"><span>Mar 3, 2026</span><span class="dot"></span><span>8 min read</span></div>
+    </div>
   </div>
 </div>
 <article class="post-body">
@@ -3778,10 +3793,49 @@ section { padding: 6rem 0; }
       <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long — creating disruptions in the stroke cycle that compound over thousands of yards.</p></div></div>
       <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
     </div>
-    <div class="text-center mt-md"><a href="#blog" class="btn btn-outline-dark" onclick="navigate('blog')">← Back to All Posts</a></div>
   </div>
 </section>
 </div><!-- end page-beginners-lap-swimming -->
+
+<!-- ══ POST: PULL BUOYS ══ -->
+<div class="page" id="page-pull-buoys-guide">
+<div class="post-header">
+  <div class="container">
+    <h1>Pull Buoys: How to Use Them<br/>Without Developing Bad Habits</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
+      <div class="post-meta"><span>Mar 17, 2026</span><span class="dot"></span><span>5 min read</span></div>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>The pull buoy is one of the most common pieces of equipment in a swimmer's bag, and one of the most misused. Used correctly, it isolates the upper body and lets swimmers focus on catch mechanics and pulling power. Used incorrectly, it props up a weak body position and prevents swimmers from developing the core tension required for efficient freestyle.</p>
+  <p>Understanding what a pull buoy actually does — and what it doesn't do — is the key to using it productively.</p>
+  <blockquote>"A pull buoy lifts your hips so you don't have to. That's the benefit and the problem. The goal is to earn that position without the float."</blockquote>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>What the pull buoy is actually for</h3><p>The pull buoy adds buoyancy at the hips, which raises the lower body and allows swimmers to focus entirely on their arm stroke without the cognitive and muscular load of kicking. This makes it ideal for catch and pull drills, technique work that benefits from slower, more deliberate execution, and high-intensity pulling sets where the goal is maximum upper-body output. The buoy isn't a shortcut — it's a tool that changes the focus of training.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>The body position trap</h3><p>The most common problem with pull buoy use is that it masks a poor body position. Many swimmers have hips that naturally sit low in the water — a result of weak core tension, insufficient ankle flexibility, or inadequate hip drive from the kick. Slap a pull buoy between their legs and they suddenly look like they're swimming efficiently. But remove it and everything collapses. If you rely on a pull buoy to achieve a flat body position you can't maintain without it, the buoy is solving a symptom rather than the underlying cause.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>How to use it productively</h3><p>Productive pull buoy sets have a specific focus: catch mechanics, high-elbow positioning, pull power, or stroke rate work. Squeeze the buoy lightly with the thighs and maintain the same core tension you'd use without it — don't let the float do the work your core should be doing. If you find yourself completely relaxing your midsection and just floating through sets, you're training a passive body position that won't transfer to your normal swimming.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Pull buoy with paddles</h3><p>Combining a pull buoy with hand paddles is one of the most common training combinations in competitive swimming. The combination allows very high pulling load with isolated upper body mechanics. The caution: paddles amplify whatever technique you have. Using paddles and a pull buoy before your catch mechanics are solid reinforces inefficient patterns at higher resistance. Learn the catch without paddles first. Add paddles once the mechanics are consistent.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>How much is too much</h3><p>Pull buoy yardage in competitive training typically runs 20–30% of total volume. For recreational swimmers, less is often better — because the buoy's main value (isolating technique under controlled conditions) is most useful when the rest of your training is developing the coordination and fitness the buoy is temporarily bypassing. If your pull split is significantly faster than your free split with a kick, that gap is information: either your kick is inefficient or your core tension without a float needs work. Either way, more buoy time won't fix it.</p></div></div>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Daily Swim Sets (free)</h3>
+      <p>Pull sets with appropriate technique guidance built in. Updated daily across Beginner, Intermediate, and Advanced levels.</p>
+    </div>
+    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5H5V9zM13 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5h-6V9z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div></div>
+      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
+      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
+    </div>
+  </div>
+</section>
+</div><!-- end page-pull-buoys-guide -->
 
 <!-- ══ CONTACT PAGE ══ -->
 <div class="page" id="page-contact">
@@ -5426,6 +5480,18 @@ const BLOG_POSTS = [
     excerpt: 'Which exercises transfer to pool performance, which are a waste of time, and how to structure dryland work around your swim schedule.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
     thumbPaths: '<path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/>',
+  },
+  {
+    id: 'pull-buoys-guide',
+    title: 'Pull Buoys: How to Use Them Without Developing Bad Habits',
+    category: 'Gear',
+    homeSection: 'gear',
+    date: '2026-03-17',
+    readTime: 5,
+    openingText: 'The pull buoy is one of the most common pieces of equipment in a swimmer\'s bag, and one of the most misused. Used correctly, it isolates the upper body and lets swimmers focus on catch mechanics and pulling power. Used incorrectly, it props up a weak body position and prevents swimmers from developing the core tension required for efficient freestyle.',
+    excerpt: 'How to get real value from pull buoy sets — and the mistakes that make them counterproductive.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);',
+    thumbPaths: '<circle cx="12" cy="8" r="6"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/>',
   },
   {
     id: 'beginners-lap-swimming',
