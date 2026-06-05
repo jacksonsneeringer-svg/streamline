@@ -681,7 +681,7 @@ section { padding: 6rem 0; }
   overflow: hidden;
 }
 .blog-card-thumb-pattern {
-  height: 160px;
+  aspect-ratio: 2/1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -809,7 +809,7 @@ section { padding: 6rem 0; }
 .recent-main-card:hover .recent-main-title { color: var(--teal); }
 .recent-main-thumb {
   width: 100%;
-  aspect-ratio: 21/9;
+  aspect-ratio: 3/2;
   border-radius: var(--r-lg);
   display: flex;
   align-items: center;
@@ -1852,7 +1852,7 @@ section { padding: 6rem 0; }
 .card-body { padding: 1.25rem 1.5rem; }
 .card-title { font-family: var(--font-display); font-size: 1.05rem; color: var(--deep); line-height: 1.3; }
 .card-excerpt { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin: 0.4rem 0 0; }
-.blog-card-thumb-pattern { height: 160px; display: flex; align-items: center; justify-content: center; }
+.blog-card-thumb-pattern { aspect-ratio: 2/1; display: flex; align-items: center; justify-content: center; }
 @media (max-width: 1020px) {
   .grid-4 { grid-template-columns: repeat(2,1fr); }
   .grid-2 { grid-template-columns: 1fr; }
@@ -3179,12 +3179,12 @@ section { padding: 6rem 0; }
         <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div>
       </div>
       <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">Hydration for Swimmers: What to Drink and When</h3><p class="blog-card-excerpt">Pool swimmers often underestimate fluid loss. Here's how to stay ahead of it.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">Hydration for Swimmers: What to Drink and When</h3><p class="blog-card-excerpt">Pool swimmers often underestimate fluid loss. Here's how to stay ahead of it.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div></div>
       </div>
       <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div>
-        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><p class="blog-card-excerpt">The timing and composition of your recovery meal matters more than most swimmers realize.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div>
+        <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><p class="blog-card-excerpt">The timing and composition of your recovery meal matters more than most swimmers realize.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div></div>
       </div>
     </div>
   </div>
