@@ -1570,6 +1570,42 @@ section { padding: 6rem 0; }
 #page-blog-guides .page-hero-sm {
   background-image: var(--pattern-lined-paper);
   background-size: 100px 32px;
+  position: relative;
+  overflow: hidden;
+}
+#page-blog .page-hero-sm::before,
+#page-blog-technique .page-hero-sm::before,
+#page-blog-training .page-hero-sm::before,
+#page-blog-nutrition .page-hero-sm::before,
+#page-blog-gear .page-hero-sm::before,
+#page-blog-guides .page-hero-sm::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: rgba(210, 85, 85, 0.45);
+  pointer-events: none;
+  z-index: 1;
+}
+#page-blog .page-hero-sm::after,
+#page-blog-technique .page-hero-sm::after,
+#page-blog-training .page-hero-sm::after,
+#page-blog-nutrition .page-hero-sm::after,
+#page-blog-gear .page-hero-sm::after,
+#page-blog-guides .page-hero-sm::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: calc(50% - 52px);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(6, 20, 30, 0.55);
+  box-shadow: 0 104px 0 0 rgba(6, 20, 30, 0.55);
+  pointer-events: none;
+  z-index: 1;
 }
 .page-hero-sm h1 {
   font-size: clamp(2.2rem, 5vw, 3.5rem);
@@ -5407,6 +5443,14 @@ const BLOG_POSTS = [
 
 const RECENTLY_PUBLISHED_COUNT = 5; // 1 featured left + up to 4 right-column
 
+function _truncateExcerpt(text, max) {
+  max = max || 170;
+  if (text.length <= max) return text;
+  const trimmed = text.slice(0, max);
+  const lastSpace = trimmed.lastIndexOf(' ');
+  return (lastSpace > 60 ? trimmed.slice(0, lastSpace) : trimmed) + '…';
+}
+
 function _blogSvg(paths, size) {
   return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round">' + paths + '</svg>';
 }
@@ -5465,27 +5509,42 @@ function renderCategoryPosts() {
     const grid = document.getElementById('blog-cat-grid-' + sec);
     if (!grid) return;
     const posts = bySection[sec] || [];
-    const html = posts.map(p =>
+    const existingCount = grid.children.length;
+    const limit = sec === 'gear' ? posts.length : Math.max(0, 2 - existingCount);
+    const html = posts.slice(0, limit).map(p =>
       '<div class="blog-card" onclick="navigate(\'' + escHtml(p.id) + '\')" style="cursor:pointer;">' +
         '<div class="blog-card-thumb-pattern" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 36) + '</div>' +
         '<div class="blog-card-body">' +
           '<h3 class="blog-card-title">' + escHtml(p.title) + '</h3>' +
           '<div class="blog-card-meta">' +
             '<span class="cat-badge">' + escHtml(p.category) + '</span>' +
-            '<span class="blog-card-date">' + _blogFmtDate(p.date) + '</span>' +
-            '<span class="blog-card-date">' + p.readTime + ' min read</span>' +
+            '<span class="blog-card-date">' + _blogFmtDate(p.date) + ' · ' + p.readTime + ' min read</span>' +
           '</div>' +
-          '<p class="blog-card-excerpt">' + escHtml(p.openingText) + '</p>' +
+          '<p class="blog-card-excerpt">' + escHtml(_truncateExcerpt(p.openingText)) + '</p>' +
         '</div>' +
       '</div>'
     ).join('');
-    grid.insertAdjacentHTML('afterbegin', html);
+    if (html) grid.insertAdjacentHTML('afterbegin', html);
+    if (sec !== 'gear') {
+      while (grid.children.length > 2) grid.removeChild(grid.lastElementChild);
+    }
   });
 }
 
 window.addEventListener('DOMContentLoaded', function() {
   renderRecentlyPublished();
   renderCategoryPosts();
+  // Fix hardcoded blog cards: merge split date+readtime spans and truncate excerpts
+  document.querySelectorAll('.blog-card-meta').forEach(function(meta) {
+    const dates = meta.querySelectorAll('.blog-card-date');
+    if (dates.length >= 2 && !dates[0].style.fontStyle) {
+      dates[0].textContent = dates[0].textContent + ' · ' + dates[1].textContent;
+      dates[1].remove();
+    }
+  });
+  document.querySelectorAll('.blog-card-excerpt').forEach(function(el) {
+    el.textContent = _truncateExcerpt(el.textContent);
+  });
 });
 
 async function handleNewsletterSubmit(event, source) {
