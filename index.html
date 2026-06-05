@@ -751,6 +751,13 @@ section { padding: 6rem 0; }
   color: var(--deep);
   line-height: 1.35;
   margin-bottom: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.25s ease;
+}
+.blog-card:hover .blog-card-title {
+  text-decoration-color: var(--deep);
 }
 .blog-card-excerpt {
   font-size: 0.85rem;
@@ -1036,18 +1043,15 @@ section { padding: 6rem 0; }
   font-weight: 400;
   color: var(--deep);
   line-height: 1.35;
-  display: inline;
-  text-decoration: none;
-  background-image: linear-gradient(var(--deep), var(--deep));
-  background-position: 0% 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 1px;
-  transition: background-size 0.25s ease;
-  margin-bottom: 0.5rem;
   display: block;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.25s ease;
+  margin-bottom: 0.5rem;
 }
 .blog-side-title:hover {
-  background-size: 100% 1px;
+  text-decoration-color: var(--deep);
 }
 .blog-side-meta {
   display: flex;
@@ -2258,8 +2262,9 @@ section { padding: 6rem 0; }
         <div class="blog-feature-body">
           <a href="#freestyle-errors" class="blog-feature-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Errors and How to Fix Them</a>
           <div class="blog-side-meta" style="margin-top:0.65rem;">
-            <span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span>
+            <span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026 · 8 min read</span>
           </div>
+          <p style="font-size:0.85rem; font-weight:300; color:var(--text-muted); line-height:1.65; margin-top:0.75rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p>
         </div>
       </div>
       <!-- Right: three compact posts -->
@@ -2267,25 +2272,25 @@ section { padding: 6rem 0; }
         <div class="blog-side-card">
           <a class="blog-side-title" href="#training-intensity-zones" onclick="navigate('training-intensity-zones')">Understanding Training Intensity Zones for Swimmers</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span>
+            <span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026 · 7 min read</span>
           </div>
         </div>
         <div class="blog-side-card">
           <a class="blog-side-title" href="#morning-practice-nutrition" onclick="navigate('morning-practice-nutrition')">What Swimmers Should Eat Before a Morning Practice</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span>
+            <span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026 · 5 min read</span>
           </div>
         </div>
         <div class="blog-side-card">
           <a class="blog-side-title" href="#race-week-taper" onclick="navigate('race-week-taper')">How to Build a Race-Week Taper That Actually Works</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span>
+            <span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026 · 6 min read</span>
           </div>
         </div>
         <div class="blog-side-card">
           <a class="blog-side-title" href="#breathing-mechanics" onclick="navigate('breathing-mechanics')">Breathing Mechanics and Frequency in Freestyle</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span>
+            <span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026 · 6 min read</span>
           </div>
         </div>
       </div>
