@@ -789,6 +789,85 @@ section { padding: 6rem 0; }
   color: var(--teal);
 }
 
+/* ── Recently Published 2-col layout ── */
+.recent-posts-grid {
+  display: grid;
+  grid-template-columns: 2fr auto 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+.recent-col-divider {
+  width: 1px;
+  background: var(--teal);
+  margin: 1.5rem 2.5rem;
+}
+.recent-main-card {
+  cursor: pointer;
+  padding-right: 2.5rem;
+  padding-bottom: 1rem;
+}
+.recent-main-card:hover .recent-main-title { color: var(--teal); }
+.recent-main-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: var(--r-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.recent-main-title {
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  color: var(--deep);
+  font-family: var(--font-display);
+  line-height: 1.3;
+  margin: 0 0 0.75rem;
+  transition: color 0.15s;
+}
+.recent-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.recent-date { font-size: 0.78rem; color: var(--gray-400); }
+.recent-side-col {
+  display: flex;
+  flex-direction: column;
+}
+.recent-side-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  cursor: pointer;
+  padding: 1.1rem 0;
+  flex: 1;
+}
+.recent-side-card:hover .recent-side-title { color: var(--teal); }
+.recent-side-thumb {
+  width: 80px;
+  height: 70px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.recent-side-body { flex: 1; min-width: 0; }
+.recent-side-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--deep);
+  line-height: 1.4;
+  margin: 0 0 0.45rem;
+  transition: color 0.15s;
+}
+.recent-row-divider {
+  height: 1px;
+  background: var(--teal);
+  margin: 0 1.25rem;
+}
+@media (max-width: 900px) {
+  .recent-posts-grid { grid-template-columns: 1fr; }
+  .recent-col-divider { width: 100%; height: 1px; margin: 1.5rem 0; }
+  .recent-main-card { padding-right: 0; }
+}
+
 /* ── Blog category page title ── */
 .blog-category-title-section {
   padding: 4rem 0 3rem;
@@ -1458,7 +1537,7 @@ section { padding: 6rem 0; }
   font-size: 0.96rem;
   font-weight: 300;
   margin-top: 0.75rem;
-  max-width: 520px;
+  max-width: 820px;
   line-height: 1.8;
 }
 .placeholder-content {
@@ -2771,25 +2850,13 @@ section { padding: 6rem 0; }
     <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
   </div>
 </div>
-<!-- Featured post -->
+<!-- Recently Published -->
 <section style="padding:3rem 0 2rem; background:var(--white);">
   <div class="container">
-    <div style="background:var(--deep); border-radius:var(--r-xl); overflow:hidden; display:grid; grid-template-columns:1fr 1.5fr; gap:0; box-shadow:var(--shadow-lg);">
-      <div style="background:linear-gradient(150deg,var(--text),var(--teal)); display:flex; align-items:center; justify-content:center; min-height:300px; padding:2rem; background-image:var(--pattern-waves);">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.4)" stroke-width="1" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      </div>
-      <div style="padding:2.75rem; display:flex; flex-direction:column; justify-content:center; gap:1rem;">
-        <div style="display:flex; gap:0.6rem; align-items:center;">
-          <span style="font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; background:rgba(255,255,255,0.08); color:var(--pool-100); border:1px solid rgba(255,255,255,0.12); padding:0.2rem 0.6rem; border-radius:3px;">Technique</span>
-          <span style="color:rgba(255,255,255,0.3); font-size:0.78rem;">8 min read · May 20, 2026</span>
-        </div>
-        <h2 style="color:#fff; font-size:1.7rem; margin:0; line-height:1.2;">7 Common Freestyle Errors and How to Fix Them</h2>
-        <p style="color:rgba(255,255,255,0.55); font-size:0.92rem; line-height:1.7; margin:0;">A systematic look at the technique errors that appear most frequently in lap swimmers, with evidence-based corrections for each.</p>
-        <div style="margin-top:0.25rem;">
-          <a href="#freestyle-errors" class="btn btn-gold" onclick="navigate('freestyle-errors')">Read Post →</a>
-        </div>
-      </div>
+    <div class="blog-section-divider" style="margin-bottom:2rem;">
+      <h2>Recently Published</h2>
     </div>
+    <div id="blog-recently-published"><!-- rendered by JS --></div>
   </div>
 </section>
 
@@ -2803,21 +2870,7 @@ section { padding: 6rem 0; }
         <h2>Technique</h2>
         <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-technique')">View all →</span>
       </div>
-      <div class="grid-3">
-        <div class="blog-card">
-          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <div class="blog-card-body">
-            <span class="cat-badge">Technique</span>
-            <h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3>
-            <p class="blog-card-excerpt">Head position, kick mechanics, catch depth, hip rotation, and more, with corrections for each.</p>
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;">
-              <a href="#freestyle-errors" class="btn btn-outline-dark btn-sm" onclick="navigate('freestyle-errors')">Read →</a>
-              <span style="font-size:0.75rem; color:var(--gray-400);">8 min</span>
-            </div>
-          </div>
-        </div>
+      <div class="grid-3" id="blog-cat-grid-technique">
         <div class="blog-card" style="opacity:0.6; pointer-events:none;">
           <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <div class="blog-card-body"><span class="cat-badge">Technique</span><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><p class="blog-card-excerpt">How breathing patterns affect stroke timing and performance.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
@@ -2835,19 +2888,7 @@ section { padding: 6rem 0; }
         <h2>Training</h2>
         <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-training')">View all →</span>
       </div>
-      <div class="grid-3">
-        <div class="blog-card">
-          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-          <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><p class="blog-card-excerpt">How to set and use pace-based zones to develop every energy system systematically.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#training-intensity-zones" class="btn btn-outline-dark btn-sm" onclick="navigate('training-intensity-zones')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">7 min</span></div></div>
-        </div>
-        <div class="blog-card">
-          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-          <div class="blog-card-body"><span class="cat-badge">Training</span><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><p class="blog-card-excerpt">Reducing volume, maintaining intensity, and arriving at the blocks race-ready.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#race-week-taper" class="btn btn-outline-dark btn-sm" onclick="navigate('race-week-taper')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">6 min</span></div></div>
-        </div>
-        <div class="blog-card">
-          <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
-          <div class="blog-card-body"><span class="cat-badge">Nutrition</span><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><p class="blog-card-excerpt">Fueling strategies for early-morning training when appetite and time are both limited.</p><div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;"><a href="#morning-practice-nutrition" class="btn btn-outline-dark btn-sm" onclick="navigate('morning-practice-nutrition')">Read →</a><span style="font-size:0.75rem; color:var(--gray-400);">5 min</span></div></div>
-        </div>
+      <div class="grid-3" id="blog-cat-grid-training">
       </div>
     </div>
 
@@ -2857,7 +2898,7 @@ section { padding: 6rem 0; }
         <h2>Gear</h2>
         <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-gear')">View all →</span>
       </div>
-      <div class="grid-3">
+      <div class="grid-3" id="blog-cat-grid-gear">
         <div class="blog-card" style="opacity:0.6; pointer-events:none;">
           <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div>
           <div class="blog-card-body"><span class="cat-badge">Gear</span><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><p class="blog-card-excerpt">Lens type, fit, anti-fog performance: the factors that matter and how to evaluate them.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
@@ -2879,7 +2920,7 @@ section { padding: 6rem 0; }
         <h2>Guides</h2>
         <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-guides')">View all →</span>
       </div>
-      <div class="grid-3">
+      <div class="grid-3" id="blog-cat-grid-guides">
         <div class="blog-card" style="opacity:0.6; pointer-events:none;">
           <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
           <div class="blog-card-body"><span class="cat-badge">Guide</span><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><p class="blog-card-excerpt">Everything you need to know before getting in the water: etiquette, gear, and first workouts.</p><span style="color:var(--gray-400); font-size:0.8rem; font-style:italic;">Coming soon</span></div>
@@ -2914,6 +2955,13 @@ section { padding: 6rem 0; }
 
 <!-- ══ BLOG CATEGORY: TECHNIQUE ══ -->
 <div class="page" id="page-blog-technique">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Athlete Advice</span>
+    <h1>Technique</h1>
+    <p class="sub">Head position, catch mechanics, kick timing, body rotation — detailed breakdowns of the fundamentals that separate good swimmers from great ones.</p>
+  </div>
+</div>
 <div class="blog-nav-bar">
   <div class="container blog-nav-inner">
     <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
@@ -2921,11 +2969,6 @@ section { padding: 6rem 0; }
     <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
     <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
     <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
-  </div>
-</div>
-<div class="blog-category-title-section">
-  <div class="container">
-    <h1>Technique</h1>
   </div>
 </div>
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
@@ -2960,6 +3003,13 @@ section { padding: 6rem 0; }
 
 <!-- ══ BLOG CATEGORY: TRAINING ══ -->
 <div class="page" id="page-blog-training">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Athlete Advice</span>
+    <h1>Training</h1>
+    <p class="sub">Periodization, intensity zones, taper strategy, and the training methodology that turns consistent yardage into measurable performance gains.</p>
+  </div>
+</div>
 <div class="blog-nav-bar">
   <div class="container blog-nav-inner">
     <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
@@ -2967,11 +3017,6 @@ section { padding: 6rem 0; }
     <span class="blog-nav-link active">Training</span>
     <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
     <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
-  </div>
-</div>
-<div class="blog-category-title-section">
-  <div class="container">
-    <h1>Training</h1>
   </div>
 </div>
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
@@ -2996,6 +3041,13 @@ section { padding: 6rem 0; }
 
 <!-- ══ BLOG CATEGORY: GEAR ══ -->
 <div class="page" id="page-blog-gear">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Athlete Advice</span>
+    <h1>Gear</h1>
+    <p class="sub">Honest, evidence-based reviews and buying guides for goggles, fins, paddles, suits, and every other piece of equipment that belongs in your swim bag.</p>
+  </div>
+</div>
 <div class="blog-nav-bar">
   <div class="container blog-nav-inner">
     <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
@@ -3003,11 +3055,6 @@ section { padding: 6rem 0; }
     <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
     <span class="blog-nav-link active">Gear</span>
     <span class="blog-nav-link" onclick="navigate('blog-guides')">Guides</span>
-  </div>
-</div>
-<div class="blog-category-title-section">
-  <div class="container">
-    <h1>Gear</h1>
   </div>
 </div>
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
@@ -3032,6 +3079,13 @@ section { padding: 6rem 0; }
 
 <!-- ══ BLOG CATEGORY: GUIDES ══ -->
 <div class="page" id="page-blog-guides">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Athlete Advice</span>
+    <h1>Guides</h1>
+    <p class="sub">Comprehensive, start-to-finish guides for swimmers at every level — from getting in the water for the first time to building a race-ready training block.</p>
+  </div>
+</div>
 <div class="blog-nav-bar">
   <div class="container blog-nav-inner">
     <span class="blog-nav-link" onclick="navigate('blog')">All Posts</span>
@@ -3039,11 +3093,6 @@ section { padding: 6rem 0; }
     <span class="blog-nav-link" onclick="navigate('blog-training')">Training</span>
     <span class="blog-nav-link" onclick="navigate('blog-gear')">Gear</span>
     <span class="blog-nav-link active">Guides</span>
-  </div>
-</div>
-<div class="blog-category-title-section">
-  <div class="container">
-    <h1>Guides</h1>
   </div>
 </div>
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
@@ -4793,6 +4842,140 @@ async function handleContactSubmit(event) {
     alert('Something went wrong. Please try again.');
   }
 }
+
+// ── Blog post data ─────────────────────────────────────────────────────────
+// Add new posts to the TOP of this array (most recent first).
+// The first RECENTLY_PUBLISHED_COUNT posts appear in "Recently Published".
+// Posts beyond that threshold automatically appear in their category section.
+const BLOG_POSTS = [
+  {
+    id: 'freestyle-errors',
+    title: '7 Common Freestyle Errors and How to Fix Them',
+    category: 'Technique',
+    homeSection: 'technique',
+    date: '2026-05-20',
+    readTime: 8,
+    excerpt: 'A systematic look at the technique errors that appear most frequently in lap swimmers, with evidence-based corrections for each.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);',
+    thumbPaths: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+  },
+  {
+    id: 'training-intensity-zones',
+    title: 'Understanding Training Intensity Zones for Swimmers',
+    category: 'Training',
+    homeSection: 'training',
+    date: '2026-05-15',
+    readTime: 7,
+    excerpt: 'How to set and use pace-based zones to develop every energy system systematically.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);',
+    thumbPaths: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+  },
+  {
+    id: 'race-week-taper',
+    title: 'How to Build a Race-Week Taper That Actually Works',
+    category: 'Training',
+    homeSection: 'training',
+    date: '2026-05-10',
+    readTime: 6,
+    excerpt: 'Reducing volume, maintaining intensity, and arriving at the blocks race-ready.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
+    thumbPaths: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+  },
+  {
+    id: 'morning-practice-nutrition',
+    title: 'What Swimmers Should Eat Before a Morning Practice',
+    category: 'Nutrition',
+    homeSection: 'training',
+    date: '2026-05-05',
+    readTime: 5,
+    excerpt: 'Fueling strategies for early-morning training when appetite and time are both limited.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);',
+    thumbPaths: '<path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/>',
+  },
+];
+
+const RECENTLY_PUBLISHED_COUNT = 4; // 1 featured left + up to 3 right-column
+
+function _blogSvg(paths, size) {
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round">' + paths + '</svg>';
+}
+
+function _blogFmtDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function renderRecentlyPublished() {
+  const container = document.getElementById('blog-recently-published');
+  if (!container) return;
+  const recent = BLOG_POSTS.slice(0, RECENTLY_PUBLISHED_COUNT);
+  if (!recent.length) { container.innerHTML = ''; return; }
+  const featured = recent[0];
+  const sideItems = recent.slice(1, 4);
+
+  const sideHtml = sideItems.map((p, i) =>
+    '<div class="recent-side-card" onclick="navigate(\'' + escHtml(p.id) + '\')">' +
+      '<div class="recent-side-thumb" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 28) + '</div>' +
+      '<div class="recent-side-body">' +
+        '<h3 class="recent-side-title">' + escHtml(p.title) + '</h3>' +
+        '<div class="recent-meta">' +
+          '<span class="cat-badge">' + escHtml(p.category) + '</span>' +
+          '<span class="recent-date">' + _blogFmtDate(p.date) + ' · ' + p.readTime + ' min</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    (i < sideItems.length - 1 ? '<div class="recent-row-divider"></div>' : '')
+  ).join('');
+
+  container.innerHTML =
+    '<div class="recent-posts-grid">' +
+      '<div class="recent-main-card" onclick="navigate(\'' + escHtml(featured.id) + '\')">' +
+        '<div class="recent-main-thumb" style="' + escHtml(featured.thumbStyle) + '">' + _blogSvg(featured.thumbPaths, 56) + '</div>' +
+        '<h2 class="recent-main-title">' + escHtml(featured.title) + '</h2>' +
+        '<div class="recent-meta">' +
+          '<span class="cat-badge">' + escHtml(featured.category) + '</span>' +
+          '<span class="recent-date">' + _blogFmtDate(featured.date) + ' · ' + featured.readTime + ' min</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="recent-col-divider"></div>' +
+      '<div class="recent-side-col">' + sideHtml + '</div>' +
+    '</div>';
+}
+
+function renderCategoryPosts() {
+  const overflow = BLOG_POSTS.slice(RECENTLY_PUBLISHED_COUNT);
+  // Group by homeSection
+  const bySection = {};
+  overflow.forEach(p => {
+    if (!bySection[p.homeSection]) bySection[p.homeSection] = [];
+    bySection[p.homeSection].push(p);
+  });
+  ['technique', 'training', 'gear', 'guides'].forEach(sec => {
+    const grid = document.getElementById('blog-cat-grid-' + sec);
+    if (!grid) return;
+    const posts = bySection[sec] || [];
+    const html = posts.map(p =>
+      '<div class="blog-card">' +
+        '<div class="blog-card-thumb-pattern" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 36) + '</div>' +
+        '<div class="blog-card-body">' +
+          '<span class="cat-badge">' + escHtml(p.category) + '</span>' +
+          '<h3 class="blog-card-title">' + escHtml(p.title) + '</h3>' +
+          '<p class="blog-card-excerpt">' + escHtml(p.excerpt) + '</p>' +
+          '<div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-top:auto;">' +
+            '<a href="#' + escHtml(p.id) + '" class="btn btn-outline-dark btn-sm" onclick="navigate(\'' + escHtml(p.id) + '\')">Read →</a>' +
+            '<span style="font-size:0.75rem; color:var(--gray-400);">' + p.readTime + ' min</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+    grid.insertAdjacentHTML('afterbegin', html);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  renderRecentlyPublished();
+  renderCategoryPosts();
+});
 
 async function handleNewsletterSubmit(event, source) {
   event.preventDefault();
