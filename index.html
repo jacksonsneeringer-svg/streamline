@@ -4033,25 +4033,23 @@ section { padding: 6rem 0; }
     <div class="setup-step-content" id="step-2">
       <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
       <div class="setup-fields">
-        <div class="form-group"><label class="form-label required-dot">Age / Date of Birth</label><input type="date" id="gs-dob" class="form-input" /><p class="form-hint">Age affects training zone calculations.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Age</label><input type="number" id="gs-dob" class="form-input" placeholder="25" min="1" max="120" inputmode="numeric" /></div>
         <div class="form-row">
-          <div class="form-group"><label class="form-label required-dot">Height</label><div class="unit-input"><input type="number" id="gs-height" class="form-input" placeholder="70" min="48" max="96" /><span class="unit-label">in</span></div><p class="form-hint">Inches (e.g., 70 = 5'10")</p></div>
-          <div class="form-group"><label class="form-label required-dot">Weight</label><div class="unit-input"><input type="number" id="gs-weight" class="form-input" placeholder="160" min="80" max="400" /><span class="unit-label">lbs</span></div></div>
+          <div class="form-group"><label class="form-label required-dot">Height (in.)</label><div class="unit-input"><input type="number" id="gs-height" class="form-input" placeholder="70" min="48" max="96" /><span class="unit-label">in</span></div></div>
+          <div class="form-group"><label class="form-label required-dot">Weight (lbs.)</label><div class="unit-input"><input type="number" id="gs-weight" class="form-input" placeholder="160" min="80" max="400" /><span class="unit-label">lbs</span></div></div>
         </div>
-        <div class="form-group"><label class="form-label required-dot">Gender</label><select id="gs-gender" class="form-input form-select"><option value="" disabled selected>Select…</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select><p class="form-hint">Used for metabolic and nutritional calculations only.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Gender</label><select id="gs-gender" class="form-input form-select"><option value="" disabled selected>Select…</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
         <div class="form-group">
           <label class="form-label required-dot">Current Swim Skill Level</label>
-          <p class="form-hint" style="margin-bottom:0.6rem;">Select one.</p>
           <div class="chip-grid" id="gs-skill-chips" style="margin-top:0.5rem;">
-            <div class="chip" onclick="toggleChip(this,'skill')">Beginner — learning basics, building comfort</div>
-            <div class="chip" onclick="toggleChip(this,'skill')">Novice — can swim laps, building fitness</div>
-            <div class="chip" onclick="toggleChip(this,'skill')">Intermediate — consistent technique, structured sets</div>
-            <div class="chip" onclick="toggleChip(this,'skill')">Advanced — competitive background or high mileage</div>
-            <div class="chip" onclick="toggleChip(this,'skill')">Elite / Masters competitor</div>
+            <div class="chip" onclick="toggleChip(this,'skill')">Beginner: learning basics, building comfort</div>
+            <div class="chip" onclick="toggleChip(this,'skill')">Intermediate: consistent technique, structured sets</div>
+            <div class="chip" onclick="toggleChip(this,'skill')">Advanced: competitive background or high mileage</div>
+            <div class="chip" onclick="toggleChip(this,'skill')">Pro: elite performance, high-volume training</div>
           </div>
         </div>
       </div>
-      <div class="setup-nav"><button class="btn btn-outline-dark" onclick="goToStep(1)">← Back</button><button class="btn btn-gold" onclick="goToStep(3)">Continue →</button></div>
+      <div class="setup-nav" style="justify-content:space-between; align-items:center;"><button class="btn btn-outline-dark" onclick="setupLater()" style="font-size:0.85rem;">Set up later →</button><button class="btn btn-gold" onclick="goToStep(3)">Continue →</button></div>
     </div>
     <div class="setup-step-content" id="step-3">
       <div class="setup-step-header"><span class="eyebrow">Step 3 of 5</span><h2>Your goals</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">We use these to set your training plan direction, select appropriate intensities, and tailor your recommendations.</p></div>
@@ -5026,7 +5024,8 @@ function createAccount() {
   const greeting = document.getElementById('account-created-greeting');
   if (greeting) greeting.textContent = 'Welcome, ' + firstName + '!';
 
-  navigate('account-created');
+  navigate('get-started');
+  goToStep(2);
 }
 
 function setupProfile() {
@@ -5055,7 +5054,7 @@ function getSelectedChips(containerId) {
 
 function collectProfileData() {
   return {
-    dob:          document.getElementById('gs-dob')?.value || '',
+    age:          document.getElementById('gs-dob')?.value || '',
     height:       document.getElementById('gs-height')?.value || '',
     weight:       document.getElementById('gs-weight')?.value || '',
     gender:       document.getElementById('gs-gender')?.value || '',
