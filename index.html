@@ -2359,68 +2359,11 @@ section { padding: 6rem 0; }
     <div id="swim-level-beginner">
       <div class="swim-level-layout">
         <div class="swim-level-main">
-          <div class="swim-print-area">
-          <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-            <div>
-              <span class="eyebrow">Tuesday, June 2, 2026 · Beginner</span>
-              <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Aerobic Foundation #1</h2>
-              <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~1,000 yards &nbsp;·&nbsp; Est. 25–35 min &nbsp;·&nbsp; Focus: Building comfort in the water + basic stroke mechanics</p>
+          <div id="swim-set-content-beginner">
+            <div class="swim-set-loading" id="swim-set-loading-beginner">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's beginner set…</p>
             </div>
-            <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-              Print
-            </button>
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
-            <div class="set-block">
-              <div class="set-block-header" style="background:var(--deep);">
-                <span class="set-label">Warm-Up</span><span class="set-yds">200 yds</span>
-              </div>
-              <div class="set-rows">
-                <div class="set-row">100 Free, easy, focus on breathing every 3 strokes</div>
-                <div class="set-row">2 × 50 Kick on board, rest as needed</div>
-              </div>
-            </div>
-            <div class="set-block">
-              <div class="set-block-header" style="background:var(--teal);">
-                <span class="set-label">Drill Set</span><span class="set-yds">200 yds</span>
-              </div>
-              <div class="set-rows">
-                <div class="set-row">4 × 50 (25 drill / 25 free), 20 sec rest</div>
-                <div class="set-note">Drill: catch-up or fingertip drag. Rest as needed between reps — this is about form, not fitness.</div>
-              </div>
-            </div>
-            <div class="set-block" style="grid-column:1 / -1;">
-              <div class="set-block-header" style="background:var(--teal-2);">
-                <span class="set-label">Main Set</span><span class="set-yds">400 yds</span>
-              </div>
-              <div class="set-rows">
-                <div class="set-row"><strong>4 × 50 Free</strong>, 30 sec rest between each. Aim for comfortable, steady breathing.</div>
-                <div class="set-row"><strong>2 × 100 Free</strong>, 45 sec rest. Take it easy — if you need to stop mid-length, that's fine.</div>
-                <div class="set-note">If a 100 feels too long, break it into two 50s with a 20 sec rest in between.</div>
-              </div>
-            </div>
-            <div class="set-block" style="grid-column:1 / -1;">
-              <div class="set-block-header" style="background:var(--navy-700, #1a7a6e);">
-                <span class="set-label">Cool-Down</span><span class="set-yds">200 yds</span>
-              </div>
-              <div class="set-rows">
-                <div class="set-row">4 × 50 easy, alternate Free / Back</div>
-                <div class="set-note">No rush. Loose, unhurried tempo. Let your heart rate come all the way down.</div>
-              </div>
-            </div>
-          </div>
-          <div style="background:rgba(93,219,201,0.07); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-lg); padding:1.25rem 1.5rem; margin-top:1.5rem; display:flex; gap:1rem; align-items:flex-start;">
-            <span style="font-size:1.2rem; flex-shrink:0;">💡</span>
-            <div>
-              <p style="font-size:0.85rem; font-weight:500; color:var(--teal); margin-bottom:0.2rem;">Today's focus cue</p>
-              <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">On every length, check your head position at the halfway mark. Eyes should point toward the pool floor, not the far wall. If you can see the far end clearly, your head is too high — and a high head means sinking hips, which makes everything harder.</p>
-            </div>
-          </div>
-          </div><!-- /.swim-print-area -->
-          <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
-            <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
-            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
           </div>
         </div>
         <div class="swim-sidebar no-print">
@@ -4726,6 +4669,7 @@ function showPage(pageId) {
 
   // Trigger dynamic content loading when relevant pages are shown
   if (pageId === 'set-archives') loadArchives();
+  if (pageId === 'swim-sets') loadSwimSet('beginner');
 }
 
 function navigate(pageId) {
@@ -5068,7 +5012,7 @@ function showSwimLevel(level) {
     const tab = document.getElementById('swim-tab-' + l);
     if (tab) tab.classList.toggle('active', l === level);
   });
-  if (level !== 'beginner') loadSwimSet(level);
+  loadSwimSet(level);
 }
 
 const _swimSetCache = {};
