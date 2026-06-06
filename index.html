@@ -1390,7 +1390,7 @@ section { padding: 6rem 0; }
 .setup-sidebar {
   background-color: var(--deep);
   background-image: var(--pattern-waves);
-  padding: 3rem 2.5rem;
+  padding: calc(var(--nav-h) + 1.5rem) 2.5rem 3rem;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -1459,7 +1459,7 @@ section { padding: 6rem 0; }
   line-height: 1.4;
 }
 .setup-content {
-  padding: 3.5rem 4rem 5rem;
+  padding: calc(var(--nav-h) + 2rem) 4rem 5rem;
   overflow-y: auto;
 }
 .setup-step-content {
@@ -2119,11 +2119,10 @@ section { padding: 6rem 0; }
           <div class="nav-search-results" id="nav-search-results"></div>
         </div>
       </div>
-      <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create Account | Log In</a>
+      <a href="#sign-in" class="btn btn-gold btn-sm" onclick="navigate('sign-in')">Create Account | Log In</a>
     </div>
     <div class="nav-actions" id="nav-actions-divein" style="display:none; margin-left:auto;">
-      <span style="font-size:0.82rem; color:rgba(255,255,255,0.35);">Already have an account?</span>
-      <a href="#my-training" class="nav-signin" onclick="navigate('my-training')">Sign In</a>
+      <a href="#sign-in" class="btn btn-gold btn-sm" onclick="navigate('sign-in')">Create Account | Log In</a>
     </div>
   </div>
 </nav>
@@ -3936,8 +3935,35 @@ section { padding: 6rem 0; }
 </div>
 </div><!-- end page-my-training -->
 
+<!-- ══ SIGN IN PAGE ══ -->
+<div class="page" id="page-sign-in">
+  <div style="min-height:100vh; background:var(--deep); background-image:var(--pattern-waves); display:flex; align-items:center; justify-content:center; padding:2rem;">
+    <div style="background:var(--white); border-radius:var(--r-xl); padding:2.5rem 3rem; width:100%; max-width:440px; box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.75rem;">
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Log in</h2>
+        <a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Create account</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" placeholder="Your password" />
+        </div>
+        <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; font-size:0.86rem; color:var(--text-muted); user-select:none;">
+          <input type="checkbox" />
+          Remember me
+        </label>
+        <button class="btn btn-gold" style="width:100%; justify-content:center; font-size:1rem; padding:0.75rem 1.5rem;">Go</button>
+      </div>
+    </div>
+  </div>
+</div><!-- end page-sign-in -->
+
 <!-- ══ GET STARTED PAGE ══ -->
-<div class="page" id="page-get-started" style="background:var(--off-white);">
+<div class="page" id="page-get-started" style="background:var(--off-white); margin-top:calc(-1 * var(--nav-h));">
 <div class="setup-layout">
   <aside class="setup-sidebar">
     <div>
@@ -3959,23 +3985,26 @@ section { padding: 6rem 0; }
   <main class="setup-content">
     <div class="setup-step-content active" id="step-1">
       <div class="setup-step-header">
-        <span class="eyebrow">Step 1 of 4</span>
+        <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+          <span class="eyebrow">Step 1 of 4</span>
+          <span style="font-size:0.78rem; color:var(--gray-400); cursor:pointer; transition:color 0.15s;" onmouseover="this.style.color='var(--deep)'" onmouseout="this.style.color='var(--gray-400)'" onclick="navigate('sign-in')">| Already have an account? Log in →</span>
+        </div>
         <h2>Create your account</h2>
-        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">This is how you'll sign in and how we'll reach you with your daily plan.</p>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Fields marked * are required</p>
       </div>
       <div class="setup-fields">
         <div class="form-row">
           <div class="form-group"><label class="form-label required-dot">First Name</label><input type="text" class="form-input" placeholder="Alex" /></div>
           <div class="form-group"><label class="form-label required-dot">Last Name</label><input type="text" class="form-input" placeholder="Johnson" /></div>
         </div>
-        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" class="form-input" placeholder="you@example.com" /><p class="form-hint">Used for your daily briefing email and account access. We don't share it.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" class="form-input" placeholder="you@example.com" /><p class="form-hint">We do not share or sell your personal information.</p></div>
         <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" class="form-input" placeholder="8+ characters" /></div>
         <div class="form-group"><label class="form-label required-dot">Confirm Password</label><input type="password" class="form-input" placeholder="Repeat password" /></div>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
           <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;"><input type="checkbox" style="margin-top:0.2rem; flex-shrink:0;" /><span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. I understand this platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span></label>
         </div>
       </div>
-      <div class="setup-nav"><span style="font-size:0.8rem; color:var(--gray-400);">Fields marked * are required</span><button class="btn btn-gold" onclick="goToStep(2)">Continue →</button></div>
+      <div class="setup-nav"><button class="btn btn-gold" onclick="goToStep(2)">Continue →</button></div>
     </div>
     <div class="setup-step-content" id="step-2">
       <div class="setup-step-header"><span class="eyebrow">Step 2 of 4</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
@@ -4613,7 +4642,7 @@ section { padding: 6rem 0; }
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
-const NO_FOOTER_PAGES = new Set(['my-training', 'get-started']);
+const NO_FOOTER_PAGES = new Set(['my-training', 'get-started', 'sign-in']);
 
 function showPage(pageId) {
   // Unknown page id: do nothing rather than hiding every page and leaving a
@@ -4651,7 +4680,7 @@ function showPage(pageId) {
   const mainActions = document.getElementById('nav-actions-main');
   const diveinActions = document.getElementById('nav-actions-divein');
   if (mainActions && diveinActions) {
-    if (pageId === 'get-started') {
+    if (pageId === 'get-started' || pageId === 'sign-in') {
       mainActions.style.display = 'none';
       diveinActions.style.display = 'flex';
     } else {
