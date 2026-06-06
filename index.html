@@ -1986,7 +1986,33 @@ section { padding: 6rem 0; }
 .mtag { display: inline-block; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 3px; background: var(--gray-100); color: var(--pool-500); border: 1px solid var(--gray-200); }
 .contact-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: start; max-width: 1060px; margin: 0 auto; }
 @media (max-width: 768px) { .contact-layout { grid-template-columns: 1fr; } }
-.contact-aside-sticky { position: sticky; top: 5.5rem; }
+.contact-aside-sticky { }
+/* Profile page */
+.profile-page-bg { min-height: 100vh; background: #0b2a4a; display: flex; flex-direction: column; align-items: center; padding: 4rem 1.5rem 6rem; }
+.profile-avatar-wrap { width: 90px; height: 90px; border-radius: 50%; background: rgba(93,219,201,0.15); border: 2px solid rgba(93,219,201,0.35); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+.profile-fullname { color: #fff; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 2.5rem; }
+.profile-card { width: 100%; max-width: 640px; background: rgba(255,255,255,0.04); border: 1px solid rgba(93,219,201,0.12); border-radius: 16px; overflow: hidden; }
+.profile-row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.4rem; border-bottom: 1px solid rgba(93,219,201,0.1); transition: background 0.15s; }
+.profile-row:last-child { border-bottom: none; }
+.profile-row:hover { background: rgba(93,219,201,0.04); }
+.profile-row-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(93,219,201,0.65); width: 160px; flex-shrink: 0; }
+.profile-row-value { flex: 1; font-size: 0.9rem; color: rgba(255,255,255,0.85); }
+.profile-row-value.empty { color: rgba(255,255,255,0.3); font-style: italic; }
+.profile-edit-btn { background: none; border: none; cursor: pointer; padding: 0.3rem; color: rgba(93,219,201,0.5); transition: color 0.15s, transform 0.2s; flex-shrink: 0; }
+.profile-edit-btn:hover { color: #5ddbc9; }
+.profile-edit-btn.editing { transform: rotate(45deg); color: #5ddbc9; }
+.profile-edit-area { display: none; width: 100%; margin-top: 0.6rem; flex-direction: column; gap: 0.5rem; }
+.profile-edit-area.open { display: flex; animation: slideDown 0.2s ease; }
+@keyframes slideDown { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: translateY(0); } }
+.profile-edit-area .form-input { background: rgba(255,255,255,0.08); border: 1px solid rgba(93,219,201,0.3); color: #fff; border-radius: 8px; padding: 0.5rem 0.75rem; font-size: 0.88rem; width: 100%; }
+.profile-edit-area .form-input::placeholder { color: rgba(255,255,255,0.3); }
+.profile-edit-area select.form-input option { background: #0b2a4a; color: #fff; }
+.profile-save-btn { align-self: flex-start; background: #5ddbc9; color: #0b2a4a; border: none; border-radius: 8px; padding: 0.4rem 1rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.profile-save-btn:hover { background: #28b5a1; }
+.profile-row-wrap { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+/* Account created page */
+.account-created-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--off-white); padding: 2rem; }
+.account-created-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: 20px; padding: 3rem 2.5rem; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 4px 32px rgba(0,0,0,0.06); }
 .reason-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-lg); padding: 0.9rem 1rem; margin-bottom: 0.6rem; }
 /* Swim level layout with sticky sidebar */
 .swim-level-layout { display: flex; gap: 2rem; align-items: flex-start; }
@@ -2119,7 +2145,7 @@ section { padding: 6rem 0; }
           <div class="nav-search-results" id="nav-search-results"></div>
         </div>
       </div>
-      <a href="#sign-in" class="btn btn-gold btn-sm" onclick="navigate('sign-in')">Create Account | Log In</a>
+      <a href="#sign-in" class="btn btn-gold btn-sm" id="nav-account-btn" onclick="return navAccountClick()">Create Account | Log In</a>
     </div>
   </div>
 </nav>
@@ -3992,31 +4018,31 @@ section { padding: 6rem 0; }
       </div>
       <div class="setup-fields">
         <div class="form-row">
-          <div class="form-group"><label class="form-label required-dot">First Name</label><input type="text" class="form-input" placeholder="Alex" /></div>
-          <div class="form-group"><label class="form-label required-dot">Last Name</label><input type="text" class="form-input" placeholder="Johnson" /></div>
+          <div class="form-group"><label class="form-label required-dot">First Name</label><input type="text" id="gs-first-name" class="form-input" placeholder="Alex" /></div>
+          <div class="form-group"><label class="form-label required-dot">Last Name</label><input type="text" id="gs-last-name" class="form-input" placeholder="Johnson" /></div>
         </div>
-        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" class="form-input" placeholder="you@example.com" /><p class="form-hint">We do not share or sell your personal information.</p></div>
-        <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" class="form-input" placeholder="8+ characters" /></div>
-        <div class="form-group"><label class="form-label required-dot">Confirm Password</label><input type="password" class="form-input" placeholder="Repeat password" /></div>
+        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" id="gs-email" class="form-input" placeholder="you@example.com" /><p class="form-hint">We do not share or sell your personal information.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" id="gs-password" class="form-input" placeholder="8+ characters" /></div>
+        <div class="form-group"><label class="form-label required-dot">Confirm Password</label><input type="password" id="gs-confirm-password" class="form-input" placeholder="Repeat password" /></div>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
-          <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;"><input type="checkbox" style="margin-top:0.2rem; flex-shrink:0;" /><span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. I understand this platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span></label>
+          <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;"><input type="checkbox" id="gs-terms" style="margin-top:0.2rem; flex-shrink:0;" /><span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. I understand this platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span></label>
         </div>
       </div>
-      <div class="setup-nav"><button class="btn btn-gold" onclick="goToStep(2)">Continue →</button></div>
+      <div class="setup-nav"><button class="btn btn-gold" onclick="createAccount()">Create Account →</button></div>
     </div>
     <div class="setup-step-content" id="step-2">
       <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
       <div class="setup-fields">
-        <div class="form-group"><label class="form-label required-dot">Age / Date of Birth</label><input type="date" class="form-input" /><p class="form-hint">Age affects training zone calculations.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Age / Date of Birth</label><input type="date" id="gs-dob" class="form-input" /><p class="form-hint">Age affects training zone calculations.</p></div>
         <div class="form-row">
-          <div class="form-group"><label class="form-label required-dot">Height</label><div class="unit-input"><input type="number" class="form-input" placeholder="70" min="48" max="96" /><span class="unit-label">in</span></div><p class="form-hint">Inches (e.g., 70 = 5'10")</p></div>
-          <div class="form-group"><label class="form-label required-dot">Weight</label><div class="unit-input"><input type="number" class="form-input" placeholder="160" min="80" max="400" /><span class="unit-label">lbs</span></div></div>
+          <div class="form-group"><label class="form-label required-dot">Height</label><div class="unit-input"><input type="number" id="gs-height" class="form-input" placeholder="70" min="48" max="96" /><span class="unit-label">in</span></div><p class="form-hint">Inches (e.g., 70 = 5'10")</p></div>
+          <div class="form-group"><label class="form-label required-dot">Weight</label><div class="unit-input"><input type="number" id="gs-weight" class="form-input" placeholder="160" min="80" max="400" /><span class="unit-label">lbs</span></div></div>
         </div>
-        <div class="form-group"><label class="form-label required-dot">Gender</label><select class="form-input form-select"><option value="" disabled selected>Select…</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select><p class="form-hint">Used for metabolic and nutritional calculations only.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Gender</label><select id="gs-gender" class="form-input form-select"><option value="" disabled selected>Select…</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select><p class="form-hint">Used for metabolic and nutritional calculations only.</p></div>
         <div class="form-group">
           <label class="form-label required-dot">Current Swim Skill Level</label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select one.</p>
-          <div class="chip-grid" style="margin-top:0.5rem;">
+          <div class="chip-grid" id="gs-skill-chips" style="margin-top:0.5rem;">
             <div class="chip" onclick="toggleChip(this,'skill')">Beginner — learning basics, building comfort</div>
             <div class="chip" onclick="toggleChip(this,'skill')">Novice — can swim laps, building fitness</div>
             <div class="chip" onclick="toggleChip(this,'skill')">Intermediate — consistent technique, structured sets</div>
@@ -4033,7 +4059,7 @@ section { padding: 6rem 0; }
         <div class="form-group">
           <label class="form-label">What are you training for? <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
-          <div class="chip-grid">
+          <div class="chip-grid" id="gs-training-for-chips">
             <div class="chip" onclick="this.classList.toggle('selected')">Triathlon</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Pool meet / swim competition</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Open water race</div>
@@ -4044,14 +4070,14 @@ section { padding: 6rem 0; }
           </div>
         </div>
         <div class="form-row" style="margin-top:0.25rem;">
-          <div class="form-group"><label class="form-label">Target Event Name <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="text" class="form-input" placeholder="e.g., Sprint Triathlon, Masters 200 Free" /></div>
-          <div class="form-group"><label class="form-label">Target Date <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="date" class="form-input" /></div>
+          <div class="form-group"><label class="form-label">Target Event Name <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="text" id="gs-event-name" class="form-input" placeholder="e.g., Sprint Triathlon, Masters 200 Free" /></div>
+          <div class="form-group"><label class="form-label">Target Date <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="date" id="gs-event-date" class="form-input" /></div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <div class="form-group">
             <label class="form-label required-dot">Overall Fitness Goal</label>
             <p class="form-hint" style="margin-bottom:0.6rem;">Select one.</p>
-            <div class="chip-grid">
+            <div class="chip-grid" id="gs-fitness-goal-chips">
               <div class="chip" onclick="toggleChip(this,'fitness-goal')">Lose body fat / weight loss</div>
               <div class="chip" onclick="toggleChip(this,'fitness-goal')">Build lean muscle</div>
               <div class="chip" onclick="toggleChip(this,'fitness-goal')">Build endurance</div>
@@ -4145,19 +4171,19 @@ section { padding: 6rem 0; }
             <div class="chip" onclick="this.classList.toggle('selected')">None</div>
           </div>
         </div>
-        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea class="form-input form-textarea" rows="2" placeholder="Any details we should know — chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
+        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-injury-notes" class="form-input form-textarea" rows="2" placeholder="Any details we should know — chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Allergies &amp; Dietary Restrictions</p>
-          <div class="form-group"><label class="form-label">Dietary Style</label><select class="form-input form-select"><option value="" disabled selected>Select…</option><option>No restrictions / omnivore</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Gluten-free</option><option>Dairy-free</option><option>Paleo / whole foods</option><option>Other (specify below)</option></select></div>
-          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Allergies &amp; Foods to Avoid</label><input type="text" class="form-input" placeholder="e.g., peanuts, shellfish, tree nuts, soy" /><p class="form-hint">We will not include these in your meal recommendations.</p></div>
-          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Additional Dietary Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea class="form-input form-textarea" rows="2" placeholder="Any other preferences or restrictions we should know about…" style="resize:vertical;"></textarea></div>
+          <div class="form-group"><label class="form-label">Dietary Style</label><select id="gs-dietary-style" class="form-input form-select"><option value="" disabled selected>Select…</option><option>No restrictions / omnivore</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Gluten-free</option><option>Dairy-free</option><option>Paleo / whole foods</option><option>Other (specify below)</option></select></div>
+          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Allergies &amp; Foods to Avoid</label><input type="text" id="gs-allergies" class="form-input" placeholder="e.g., peanuts, shellfish, tree nuts, soy" /><p class="form-hint">We will not include these in your meal recommendations.</p></div>
+          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Additional Dietary Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-dietary-notes" class="form-input form-textarea" rows="2" placeholder="Any other preferences or restrictions we should know about…" style="resize:vertical;"></textarea></div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Focus Areas</p>
           <div class="form-group">
             <label class="form-label">Strokes to Focus On</label>
             <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
-            <div class="chip-grid">
+            <div class="chip-grid" id="gs-strokes-chips">
               <div class="chip selected" onclick="this.classList.toggle('selected')">Freestyle</div>
               <div class="chip" onclick="this.classList.toggle('selected')">Backstroke</div>
               <div class="chip" onclick="this.classList.toggle('selected')">Breaststroke</div>
@@ -4174,7 +4200,7 @@ section { padding: 6rem 0; }
           <div class="form-group" style="margin-top:1rem;">
             <label class="form-label">Muscle Groups to Focus On (Dryland)</label>
             <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
-            <div class="chip-grid">
+            <div class="chip-grid" id="gs-muscle-chips">
               <div class="chip" onclick="this.classList.toggle('selected')">Shoulders &amp; rotator cuff</div>
               <div class="chip" onclick="this.classList.toggle('selected')">Lats &amp; upper back</div>
               <div class="chip" onclick="this.classList.toggle('selected')">Core &amp; stability</div>
@@ -4195,7 +4221,7 @@ section { padding: 6rem 0; }
         <div class="form-group">
           <label class="form-label required-dot">Which days can you swim?</label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
-          <div class="chip-grid">
+          <div class="chip-grid" id="gs-swim-days-chips">
             <div class="chip" onclick="this.classList.toggle('selected')">Monday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Tuesday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Wednesday</div>
@@ -4208,7 +4234,7 @@ section { padding: 6rem 0; }
         <div class="form-group">
           <label class="form-label">Which days can you gym / dryland train?</label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
-          <div class="chip-grid">
+          <div class="chip-grid" id="gs-dryland-days-chips">
             <div class="chip" onclick="this.classList.toggle('selected')">Monday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Tuesday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Wednesday</div>
@@ -4221,7 +4247,7 @@ section { padding: 6rem 0; }
         <div class="form-group">
           <label class="form-label">Preferred Workout Time</label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
-          <div class="chip-grid">
+          <div class="chip-grid" id="gs-workout-time-chips">
             <div class="chip" onclick="this.classList.toggle('selected')">Early morning (before 7am)</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Morning (7–10am)</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Midday (10am–2pm)</div>
@@ -4235,7 +4261,7 @@ section { padding: 6rem 0; }
           <div class="form-row">
             <div class="form-group">
               <label class="form-label required-dot">Pool access</label>
-              <select class="form-input form-select">
+              <select id="gs-pool-access" class="form-input form-select">
                 <option value="" disabled selected>Select…</option>
                 <option>Year-round access</option>
                 <option>Seasonal (outdoor, summer only)</option>
@@ -4246,7 +4272,7 @@ section { padding: 6rem 0; }
             </div>
             <div class="form-group">
               <label class="form-label required-dot">Gym / weight room access</label>
-              <select class="form-input form-select">
+              <select id="gs-gym-access" class="form-input form-select">
                 <option value="" disabled selected>Select…</option>
                 <option>Year-round access</option>
                 <option>Seasonal access</option>
@@ -4260,15 +4286,15 @@ section { padding: 6rem 0; }
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location</p>
           <div class="form-row">
-            <div class="form-group"><label class="form-label required-dot">City</label><input type="text" class="form-input" placeholder="Chicago" /></div>
-            <div class="form-group"><label class="form-label required-dot">Zip / Postal Code</label><input type="text" class="form-input" placeholder="60601" /></div>
+            <div class="form-group"><label class="form-label required-dot">City</label><input type="text" id="gs-city" class="form-input" placeholder="Chicago" /></div>
+            <div class="form-group"><label class="form-label required-dot">Zip / Postal Code</label><input type="text" id="gs-zip" class="form-input" placeholder="60601" /></div>
           </div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Special Gear You Own</p>
           <div class="form-group">
             <p class="form-hint" style="margin-bottom:0.75rem;">Select all that apply. We'll incorporate these into your workouts.</p>
-            <div class="chip-grid">
+            <div class="chip-grid" id="gs-gear-chips">
               <div class="chip" onclick="this.classList.toggle('selected')">Swim snorkel</div>
               <div class="chip" onclick="this.classList.toggle('selected')">Fins</div>
               <div class="chip" onclick="this.classList.toggle('selected')">Paddles</div>
@@ -4285,12 +4311,45 @@ section { padding: 6rem 0; }
           </div>
         </div>
       </div>
-      <div class="setup-nav"><button class="btn btn-outline-dark" onclick="goToStep(4)">← Back</button><a href="#my-training" class="btn btn-gold btn-lg" onclick="navigate('my-training')">Create My Account &amp; Dive In →</a></div>
+      <div class="setup-nav"><button class="btn btn-outline-dark" onclick="goToStep(4)">← Back</button><button class="btn btn-gold btn-lg" onclick="saveFullProfile()">Create Account &amp; Dive In →</button></div>
     </div>
   </main>
 </div>
 </div><!-- end page-get-started -->
 
+<!-- ══ ACCOUNT CREATED PAGE ══ -->
+<div class="page" id="page-account-created">
+  <div class="account-created-page">
+    <div class="account-created-card">
+      <div style="width:72px; height:72px; border-radius:50%; background:var(--lap-pale); border:2px solid var(--lap); display:flex; align-items:center; justify-content:center; margin:0 auto 1.25rem;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h2 id="account-created-greeting" style="font-size:1.6rem; color:var(--deep); margin-bottom:0.5rem;">Account created!</h2>
+      <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:2rem;">Would you like to set up your training profile now, or come back to it later?</p>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <button class="btn btn-gold" style="width:100%;" onclick="setupProfile()">Set Up Profile →</button>
+        <button class="btn btn-outline-dark" style="width:100%;" onclick="setupLater()">Set Up Later</button>
+      </div>
+      <p style="font-size:0.78rem; color:var(--gray-400); margin-top:1.25rem;">You can always fill out your profile from the Hi [name]! menu.</p>
+    </div>
+  </div>
+</div><!-- end page-account-created -->
+
+<!-- ══ PROFILE PAGE ══ -->
+<div class="page" id="page-profile" style="background:#0b2a4a; min-height:100vh;">
+  <div class="profile-page-bg">
+    <div class="profile-avatar-wrap">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5ddbc9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-2a8 8 0 0 1 16 0v2"/></svg>
+    </div>
+    <div class="profile-fullname" id="profile-fullname">Your Name</div>
+    <div class="profile-card" id="profile-card">
+      <!-- rows rendered by renderProfilePage() -->
+    </div>
+    <div style="margin-top:2rem;">
+      <button class="btn btn-outline-light btn-sm" onclick="signOut()" style="color:rgba(255,255,255,0.5); border-color:rgba(255,255,255,0.2); font-size:0.8rem;">Sign Out</button>
+    </div>
+  </div>
+</div><!-- end page-profile -->
 
 <div class="page" id="page-gear">
 <!-- ── Page header ── -->
@@ -4799,7 +4858,7 @@ section { padding: 6rem 0; }
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
-const NO_FOOTER_PAGES = new Set(['my-training']);
+const NO_FOOTER_PAGES = new Set(['my-training','account-created','profile']);
 
 const PAGE_TITLES = {
   'home': 'STREAMLINE',
@@ -4829,6 +4888,8 @@ const PAGE_TITLES = {
   'my-training': 'STREAMLINE | My Training',
   'sign-in': 'STREAMLINE | Log In',
   'get-started': 'STREAMLINE | Create Account',
+  'account-created': 'STREAMLINE | Welcome',
+  'profile': 'STREAMLINE | My Profile',
   'gear': 'STREAMLINE | Gear',
   'products': 'STREAMLINE | Products',
   'privacy-policy': 'STREAMLINE | Privacy Policy',
@@ -4881,6 +4942,7 @@ function showPage(pageId) {
   // Trigger dynamic content loading when relevant pages are shown
   if (pageId === 'set-archives') loadArchives();
   if (pageId === 'swim-sets') loadSwimSet('beginner');
+  if (pageId === 'profile') renderProfilePage();
 }
 
 function navigate(pageId) {
@@ -4903,7 +4965,251 @@ function routeFromHash() {
 }
 
 window.addEventListener('popstate', routeFromHash);
-window.addEventListener('DOMContentLoaded', routeFromHash);
+window.addEventListener('DOMContentLoaded', () => { routeFromHash(); updateNavButton(); });
+
+// ── Account & Profile ──────────────────────────────────────────────────────
+
+let _previousPage = 'home';
+
+function navAccountClick() {
+  const account = getAccount();
+  if (account) {
+    renderProfilePage();
+    navigate('profile');
+  } else {
+    _previousPage = document.querySelector('.page.active')?.id?.replace('page-','') || 'home';
+    navigate('get-started');
+  }
+  return false;
+}
+
+function getAccount() {
+  try { return JSON.parse(localStorage.getItem('streamline_account') || 'null'); } catch(e) { return null; }
+}
+
+function getProfile() {
+  try { return JSON.parse(localStorage.getItem('streamline_profile') || '{}'); } catch(e) { return {}; }
+}
+
+function updateNavButton() {
+  const btn = document.getElementById('nav-account-btn');
+  if (!btn) return;
+  const account = getAccount();
+  if (account) {
+    btn.textContent = 'Hi ' + account.firstName + '!';
+    btn.href = '#profile';
+  } else {
+    btn.textContent = 'Create Account | Log In';
+    btn.href = '#sign-in';
+  }
+}
+
+function createAccount() {
+  const firstName = (document.getElementById('gs-first-name')?.value || '').trim();
+  const lastName  = (document.getElementById('gs-last-name')?.value  || '').trim();
+  const email     = (document.getElementById('gs-email')?.value      || '').trim();
+  const password  = (document.getElementById('gs-password')?.value   || '');
+  const confirm   = (document.getElementById('gs-confirm-password')?.value || '');
+  const terms     = document.getElementById('gs-terms')?.checked;
+
+  if (!firstName || !lastName || !email || !password) { alert('Please fill in all required fields.'); return; }
+  if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
+  if (password !== confirm) { alert('Passwords do not match.'); return; }
+  if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
+
+  const account = { firstName, lastName, email, createdAt: Date.now() };
+  localStorage.setItem('streamline_account', JSON.stringify(account));
+  _previousPage = localStorage.getItem('streamline_pre_signup_page') || _previousPage;
+
+  updateNavButton();
+
+  const greeting = document.getElementById('account-created-greeting');
+  if (greeting) greeting.textContent = 'Welcome, ' + firstName + '!';
+
+  navigate('account-created');
+}
+
+function setupProfile() {
+  navigate('get-started');
+  goToStep(2);
+}
+
+function setupLater() {
+  const prev = _previousPage || 'home';
+  navigate(prev);
+}
+
+function signOut() {
+  localStorage.removeItem('streamline_account');
+  localStorage.removeItem('streamline_profile');
+  updateNavButton();
+  navigate('home');
+}
+
+function getSelectedChips(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return '';
+  return Array.from(container.querySelectorAll('.chip.selected, .chip.active'))
+    .map(c => c.textContent.trim()).filter(Boolean).join(', ');
+}
+
+function collectProfileData() {
+  return {
+    dob:          document.getElementById('gs-dob')?.value || '',
+    height:       document.getElementById('gs-height')?.value || '',
+    weight:       document.getElementById('gs-weight')?.value || '',
+    gender:       document.getElementById('gs-gender')?.value || '',
+    skillLevel:   getSelectedChips('gs-skill-chips'),
+    trainingFor:  getSelectedChips('gs-training-for-chips'),
+    eventName:    document.getElementById('gs-event-name')?.value || '',
+    eventDate:    document.getElementById('gs-event-date')?.value || '',
+    fitnessGoal:  getSelectedChips('gs-fitness-goal-chips'),
+    swimGoal:     getSelectedChips('swim-goal-chips'),
+    injuryNotes:  document.getElementById('gs-injury-notes')?.value || '',
+    dietaryStyle: document.getElementById('gs-dietary-style')?.value || '',
+    allergies:    document.getElementById('gs-allergies')?.value || '',
+    dietaryNotes: document.getElementById('gs-dietary-notes')?.value || '',
+    strokeFocus:  getSelectedChips('gs-strokes-chips'),
+    muscleFocus:  getSelectedChips('gs-muscle-chips'),
+    swimDays:     getSelectedChips('gs-swim-days-chips'),
+    drylandDays:  getSelectedChips('gs-dryland-days-chips'),
+    workoutTime:  getSelectedChips('gs-workout-time-chips'),
+    poolAccess:   document.getElementById('gs-pool-access')?.value || '',
+    gymAccess:    document.getElementById('gs-gym-access')?.value || '',
+    city:         document.getElementById('gs-city')?.value || '',
+    zip:          document.getElementById('gs-zip')?.value || '',
+    gear:         getSelectedChips('gs-gear-chips'),
+  };
+}
+
+function saveFullProfile() {
+  const firstName = (document.getElementById('gs-first-name')?.value || '').trim();
+  const lastName  = (document.getElementById('gs-last-name')?.value  || '').trim();
+  const email     = (document.getElementById('gs-email')?.value      || '').trim();
+  const password  = (document.getElementById('gs-password')?.value   || '');
+  const confirm   = (document.getElementById('gs-confirm-password')?.value || '');
+  const terms     = document.getElementById('gs-terms')?.checked;
+
+  if (!firstName || !lastName || !email || !password) { alert('Please fill in all required account fields (Step 1).'); return; }
+  if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
+  if (password !== confirm) { alert('Passwords do not match.'); return; }
+  if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
+
+  const account = { firstName, lastName, email, createdAt: Date.now() };
+  localStorage.setItem('streamline_account', JSON.stringify(account));
+  const profile = collectProfileData();
+  localStorage.setItem('streamline_profile', JSON.stringify(profile));
+  updateNavButton();
+  renderProfilePage();
+  navigate('profile');
+}
+
+// Profile page rendering & inline editing
+
+const PROFILE_FIELDS = [
+  { key: 'dob',         label: 'Date of Birth',      type: 'date' },
+  { key: 'height',      label: 'Height (in)',         type: 'number' },
+  { key: 'weight',      label: 'Weight (lbs)',        type: 'number' },
+  { key: 'gender',      label: 'Gender',              type: 'select', options: ['Male','Female','Non-binary','Prefer not to say'] },
+  { key: 'skillLevel',  label: 'Swim Skill Level',    type: 'select', options: ['Beginner — learning basics, building comfort','Novice — can swim laps, building fitness','Intermediate — consistent technique, structured sets','Advanced — competitive background or high mileage','Elite / Masters competitor'] },
+  { key: 'trainingFor', label: 'Training For',        type: 'text' },
+  { key: 'eventName',   label: 'Target Event',        type: 'text' },
+  { key: 'eventDate',   label: 'Target Event Date',   type: 'date' },
+  { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'select', options: ['Lose body fat / weight loss','Build lean muscle','Build endurance','Improve cardiovascular fitness','General health & longevity','Athletic performance','Injury recovery / return to sport'] },
+  { key: 'swimGoal',    label: 'Swimming Goal',       type: 'select', options: ['Speed — improve race times','Technique / skill development','Injury rehab / return to water','General improvement','Distance & endurance','Open water / triathlon swim'] },
+  { key: 'injuryNotes', label: 'Injury Notes',        type: 'textarea' },
+  { key: 'dietaryStyle',label: 'Dietary Style',       type: 'select', options: ['No restrictions / omnivore','Vegetarian','Vegan','Pescatarian','Gluten-free','Dairy-free','Paleo / whole foods','Other'] },
+  { key: 'allergies',   label: 'Allergies',           type: 'text' },
+  { key: 'dietaryNotes',label: 'Dietary Notes',       type: 'textarea' },
+  { key: 'strokeFocus', label: 'Stroke Focus',        type: 'text' },
+  { key: 'muscleFocus', label: 'Muscle Focus',        type: 'text' },
+  { key: 'swimDays',    label: 'Swim Days',           type: 'text' },
+  { key: 'drylandDays', label: 'Dryland Days',        type: 'text' },
+  { key: 'workoutTime', label: 'Workout Time',        type: 'text' },
+  { key: 'poolAccess',  label: 'Pool Access',         type: 'select', options: ['Year-round access','Seasonal (outdoor, summer only)','Limited / occasional access','No pool access currently'] },
+  { key: 'gymAccess',   label: 'Gym Access',          type: 'select', options: ['Year-round access','Seasonal access','Home gym','Limited / occasional access','No gym access'] },
+  { key: 'city',        label: 'City',                type: 'text' },
+  { key: 'zip',         label: 'Zip / Postal Code',   type: 'text' },
+  { key: 'gear',        label: 'Gear Owned',          type: 'text' },
+];
+
+function renderProfilePage() {
+  const account = getAccount();
+  const profile = getProfile();
+  if (!account) return;
+
+  const nameEl = document.getElementById('profile-fullname');
+  if (nameEl) nameEl.textContent = account.firstName + ' ' + account.lastName;
+
+  const card = document.getElementById('profile-card');
+  if (!card) return;
+
+  card.innerHTML = PROFILE_FIELDS.map(f => {
+    const val = profile[f.key] || '';
+    const displayVal = val || '—';
+    const isEmpty = !val;
+
+    let editHtml = '';
+    if (f.type === 'select') {
+      editHtml = `<select class="form-input" onchange="saveProfileField('${f.key}', this.value)">
+        <option value="">Select…</option>
+        ${f.options.map(o => `<option value="${o}"${val === o ? ' selected' : ''}>${o}</option>`).join('')}
+      </select>`;
+    } else if (f.type === 'textarea') {
+      editHtml = `<textarea class="form-input" rows="2" placeholder="Add notes…" onblur="saveProfileField('${f.key}', this.value)">${val}</textarea>
+        <button class="profile-save-btn" onclick="closeProfileEdit('${f.key}')">Save</button>`;
+    } else {
+      editHtml = `<input type="${f.type}" class="form-input" value="${val}" placeholder="Enter…" onblur="saveProfileField('${f.key}', this.value)" />
+        <button class="profile-save-btn" onclick="closeProfileEdit('${f.key}')">Save</button>`;
+    }
+
+    return `<div class="profile-row" id="prow-${f.key}">
+      <span class="profile-row-label">${f.label}</span>
+      <div class="profile-row-wrap">
+        <span class="profile-row-value${isEmpty ? ' empty' : ''}" id="pval-${f.key}">${displayVal}</span>
+        <div class="profile-edit-area" id="pedit-${f.key}">${editHtml}</div>
+      </div>
+      <button class="profile-edit-btn" id="pbtn-${f.key}" onclick="toggleProfileEdit('${f.key}')" title="Edit">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function toggleProfileEdit(key) {
+  const area = document.getElementById('pedit-' + key);
+  const btn  = document.getElementById('pbtn-' + key);
+  const valEl = document.getElementById('pval-' + key);
+  if (!area) return;
+  const isOpen = area.classList.contains('open');
+  area.classList.toggle('open', !isOpen);
+  btn.classList.toggle('editing', !isOpen);
+  if (!isOpen) {
+    const input = area.querySelector('input, textarea, select');
+    if (input) setTimeout(() => input.focus(), 50);
+  }
+}
+
+function closeProfileEdit(key) {
+  const area = document.getElementById('pedit-' + key);
+  const btn  = document.getElementById('pbtn-' + key);
+  if (area) area.classList.remove('open');
+  if (btn)  btn.classList.remove('editing');
+}
+
+function saveProfileField(key, value) {
+  const profile = getProfile();
+  profile[key] = value;
+  localStorage.setItem('streamline_profile', JSON.stringify(profile));
+  const valEl = document.getElementById('pval-' + key);
+  if (valEl) {
+    valEl.textContent = value || '—';
+    valEl.classList.toggle('empty', !value);
+  }
+  if (document.getElementById('pedit-' + key)?.querySelector('select')) {
+    closeProfileEdit(key);
+  }
+}
 
 // Inline nav search
 
