@@ -458,6 +458,7 @@ Resources:
       Code:
         ZipFile: |
           import json, boto3
+          from datetime import datetime, timezone
           dynamo = boto3.resource('dynamodb')
           tbl = dynamo.Table('streamline-daily-sets')
           CORS = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json'}
@@ -472,6 +473,9 @@ Resources:
             try:
               r = tbl.get_item(Key={'level':level})
               if 'Item' not in r:
+                return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
+              today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+              if r['Item'].get('date') != today:
                 return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
               return {'statusCode':200,'headers':CORS,'body':r['Item']['setData']}
             except Exception as e:
