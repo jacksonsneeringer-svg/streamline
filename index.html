@@ -1390,7 +1390,7 @@ section { padding: 6rem 0; }
 .setup-sidebar {
   background-color: var(--deep);
   background-image: var(--pattern-waves);
-  padding: calc(var(--nav-h) + 1.5rem) 2.5rem 3rem;
+  padding: calc(var(--nav-h) + 2rem) 2.5rem 3rem 4rem;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -2119,9 +2119,6 @@ section { padding: 6rem 0; }
           <div class="nav-search-results" id="nav-search-results"></div>
         </div>
       </div>
-      <a href="#sign-in" class="btn btn-gold btn-sm" onclick="navigate('sign-in')">Create Account | Log In</a>
-    </div>
-    <div class="nav-actions" id="nav-actions-divein" style="display:none; margin-left:auto;">
       <a href="#sign-in" class="btn btn-gold btn-sm" onclick="navigate('sign-in')">Create Account | Log In</a>
     </div>
   </div>
@@ -3967,9 +3964,9 @@ section { padding: 6rem 0; }
 <div class="setup-layout">
   <aside class="setup-sidebar">
     <div>
-      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem;">Setting up your profile</p>
+      <div style="height:1.5rem;"></div>
       <h2 style="color:var(--white); font-size:1.75rem; letter-spacing:0.02em;">Build your<br/>training base.</h2>
-      <p style="color:rgba(255,255,255,0.35); font-size:0.84rem; margin-top:0.75rem; line-height:1.65;">The more we know about you, the more personalized your experience. Every field helps us build better workouts and meal recommendations for your specific situation.</p>
+      <p style="color:rgba(255,255,255,0.35); font-size:0.84rem; margin-top:0.75rem; line-height:1.65;">The more we know about you, the more personalized your experience.</p>
     </div>
     <div class="setup-steps">
       <div class="setup-step"><div class="step-num active" id="step-num-1">1</div><div class="step-info"><h4 class="active" id="step-label-1">Your Account</h4><p>Name &amp; login credentials</p></div></div>
@@ -4642,7 +4639,41 @@ section { padding: 6rem 0; }
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
-const NO_FOOTER_PAGES = new Set(['my-training', 'get-started', 'sign-in']);
+const NO_FOOTER_PAGES = new Set(['my-training']);
+
+const PAGE_TITLES = {
+  'home': 'STREAMLINE',
+  'swim-sets': 'STREAMLINE | Swim Sets',
+  'dryland-workouts': 'STREAMLINE | Dryland',
+  'set-archives': 'STREAMLINE | Set Archives',
+  'blog': 'STREAMLINE | Blog',
+  'blog-technique': 'STREAMLINE | Blog - Technique',
+  'blog-training': 'STREAMLINE | Blog - Training',
+  'blog-gear': 'STREAMLINE | Blog - Gear',
+  'blog-guides': 'STREAMLINE | Blog - Guides',
+  'blog-nutrition': 'STREAMLINE | Blog - Nutrition',
+  'freestyle-errors': 'STREAMLINE | Blog - 7 Common Freestyle Errors',
+  'training-intensity-zones': 'STREAMLINE | Blog - Training Intensity Zones',
+  'morning-practice-nutrition': 'STREAMLINE | Blog - Morning Practice Nutrition',
+  'race-week-taper': 'STREAMLINE | Blog - Race-Week Taper',
+  'breathing-mechanics': 'STREAMLINE | Blog - Breathing Mechanics',
+  'goggles-guide': 'STREAMLINE | Blog - How to Choose Goggles',
+  'training-fins-guide': 'STREAMLINE | Blog - Best Training Fins',
+  'swim-paddles-guide': 'STREAMLINE | Blog - Hand Paddles Guide',
+  'pool-wetsuit-guide': 'STREAMLINE | Blog - Pool vs. Open Water Wetsuits',
+  'post-workout-nutrition': 'STREAMLINE | Blog - Post-Workout Nutrition',
+  'dryland-training': 'STREAMLINE | Blog - Dryland Training',
+  'beginners-lap-swimming': 'STREAMLINE | Blog - Beginner\'s Guide to Lap Swimming',
+  'pull-buoys-guide': 'STREAMLINE | Blog - Pull Buoys Guide',
+  'contact': 'STREAMLINE | Contact',
+  'my-training': 'STREAMLINE | My Training',
+  'sign-in': 'STREAMLINE | Log In',
+  'get-started': 'STREAMLINE | Create Account',
+  'gear': 'STREAMLINE | Gear',
+  'products': 'STREAMLINE | Products',
+  'privacy-policy': 'STREAMLINE | Privacy Policy',
+  'terms-of-use': 'STREAMLINE | Terms of Use',
+};
 
 function showPage(pageId) {
   // Unknown page id: do nothing rather than hiding every page and leaving a
@@ -4676,23 +4707,14 @@ function showPage(pageId) {
     const href = a.getAttribute('href');
     if (href === '#' + pageId) a.classList.add('active');
   });
-  // Nav variant: get-started page uses its own nav actions
-  const mainActions = document.getElementById('nav-actions-main');
-  const diveinActions = document.getElementById('nav-actions-divein');
-  if (mainActions && diveinActions) {
-    if (pageId === 'get-started' || pageId === 'sign-in') {
-      mainActions.style.display = 'none';
-      diveinActions.style.display = 'flex';
-    } else {
-      mainActions.style.display = 'flex';
-      diveinActions.style.display = 'none';
-    }
-  }
   // Footer visibility
   const footer = document.getElementById('site-footer');
   if (footer) {
     footer.style.display = NO_FOOTER_PAGES.has(pageId) ? 'none' : '';
   }
+  // Update browser tab title
+  document.title = PAGE_TITLES[pageId] || 'STREAMLINE';
+
   // Ensure we're at the top of the newly shown page (instant, no animation).
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
