@@ -1996,7 +1996,9 @@ section { padding: 6rem 0; }
 @media (max-width: 768px) { .contact-layout { grid-template-columns: 1fr; } }
 .contact-aside-sticky { }
 /* Profile page */
-.profile-page-bg { min-height: 100vh; background: #091f1c; display: flex; flex-direction: column; align-items: center; padding: 4rem 1.5rem 6rem; }
+.profile-page-bg { min-height: 100vh; background: url('https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; padding: 4rem 1.5rem 6rem; position: relative; }
+.profile-page-bg::before { content: ''; position: absolute; inset: 0; background: rgba(9,31,28,0.72); pointer-events: none; z-index: 0; }
+.profile-page-bg > * { position: relative; z-index: 1; }
 .profile-avatar-wrap { width: 90px; height: 90px; border-radius: 50%; background: rgba(93,219,201,0.15); border: 2px solid rgba(93,219,201,0.35); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
 .profile-fullname { color: #fff; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 2.5rem; }
 .profile-card { width: 100%; max-width: 640px; background: rgba(255,255,255,0.04); border: 1px solid rgba(93,219,201,0.12); border-radius: 16px; overflow: hidden; }
@@ -4515,7 +4517,7 @@ section { padding: 6rem 0; }
 </div><!-- end page-account-created -->
 
 <!-- ══ PROFILE PAGE ══ -->
-<div class="page" id="page-profile" style="background:#091f1c; min-height:100vh;">
+<div class="page" id="page-profile" style="min-height:100vh;">
   <div class="profile-page-bg">
     <div class="profile-avatar-wrap">
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5ddbc9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-2a8 8 0 0 1 16 0v2"/></svg>
@@ -5038,7 +5040,7 @@ section { padding: 6rem 0; }
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
-const NO_FOOTER_PAGES = new Set(['my-training','account-created','profile']);
+const NO_FOOTER_PAGES = new Set(['my-training','account-created']);
 
 const PAGE_TITLES = {
   'home': 'STREAMLINE',
