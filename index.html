@@ -1379,6 +1379,11 @@ section { padding: 6rem 0; }
   border-color: var(--deep);
   color: var(--white);
 }
+.chip.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
 
 /* ── Dive In / account setup ── */
 .setup-layout {
@@ -1507,7 +1512,7 @@ section { padding: 6rem 0; }
 }
 .dashboard-sidebar {
   background: var(--deep);
-  padding: 2rem 1.5rem 2rem 5.5rem;
+  padding: 2rem 1.5rem;
   border-right: 1px solid rgba(93,219,201,0.07);
 }
 .dash-nav { display: flex; flex-direction: column; gap: 0.25rem; margin-top: 1.5rem; }
@@ -1533,7 +1538,7 @@ section { padding: 6rem 0; }
   padding-left: calc(1rem - 2px);
   opacity: 0.9;
 }
-.dashboard-main { padding: 2.5rem 3rem; background: var(--surface); overflow-y: auto; }
+.dashboard-main { padding: 2.5rem 5.5rem 2.5rem 3rem; background: var(--surface); overflow-y: auto; }
 .dash-greeting {
   font-family: var(--font-display);
   font-size: 2rem;
@@ -3937,7 +3942,7 @@ section { padding: 6rem 0; }
 
     <!-- ── Overview view ── -->
     <div id="dash-view-overview">
-      <div style="background:linear-gradient(135deg,var(--deep),var(--teal)); border-radius:var(--r-xl); padding:2.5rem; margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; background-image:var(--pattern-waves);">
+      <div id="dash-hero-banner" style="background:linear-gradient(135deg,var(--deep),var(--teal)); border-radius:var(--r-xl); padding:2.5rem; margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; background-image:var(--pattern-waves);">
         <div>
           <p id="dash-hero-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--pool-100); margin-bottom:0.5rem;">Sign in to access your personal plan</p>
           <h2 id="dash-greeting-text" class="dash-greeting" style="color:white; font-size:1.75rem;">Welcome to Streamline.</h2>
@@ -4170,7 +4175,7 @@ section { padding: 6rem 0; }
       <div class="setup-step-header"><span class="eyebrow">Step 3 of 5</span><h2>Your goals</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">We use these to set your training plan direction, select appropriate intensities, and tailor your recommendations.</p></div>
       <div class="setup-fields">
         <div class="form-group">
-          <label class="form-label">What are you training for? <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label>
+          <label class="form-label required-dot">What are you training for?</label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
           <div class="chip-grid" id="gs-training-for-chips">
             <div class="chip" onclick="this.classList.toggle('selected')">Triathlon</div>
@@ -4179,7 +4184,10 @@ section { padding: 6rem 0; }
             <div class="chip" onclick="this.classList.toggle('selected')">Masters swimming</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Marathon swim</div>
             <div class="chip" onclick="this.classList.toggle('selected')">General fitness</div>
-            <div class="chip" onclick="this.classList.toggle('selected')">No specific event</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">VO2 max</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Look shredded</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Endurance</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Nothing specific</div>
           </div>
         </div>
         <div style="margin-top:0.25rem;">
@@ -5085,13 +5093,15 @@ function updateTrainingPage() {
   const greeting = document.getElementById('dash-greeting-text');
   const sub = document.getElementById('dash-hero-sub');
   const sectionLabel = document.getElementById('dash-overview-section-label');
+  const banner = document.getElementById('dash-hero-banner');
 
   if (cta) cta.style.display = signedIn ? 'none' : 'flex';
   if (label) label.style.display = signedIn ? 'none' : '';
 
   if (signedIn) {
-    if (greeting) greeting.textContent = 'Good to see you, ' + account.firstName + '.';
-    if (sub) sub.textContent = 'Here\'s your training overview for today.';
+    if (greeting) { greeting.textContent = 'Good to see you, ' + account.firstName + '.'; greeting.style.color = 'var(--deep)'; }
+    if (sub) { sub.textContent = 'Here\'s your training overview for today.'; sub.style.color = 'var(--deep)'; }
+    if (banner) { banner.style.background = 'var(--white)'; banner.style.backgroundImage = 'none'; banner.style.border = '1px solid var(--gray-100)'; }
     if (sectionLabel) sectionLabel.textContent = "Today's plan";
     // Show unlocked card content, hide lock overlays
     ['briefing','swim','lift','meal','progress'].forEach(key => {
@@ -5101,8 +5111,9 @@ function updateTrainingPage() {
       if (content) content.style.display = '';
     });
   } else {
-    if (greeting) greeting.textContent = 'Welcome to Streamline.';
-    if (sub) sub.textContent = 'Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.';
+    if (greeting) { greeting.textContent = 'Welcome to Streamline.'; greeting.style.color = 'white'; }
+    if (sub) { sub.textContent = 'Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.'; sub.style.color = 'rgba(255,255,255,0.75)'; }
+    if (banner) { banner.style.background = 'linear-gradient(135deg,var(--deep),var(--teal))'; banner.style.backgroundImage = 'var(--pattern-waves)'; banner.style.border = 'none'; }
     if (sectionLabel) sectionLabel.textContent = 'Preview: sign in to personalize';
     ['briefing','swim','lift','meal','progress'].forEach(key => {
       const lock = document.getElementById('lock-' + key);
@@ -5155,6 +5166,31 @@ function editProfile() {
       document.querySelectorAll('#gs-skill-chips .chip').forEach(c => {
         c.classList.toggle('active', c.textContent.trim() === profile.skillLevel);
       });
+    }
+
+    // Pre-select training-for chips
+    if (profile.trainingFor) {
+      const selected = profile.trainingFor.split(', ').map(s => s.trim());
+      document.querySelectorAll('#gs-training-for-chips .chip').forEach(c => {
+        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
+      });
+    }
+
+    // Pre-select fitness goal chips
+    if (profile.fitnessGoal) {
+      const selected = profile.fitnessGoal.split(', ').map(s => s.trim());
+      document.querySelectorAll('#gs-fitness-goal-chips .chip').forEach(c => {
+        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
+      });
+    }
+
+    // Pre-select swim goal chips
+    if (profile.swimGoal) {
+      const selected = profile.swimGoal.split(', ').map(s => s.trim());
+      document.querySelectorAll('#swim-goal-chips .chip').forEach(c => {
+        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
+      });
+      toggleSpeedTimes();
     }
 
     // Step 4 simple fields
@@ -5380,7 +5416,7 @@ function saveFullProfile() {
 // Profile page rendering & inline editing
 
 const PROFILE_FIELDS = [
-  { key: 'dob',         label: 'Date of Birth',      type: 'date' },
+  { key: 'age',         label: 'Age',                 type: 'number' },
   { key: 'height',      label: 'Height (in)',         type: 'number' },
   { key: 'weight',      label: 'Weight (lbs)',        type: 'number' },
   { key: 'gender',      label: 'Gender',              type: 'select', options: ['Male','Female','Non-binary','Prefer not to say'] },
