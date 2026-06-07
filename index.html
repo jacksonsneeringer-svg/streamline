@@ -1235,11 +1235,12 @@ section { padding: 6rem 0; }
 .nav-search-dropdown {
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
+  left: auto;
   display: flex;
   flex-direction: column;
   z-index: 300;
-  width: 320px;
+  width: min(320px, calc(100vw - 2rem));
 }
 .nav-search-field {
   display: none;
@@ -1279,7 +1280,8 @@ section { padding: 6rem 0; }
   border: 1.5px solid rgba(93,219,201,0.2);
   border-top: none;
   border-radius: 0 0 10px 10px;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 320px;
   box-shadow: 0 12px 32px rgba(0,0,0,0.5);
   display: none;
 }
@@ -1538,7 +1540,7 @@ section { padding: 6rem 0; }
   padding-left: calc(1rem - 2px);
   opacity: 0.9;
 }
-.dashboard-main { padding: 2.5rem 15rem 2.5rem 3rem; background: var(--surface); overflow-y: auto; }
+.dashboard-main { padding: 2.5rem 25rem 2.5rem 3rem; background: var(--surface); overflow-y: auto; }
 .dash-greeting {
   font-family: var(--font-display);
   font-size: 2rem;
@@ -1555,6 +1557,7 @@ section { padding: 6rem 0; }
   padding: 1.75rem;
 }
 .dash-card.span-2 { grid-column: 1 / -1; }
+.dash-card:not(.span-2) { min-height: 220px; }
 .dash-card-label {
   font-family: var(--font-body);
   font-size: 0.66rem;
@@ -5146,7 +5149,7 @@ function updateTrainingPage() {
   if (signedIn) {
     if (greeting) { greeting.textContent = 'Good to see you, ' + account.firstName + '.'; greeting.style.color = 'var(--deep)'; }
     if (sub) { sub.textContent = 'Here\'s your training overview for today.'; sub.style.color = 'var(--deep)'; }
-    if (banner) { banner.style.background = 'var(--white)'; banner.style.backgroundImage = 'none'; banner.style.border = '1px solid var(--gray-100)'; }
+    if (banner) { banner.style.background = 'var(--surface)'; banner.style.backgroundImage = 'none'; banner.style.border = 'none'; }
     if (sectionLabel) sectionLabel.textContent = "Today's plan";
     // Show unlocked card content, hide lock overlays
     ['briefing','swim','lift','meal','progress'].forEach(key => {
@@ -5615,22 +5618,21 @@ const SEARCH_SUGGESTIONS = [
   { text: 'swim intervals 1:00', page: 'swim-sets' },
   { text: 'swim intervals 1:30', page: 'swim-sets' },
   { text: 'structured swim sets', page: 'swim-sets' },
-  // My training / account
-  { text: 'my training plan', page: 'my-training' },
-  { text: 'personalized swim plan', page: 'my-training' },
-  { text: 'daily training schedule', page: 'my-training' },
-  { text: 'meal plan for swimmers', page: 'my-training' },
-  { text: 'progress tracking', page: 'my-training' },
-  { text: 'training dashboard', page: 'my-training' },
-  { text: 'get started', page: 'get-started' },
-  { text: 'create account', page: 'get-started' },
-  { text: 'free account', page: 'get-started' },
-  { text: 'sign up', page: 'get-started' },
-  // Blog / general
+  // Blog articles
   { text: 'blog articles', page: 'blog' },
   { text: 'swimming tips', page: 'blog' },
-  { text: 'contact us', page: 'contact' },
-  { text: 'report a bug', page: 'contact' },
+  { text: 'training intensity zones', page: 'training-intensity-zones' },
+  { text: 'morning practice nutrition', page: 'morning-practice-nutrition' },
+  { text: 'race week taper', page: 'race-week-taper' },
+  { text: 'breathing mechanics', page: 'breathing-mechanics' },
+  { text: 'goggles guide', page: 'goggles-guide' },
+  { text: 'training fins guide', page: 'training-fins-guide' },
+  { text: 'swim paddles guide', page: 'swim-paddles-guide' },
+  { text: 'pool wetsuit guide', page: 'pool-wetsuit-guide' },
+  { text: 'post workout nutrition', page: 'post-workout-nutrition' },
+  { text: 'dryland training article', page: 'dryland-training' },
+  { text: 'beginners lap swimming', page: 'beginners-lap-swimming' },
+  { text: 'pull buoys guide', page: 'pull-buoys-guide' },
 ];
 
 // Friendly result titles. Pages not listed fall back to their first heading.
@@ -5687,12 +5689,22 @@ function buildSnippet(entry, terms) {
   return snip;
 }
 
+const SEARCH_ALLOWED_PAGES = new Set([
+  'swim-sets','set-archives','dryland-workouts',
+  'blog','blog-technique','blog-training','blog-gear','blog-guides','blog-nutrition',
+  'freestyle-errors','training-intensity-zones','morning-practice-nutrition',
+  'race-week-taper','breathing-mechanics','goggles-guide','training-fins-guide',
+  'swim-paddles-guide','pool-wetsuit-guide','post-workout-nutrition',
+  'dryland-training','beginners-lap-swimming','pull-buoys-guide',
+]);
+
 // Scan the indexed site content and return the best-matching pages.
 function searchSite(query) {
   const phrase = query.toLowerCase().trim();
   if (phrase.length < 2) return [];
   const terms = phrase.split(/\s+/).filter(Boolean);
   return SEARCH_INDEX
+    .filter(entry => SEARCH_ALLOWED_PAGES.has(entry.page))
     .map(entry => ({ entry, score: scoreEntry(entry, phrase, terms) }))
     .filter(x => x.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -5774,7 +5786,7 @@ function renderSuggestions(query, aiResults) {
     html += '<div class="search-results-section">';
     if (suggestions.length) html += '<div class="search-section-label">Results</div>';
     html += matches.map(r => `
-      <div class="search-result-item" onclick="closeNavSearch(); navigate('${escHtml(r.page)}');">
+      <div class="search-result-item" onclick="closeNavSearch(); navigate('${escHtml(r.page)}');" style="cursor:pointer;">
         <h5>${escHtml(r.title)}</h5>
         ${r.description ? `<p>${escHtml(r.description)}</p>` : ''}
       </div>`).join('');
@@ -5797,11 +5809,15 @@ function updateSuggestionHighlight() {
 }
 
 function selectSuggestion(el) {
-  // Clicking (or pressing Enter on) a suggestion takes you to its page.
-  const page = el.dataset.page;
+  const text = el.dataset.text;
   clearTimeout(_searchTimer);
-  closeNavSearch();
-  if (page) navigate(page);
+  const input = document.getElementById('nav-search-input');
+  if (input && text) {
+    input.value = text;
+    _searchActiveIndex = -1;
+    onSearchInput(text);
+    input.focus();
+  }
 }
 
 function onSearchInput(value) {
@@ -5861,11 +5877,11 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     const active = document.querySelector('.search-suggestion-item.active');
     if (active) { selectSuggestion(active); return; }
-    // No suggestion highlighted: jump straight to the best match.
+    // No suggestion highlighted: navigate to the best content match.
     const input = document.getElementById('nav-search-input');
     const q = input ? input.value.trim() : '';
     if (q.length >= 2) {
-      const top = searchSite(q)[0] || getSuggestions(q)[0];
+      const top = searchSite(q)[0];
       if (top) { clearTimeout(_searchTimer); closeNavSearch(); navigate(top.page); }
     }
   }
