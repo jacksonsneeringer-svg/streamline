@@ -6523,12 +6523,12 @@ async function handleNewsletterSubmit(event, source) {
 <style>
   #shark-mascot {
     position: fixed;
-    right: 0.25rem;
+    right: 6rem;
     bottom: 0;
     z-index: 50;
     display: none;
     pointer-events: none;
-    width: 80px;
+    width: 104px;
   }
   #shark-wrapper {
     animation: sharkBounce 0.9s ease-in-out infinite;
@@ -6576,74 +6576,91 @@ async function handleNewsletterSubmit(event, source) {
 <div id="shark-mascot" aria-hidden="true">
   <div id="shark-wrapper">
     <div id="shark-flipper">
-      <svg viewBox="0 0 80 165" width="80" height="165" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 80 165" width="104" height="214" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="shk-body-g" cx="38%" cy="32%" r="65%">
-            <stop offset="0%" stop-color="#62cde8"/>
-            <stop offset="50%" stop-color="#2b9dc0"/>
-            <stop offset="100%" stop-color="#0d6885"/>
+          <radialGradient id="shk-body-g" cx="38%" cy="28%" r="70%">
+            <stop offset="0%" stop-color="#5a8fa8"/>
+            <stop offset="45%" stop-color="#2d6278"/>
+            <stop offset="100%" stop-color="#102e3c"/>
           </radialGradient>
-          <radialGradient id="shk-belly-g" cx="50%" cy="40%" r="55%">
-            <stop offset="0%" stop-color="#f4fbfe"/>
-            <stop offset="100%" stop-color="#c8e8f4"/>
+          <radialGradient id="shk-belly-g" cx="50%" cy="38%" r="58%">
+            <stop offset="0%" stop-color="#e8eef0"/>
+            <stop offset="100%" stop-color="#b0c8d4"/>
+          </radialGradient>
+          <radialGradient id="shk-head-g" cx="36%" cy="30%" r="68%">
+            <stop offset="0%" stop-color="#5a8fa8"/>
+            <stop offset="50%" stop-color="#2d6278"/>
+            <stop offset="100%" stop-color="#0e2832"/>
           </radialGradient>
         </defs>
 
-        <!-- Dorsal fin -->
-        <path d="M40 2 L28 32 L52 32 Z" fill="#0d6885"/>
-        <path d="M40 7 L31 30 L49 30 Z" fill="#2b9dc0" opacity="0.6"/>
+        <!-- Dorsal fin — tall, swept back, more realistic -->
+        <path d="M43 4 C41 10 34 22 31 34 L52 34 C50 26 48 14 43 4 Z" fill="#102e3c"/>
+        <path d="M43 10 C41 16 36 24 34 32 L50 32 C48 24 46 16 43 10 Z" fill="#2d6278" opacity="0.5"/>
 
-        <!-- Body -->
-        <ellipse cx="40" cy="112" rx="24" ry="52" fill="url(#shk-body-g)"/>
+        <!-- Body — sleeker, more tapered -->
+        <ellipse cx="40" cy="108" rx="22" ry="54" fill="url(#shk-body-g)"/>
 
         <!-- Belly -->
-        <ellipse cx="40" cy="116" rx="14" ry="38" fill="url(#shk-belly-g)"/>
+        <ellipse cx="40" cy="113" rx="11" ry="40" fill="url(#shk-belly-g)"/>
 
-        <!-- Head -->
-        <circle cx="40" cy="52" r="28" fill="url(#shk-body-g)"/>
+        <!-- Lateral line -->
+        <path d="M40 68 Q26 90 28 140" stroke="#1e4d62" stroke-width="0.8" fill="none" opacity="0.6"/>
 
-        <!-- Head 3-D sheen -->
-        <ellipse cx="30" cy="38" rx="10" ry="9" fill="rgba(255,255,255,0.25)" transform="rotate(-20,30,38)"/>
+        <!-- Head — more elongated/pointed snout -->
+        <ellipse cx="40" cy="53" rx="26" ry="27" fill="url(#shk-head-g)"/>
+        <!-- Pointed snout extension -->
+        <path d="M14 56 Q22 72 40 74 Q58 72 66 56 Q58 50 40 48 Q22 50 14 56 Z" fill="url(#shk-head-g)"/>
 
-        <!-- Gills -->
-        <path d="M18 52 Q14 57 18 62" stroke="#0a5570" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        <path d="M21 48 Q17 54 21 60" stroke="#0a5570" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Head sheen -->
+        <ellipse cx="29" cy="40" rx="8" ry="6" fill="rgba(255,255,255,0.15)" transform="rotate(-18,29,40)"/>
 
-        <!-- Left pectoral fin (static, angles slightly down) -->
-        <ellipse cx="16" cy="88" rx="14" ry="6" fill="#0d6885" transform="rotate(20,16,88)"/>
-        <ellipse cx="16" cy="88" rx="10" ry="3.5" fill="#2b9dc0" opacity="0.5" transform="rotate(20,16,88)"/>
+        <!-- Gills — three lines, more defined -->
+        <path d="M17 53 Q13 58 17 64" stroke="#0a2a38" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M20 49 Q16 55 20 62" stroke="#0a2a38" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M23 47 Q20 52 23 59" stroke="#0a2a38" stroke-width="1.2" fill="none" stroke-linecap="round"/>
 
-        <!-- Right pectoral fin (waving group — pivot at body attachment x=50) -->
+        <!-- Left pectoral fin — longer, more swept -->
+        <path d="M20 84 Q6 94 8 105 Q14 100 26 92 Z" fill="#102e3c"/>
+        <path d="M20 84 Q8 92 10 102 Q16 98 25 91 Z" fill="#2d6278" opacity="0.45"/>
+
+        <!-- Right pectoral fin (waving group) -->
         <g id="shark-fin-wave">
-          <ellipse cx="64" cy="88" rx="14" ry="6" fill="#0d6885"/>
-          <ellipse cx="64" cy="88" rx="10" ry="3.5" fill="#2b9dc0" opacity="0.5"/>
+          <path d="M60 84 Q74 94 72 105 Q66 100 54 92 Z" fill="#102e3c"/>
+          <path d="M60 84 Q72 92 70 102 Q64 98 55 91 Z" fill="#2d6278" opacity="0.45"/>
         </g>
 
-        <!-- Tail lobes -->
-        <path d="M33 156 L12 170 L36 153 Z" fill="#0d6885"/>
-        <path d="M47 156 L68 170 L44 153 Z" fill="#0d6885"/>
-        <ellipse cx="40" cy="153" rx="10" ry="7" fill="#1a85a5"/>
+        <!-- Tail — crescent / caudal fin, more realistic -->
+        <path d="M35 152 C28 148 10 162 14 172 C22 164 35 158 38 155 Z" fill="#102e3c"/>
+        <path d="M45 152 C52 148 70 162 66 172 C58 164 45 158 42 155 Z" fill="#102e3c"/>
+        <ellipse cx="40" cy="152" rx="8" ry="5" fill="#1e4d62"/>
 
-        <!-- Left eye -->
-        <circle cx="31" cy="47" r="8"   fill="white"/>
-        <circle cx="32" cy="48" r="5"   fill="#111133"/>
-        <circle cx="30" cy="46" r="1.8" fill="white"/>
+        <!-- Left eye — smaller, harder, narrowed -->
+        <circle cx="30" cy="48" r="6.5" fill="#0a1a22"/>
+        <circle cx="30" cy="48" r="5"   fill="#0d2535"/>
+        <circle cx="31" cy="49" r="3.5" fill="#050e14"/>
+        <circle cx="29" cy="47" r="1.2" fill="rgba(255,255,255,0.7)"/>
+        <!-- Stern brow line over left eye -->
+        <path d="M24 43 Q30 41 36 43" stroke="#0a1a22" stroke-width="2" fill="none" stroke-linecap="round"/>
 
-        <!-- Right eye -->
-        <circle cx="49" cy="47" r="8"   fill="white"/>
-        <circle cx="50" cy="48" r="5"   fill="#111133"/>
-        <circle cx="48" cy="46" r="1.8" fill="white"/>
+        <!-- Right eye — smaller, harder, narrowed -->
+        <circle cx="50" cy="48" r="6.5" fill="#0a1a22"/>
+        <circle cx="50" cy="48" r="5"   fill="#0d2535"/>
+        <circle cx="51" cy="49" r="3.5" fill="#050e14"/>
+        <circle cx="49" cy="47" r="1.2" fill="rgba(255,255,255,0.7)"/>
+        <!-- Stern brow line over right eye -->
+        <path d="M44 43 Q50 41 56 43" stroke="#0a1a22" stroke-width="2" fill="none" stroke-linecap="round"/>
 
-        <!-- Mouth + teeth -->
-        <path d="M26 66 Q40 80 54 66" stroke="#0a5570" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M30 67 L32 75 L34 67" fill="white"/>
-        <path d="M37 70 L39 77 L41 70" fill="white"/>
-        <path d="M45 70 L47 77 L49 70" fill="white"/>
-        <path d="M52 67 L54 75 L56 67" fill="white"/>
+        <!-- Mouth — thin, straight/slight frown, subtle teeth -->
+        <path d="M28 67 Q40 73 52 67" stroke="#0a1a22" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Just a few sharp teeth, understated -->
+        <path d="M31 67 L32.5 72 L34 67" fill="#dde8ea"/>
+        <path d="M38.5 69 L40 73.5 L41.5 69" fill="#dde8ea"/>
+        <path d="M46 67 L47.5 72 L49 67" fill="#dde8ea"/>
 
         <!-- Nostrils -->
-        <ellipse cx="37" cy="62" rx="1.8" ry="1.2" fill="#0a5570" opacity="0.5"/>
-        <ellipse cx="43" cy="62" rx="1.8" ry="1.2" fill="#0a5570" opacity="0.5"/>
+        <ellipse cx="37" cy="64" rx="1.4" ry="0.9" fill="#0a1a22" opacity="0.6"/>
+        <ellipse cx="43" cy="64" rx="1.4" ry="0.9" fill="#0a1a22" opacity="0.6"/>
       </svg>
     </div>
   </div>
