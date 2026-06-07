@@ -1507,7 +1507,7 @@ section { padding: 6rem 0; }
 }
 .dashboard-sidebar {
   background: var(--deep);
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 2rem 5.5rem;
   border-right: 1px solid rgba(93,219,201,0.07);
 }
 .dash-nav { display: flex; flex-direction: column; gap: 0.25rem; margin-top: 1.5rem; }
@@ -1553,10 +1553,10 @@ section { padding: 6rem 0; }
 .dash-card-label {
   font-family: var(--font-body);
   font-size: 0.66rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: var(--deep);
   margin-bottom: 0.6rem;
 }
 .dash-card h3 { font-size: 1.05rem; color: var(--deep); margin-bottom: 0.5rem; }
@@ -3925,34 +3925,150 @@ section { padding: 6rem 0; }
   <aside class="dashboard-sidebar">
     <p style="font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:0.25rem;">My Training</p>
     <nav class="dash-nav">
-      <a href="#" class="dash-nav-item active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Overview</a>
-      <a href="#" class="dash-nav-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</a>
-      <a href="#" class="dash-nav-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg> Today's Lift</a>
-      <a href="#" class="dash-nav-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Meal Plan</a>
-      <a href="#" class="dash-nav-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</a>
-      <a href="#" class="dash-nav-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Log Workout</a>
+      <a href="#" class="dash-nav-item active" onclick="showDashView('overview'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Overview</a>
+      <a href="#" class="dash-nav-item" onclick="showDashView('swim'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</a>
+      <a href="#" class="dash-nav-item" onclick="showDashView('lift'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg> Today's Lift</a>
+      <a href="#" class="dash-nav-item" onclick="showDashView('meal'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg> Meal Plan</a>
+      <a href="#" class="dash-nav-item" onclick="showDashView('progress'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</a>
+      <a href="#" class="dash-nav-item" onclick="showDashView('log'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Log Workout</a>
     </nav>
   </aside>
   <main class="dashboard-main">
-    <div style="background:linear-gradient(135deg,var(--deep),var(--teal)); border-radius:var(--r-xl); padding:2.5rem; margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; background-image:var(--pattern-waves);">
-      <div>
-        <p id="dash-hero-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--pool-100); margin-bottom:0.5rem;">Sign in to access your personal plan</p>
-        <h2 class="dash-greeting" style="color:white; font-size:1.75rem;">Welcome to Streamline.</h2>
-        <p style="color:rgba(255,255,255,0.75); font-size:0.9rem; margin-top:0.4rem;">Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.</p>
+
+    <!-- ── Overview view ── -->
+    <div id="dash-view-overview">
+      <div style="background:linear-gradient(135deg,var(--deep),var(--teal)); border-radius:var(--r-xl); padding:2.5rem; margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; background-image:var(--pattern-waves);">
+        <div>
+          <p id="dash-hero-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--pool-100); margin-bottom:0.5rem;">Sign in to access your personal plan</p>
+          <h2 id="dash-greeting-text" class="dash-greeting" style="color:white; font-size:1.75rem;">Welcome to Streamline.</h2>
+          <p id="dash-hero-sub" style="color:rgba(255,255,255,0.75); font-size:0.9rem; margin-top:0.4rem;">Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.</p>
+        </div>
+        <div id="dash-auth-cta" style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <a href="#get-started" class="btn btn-gold" onclick="navigate('get-started')">Create Account</a>
+          <a href="#sign-in" class="btn btn-outline-light btn-sm" onclick="navigate('sign-in')">Sign In</a>
+        </div>
       </div>
-      <div id="dash-auth-cta" style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-        <a href="#get-started" class="btn btn-gold" onclick="navigate('get-started')">Create Account</a>
-        <a href="#" class="btn btn-outline-light btn-sm">Sign In</a>
+      <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
+      <div class="dash-grid">
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Daily Briefing</p>
+          <h3 style="color:var(--deep);">Your Morning Plan</h3>
+          <div class="lock-overlay" id="lock-briefing"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily briefing: open pools near you and today's workout preview.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Unlock</a></div>
+          <div class="dash-card-content" id="content-briefing" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem;">Your personalized daily briefing will appear here — coming soon.</p></div>
+        </div>
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</p>
+          <h3 style="color:var(--deep);">Personal Swim Workout</h3>
+          <div class="lock-overlay" id="lock-swim"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your swim set for today, customized to your skill level and training focus.</p><a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View Generic Set</a></div>
+          <div class="dash-card-content" id="content-swim" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized swim set is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('swim')">Open Full Set →</button></div>
+        </div>
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg> Today's Lift</p>
+          <h3 style="color:var(--deep);">Dryland Workout</h3>
+          <div class="lock-overlay" id="lock-lift"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your dryland session matched to today's swim focus and your schedule.</p><a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View Generic Lift</a></div>
+          <div class="dash-card-content" id="content-lift" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized lift is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('lift')">Open Full Session →</button></div>
+        </div>
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg> Meal Plan</p>
+          <h3 style="color:var(--deep);">Today's Nutrition</h3>
+          <div class="lock-overlay" id="lock-meal"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Meal recommendations based on your body profile, training load, and dietary preferences.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Set Up Profile</a></div>
+          <div class="dash-card-content" id="content-meal" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized meal plan is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('meal')">Open Meal Plan →</button></div>
+        </div>
+        <div class="dash-card span-2">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</p>
+          <h3 style="color:var(--deep);">Training Log &amp; Trends</h3>
+          <div class="lock-overlay" id="lock-progress" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div>
+          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your progress charts and training log will appear here — coming soon.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
+        </div>
       </div>
     </div>
-    <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
-    <div class="dash-grid">
-      <div class="dash-card"><p class="dash-card-label">📬 Daily Briefing</p><h3>Your Morning Plan</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily email briefing: local weather, open pools near you, and today's workout.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Unlock</a></div></div>
-      <div class="dash-card"><p class="dash-card-label">🏊 Today's Swim</p><h3>Personal Swim Workout</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your swim set for today, customized to your skill level and today's training focus.</p><a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View Generic Set</a></div></div>
-      <div class="dash-card"><p class="dash-card-label">💪 Today's Lift</p><h3>Dryland Workout</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your dryland session matched to today's swim training focus and your schedule.</p><a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View Generic Lift</a></div></div>
-      <div class="dash-card"><p class="dash-card-label">🥗 Meal Plan</p><h3>Today's Nutrition</h3><div class="lock-overlay"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Daily meal recommendations based on your body profile, training load, and dietary preferences.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Set Up Profile</a></div></div>
-      <div class="dash-card span-2"><p class="dash-card-label">📊 Progress</p><h3>Training Log &amp; Trends</h3><div class="lock-overlay" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div></div>
+
+    <!-- ── Today's Swim view ── -->
+    <div id="dash-view-swim" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Today's Swim</h2>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Your personalized swim workout for today.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Personalized sets coming soon</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:400px; margin:0 auto 1.5rem;">We're building your custom swim workouts based on your profile. In the meantime, browse the daily swim sets.</p>
+        <a href="#swim-sets" class="btn btn-primary" onclick="navigate('swim-sets')">View Today's Swim Sets</a>
+      </div>
     </div>
+
+    <!-- ── Today's Lift view ── -->
+    <div id="dash-view-lift" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Today's Lift</h2>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Your personalized dryland workout for today.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Personalized lift sessions coming soon</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:400px; margin:0 auto 1.5rem;">We're building your dryland program based on your training goals and schedule. Check out today's dryland workout in the meantime.</p>
+        <a href="#dryland-workouts" class="btn btn-primary" onclick="navigate('dryland-workouts')">View Dryland Workouts</a>
+      </div>
+    </div>
+
+    <!-- ── Meal Plan view ── -->
+    <div id="dash-view-meal" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Meal Plan</h2>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Nutrition recommendations tailored to your training load and dietary preferences.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Personalized meal plans coming soon</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto 1.5rem;">Once this feature launches, you'll get daily meal recommendations matched to your body profile, training load, and dietary restrictions you set in your profile.</p>
+        <button class="btn btn-outline-dark" onclick="editProfile()">Update Dietary Preferences</button>
+      </div>
+    </div>
+
+    <!-- ── Progress view ── -->
+    <div id="dash-view-progress" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Progress</h2>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Track your training volume, times, and trends over time.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Progress tracking coming soon</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto 1.5rem;">Charts, personal records, and training volume summaries will live here. Start logging workouts now so your history is ready when this launches.</p>
+        <button class="btn btn-primary" onclick="showDashView('log')">Log a Workout</button>
+      </div>
+    </div>
+
+    <!-- ── Log Workout view ── -->
+    <div id="dash-view-log" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Log Workout</h2>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Record today's session to track your progress over time.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2rem 2.5rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+          <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="log-date" /></div>
+          <div class="form-group"><label class="form-label">Workout Type</label><select class="form-input form-select" id="log-type"><option value="" disabled selected>Select…</option><option>Swim</option><option>Dryland / Lift</option><option>Cardio</option><option>Other</option></select></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+          <div class="form-group"><label class="form-label">Duration (minutes)</label><input type="number" class="form-input" id="log-duration" placeholder="60" min="1" /></div>
+          <div class="form-group"><label class="form-label">Distance / Volume <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="text" class="form-input" id="log-distance" placeholder="e.g., 3500 yards" /></div>
+        </div>
+        <div class="form-group" style="margin-bottom:1.25rem;"><label class="form-label">Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea class="form-input form-textarea" id="log-notes" rows="3" placeholder="How did it feel? Any PRs, struggles, or highlights…"></textarea></div>
+        <button class="btn btn-primary" onclick="saveWorkoutLog()">Save Workout</button>
+        <p id="log-saved-msg" style="display:none; margin-top:0.75rem; font-size:0.85rem; color:var(--teal); font-weight:600;">Workout saved!</p>
+      </div>
+      <div style="margin-top:2rem;">
+        <h3 style="font-size:0.9rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--deep); margin-bottom:1rem;">Recent Entries</h3>
+        <div id="workout-log-list"><p style="color:var(--gray-400); font-size:0.88rem;">No workouts logged yet.</p></div>
+      </div>
+    </div>
+
   </main>
 </div>
 </div><!-- end page-my-training -->
@@ -4349,6 +4465,7 @@ section { padding: 6rem 0; }
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5ddbc9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-2a8 8 0 0 1 16 0v2"/></svg>
     </div>
     <div class="profile-fullname" id="profile-fullname">Your Name</div>
+    <button class="btn btn-outline-light btn-sm" onclick="editProfile()" style="margin-bottom:2rem; font-size:0.82rem; border-color:rgba(93,219,201,0.4); color:rgba(93,219,201,0.85);">Edit Profile</button>
     <div class="profile-card" id="profile-card">
       <!-- rows rendered by renderProfilePage() -->
     </div>
@@ -4950,7 +5067,8 @@ function showPage(pageId) {
   if (pageId === 'set-archives') loadArchives();
   if (pageId === 'swim-sets') loadSwimSet('beginner');
   if (pageId === 'profile') renderProfilePage();
-  if (pageId === 'my-training') updateTrainingPage();
+  if (pageId === 'my-training') { updateTrainingPage(); showDashView('overview'); renderWorkoutLog(); }
+  if (pageId === 'contact') prefillContactForm();
 }
 
 function navigate(pageId) {
@@ -4960,11 +5078,143 @@ function navigate(pageId) {
 }
 
 function updateTrainingPage() {
-  const signedIn = !!getAccount();
+  const account = getAccount();
+  const signedIn = !!account;
   const cta = document.getElementById('dash-auth-cta');
   const label = document.getElementById('dash-hero-label');
+  const greeting = document.getElementById('dash-greeting-text');
+  const sub = document.getElementById('dash-hero-sub');
+  const sectionLabel = document.getElementById('dash-overview-section-label');
+
   if (cta) cta.style.display = signedIn ? 'none' : 'flex';
   if (label) label.style.display = signedIn ? 'none' : '';
+
+  if (signedIn) {
+    if (greeting) greeting.textContent = 'Good to see you, ' + account.firstName + '.';
+    if (sub) sub.textContent = 'Here\'s your training overview for today.';
+    if (sectionLabel) sectionLabel.textContent = "Today's plan";
+    // Show unlocked card content, hide lock overlays
+    ['briefing','swim','lift','meal','progress'].forEach(key => {
+      const lock = document.getElementById('lock-' + key);
+      const content = document.getElementById('content-' + key);
+      if (lock) lock.style.display = 'none';
+      if (content) content.style.display = '';
+    });
+  } else {
+    if (greeting) greeting.textContent = 'Welcome to Streamline.';
+    if (sub) sub.textContent = 'Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.';
+    if (sectionLabel) sectionLabel.textContent = 'Preview: sign in to personalize';
+    ['briefing','swim','lift','meal','progress'].forEach(key => {
+      const lock = document.getElementById('lock-' + key);
+      const content = document.getElementById('content-' + key);
+      if (lock) lock.style.display = '';
+      if (content) content.style.display = 'none';
+    });
+  }
+}
+
+function showDashView(view) {
+  const views = ['overview','swim','lift','meal','progress','log'];
+  views.forEach(v => {
+    const el = document.getElementById('dash-view-' + v);
+    if (el) el.style.display = v === view ? '' : 'none';
+  });
+  document.querySelectorAll('.dash-nav-item').forEach((item, i) => {
+    item.classList.toggle('active', views[i] === view);
+  });
+}
+
+function editProfile() {
+  const account = getAccount();
+  const profile = getProfile();
+  if (!account) return;
+
+  navigate('get-started');
+
+  // Pre-fill step 1 fields
+  setTimeout(() => {
+    const fn = document.getElementById('gs-first-name');
+    const ln = document.getElementById('gs-last-name');
+    const em = document.getElementById('gs-email');
+    if (fn) fn.value = account.firstName || '';
+    if (ln) ln.value = account.lastName || '';
+    if (em) em.value = account.email || '';
+
+    // Pre-fill step 2 fields
+    const age = document.getElementById('gs-dob');
+    const ht  = document.getElementById('gs-height');
+    const wt  = document.getElementById('gs-weight');
+    const gen = document.getElementById('gs-gender');
+    if (age) age.value = profile.age || '';
+    if (ht)  ht.value  = profile.height || '';
+    if (wt)  wt.value  = profile.weight || '';
+    if (gen) gen.value = profile.gender || '';
+
+    // Pre-select skill chip
+    if (profile.skillLevel) {
+      document.querySelectorAll('#gs-skill-chips .chip').forEach(c => {
+        c.classList.toggle('active', c.textContent.trim() === profile.skillLevel);
+      });
+    }
+
+    // Step 4 simple fields
+    const injNotes = document.getElementById('gs-injury-notes');
+    const dietStyle = document.getElementById('gs-dietary-style');
+    const allergies = document.getElementById('gs-allergies');
+    const dietNotes = document.getElementById('gs-dietary-notes');
+    if (injNotes)  injNotes.value  = profile.injuryNotes  || '';
+    if (dietStyle) dietStyle.value = profile.dietaryStyle || '';
+    if (allergies) allergies.value = profile.allergies    || '';
+    if (dietNotes) dietNotes.value = profile.dietaryNotes || '';
+
+    // Step 5 simple fields
+    const poolAccess = document.getElementById('gs-pool-access');
+    const gymAccess  = document.getElementById('gs-gym-access');
+    const city       = document.getElementById('gs-city');
+    if (poolAccess) poolAccess.value = profile.poolAccess || '';
+    if (gymAccess)  gymAccess.value  = profile.gymAccess  || '';
+    if (city)       city.value       = profile.city       || '';
+
+    // Skip account step — go straight to body profile
+    goToStep(2);
+  }, 80);
+}
+
+function saveWorkoutLog() {
+  const date     = document.getElementById('log-date')?.value     || '';
+  const type     = document.getElementById('log-type')?.value     || '';
+  const duration = document.getElementById('log-duration')?.value || '';
+  const distance = document.getElementById('log-distance')?.value || '';
+  const notes    = document.getElementById('log-notes')?.value    || '';
+
+  if (!date || !type || !duration) { alert('Please fill in date, type, and duration.'); return; }
+
+  const logs = JSON.parse(localStorage.getItem('streamline_workout_log') || '[]');
+  logs.unshift({ date, type, duration, distance, notes, savedAt: Date.now() });
+  localStorage.setItem('streamline_workout_log', JSON.stringify(logs));
+
+  const msg = document.getElementById('log-saved-msg');
+  if (msg) { msg.style.display = ''; setTimeout(() => msg.style.display = 'none', 2500); }
+
+  renderWorkoutLog();
+  ['log-date','log-type','log-duration','log-distance','log-notes'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
+
+function renderWorkoutLog() {
+  const list = document.getElementById('workout-log-list');
+  if (!list) return;
+  const logs = JSON.parse(localStorage.getItem('streamline_workout_log') || '[]');
+  if (!logs.length) { list.innerHTML = '<p style="color:var(--gray-400); font-size:0.88rem;">No workouts logged yet.</p>'; return; }
+  list.innerHTML = logs.slice(0, 10).map(l => `
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; gap:1rem; align-items:flex-start;">
+      <div style="flex:1;">
+        <p style="font-weight:700; color:var(--deep); font-size:0.88rem; margin-bottom:0.2rem;">${l.type} — ${l.date}</p>
+        <p style="font-size:0.82rem; color:var(--gray-400);">${l.duration} min${l.distance ? ' · ' + l.distance : ''}${l.notes ? ' · ' + l.notes : ''}</p>
+      </div>
+    </div>`).join('');
 }
 
 function clearArchiveFilters() {
@@ -5099,6 +5349,7 @@ function collectProfileData() {
 }
 
 function saveFullProfile() {
+  const existingAccount = getAccount();
   const firstName = (document.getElementById('gs-first-name')?.value || '').trim();
   const lastName  = (document.getElementById('gs-last-name')?.value  || '').trim();
   const email     = (document.getElementById('gs-email')?.value      || '').trim();
@@ -5106,13 +5357,19 @@ function saveFullProfile() {
   const confirm   = (document.getElementById('gs-confirm-password')?.value || '');
   const terms     = document.getElementById('gs-terms')?.checked;
 
-  if (!firstName || !lastName || !email || !password) { alert('Please fill in all required account fields (Step 1).'); return; }
-  if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
-  if (password !== confirm) { alert('Passwords do not match.'); return; }
-  if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
+  if (existingAccount) {
+    // Editing existing profile — keep account credentials, just update name/email + profile data
+    const updatedAccount = { ...existingAccount, firstName: firstName || existingAccount.firstName, lastName: lastName || existingAccount.lastName, email: email || existingAccount.email };
+    localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
+  } else {
+    if (!firstName || !lastName || !email || !password) { alert('Please fill in all required account fields (Step 1).'); return; }
+    if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
+    if (password !== confirm) { alert('Passwords do not match.'); return; }
+    if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
+    const account = { firstName, lastName, email, createdAt: Date.now() };
+    localStorage.setItem('streamline_account', JSON.stringify(account));
+  }
 
-  const account = { firstName, lastName, email, createdAt: Date.now() };
-  localStorage.setItem('streamline_account', JSON.stringify(account));
   const profile = collectProfileData();
   localStorage.setItem('streamline_profile', JSON.stringify(profile));
   updateNavButton();
@@ -5159,34 +5416,19 @@ function renderProfilePage() {
   const card = document.getElementById('profile-card');
   if (!card) return;
 
-  card.innerHTML = PROFILE_FIELDS.map(f => {
-    const val = profile[f.key] || '';
+  const allFields = [
+    { label: 'Email', val: account.email },
+    ...PROFILE_FIELDS.map(f => ({ label: f.label, val: profile[f.key] || '' }))
+  ];
+
+  card.innerHTML = allFields.map(({ label, val }) => {
     const displayVal = val || '—';
     const isEmpty = !val;
-
-    let editHtml = '';
-    if (f.type === 'select') {
-      editHtml = `<select class="form-input" onchange="saveProfileField('${f.key}', this.value)">
-        <option value="">Select…</option>
-        ${f.options.map(o => `<option value="${o}"${val === o ? ' selected' : ''}>${o}</option>`).join('')}
-      </select>`;
-    } else if (f.type === 'textarea') {
-      editHtml = `<textarea class="form-input" rows="2" placeholder="Add notes…" onblur="saveProfileField('${f.key}', this.value)">${val}</textarea>
-        <button class="profile-save-btn" onclick="closeProfileEdit('${f.key}')">Save</button>`;
-    } else {
-      editHtml = `<input type="${f.type}" class="form-input" value="${val}" placeholder="Enter…" onblur="saveProfileField('${f.key}', this.value)" />
-        <button class="profile-save-btn" onclick="closeProfileEdit('${f.key}')">Save</button>`;
-    }
-
-    return `<div class="profile-row" id="prow-${f.key}">
-      <span class="profile-row-label">${f.label}</span>
+    return `<div class="profile-row">
+      <span class="profile-row-label">${label}</span>
       <div class="profile-row-wrap">
-        <span class="profile-row-value${isEmpty ? ' empty' : ''}" id="pval-${f.key}">${displayVal}</span>
-        <div class="profile-edit-area" id="pedit-${f.key}">${editHtml}</div>
+        <span class="profile-row-value${isEmpty ? ' empty' : ''}">${displayVal}</span>
       </div>
-      <button class="profile-edit-btn" id="pbtn-${f.key}" onclick="toggleProfileEdit('${f.key}')" title="Edit">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      </button>
     </div>`;
   }).join('');
 }
@@ -5224,6 +5466,17 @@ function saveProfileField(key, value) {
   if (document.getElementById('pedit-' + key)?.querySelector('select')) {
     closeProfileEdit(key);
   }
+}
+
+function prefillContactForm() {
+  const account = getAccount();
+  if (!account) return;
+  const fn = document.getElementById('fname');
+  const ln = document.getElementById('lname');
+  const em = document.getElementById('cemail');
+  if (fn && !fn.value) fn.value = account.firstName || '';
+  if (ln && !ln.value) ln.value = account.lastName  || '';
+  if (em && !em.value) em.value = account.email     || '';
 }
 
 // Inline nav search
