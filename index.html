@@ -931,7 +931,11 @@ section { padding: 6rem 0; }
 .blog-nav-inner {
   display: flex;
   gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.blog-nav-inner::-webkit-scrollbar { display: none; }
 .blog-nav-link {
   display: block;
   padding: 0.9rem 1.5rem;
@@ -1837,16 +1841,27 @@ section { padding: 6rem 0; }
   .for-who-grid,
   .grid-3 { grid-template-columns: 1fr; }
   .nav-links { display: none; }
+  .nav-actions { margin-left: auto; }
+  .nav-inner { padding: 0 1.25rem; }
+  .nav-hamburger { display: flex; }
+  #nav-account-btn { display: none; }
   .form-row,
   .form-row-3 { grid-template-columns: 1fr; }
   section { padding: 4rem 0; }
   .newsletter-input-row { flex-direction: column; }
+  .ex-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
 }
 @media (max-width: 480px) {
-  .container { padding: 0 1.25rem; }
+  .container { padding: 0 1.25rem !important; }
   .hero { min-height: auto; padding: 3rem 0 4rem; }
+  .hero-inner { padding: 2rem 1.25rem 2rem; }
+  .hero h1 { margin-bottom: 2rem; }
+  .logo-wordmark { font-size: 1.75rem; }
+  .logo-tagline { display: none; }
   .footer-inner { grid-template-columns: 1fr; width: 92%; }
   .footer-bottom { width: 92%; }
+  section { padding: 3.5rem 0; }
+  .section-header { margin-bottom: 2.5rem; }
 }
 
 /* ── Extended tokens for gear/products pages ── */
@@ -2094,6 +2109,102 @@ section { padding: 6rem 0; }
 .unit-input .form-input { padding-right: 3rem; }
 .unit-label { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--gray-400); pointer-events: none; }
 .required-dot::after { content: " *"; color: var(--lap); }
+
+/* ── Mobile navigation ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--r-sm);
+  padding: 0;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+}
+.nav-hamburger:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+.nav-hamburger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.15s ease;
+  pointer-events: none;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 190;
+  cursor: pointer;
+}
+.mobile-nav-overlay.open { display: block; }
+
+.mobile-nav-drawer {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  background: var(--deep);
+  border-bottom: 1px solid rgba(93,219,201,0.12);
+  z-index: 195;
+  padding: 0.75rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.22s ease, opacity 0.18s ease;
+}
+.mobile-nav-drawer.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-nav-drawer a {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  padding: 0.85rem 1rem;
+  border-radius: var(--r-sm);
+  transition: color 0.15s, background 0.15s;
+  display: block;
+}
+.mobile-nav-drawer a:hover,
+.mobile-nav-drawer a.active { color: var(--white); background: rgba(255,255,255,0.06); }
+.mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 0.5rem 0; }
+.mobile-nav-cta { margin-top: 0.25rem; }
+
+/* Level tab horizontal scroll on mobile */
+.tabs-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--gray-200);
+  margin-bottom: 3rem;
+}
+.tabs-scroll-wrap::-webkit-scrollbar { display: none; }
+.tabs-scroll-inner {
+  display: flex;
+  gap: 0;
+  min-width: max-content;
+}
   </style>
 </head>
 <body>
@@ -2156,7 +2267,24 @@ section { padding: 6rem 0; }
         </div>
       </div>
       <a href="#sign-in" class="btn btn-gold btn-sm" id="nav-account-btn" onclick="return navAccountClick()">Create Account | Log In</a>
+      <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileNav()" aria-label="Open navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
+  </div>
+</nav>
+<div class="mobile-nav-overlay" id="mobile-nav-overlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile navigation">
+  <a href="#swim-sets" onclick="closeMobileNav(); navigate('swim-sets'); return false;">Swim Sets</a>
+  <a href="#dryland-workouts" onclick="closeMobileNav(); navigate('dryland-workouts'); return false;">Dryland</a>
+  <a href="#blog" onclick="closeMobileNav(); navigate('blog'); return false;">Blog</a>
+  <a href="#my-training" onclick="closeMobileNav(); navigate('my-training'); return false;">My Training</a>
+  <a href="#contact" onclick="closeMobileNav(); navigate('contact'); return false;">Contact</a>
+  <div class="mobile-nav-divider"></div>
+  <div class="mobile-nav-cta">
+    <a href="#sign-in" class="btn btn-gold btn-full" onclick="closeMobileNav(); return navAccountClick()">Create Account · Log In</a>
   </div>
 </nav>
 
@@ -2206,7 +2334,7 @@ section { padding: 6rem 0; }
   <div style="position:absolute; top:3rem; right:2rem; opacity:0.05; pointer-events:none;">
     <svg width="320" height="180" viewBox="0 0 320 180" fill="none" stroke="var(--deep)" stroke-linecap="round" stroke-width="1.5"><path d="M260 80 Q220 72 185 80 Q150 88 120 82 Q90 76 70 83 Q55 88 45 92"/><path d="M260 80 Q240 62 215 56 Q185 50 160 54 Q135 58 115 64 Q95 70 80 75"/><path d="M240 80 Q225 55 205 46 Q182 37 158 43 Q135 49 115 60"/><ellipse cx="275" cy="77" rx="14" ry="11"/><path d="M45 92 Q30 96 18 102 Q8 108 3 110"/><path d="M48 87 Q34 84 22 80 Q12 77 6 76"/></svg>
   </div>
-  <div class="container" style="position:relative; max-width:1120px; padding:0 4rem;">
+  <div class="container" style="position:relative; max-width:1120px;">
     <div class="section-header center">
       <h2 style="color:var(--deep);">Features &amp; Resources</h2>
       <div class="accent-bar center"></div>
@@ -2272,7 +2400,7 @@ section { padding: 6rem 0; }
 </section>
 
 <section style="background:var(--deep); background-image:var(--pattern-waves), var(--pattern-hatch);">
-  <div class="container" style="max-width:1120px; padding:0 4rem;">
+  <div class="container" style="max-width:1120px;">
     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3rem; flex-wrap:wrap; gap:1rem;">
       <div>
         <span class="eyebrow on-dark">From the blog</span>
@@ -2382,7 +2510,7 @@ section { padding: 6rem 0; }
 </div>
 <section style="background:var(--off-white); padding:3rem 0 5rem;">
   <div class="container">
-    <div style="display:flex; gap:0; border-bottom:1px solid var(--gray-200); margin-bottom:3rem;">
+    <div style="display:flex; gap:0; border-bottom:1px solid var(--gray-200); margin-bottom:3rem; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;">
       <button class="level-tab active" id="swim-tab-beginner" onclick="showSwimLevel('beginner')">Beginner</button>
       <button class="level-tab" id="swim-tab-intermediate" onclick="showSwimLevel('intermediate')">Intermediate</button>
       <button class="level-tab" id="swim-tab-advanced" onclick="showSwimLevel('advanced')">Advanced</button>
@@ -5079,6 +5207,7 @@ const PAGE_TITLES = {
 };
 
 function showPage(pageId) {
+  closeMobileNav();
   // Unknown page id: do nothing rather than hiding every page and leaving a
   // blank screen. Guards bad hashes and any stale links.
   if (!document.getElementById('page-' + pageId)) return;
@@ -5104,8 +5233,8 @@ function showPage(pageId) {
   // Show target page
   const target = document.getElementById('page-' + pageId);
   target.classList.add('active');
-  // Update nav active links
-  document.querySelectorAll('.nav-links a').forEach(a => {
+  // Update nav active links (desktop + mobile drawer)
+  document.querySelectorAll('.nav-links a, .mobile-nav-drawer a').forEach(a => {
     a.classList.remove('active');
     const href = a.getAttribute('href');
     if (href === '#' + pageId) a.classList.add('active');
@@ -5737,6 +5866,32 @@ function closeNavSearch() {
   const results = document.getElementById('nav-search-results');
   if (results) { results.innerHTML = ''; results.classList.remove('visible'); }
   _searchActiveIndex = -1;
+}
+
+function toggleMobileNav() {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const overlay = document.getElementById('mobile-nav-overlay');
+  const btn = document.getElementById('nav-hamburger');
+  if (!drawer) return;
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    closeNavSearch();
+  }
+}
+
+function closeMobileNav() {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const overlay = document.getElementById('mobile-nav-overlay');
+  const btn = document.getElementById('nav-hamburger');
+  if (drawer) drawer.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+  if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
 }
 
 let _searchTimer = null;
