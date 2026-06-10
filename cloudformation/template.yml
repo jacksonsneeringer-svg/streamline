@@ -134,6 +134,33 @@ Resources:
         - AttributeName: setId
           KeyType: HASH
 
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: streamline-users
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+
+  AuthTokensTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: streamline-auth-tokens
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: token
+          AttributeType: S
+      KeySchema:
+        - AttributeName: token
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+
   # ─── IAM ROLE FOR LAMBDA ───────────────────────────────────────────────────
 
   LambdaExecutionRole:
@@ -157,6 +184,7 @@ Resources:
                   - dynamodb:PutItem
                   - dynamodb:GetItem
                   - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
                   - dynamodb:Scan
                   - dynamodb:Query
                 Resource:
@@ -164,6 +192,8 @@ Resources:
                   - !GetAtt SubscribersTable.Arn
                   - !GetAtt DailySetsTable.Arn
                   - !GetAtt SetArchivesTable.Arn
+                  - !GetAtt UsersTable.Arn
+                  - !GetAtt AuthTokensTable.Arn
               - Effect: Allow
                 Action:
                   - bedrock:InvokeModel
@@ -263,6 +293,231 @@ Resources:
               return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'success': True})}
             except Exception as e:
               return {'statusCode': 500, 'headers': CORS, 'body': json.dumps({'error': str(e)})}
+
+  AuthFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-auth
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 15
+      Environment:
+        Variables:
+          SITE_URL: !Sub "https://${DomainName}"
+          EMAIL_FROM: "Streamline <noreply@snurray.com>"
+      Code:
+        ZipFile: |
+          import json, os, re, time, hmac, hashlib, secrets, boto3
+          from datetime import datetime, timezone
+
+          dynamo = boto3.resource('dynamodb')
+          users = dynamo.Table('streamline-users')
+          tokens = dynamo.Table('streamline-auth-tokens')
+          ses = boto3.client('ses', region_name='us-east-1')
+
+          CORS = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Content-Type': 'application/json'
+          }
+
+          SITE_URL = os.environ.get('SITE_URL', 'https://streamline.snurray.com')
+          EMAIL_FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
+          SESSION_TTL = 30 * 24 * 3600  # 30 days
+          RESET_TTL = 3600              # 1 hour
+          ITERATIONS = 120000
+
+          def resp(code, data):
+            return {'statusCode': code, 'headers': CORS, 'body': json.dumps(data)}
+
+          def hash_password(password, salt=None, iterations=ITERATIONS):
+            salt = salt or secrets.token_hex(16)
+            dk = hashlib.pbkdf2_hmac('sha256', password.encode(), bytes.fromhex(salt), iterations)
+            return 'pbkdf2$%d$%s$%s' % (iterations, salt, dk.hex())
+
+          def verify_password(password, stored):
+            try:
+              _, iterations, salt, _ = stored.split('$')
+              return hmac.compare_digest(hash_password(password, salt, int(iterations)), stored)
+            except Exception:
+              return False
+
+          def issue_token(email, kind, ttl):
+            token = secrets.token_urlsafe(32)
+            tokens.put_item(Item={
+              'token': token, 'kind': kind, 'email': email,
+              'expiresAt': int(time.time()) + ttl,
+              'createdAt': datetime.now(timezone.utc).isoformat()
+            })
+            return token
+
+          def get_valid_token(token, kind):
+            if not token:
+              return None
+            item = tokens.get_item(Key={'token': token}).get('Item')
+            # DynamoDB TTL deletion is lazy, so re-check expiry here
+            if not item or item.get('kind') != kind or int(item.get('expiresAt', 0)) < time.time():
+              return None
+            return item
+
+          def get_user(email):
+            if not email:
+              return None
+            return users.get_item(Key={'email': email}).get('Item')
+
+          def public_account(user):
+            return {
+              'firstName': user.get('firstName', ''),
+              'lastName': user.get('lastName', ''),
+              'email': user.get('email', ''),
+              'createdAt': int(user.get('createdAt', 0))
+            }
+
+          def user_profile(user):
+            try:
+              return json.loads(user.get('profile') or '{}')
+            except Exception:
+              return {}
+
+          def session_payload(user):
+            return {
+              'success': True,
+              'token': issue_token(user['email'], 'session', SESSION_TTL),
+              'account': public_account(user),
+              'profile': user_profile(user)
+            }
+
+          def signup(body):
+            first = (body.get('firstName') or '').strip()
+            last = (body.get('lastName') or '').strip()
+            email = (body.get('email') or '').strip().lower()
+            password = body.get('password') or ''
+            if not first or not last:
+              return resp(400, {'error': 'First and last name are required.'})
+            if not re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', email):
+              return resp(400, {'error': 'A valid email is required.'})
+            if len(password) < 8:
+              return resp(400, {'error': 'Password must be at least 8 characters.'})
+            if get_user(email):
+              return resp(409, {'error': 'An account with that email already exists. Try logging in instead.'})
+            user = {
+              'email': email, 'firstName': first, 'lastName': last,
+              'passwordHash': hash_password(password),
+              'createdAt': int(time.time() * 1000),
+              'profile': json.dumps(body.get('profile') or {})
+            }
+            users.put_item(Item=user)
+            return resp(200, session_payload(user))
+
+          def login(body):
+            email = (body.get('email') or '').strip().lower()
+            password = body.get('password') or ''
+            user = get_user(email)
+            if not user or not verify_password(password, user.get('passwordHash', '')):
+              return resp(401, {'error': 'That email and password do not match.'})
+            return resp(200, session_payload(user))
+
+          def logout(body):
+            token = body.get('token') or ''
+            if token:
+              tokens.delete_item(Key={'token': token})
+            return resp(200, {'success': True})
+
+          def me(event):
+            params = event.get('queryStringParameters') or {}
+            session = get_valid_token((params.get('token') or '').strip(), 'session')
+            user = get_user(session['email']) if session else None
+            if not user:
+              return resp(401, {'error': 'Session expired. Please log in again.'})
+            return resp(200, {'success': True, 'account': public_account(user), 'profile': user_profile(user)})
+
+          def save_profile(body):
+            session = get_valid_token(body.get('token') or '', 'session')
+            user = get_user(session['email']) if session else None
+            if not user:
+              return resp(401, {'error': 'Session expired. Please log in again.'})
+            if isinstance(body.get('profile'), dict):
+              user['profile'] = json.dumps(body['profile'])
+            if (body.get('firstName') or '').strip():
+              user['firstName'] = body['firstName'].strip()
+            if (body.get('lastName') or '').strip():
+              user['lastName'] = body['lastName'].strip()
+            users.put_item(Item=user)
+            return resp(200, {'success': True, 'account': public_account(user)})
+
+          def forgot(body):
+            email = (body.get('email') or '').strip().lower()
+            # Always report success so this endpoint can't be used to probe which emails exist
+            done = resp(200, {'success': True})
+            user = get_user(email)
+            if not user:
+              return done
+            token = issue_token(email, 'reset', RESET_TTL)
+            link = SITE_URL + '/#reset-password?token=' + token
+            first = user.get('firstName') or 'there'
+            text = (
+              'Hi ' + first + ',\n\n'
+              'We received a request to reset the password for your Streamline account.\n\n'
+              'Reset it with this link (valid for 1 hour):\n' + link + '\n\n'
+              'If you did not request this, you can safely ignore this email - your password will not change.\n\n'
+              '- The Streamline Team'
+            )
+            html = (
+              '<p>Hi ' + first + ',</p>'
+              '<p>We received a request to reset the password for your <b>Streamline</b> account.</p>'
+              '<p><a href="' + link + '">Reset your password</a> (this link is valid for 1 hour)</p>'
+              '<p>If you did not request this, you can safely ignore this email - your password will not change.</p>'
+              '<p>&mdash; The Streamline Team</p>'
+            )
+            try:
+              ses.send_email(
+                Source=EMAIL_FROM,
+                Destination={'ToAddresses': [email]},
+                Message={
+                  'Subject': {'Data': 'Reset your Streamline password'},
+                  'Body': {'Text': {'Data': text}, 'Html': {'Data': html}}
+                }
+              )
+            except Exception as e:
+              print('SES send failed:', e)
+            return done
+
+          def reset(body):
+            token_item = get_valid_token(body.get('token') or '', 'reset')
+            password = body.get('password') or ''
+            if not token_item:
+              return resp(400, {'error': 'This reset link is invalid or has expired. Please request a new one.'})
+            if len(password) < 8:
+              return resp(400, {'error': 'Password must be at least 8 characters.'})
+            user = get_user(token_item['email'])
+            if not user:
+              return resp(400, {'error': 'This reset link is invalid or has expired. Please request a new one.'})
+            user['passwordHash'] = hash_password(password)
+            users.put_item(Item=user)
+            tokens.delete_item(Key={'token': token_item['token']})  # single use
+            return resp(200, {'success': True})
+
+          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile}
+
+          def handler(event, context):
+            if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
+              return {'statusCode': 200, 'headers': CORS, 'body': ''}
+            action = (event.get('pathParameters') or {}).get('action') or ''
+            if action == 'me':
+              return me(event)
+            fn = ACTIONS.get(action)
+            if not fn:
+              return resp(404, {'error': 'Unknown auth action'})
+            try:
+              body = json.loads(event.get('body') or '{}')
+            except Exception:
+              body = {}
+            try:
+              return fn(body)
+            except Exception as e:
+              print('auth error:', e)
+              return resp(500, {'error': 'Something went wrong. Please try again.'})
 
   NewsletterFunction:
     Type: AWS::Lambda::Function
@@ -577,6 +832,37 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/contact"
+
+  # Auth routes (signup/login/logout/me/profile/forgot/reset)
+  AuthIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt AuthFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  AuthPostRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "POST /auth/{action}"
+      Target: !Sub "integrations/${AuthIntegration}"
+
+  AuthGetRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "GET /auth/{action}"
+      Target: !Sub "integrations/${AuthIntegration}"
+
+  AuthFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref AuthFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/auth/*"
 
   # Newsletter route
   NewsletterIntegration:
