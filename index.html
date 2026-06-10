@@ -974,9 +974,18 @@ section { padding: 6rem 0; }
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
+/* Desktop keeps two cards per category; the 3rd story only shows on mobile */
+@media (min-width: 901px) {
+  .blog-sections-main .grid-2 > .blog-card:nth-child(n+3) { display: none; }
+}
 @media (max-width: 900px) {
   .blog-sections-with-gear { grid-template-columns: 1fr; }
-  .blog-gear-sidebar { border-left: none; border-top: 1px solid var(--gray-100); padding-left: 0; padding-top: 2rem; margin-top: 2rem; }
+  .blog-gear-sidebar { border-left: none; padding-left: 0; }
+  .blog-gear-sidebar .blog-section-row { padding-top: 3rem !important; }
+  /* Every category matches the gear column: single stacked list, 3 stories */
+  .blog-sections-main { padding-right: 0; }
+  .blog-sections-main .grid-2 { grid-template-columns: 1fr; gap: 1.5rem; }
+  #blog-cat-grid-gear > .blog-card:nth-child(n+4) { display: none; }
 }
 
 /* ── Homepage blog layout ── */
@@ -1829,8 +1838,40 @@ section { padding: 6rem 0; }
   .setup-layout { grid-template-columns: 1fr; }
   .setup-sidebar { display: none; }
   .setup-content { padding: 2rem 1.5rem; }
-  .dashboard-layout { grid-template-columns: 1fr; }
-  .dashboard-sidebar { display: none; }
+  .dashboard-layout { grid-template-columns: minmax(0, 1fr); }
+  .dashboard-sidebar, .dashboard-main { min-width: 0; }
+  /* Keep the dashboard nav available on mobile as a horizontal tab bar */
+  .dashboard-sidebar {
+    padding: 1.25rem 1.25rem 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(93,219,201,0.15);
+  }
+  .dash-nav {
+    flex-direction: row;
+    gap: 0.35rem;
+    margin-top: 0.75rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.75rem;
+  }
+  .dash-nav::-webkit-scrollbar { display: none; }
+  .dash-nav-item { flex-shrink: 0; white-space: nowrap; padding: 0.55rem 0.85rem; }
+  .dash-nav-item.active {
+    border-left: none;
+    border-bottom: 2px solid var(--lap);
+    border-radius: var(--r-md) var(--r-md) 0 0;
+    padding-left: 0.85rem;
+  }
+  .dashboard-main { padding: 2rem 1.25rem 3rem; }
+  /* Hero photo: fill the whole section on portrait screens */
+  .hero { background-size: cover; background-position: center; }
+  /* About + Who it's for: stack full-width (inline styles set 2 columns) */
+  #about .container { padding: 0 2rem !important; }
+  #about .about-grid { grid-template-columns: 1fr !important; gap: 3.5rem !important; }
+  #about .about-divider { display: none; }
+  #about .about-col-left { padding-right: 0 !important; }
+  #about .about-col-right { padding-left: 0 !important; }
 }
 @media (max-width: 768px) {
   .hero-inner { grid-template-columns: 1fr; }
@@ -1840,28 +1881,43 @@ section { padding: 6rem 0; }
   .dash-grid,
   .for-who-grid,
   .grid-3 { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  .nav-actions { margin-left: auto; }
   .nav-inner { padding: 0 1.25rem; }
-  .nav-hamburger { display: flex; }
   #nav-account-btn { display: none; }
   .form-row,
   .form-row-3 { grid-template-columns: 1fr; }
   section { padding: 4rem 0; }
   .newsletter-input-row { flex-direction: column; }
   .ex-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+  /* Blog heroes: drop the notebook margin line + hole punches on mobile */
+  #page-blog .page-hero-sm::before,
+  #page-blog-technique .page-hero-sm::before,
+  #page-blog-training .page-hero-sm::before,
+  #page-blog-nutrition .page-hero-sm::before,
+  #page-blog-gear .page-hero-sm::before,
+  #page-blog-guides .page-hero-sm::before,
+  #page-blog .page-hero-sm::after,
+  #page-blog-technique .page-hero-sm::after,
+  #page-blog-training .page-hero-sm::after,
+  #page-blog-nutrition .page-hero-sm::after,
+  #page-blog-gear .page-hero-sm::after,
+  #page-blog-guides .page-hero-sm::after { display: none; }
 }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem !important; }
   .hero { min-height: auto; padding: 3rem 0 4rem; }
   .hero-inner { padding: 2rem 1.25rem 2rem; }
   .hero h1 { margin-bottom: 2rem; }
-  .logo-wordmark { font-size: 1.75rem; }
+  .logo-wordmark { font-size: 1.5rem; }
   .logo-tagline { display: none; }
+  .logo-mark { width: 76px; height: auto; }
+  .logo-top-row { gap: 7px; }
+  .nav-actions { gap: 0.5rem; margin-left: 0.5rem; }
+  .nav-inner { padding: 0 1rem; }
   .footer-inner { grid-template-columns: 1fr; width: 92%; }
   .footer-bottom { width: 92%; }
   section { padding: 3.5rem 0; }
   .section-header { margin-bottom: 2.5rem; }
+  #about .container { padding: 0 1.25rem !important; }
 }
 
 /* ── Extended tokens for gear/products pages ── */
@@ -2008,7 +2064,11 @@ section { padding: 6rem 0; }
 .ex-table tr:hover td { background: var(--off-white, #f0f7f6); }
 .mtag { display: inline-block; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 3px; background: var(--gray-100); color: var(--pool-500); border: 1px solid var(--gray-200); }
 .contact-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: start; max-width: 1060px; margin: 0 auto; }
-@media (max-width: 768px) { .contact-layout { grid-template-columns: 1fr; } }
+@media (max-width: 768px) {
+  /* Stack the form first, "How can we help?" cards below it */
+  .contact-layout { display: flex; flex-direction: column; }
+  .contact-layout > .contact-aside-sticky { order: 2; margin-top: 2.5rem; }
+}
 .contact-aside-sticky { }
 /* Profile page */
 .profile-page-bg { min-height: 100vh; background: url('https://images.pexels.com/photos/6858676/pexels-photo-6858676.jpeg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; padding: 4rem 1.5rem 6rem; position: relative; }
@@ -2190,6 +2250,14 @@ section { padding: 6rem 0; }
 .mobile-nav-drawer a.active { color: var(--white); background: rgba(255,255,255,0.06); }
 .mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 0.5rem 0; }
 .mobile-nav-cta { margin-top: 0.25rem; }
+/* Collapse nav links into the hamburger before they overflow the bar.
+   Must come after the base .nav-hamburger rule above to win the cascade. */
+@media (max-width: 1100px) {
+  .nav-links { display: none; }
+  .nav-actions { margin-left: auto; }
+  .nav-inner { padding: 0 1.5rem; }
+  .nav-hamburger { display: flex; }
+}
 
 /* Level tab horizontal scroll on mobile */
 .tabs-scroll-wrap {
@@ -2468,8 +2536,8 @@ section { padding: 6rem 0; }
 <section id="about" style="background:var(--white); position:relative; padding-bottom:2.5rem;">
   <div class="container" style="padding:0 7rem;">
     <div class="about-grid" style="position:relative; grid-template-columns:1fr 1fr; gap:0;">
-      <div style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, transparent, var(--lap) 15%, var(--lap) 85%, transparent); opacity:0.45; transform:translateX(-50%); pointer-events:none;"></div>
-      <div style="padding-right:3rem;">
+      <div class="about-divider" style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, transparent, var(--lap) 15%, var(--lap) 85%, transparent); opacity:0.45; transform:translateX(-50%); pointer-events:none;"></div>
+      <div class="about-col-left" style="padding-right:3rem;">
         <span class="eyebrow">About Streamline</span>
         <h2>Not all swimmers have a coach, strength trainer, and nutritionist. You do.</h2>
         <div class="accent-bar"></div>
@@ -2480,7 +2548,7 @@ section { padding: 6rem 0; }
           <strong style="font-weight:500; color:var(--gray-500);">Affiliate disclosure:</strong> Some links on this site are affiliate links. If you purchase through one, we may earn a small commission at no additional cost to you. &nbsp;<strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
         </div>
       </div>
-      <div style="padding-left:3rem;">
+      <div class="about-col-right" style="padding-left:3rem;">
         <span class="eyebrow">Who it's for</span>
         <h2>Everyone. And we mean everyone.</h2>
         <div class="accent-bar"></div>
@@ -4189,11 +4257,11 @@ section { padding: 6rem 0; }
         <p style="color:var(--gray-400); font-size:0.9rem;">Record today's session to track your progress over time.</p>
       </div>
       <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2rem 2.5rem;">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+        <div class="form-row" style="gap:1.25rem; margin-bottom:1.25rem;">
           <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="log-date" /></div>
           <div class="form-group"><label class="form-label">Workout Type</label><select class="form-input form-select" id="log-type"><option value="" disabled selected>Select…</option><option>Swim</option><option>Dryland / Lift</option><option>Cardio</option><option>Other</option></select></div>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+        <div class="form-row" style="gap:1.25rem; margin-bottom:1.25rem;">
           <div class="form-group"><label class="form-label">Duration (minutes)</label><input type="number" class="form-input" id="log-duration" placeholder="60" min="1" /></div>
           <div class="form-group"><label class="form-label">Distance / Volume <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="text" class="form-input" id="log-distance" placeholder="e.g., 3500 yards" /></div>
         </div>
@@ -5280,7 +5348,7 @@ function updateTrainingPage() {
   if (signedIn) {
     if (greeting) { greeting.textContent = 'Good to see you, ' + account.firstName + '.'; greeting.style.color = 'var(--deep)'; }
     if (sub) { sub.textContent = 'Here\'s your training overview for today.'; sub.style.color = 'var(--deep)'; }
-    if (banner) { banner.style.background = 'var(--surface)'; banner.style.backgroundImage = 'none'; banner.style.border = 'none'; }
+    if (banner) { banner.style.background = 'var(--surface)'; banner.style.backgroundImage = 'none'; banner.style.border = 'none'; banner.style.padding = ''; banner.style.borderRadius = ''; }
     if (sectionLabel) sectionLabel.textContent = "Today's plan";
     // Show unlocked card content, hide lock overlays
     ['briefing','swim','lift','meal','progress'].forEach(key => {
@@ -5292,7 +5360,7 @@ function updateTrainingPage() {
   } else {
     if (greeting) { greeting.textContent = 'Welcome to Streamline.'; greeting.style.color = 'white'; }
     if (sub) { sub.textContent = 'Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.'; sub.style.color = 'rgba(255,255,255,0.75)'; }
-    if (banner) { banner.style.background = 'linear-gradient(135deg,var(--deep),var(--teal))'; banner.style.backgroundImage = 'var(--pattern-waves)'; banner.style.border = 'none'; }
+    if (banner) { banner.style.background = 'var(--deep)'; banner.style.backgroundImage = 'var(--pattern-waves), linear-gradient(135deg,var(--deep),var(--teal))'; banner.style.border = 'none'; banner.style.padding = '1.5rem 1.75rem'; banner.style.borderRadius = 'var(--r-xl)'; }
     if (sectionLabel) sectionLabel.textContent = 'Preview: sign in to personalize';
     ['briefing','swim','lift','meal','progress'].forEach(key => {
       const lock = document.getElementById('lock-' + key);
@@ -6593,36 +6661,48 @@ function renderRecentlyPublished() {
 }
 
 function renderCategoryPosts() {
+  const CATEGORY_STORY_CAP = 3;
   const overflow = BLOG_POSTS.slice(RECENTLY_PUBLISHED_COUNT);
+  const recent = BLOG_POSTS.slice(0, RECENTLY_PUBLISHED_COUNT);
   // Group by homeSection
   const bySection = {};
   overflow.forEach(p => {
     if (!bySection[p.homeSection]) bySection[p.homeSection] = [];
     bySection[p.homeSection].push(p);
   });
+  const recentBySection = {};
+  recent.forEach(p => {
+    if (!recentBySection[p.homeSection]) recentBySection[p.homeSection] = [];
+    recentBySection[p.homeSection].push(p);
+  });
+  const cardHtml = p =>
+    '<div class="blog-card" onclick="navigate(\'' + escHtml(p.id) + '\')" style="cursor:pointer;">' +
+      '<div class="blog-card-thumb-pattern" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 36) + '</div>' +
+      '<div class="blog-card-body">' +
+        '<h3 class="blog-card-title">' + escHtml(p.title) + '</h3>' +
+        '<div class="blog-card-meta">' +
+          '<span class="cat-badge">' + escHtml(p.category) + '</span>' +
+          '<span class="blog-card-date">' + _blogFmtDate(p.date) + ' · ' + p.readTime + ' min read</span>' +
+        '</div>' +
+        '<p class="blog-card-excerpt">' + escHtml(_truncateExcerpt(p.openingText)) + '</p>' +
+      '</div>' +
+    '</div>';
   ['technique', 'training', 'nutrition', 'gear', 'guides'].forEach(sec => {
     const grid = document.getElementById('blog-cat-grid-' + sec);
     if (!grid) return;
     const posts = bySection[sec] || [];
-    const existingCount = grid.children.length;
-    const limit = sec === 'gear' ? posts.length : Math.max(0, 2 - existingCount);
-    const html = posts.slice(0, limit).map(p =>
-      '<div class="blog-card" onclick="navigate(\'' + escHtml(p.id) + '\')" style="cursor:pointer;">' +
-        '<div class="blog-card-thumb-pattern" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 36) + '</div>' +
-        '<div class="blog-card-body">' +
-          '<h3 class="blog-card-title">' + escHtml(p.title) + '</h3>' +
-          '<div class="blog-card-meta">' +
-            '<span class="cat-badge">' + escHtml(p.category) + '</span>' +
-            '<span class="blog-card-date">' + _blogFmtDate(p.date) + ' · ' + p.readTime + ' min read</span>' +
-          '</div>' +
-          '<p class="blog-card-excerpt">' + escHtml(_truncateExcerpt(p.openingText)) + '</p>' +
-        '</div>' +
-      '</div>'
-    ).join('');
-    if (html) grid.insertAdjacentHTML('afterbegin', html);
-    if (sec !== 'gear') {
-      while (grid.children.length > 2) grid.removeChild(grid.lastElementChild);
+    if (sec === 'gear') {
+      grid.insertAdjacentHTML('afterbegin', posts.map(cardHtml).join(''));
+      return;
     }
+    const room = Math.max(0, CATEGORY_STORY_CAP - grid.children.length);
+    const html = posts.slice(0, room).map(cardHtml).join('');
+    if (html) grid.insertAdjacentHTML('afterbegin', html);
+    // Top up short categories with recently-published stories so each
+    // section carries three; appended last to keep the lead slots intact.
+    const fill = (recentBySection[sec] || []).slice(0, Math.max(0, CATEGORY_STORY_CAP - grid.children.length));
+    if (fill.length) grid.insertAdjacentHTML('beforeend', fill.map(cardHtml).join(''));
+    while (grid.children.length > CATEGORY_STORY_CAP) grid.removeChild(grid.lastElementChild);
   });
 }
 
