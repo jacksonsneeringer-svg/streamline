@@ -1933,6 +1933,11 @@ section { padding: 6rem 0; }
   section { padding: 3.5rem 0; }
   .section-header { margin-bottom: 2.5rem; }
   #about .container { padding: 0 1.25rem !important; }
+  /* Sign-in header: keep "Log in" on one line; condense the create-account button.
+     !important needed to beat the card/title inline styles. */
+  .signin-card { padding: 2rem 1.25rem !important; }
+  .signin-title { font-size: 1.6rem !important; white-space: nowrap; }
+  .signin-create-btn { padding: 0.45rem 0.8rem; font-size: 0.68rem; letter-spacing: 0.08em; flex-shrink: 0; }
 }
 
 /* ── Extended tokens for gear/products pages ── */
@@ -4297,25 +4302,33 @@ section { padding: 6rem 0; }
 <!-- ══ SIGN IN PAGE ══ -->
 <div class="page" id="page-sign-in">
   <div style="min-height:100vh; background:var(--deep); background-image:var(--pattern-waves); display:flex; align-items:center; justify-content:center; padding:2rem;">
-    <div style="background:var(--white); border-radius:var(--r-xl); padding:2.5rem 3rem; width:100%; max-width:440px; box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+    <div class="signin-card" style="background:var(--white); border-radius:var(--r-xl); padding:2.5rem 3rem; width:100%; max-width:440px; box-shadow:0 24px 64px rgba(0,0,0,0.3);">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.75rem;">
-        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Log in</h2>
-        <a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Create account</a>
+        <h2 class="signin-title" style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Log in</h2>
+        <a href="#get-started" class="btn btn-primary btn-sm signin-create-btn" onclick="navigate('get-started')">Create account</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
         <div class="form-group">
           <label class="form-label">Email <span style="color:var(--lap);">*</span></label>
-          <input type="email" class="form-input" placeholder="you@example.com" required />
+          <input type="email" id="signin-email" class="form-input" placeholder="you@example.com" required onkeydown="if(event.key==='Enter')signIn()" />
         </div>
         <div class="form-group">
           <label class="form-label">Password <span style="color:var(--lap);">*</span></label>
-          <input type="password" class="form-input" placeholder="Your password" required />
+          <input type="password" id="signin-password" class="form-input" placeholder="Your password" required onkeydown="if(event.key==='Enter')signIn()" />
         </div>
         <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; font-size:0.86rem; color:var(--text-muted); user-select:none;">
           <input type="checkbox" />
           Remember me
         </label>
-        <button class="btn btn-gold" style="width:100%; justify-content:center; font-size:1rem; padding:0.75rem 1.5rem;">Go!</button>
+        <button type="button" onclick="toggleForgotPassword()" style="background:none; border:none; padding:0; margin-top:-0.5rem; align-self:flex-start; font-size:0.86rem; color:var(--teal); cursor:pointer; text-decoration:underline;">Forgot password?</button>
+        <div id="forgot-panel" style="display:none; flex-direction:column; gap:0.85rem; background:var(--off-white); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem;">
+          <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">Enter your account email above, then choose a new password.</p>
+          <input type="password" id="forgot-new-password" class="form-input" placeholder="New password (8+ characters)" />
+          <input type="password" id="forgot-confirm-password" class="form-input" placeholder="Confirm new password" />
+          <button type="button" class="btn btn-primary btn-sm" style="justify-content:center;" onclick="resetPassword()">Reset Password</button>
+        </div>
+        <p id="signin-message" style="display:none; font-size:0.86rem; margin:-0.25rem 0 0; color:#c0392b;"></p>
+        <button class="btn btn-gold" style="width:100%; justify-content:center; font-size:1rem; padding:0.75rem 1.5rem;" onclick="signIn()">Go!</button>
       </div>
     </div>
   </div>
@@ -5556,6 +5569,87 @@ function getProfile() {
   try { return JSON.parse(localStorage.getItem('streamline_profile') || '{}'); } catch(e) { return {}; }
 }
 
+// ── Login: registered users live in streamline_users, keyed by lowercase email,
+//    with a hashed password. streamline_account stays the signed-in session. ──
+
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('streamline_users') || '{}'); } catch(e) { return {}; }
+}
+
+function saveUser(user) {
+  const users = getUsers();
+  users[user.email.toLowerCase()] = user;
+  localStorage.setItem('streamline_users', JSON.stringify(users));
+}
+
+async function hashPassword(password) {
+  if (window.crypto && crypto.subtle) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  // crypto.subtle needs a secure context (https/localhost); prefix so it can never collide with a hex hash
+  return 'plain:' + password;
+}
+
+function showSignInMessage(text, isError) {
+  const el = document.getElementById('signin-message');
+  if (!el) return;
+  el.textContent = text;
+  el.style.color = isError ? '#c0392b' : 'var(--teal)';
+  el.style.display = text ? '' : 'none';
+}
+
+async function signIn() {
+  const email    = (document.getElementById('signin-email')?.value || '').trim();
+  const password = document.getElementById('signin-password')?.value || '';
+  if (!email || !password) { showSignInMessage('Please enter your email and password.', true); return; }
+
+  const user = getUsers()[email.toLowerCase()];
+  if (!user || user.passwordHash !== await hashPassword(password)) {
+    showSignInMessage('That email and password don’t match. Please try again, or use “Forgot password?” to reset it.', true);
+    return;
+  }
+
+  showSignInMessage('', false);
+  document.getElementById('signin-password').value = '';
+  const { passwordHash, ...account } = user;
+  localStorage.setItem('streamline_account', JSON.stringify(account));
+  updateNavButton();
+  navigate('my-training');
+}
+
+function toggleForgotPassword() {
+  const panel = document.getElementById('forgot-panel');
+  if (!panel) return;
+  panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+  showSignInMessage('', false);
+}
+
+async function resetPassword() {
+  const email   = (document.getElementById('signin-email')?.value || '').trim();
+  const pw      = document.getElementById('forgot-new-password')?.value || '';
+  const confirm = document.getElementById('forgot-confirm-password')?.value || '';
+
+  if (!email) { showSignInMessage('Enter your account email in the email field above first.', true); return; }
+  let user = getUsers()[email.toLowerCase()];
+  if (!user) {
+    // Accounts created before the registered-users store existed: let the
+    // currently saved account claim its record by matching email.
+    const account = getAccount();
+    if (account && (account.email || '').toLowerCase() === email.toLowerCase()) user = { ...account };
+  }
+  if (!user) { showSignInMessage('No account found with that email.', true); return; }
+  if (pw.length < 8) { showSignInMessage('New password must be at least 8 characters.', true); return; }
+  if (pw !== confirm) { showSignInMessage('New passwords do not match.', true); return; }
+
+  user.passwordHash = await hashPassword(pw);
+  saveUser(user);
+  document.getElementById('forgot-new-password').value = '';
+  document.getElementById('forgot-confirm-password').value = '';
+  document.getElementById('forgot-panel').style.display = 'none';
+  showSignInMessage('Password updated! You can now log in.', false);
+}
+
 function updateNavButton() {
   const btn = document.getElementById('nav-account-btn');
   if (!btn) return;
@@ -5569,7 +5663,7 @@ function updateNavButton() {
   }
 }
 
-function createAccount() {
+async function createAccount() {
   const firstName = (document.getElementById('gs-first-name')?.value || '').trim();
   const lastName  = (document.getElementById('gs-last-name')?.value  || '').trim();
   const email     = (document.getElementById('gs-email')?.value      || '').trim();
@@ -5583,6 +5677,7 @@ function createAccount() {
   if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
 
   const account = { firstName, lastName, email, createdAt: Date.now() };
+  saveUser({ ...account, passwordHash: await hashPassword(password) });
   localStorage.setItem('streamline_account', JSON.stringify(account));
   _previousPage = localStorage.getItem('streamline_pre_signup_page') || _previousPage;
 
@@ -5647,7 +5742,7 @@ function collectProfileData() {
   };
 }
 
-function saveFullProfile() {
+async function saveFullProfile() {
   const existingAccount = getAccount();
   const firstName = (document.getElementById('gs-first-name')?.value || '').trim();
   const lastName  = (document.getElementById('gs-last-name')?.value  || '').trim();
@@ -5660,12 +5755,22 @@ function saveFullProfile() {
     // Editing existing profile — keep account credentials, just update name/email + profile data
     const updatedAccount = { ...existingAccount, firstName: firstName || existingAccount.firstName, lastName: lastName || existingAccount.lastName, email: email || existingAccount.email };
     localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
+    // Keep the registered-users record (used by login) in sync with the new name/email
+    const users = getUsers();
+    const oldKey = (existingAccount.email || '').toLowerCase();
+    if (users[oldKey]) {
+      const rec = { ...users[oldKey], firstName: updatedAccount.firstName, lastName: updatedAccount.lastName, email: updatedAccount.email };
+      delete users[oldKey];
+      users[updatedAccount.email.toLowerCase()] = rec;
+      localStorage.setItem('streamline_users', JSON.stringify(users));
+    }
   } else {
     if (!firstName || !lastName || !email || !password) { alert('Please fill in all required account fields (Step 1).'); return; }
     if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
     if (password !== confirm) { alert('Passwords do not match.'); return; }
     if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
     const account = { firstName, lastName, email, createdAt: Date.now() };
+    saveUser({ ...account, passwordHash: await hashPassword(password) });
     localStorage.setItem('streamline_account', JSON.stringify(account));
   }
 
