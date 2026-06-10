@@ -1162,6 +1162,8 @@ section { padding: 6rem 0; }
   padding: 3rem 0 0;
   border-top: 1px solid rgba(93,219,201,0.07);
 }
+/* Hidden on app-like pages on desktop; mobile override keeps it on every page */
+.site-footer.footer-hidden { display: none; }
 .footer-inner {
   width: 70%;
   margin: 0 auto;
@@ -1488,6 +1490,8 @@ section { padding: 6rem 0; }
 }
 .setup-step-content.active { display: block; }
 .setup-step-header { margin-bottom: 2.5rem; }
+/* Mobile-only log in button (sidebar + nav account button are hidden there) */
+.setup-login-btn { display: none; }
 .setup-step-header h2 {
   font-family: var(--font-display);
   font-size: 2.25rem;
@@ -1837,7 +1841,10 @@ section { padding: 6rem 0; }
   .footer-bottom { width: 90%; }
   .setup-layout { grid-template-columns: 1fr; }
   .setup-sidebar { display: none; }
-  .setup-content { padding: 2rem 1.5rem; }
+  /* Page pulls up under the fixed nav (-nav-h margin), so pad past it */
+  .setup-content { padding: calc(var(--nav-h) + 2rem) 1.5rem 3.5rem; }
+  .setup-login-link { display: none; }
+  .setup-login-btn { display: inline-flex; margin-left: auto; }
   .dashboard-layout { grid-template-columns: minmax(0, 1fr); }
   .dashboard-sidebar, .dashboard-main { min-width: 0; }
   /* Keep the dashboard nav available on mobile as a horizontal tab bar */
@@ -1888,6 +1895,14 @@ section { padding: 6rem 0; }
   section { padding: 4rem 0; }
   .newsletter-input-row { flex-direction: column; }
   .ex-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+  /* Footer shows on every page on mobile, including app-like pages */
+  .site-footer.footer-hidden { display: block; }
+  /* Blog posts: divider between the date line and the article body */
+  .post-header { border-bottom: 1px solid var(--gray-100); }
+  /* Get-started events: collapse the 5-column row so it doesn't overflow */
+  #gs-events-header { display: none; }
+  #gs-events-container .gs-event-row { grid-template-columns: 1fr 1fr !important; }
+  #gs-events-container .gs-event-row button { grid-column: 2; justify-self: end; }
   /* Blog heroes: drop the notebook margin line + hole punches on mobile */
   #page-blog .page-hero-sm::before,
   #page-blog-technique .page-hero-sm::before,
@@ -4332,7 +4347,8 @@ section { padding: 6rem 0; }
       <div class="setup-step-header">
         <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
           <span class="eyebrow">Step 1 of 5</span>
-          <span style="font-size:0.78rem; color:var(--gray-400); cursor:pointer; transition:color 0.15s;" onmouseover="this.style.color='var(--deep)'" onmouseout="this.style.color='var(--gray-400)'" onclick="navigate('sign-in')">| Already have an account? Log in →</span>
+          <span class="setup-login-link" style="font-size:0.78rem; color:var(--gray-400); cursor:pointer; transition:color 0.15s;" onmouseover="this.style.color='var(--deep)'" onmouseout="this.style.color='var(--gray-400)'" onclick="navigate('sign-in')">| Already have an account? Log in →</span>
+          <a href="#sign-in" class="btn btn-outline-dark btn-sm setup-login-btn" onclick="return navigate('sign-in')">Log in</a>
         </div>
         <h2>Create your account</h2>
         <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Fields marked * are required</p>
@@ -5199,7 +5215,7 @@ section { padding: 6rem 0; }
 </section>
 </div><!-- end page-terms-of-use -->
 
-<!-- ── Shared Footer (hidden on my-training/get-started via JS) ── -->
+<!-- ── Shared Footer (hidden on my-training/account-created on desktop; always shown on mobile) ── -->
 <footer class="site-footer" id="site-footer">
   <div class="footer-inner">
     <div class="footer-col">
@@ -5307,10 +5323,10 @@ function showPage(pageId) {
     const href = a.getAttribute('href');
     if (href === '#' + pageId) a.classList.add('active');
   });
-  // Footer visibility
+  // Footer visibility (class-based so CSS can keep it visible on mobile)
   const footer = document.getElementById('site-footer');
   if (footer) {
-    footer.style.display = NO_FOOTER_PAGES.has(pageId) ? 'none' : '';
+    footer.classList.toggle('footer-hidden', NO_FOOTER_PAGES.has(pageId));
   }
   // Update browser tab title
   document.title = PAGE_TITLES[pageId] || 'STREAMLINE';
