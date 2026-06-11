@@ -29,10 +29,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      # --s3-bucket: the template now exceeds the 51,200-byte body limit, so it
+      # is uploaded and deployed by URL (the sync step cleans the artifact up).
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
             --template-file cloudformation/template.yml \
+            --s3-bucket ${{ env.DOMAIN_NAME }}-website \
+            --s3-prefix cfn-artifacts \
             --stack-name ${{ env.STACK_NAME }} \
             --parameter-overrides \
               DomainName=${{ env.DOMAIN_NAME }} \
@@ -40,6 +44,17 @@ jobs:
             --capabilities CAPABILITY_NAMED_IAM \
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset
+
+      # Welcomes accounts created in the past 24h that never got the email.
+      # Idempotent: users are marked welcomeEmailSentAt after each send.
+      - name: Send welcome emails to recent signups
+        run: |
+          aws lambda invoke \
+            --function-name streamline-welcome-email \
+            --cli-binary-format raw-in-base64-out \
+            --payload '{"hours": 24}' \
+            /tmp/welcome-backfill.json
+          cat /tmp/welcome-backfill.json
 
       - name: Get stack outputs
         id: stack

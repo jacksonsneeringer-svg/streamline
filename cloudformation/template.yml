@@ -205,6 +205,10 @@ Resources:
                 Resource: "*"
               - Effect: Allow
                 Action:
+                  - lambda:InvokeFunction
+                Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:streamline-welcome-email"
+              - Effect: Allow
+                Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
@@ -315,6 +319,7 @@ Resources:
           users = dynamo.Table('streamline-users')
           tokens = dynamo.Table('streamline-auth-tokens')
           ses = boto3.client('ses', region_name='us-east-1')
+          lam = boto3.client('lambda')
 
           CORS = {
             'Access-Control-Allow-Origin': '*',
@@ -408,6 +413,11 @@ Resources:
               'profile': json.dumps(body.get('profile') or {})
             }
             users.put_item(Item=user)
+            try:
+              lam.invoke(FunctionName='streamline-welcome-email', InvocationType='Event',
+                         Payload=json.dumps({'email': email}).encode())
+            except Exception as e:
+              print('welcome email invoke failed:', e)
             return resp(200, session_payload(user))
 
           def login(body):
@@ -518,6 +528,145 @@ Resources:
             except Exception as e:
               print('auth error:', e)
               return resp(500, {'error': 'Something went wrong. Please try again.'})
+
+  WelcomeEmailFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-welcome-email
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 120
+      Environment:
+        Variables:
+          SITE_URL: !Sub "https://${DomainName}"
+          EMAIL_FROM: "Streamline <noreply@snurray.com>"
+      Code:
+        ZipFile: |
+          import json, os, time, boto3
+          from boto3.dynamodb.conditions import Attr
+
+          dynamo = boto3.resource('dynamodb')
+          users = dynamo.Table('streamline-users')
+          ses = boto3.client('ses', region_name='us-east-1')
+
+          SITE = os.environ.get('SITE_URL', 'https://streamline.snurray.com')
+          FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
+
+          # Brand palette (site :root): deep #0d4f47, teal #1a7a6e, lap #5ddbc9,
+          # light lap #a8ede5, pale lap #e6faf7, surface #f0f7f6, ink #091f1c,
+          # muted #3a6560. Email-safe font stand-ins for the site faces:
+          F = 'font-family:Arial,Helvetica,sans-serif;'  # ~ DM Sans
+          G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
+
+          FEATURES = [
+            ('Daily swim sets', 'A fresh, coach-written workout every day at four levels - Beginner through Pro - with warm-ups, main sets, intervals and coaching cues.'),
+            ('Dryland workouts', 'Strength and conditioning sessions built for swimmers and synced to your pool training.'),
+            ('My Training dashboard', "Today's swim plan, dryland lift and meal plan in one place, plus progress tracking and your streak."),
+            ('Set archives & blog', 'Every past set, filterable by stroke, intensity and distance, plus technique articles written for swimmers.')
+          ]
+          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming - purposeful pool sets, dryland work and nutrition guidance, planned for you every day so you can just show up and swim fast.'
+          NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
+          KNOW = [
+            'New swim sets drop every day just after midnight Pacific - check My Training each morning.',
+            'Pick the level that fits today; you can switch between Beginner, Intermediate, Advanced and Pro any time.',
+            'Questions, ideas or article requests? Send them through the contact page - we read everything.'
+          ]
+
+          def div(css, t): return '<div style="' + css + '">' + t + '</div>'
+
+          def build_html(first):
+            feats = ''
+            for t, d in FEATURES:
+              feats += div('border-left:3px solid #5ddbc9;padding:2px 0 2px 16px;margin:0 0 16px;',
+                div(F + 'font-size:15px;font-weight:bold;color:#0d4f47;', t) +
+                div(F + 'font-size:14px;line-height:1.6;color:#3a6560;', d))
+            know = ''
+            for k in KNOW:
+              know += div(F + 'font-size:14px;line-height:1.8;color:#3a6560;', '&bull;&nbsp; ' + k)
+            eyebrow = F + 'font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#1a7a6e;padding-bottom:14px;'
+            return ('<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f0f7f6;">'
+              '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
+              '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:36px 40px 40px;">'
+              + div(F + 'font-size:24px;font-weight:bold;letter-spacing:8px;color:#ffffff;', 'STREAMLINE')
+              + div(F + 'font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#5ddbc9;padding:6px 0 30px;', 'Train for the Fast Lane')
+              + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
+              + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
+              + '</td></tr>'
+              '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#091f1c;', INTRO) + '</td></tr>'
+              '<tr><td style="padding:0 40px 10px;">' + div(eyebrow, 'What your account unlocks') + feats + '</td></tr>'
+              '<tr><td style="padding:8px 40px;">'
+              '<div style="background:#e6faf7;border-left:4px solid #5ddbc9;border-radius:8px;padding:22px 24px;">'
+              + div(G + 'font-size:19px;color:#0d4f47;padding-bottom:6px;', 'Make it yours: complete your profile')
+              + div(F + 'font-size:14px;line-height:1.7;color:#3a6560;padding-bottom:16px;', NUDGE % ('<b>' + first + '</b>'))
+              + '<a href="' + SITE + '/#profile" style="display:inline-block;background:#5ddbc9;color:#0d4f47;' + F
+              + 'font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:13px 30px;border-radius:4px;">Complete Your Profile &rarr;</a>'
+              '</div></td></tr>'
+              '<tr><td style="padding:26px 40px 36px;">' + div(eyebrow, 'Good to know') + know
+              + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;padding-top:10px;',
+                '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
+              + '</td></tr>'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:26px 40px;">'
+              + div(F + 'font-size:13px;font-weight:bold;letter-spacing:4px;color:#ffffff;', 'STREAMLINE')
+              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:8px;',
+                '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved. &middot; <a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
+              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:8px;', 'You are receiving this because an account was created on STREAMLINE with this email address.')
+              + '</td></tr></table></td></tr></table></body></html>')
+
+          def build_text(first):
+            lines = ['You just dove in. Congrats!', 'Welcome to STREAMLINE, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
+            lines += ['* %s - %s' % ft for ft in FEATURES]
+            lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#profile', '', 'GOOD TO KNOW']
+            lines += ['* ' + k for k in KNOW]
+            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', '- The Streamline Team | Train for the Fast Lane']
+            return '\n'.join(lines)
+
+          def send_welcome(user):
+            first = (user.get('firstName') or '').strip() or 'swimmer'
+            ses.send_email(
+              Source=FROM,
+              Destination={'ToAddresses': [user['email']]},
+              Message={
+                'Subject': {'Data': 'You just dove in - welcome to STREAMLINE, ' + first + '!'},
+                'Body': {'Text': {'Data': build_text(first)}, 'Html': {'Data': build_html(first)}}
+              }
+            )
+            users.update_item(Key={'email': user['email']},
+              UpdateExpression='SET welcomeEmailSentAt = :t',
+              ExpressionAttributeValues={':t': int(time.time() * 1000)})
+
+          def handler(event, context):
+            event = event or {}
+            # Single send - fired asynchronously by the auth lambda on signup
+            if event.get('email'):
+              # Consistent read: this fires right after signup writes the user
+              user = users.get_item(Key={'email': event['email'].strip().lower()}, ConsistentRead=True).get('Item')
+              if not user:
+                return {'statusCode': 404, 'body': json.dumps({'error': 'No such user'})}
+              if user.get('welcomeEmailSentAt'):
+                return {'statusCode': 200, 'body': json.dumps({'sent': 0, 'alreadySent': 1})}
+              send_welcome(user)
+              return {'statusCode': 200, 'body': json.dumps({'sent': 1})}
+            # Backfill: welcome accounts created in the look-back window (default
+            # 24h) that never got the email. Safe to re-run - sent users are marked.
+            hours = float(event.get('hours') or 24)
+            cutoff = int((time.time() - hours * 3600) * 1000)
+            kw = {'FilterExpression': Attr('createdAt').gte(cutoff) & Attr('welcomeEmailSentAt').not_exists()}
+            sent, errors = 0, []
+            while True:
+              r = users.scan(**kw)
+              for u in r.get('Items', []):
+                try:
+                  send_welcome(u)
+                  sent += 1
+                except Exception as ex:
+                  errors.append('%s: %s' % (u.get('email'), ex))
+              if 'LastEvaluatedKey' not in r:
+                break
+              kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
+            print('welcome backfill: sent=%d errors=%s' % (sent, errors))
+            return {'statusCode': 200, 'body': json.dumps({'sent': sent, 'errors': errors})}
 
   NewsletterFunction:
     Type: AWS::Lambda::Function
