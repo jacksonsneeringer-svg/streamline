@@ -1899,10 +1899,6 @@ section { padding: 6rem 0; }
   .site-footer.footer-hidden { display: block; }
   /* Blog posts: divider between the date line and the article body */
   .post-header { border-bottom: 1px solid var(--gray-100); }
-  /* Get-started events: collapse the 5-column row so it doesn't overflow */
-  #gs-events-header { display: none; }
-  #gs-events-container .gs-event-row { grid-template-columns: 1fr 1fr !important; }
-  #gs-events-container .gs-event-row button { grid-column: 2; justify-self: end; }
   /* Blog heroes: drop the notebook margin line + hole punches on mobile */
   #page-blog .page-hero-sm::before,
   #page-blog-technique .page-hero-sm::before,
@@ -2372,7 +2368,7 @@ section { padding: 6rem 0; }
   <a href="#contact" onclick="closeMobileNav(); navigate('contact'); return false;">Contact</a>
   <div class="mobile-nav-divider"></div>
   <div class="mobile-nav-cta">
-    <a href="#sign-in" class="btn btn-gold btn-full" onclick="closeMobileNav(); return navAccountClick()">Create Account · Log In</a>
+    <a href="#sign-in" class="btn btn-gold btn-full" id="mobile-nav-account-btn" onclick="closeMobileNav(); return navAccountClick()">Create Account · Log In</a>
   </div>
 </nav>
 
@@ -4449,21 +4445,6 @@ section { padding: 6rem 0; }
             <div class="chip" onclick="this.classList.toggle('selected')">Nothing specific</div>
           </div>
         </div>
-        <div style="margin-top:0.25rem;">
-          <div style="display:grid; grid-template-columns:2fr 1.2fr 1.3fr 1.3fr auto; gap:0.5rem 0.75rem; font-size:0.78rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.4rem; padding:0 0.1rem;" id="gs-events-header">
-            <span>Event</span><span>Date</span><span>Current Time (h:mm:ss.ms)</span><span>Goal Time (h:mm:ss.ms)</span><span></span>
-          </div>
-          <div id="gs-events-container">
-            <div class="gs-event-row" style="display:grid; grid-template-columns:2fr 1.2fr 1.3fr 1.3fr auto; gap:0.5rem 0.75rem; margin-bottom:0.5rem; align-items:center;">
-              <input type="text" class="form-input" placeholder="e.g., Masters 200 Free" style="font-size:0.86rem;" />
-              <input type="date" class="form-input" style="font-size:0.86rem;" />
-              <input type="text" class="form-input" placeholder="0:00:00.00" style="font-size:0.86rem;" />
-              <input type="text" class="form-input" placeholder="0:00:00.00" style="font-size:0.86rem;" />
-              <button type="button" onclick="removeEventRow(this)" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:0 0.25rem; line-height:1;" title="Remove">×</button>
-            </div>
-          </div>
-          <button type="button" onclick="addEventRow()" style="margin-top:0.25rem; background:none; border:1px dashed var(--gray-200); border-radius:var(--r-sm); color:var(--teal); font-size:0.82rem; font-weight:600; padding:0.35rem 0.9rem; cursor:pointer;">+ Add Event</button>
-        </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <div class="form-group">
             <label class="form-label required-dot">Overall Fitness Goal</label>
@@ -4493,7 +4474,7 @@ section { padding: 6rem 0; }
             </div>
           </div>
           <div id="speed-times-panel" style="display:none; margin-top:1.25rem; background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1.25rem;">
-            <p style="font-size:0.82rem; font-weight:600; color:var(--deep); margin-bottom:0.75rem; letter-spacing:0.03em;">Current best times &amp; goal times <span style="font-weight:400; color:var(--text-muted);">(optional — fill in any events you swim)</span></p>
+            <p style="font-size:0.82rem; font-weight:600; color:var(--deep); margin-bottom:0.75rem; letter-spacing:0.03em;">Current best times &amp; goal times <span style="font-weight:400; color:var(--text-muted);">(fill in any events you swim; you can edit your times later)</span></p>
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; font-size:0.8rem; color:var(--text-muted); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:0.5rem; padding:0 0.25rem;">
               <span>Event</span><span>Current best</span><span>Goal time</span>
             </div>
@@ -4663,7 +4644,7 @@ section { padding: 6rem 0; }
             <div class="chip" onclick="this.classList.toggle('selected')">Wednesday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Thursday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Friday</div>
-            <div class="chip selected" onclick="this.classList.toggle('selected')">Saturday</div>
+            <div class="chip" onclick="this.classList.toggle('selected')">Saturday</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Sunday</div>
           </div>
         </div>
@@ -4720,7 +4701,7 @@ section { padding: 6rem 0; }
           </div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
-          <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location</p>
+          <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location <span style="font-weight:400; letter-spacing:normal; text-transform:none; color:var(--text-muted); font-size:0.8rem;">— used to recommend outdoor or indoor training based on weather conditions</span></p>
           <div class="form-row">
             <div class="form-group"><label class="form-label required-dot">City</label><input type="text" id="gs-city" class="form-input" placeholder="Chicago" /></div>
           </div>
@@ -5769,15 +5750,26 @@ async function resetPassword() {
 }
 
 function updateNavButton() {
-  const btn = document.getElementById('nav-account-btn');
-  if (!btn) return;
   const account = getAccount();
-  if (account) {
-    btn.textContent = 'Hi ' + account.firstName + '!';
-    btn.href = '#profile';
-  } else {
-    btn.textContent = 'Create Account | Log In';
-    btn.href = '#sign-in';
+  const btn = document.getElementById('nav-account-btn');
+  if (btn) {
+    if (account) {
+      btn.textContent = 'Hi ' + account.firstName + '!';
+      btn.href = '#profile';
+    } else {
+      btn.textContent = 'Create Account | Log In';
+      btn.href = '#sign-in';
+    }
+  }
+  const mobileBtn = document.getElementById('mobile-nav-account-btn');
+  if (mobileBtn) {
+    if (account) {
+      mobileBtn.textContent = 'Hi ' + account.firstName + '!';
+      mobileBtn.href = '#profile';
+    } else {
+      mobileBtn.textContent = 'Create Account · Log In';
+      mobileBtn.href = '#sign-in';
+    }
   }
 }
 
@@ -5851,8 +5843,6 @@ function collectProfileData() {
     gender:       document.getElementById('gs-gender')?.value || '',
     skillLevel:   getSelectedChips('gs-skill-chips'),
     trainingFor:  getSelectedChips('gs-training-for-chips'),
-    eventName:    document.getElementById('gs-event-name')?.value || '',
-    eventDate:    document.getElementById('gs-event-date')?.value || '',
     fitnessGoal:  getSelectedChips('gs-fitness-goal-chips'),
     swimGoal:     getSelectedChips('swim-goal-chips'),
     injuryNotes:  document.getElementById('gs-injury-notes')?.value || '',
@@ -5932,8 +5922,6 @@ const PROFILE_FIELDS = [
   { key: 'gender',      label: 'Gender',              type: 'select', options: ['Male','Female','Non-binary','Prefer not to say'] },
   { key: 'skillLevel',  label: 'Swim Skill Level',    type: 'select', options: ['Beginner: learning basics, building comfort','Intermediate: consistent technique, structured sets','Advanced: competitive background or high mileage','Pro: elite performance, high-volume training'] },
   { key: 'trainingFor', label: 'Training For',        type: 'text' },
-  { key: 'eventName',   label: 'Target Event',        type: 'text' },
-  { key: 'eventDate',   label: 'Target Event Date',   type: 'date' },
   { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'text' },
   { key: 'swimGoal',    label: 'Swimming Goal',       type: 'select', options: ['Speed — improve race times','Technique / skill development','Injury rehab / return to water','General improvement','Distance & endurance','Open water / triathlon swim'] },
   { key: 'injuryNotes', label: 'Injury Notes',        type: 'textarea' },
@@ -6611,20 +6599,6 @@ function goToStep(n) {
   const content = document.getElementById('page-get-started');
   if (content) content.scrollTop = 0;
   window.scrollTo(0, 0);
-}
-
-function addEventRow() {
-  const container = document.getElementById('gs-events-container');
-  const row = document.createElement('div');
-  row.className = 'gs-event-row';
-  row.style.cssText = 'display:grid; grid-template-columns:2fr 1.2fr 1.3fr 1.3fr auto; gap:0.5rem 0.75rem; margin-bottom:0.5rem; align-items:center;';
-  row.innerHTML = '<input type="text" class="form-input" placeholder="e.g., Masters 200 Free" style="font-size:0.86rem;" /><input type="date" class="form-input" style="font-size:0.86rem;" /><input type="text" class="form-input" placeholder="0:00:00.00" style="font-size:0.86rem;" /><input type="text" class="form-input" placeholder="0:00:00.00" style="font-size:0.86rem;" /><button type="button" onclick="removeEventRow(this)" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:0 0.25rem; line-height:1;" title="Remove">×</button>';
-  container.appendChild(row);
-}
-
-function removeEventRow(btn) {
-  const rows = document.querySelectorAll('#gs-events-container .gs-event-row');
-  if (rows.length > 1) btn.closest('.gs-event-row').remove();
 }
 
 function toggleSpeedTimes() {
