@@ -436,34 +436,32 @@ section { padding: 6rem 0; }
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 2.5rem 5.5rem 2rem;
+  padding: 4rem 5.5rem 2.5rem;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
 }
-.hero-copy { max-width: 560px; }
+.hero-copy { max-width: 640px; }
 .hero-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-body);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--lap);
   background: rgba(93,219,201,0.08);
   border: 1px solid rgba(93,219,201,0.18);
-  padding: 0.35rem 0.85rem;
+  padding: 0.4rem 1rem;
   border-radius: 99px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
   opacity: 0.85;
 }
-.hero h1 {
-  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-  margin-bottom: 2rem;
-}
+.hero h1 { margin-bottom: 3.5rem; }
+.hero-tag-br { display: none; }
 .hero-sub {
   font-size: 1rem;
   font-weight: 300;
@@ -1884,7 +1882,11 @@ section { padding: 6rem 0; }
   #about .about-col-right { padding-left: 0 !important; }
 }
 @media (max-width: 768px) {
-  .hero-inner { grid-template-columns: 1fr; }
+  .hero { min-height: 80vh; }
+  .hero-inner { grid-template-columns: 1fr; padding: 2.5rem 2.5rem 2rem; gap: 2rem; }
+  .hero-tag { display: inline-block; margin-bottom: 1.25rem; }
+  .hero-tag-br { display: block; }
+  .hero-cta .btn-lg { padding: 0.7rem 1.6rem; font-size: 0.8rem; }
   .hero-panel { display: none; }
   .resources-grid,
   .blog-grid,
@@ -1918,9 +1920,8 @@ section { padding: 6rem 0; }
 }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem !important; }
-  .hero { min-height: auto; padding: 3rem 0 4rem; }
-  .hero-inner { padding: 2rem 1.25rem 2rem; }
-  .hero h1 { margin-bottom: 2rem; }
+  .hero { min-height: 70vh; padding: 0; }
+  .hero-inner { padding: 2rem 1.25rem 2rem; gap: 1.5rem; }
   .logo-wordmark { font-size: 1.5rem; }
   .logo-tagline { display: none; }
   .logo-mark { width: 76px; height: auto; }
@@ -2406,7 +2407,7 @@ section { padding: 6rem 0; }
   <div class="hero-inner">
     <div class="hero-copy">
       <div class="hero-tag">
-        Swim Sets • Dryland Workouts • Nutrition Advice
+        Swim Sets • Dryland Workouts •<br class="hero-tag-br"> Nutrition Advice
       </div>
       <h1>Train smarter.<br/><span style="white-space:nowrap;">Recover stronger.</span><br/>Race faster.</h1>
       <div class="hero-cta">
