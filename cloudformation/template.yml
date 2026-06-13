@@ -648,6 +648,26 @@ Resources:
                 return {'statusCode': 200, 'body': json.dumps({'sent': 0, 'alreadySent': 1})}
               send_welcome(user)
               return {'statusCode': 200, 'body': json.dumps({'sent': 1})}
+            # All-users send: every account, no createdAt window.
+            # {"all": true}              - only those not yet sent
+            # {"all": true, "force": true} - resend to every account including already-sent
+            if event.get('all'):
+              force = bool(event.get('force'))
+              kw = {} if force else {'FilterExpression': Attr('welcomeEmailSentAt').not_exists()}
+              sent, errors = 0, []
+              while True:
+                r = users.scan(**kw)
+                for u in r.get('Items', []):
+                  try:
+                    send_welcome(u)
+                    sent += 1
+                  except Exception as ex:
+                    errors.append('%s: %s' % (u.get('email'), ex))
+                if 'LastEvaluatedKey' not in r:
+                  break
+                kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
+              print('welcome all-send: force=%s sent=%d errors=%s' % (force, sent, errors))
+              return {'statusCode': 200, 'body': json.dumps({'sent': sent, 'errors': errors})}
             # Backfill: welcome accounts created in the look-back window (default
             # 24h) that never got the email. Safe to re-run - sent users are marked.
             hours = float(event.get('hours') or 24)
