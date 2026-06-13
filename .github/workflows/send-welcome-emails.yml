@@ -1,0 +1,50 @@
+name: Send Welcome Emails
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Who to send to'
+        required: true
+        default: 'all-unsent'
+        type: choice
+        options:
+          - all-unsent   # every account that has never received the welcome email
+          - all-force    # every account, including those already sent (resend)
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  send:
+    name: Send welcome emails
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Build payload
+        id: payload
+        run: |
+          if [ "${{ inputs.mode }}" = "all-force" ]; then
+            echo 'payload={"all":true,"force":true}' >> "$GITHUB_OUTPUT"
+          else
+            echo 'payload={"all":true}' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Invoke welcome-email Lambda
+        run: |
+          aws lambda invoke \
+            --function-name streamline-welcome-email \
+            --cli-binary-format raw-in-base64-out \
+            --payload '${{ steps.payload.outputs.payload }}' \
+            /tmp/result.json
+          echo "=== Lambda response ==="
+          cat /tmp/result.json
