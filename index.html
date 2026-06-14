@@ -1917,6 +1917,21 @@ section { padding: 6rem 0; }
   #page-blog-nutrition .page-hero-sm::after,
   #page-blog-gear .page-hero-sm::after,
   #page-blog-guides .page-hero-sm::after { display: none; }
+  /* Legal pages: match contact page hero style on mobile */
+  #page-privacy-policy .page-hero-sm,
+  #page-terms-of-use .page-hero-sm { background: var(--off-white); padding: 2.5rem 0 2rem; position: relative; }
+  #page-privacy-policy .page-hero-sm::before,
+  #page-terms-of-use .page-hero-sm::before { content: ''; position: absolute; inset: 0; background-image: var(--pattern-waves); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%); mask-image: linear-gradient(to bottom, transparent 0%, black 100%); pointer-events: none; }
+  #page-privacy-policy .page-hero-sm h1,
+  #page-terms-of-use .page-hero-sm h1 { color: var(--deep); }
+  #page-privacy-policy .page-hero-sm .sub,
+  #page-terms-of-use .page-hero-sm .sub { color: var(--teal); opacity: 0.8; }
+  #page-privacy-policy .page-hero-sm .eyebrow,
+  #page-terms-of-use .page-hero-sm .eyebrow { color: var(--teal) !important; }
+  #page-privacy-policy .page-hero-sm .container,
+  #page-terms-of-use .page-hero-sm .container { position: relative; z-index: 1; }
+  #page-privacy-policy > section,
+  #page-terms-of-use > section { background-color: var(--off-white) !important; background-image: var(--pattern-waves); padding-top: 2.5rem !important; }
 }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem !important; }
