@@ -568,7 +568,7 @@ Resources:
           INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming - personalized pool sets, dryland work and nutrition, planned for you every day so you can just show up and swim fast.'
           NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
           KNOW = [
-            'New swim sets drop every day just after midnight Pacific - check My Training each morning.',
+            'Your daily training plan - swim set, dryland lift and meal plan - drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
             'Questions, ideas or article requests? Send them through the contact page - we read everything.'
           ]
 
