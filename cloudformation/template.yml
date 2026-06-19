@@ -560,19 +560,19 @@ Resources:
           G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
 
           FEATURES = [
-            ('Personalized training, every day', "Your My Training dashboard brings today's swim set and dryland lift together, customized to your skill level, training focus, and schedule."),
-            ('Nutrition built around your training', 'Daily meal-plan recommendations matched to your body profile, training load, and the dietary preferences you set in your profile.'),
-            ('Progress tracking & workout log', 'Log every session and track your training volume, times, and trends over time as your history builds.'),
-            ('Set & workout archives', 'Browse every past swim set and dryland workout, filterable by level, stroke, intensity, and distance.'),
-            ('Featured blog posts', 'Read featured blog posts and technique deep-dives written for swimmers, from stroke mechanics to training science.'),
-            ('Favorite sets and workouts', 'Favorite the swim sets and dryland workouts you want to come back to, and find them again in one place.')
+            ('Personalized training, every day', "Today's swim set and dryland lift in My Training, matched to your level, focus, and schedule."),
+            ('Nutrition built around your training', 'Daily meal plans matched to your body, training load, and dietary preferences.'),
+            ('Progress tracking & workout log', 'Log sessions and track your volume, times, and trends over time.'),
+            ('Set & workout archives', 'Every past swim set and dryland workout, filterable by level, stroke, intensity, and distance.'),
+            ('Featured blog posts', 'Featured posts and technique deep-dives for swimmers, from stroke mechanics to training science.'),
+            ('Favorite sets and workouts', 'Save the swim sets and dryland workouts you love and find them again in one place.')
           ]
-          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming: personalized pool sets, dryland work, and nutrition, planned for you every day so you can just show up and swim fast.'
-          NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes, and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
+          INTRO = 'Your free account is ready. STREAMLINE is your daily partner for competitive swimming: personalized pool sets, dryland, and nutrition, planned every day so you just show up and swim fast.'
+          NUDGE = 'Take two minutes to tell us your level, strokes, and goals so your daily plans truly fit. Update them any time from the Hi %s! button in the menu.'
           KNOW = [
-            'Your daily training plan (swim set, dryland lift, and meal plan) drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
-            'Your plan adapts to you: update your level, strokes, goals, or dietary preferences any time from your profile, and your daily training adjusts to match.',
-            'Each swim set opens with a focus cue and pace guidance: read it before you push off, since that is where the coaching lives, not just the yardage.',
+            'A fresh plan (swim, dryland, and meals) drops at midnight Pacific, ready in My Training each morning.',
+            'Update your level, strokes, goals, or dietary preferences any time, and your plan adjusts to match.',
+            'Read the focus cue and pace guidance at the top of each set; that is where the coaching lives, not just the yardage.',
             'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
 
@@ -602,7 +602,7 @@ Resources:
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
-              '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#091f1c;', INTRO) + '</td></tr>'
+              '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#3a6560;', INTRO) + '</td></tr>'
               '<tr><td style="padding:0 40px 10px;">' + div(eyebrow, 'What your account unlocks') + feats + '</td></tr>'
               '<tr><td style="padding:8px 40px;">'
               '<div style="background:#e6faf7;border-left:4px solid #5ddbc9;border-radius:8px;padding:22px 24px;">'
@@ -614,6 +614,10 @@ Resources:
               '<tr><td style="padding:26px 40px 36px;">' + div(eyebrow, 'Good to know') + know
               + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;padding-top:10px;',
                 '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
+              + '</td></tr>'
+              '<tr><td style="padding:4px 40px 38px;">'
+              + div(F + 'font-size:15px;line-height:1.6;color:#3a6560;', 'Happy swimming,')
+              + div(G + 'font-size:20px;color:#0d4f47;padding-top:2px;', 'STREAMLINE')
               + '</td></tr>'
               '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
               + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
@@ -628,7 +632,7 @@ Resources:
             lines += ['* %s: %s' % ft for ft in FEATURES]
             lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#profile', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
-            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', '- The Streamline Team | Train for the Fast Lane']
+            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'STREAMLINE']
             return '\n'.join(lines)
 
           def send_welcome(user):
