@@ -564,7 +564,8 @@ Resources:
             ('Nutrition built around your training', 'Daily meal-plan recommendations matched to your body profile, training load, and the dietary preferences you set in your profile.'),
             ('Progress tracking & workout log', 'Log every session and track your training volume, times, and trends over time as your history builds.'),
             ('Set & workout archives', 'Browse every past swim set and dryland workout, filterable by level, stroke, intensity, and distance.'),
-            ('Featured blog posts and favorites', 'Read featured blog posts and technique deep-dives, and favorite the swim sets and dryland workouts you want to come back to.')
+            ('Featured blog posts', 'Read featured blog posts and technique deep-dives written for swimmers, from stroke mechanics to training science.'),
+            ('Favorite sets and workouts', 'Favorite the swim sets and dryland workouts you want to come back to, and find them again in one place.')
           ]
           INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming: personalized pool sets, dryland work, and nutrition, planned for you every day so you can just show up and swim fast.'
           NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes, and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
