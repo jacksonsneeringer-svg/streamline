@@ -560,20 +560,28 @@ Resources:
           G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
 
           FEATURES = [
-            ('Daily swim sets', 'A fresh, coach-written workout every day at four levels - Beginner through Pro - with warm-ups, main sets, intervals and coaching cues.'),
-            ('Dryland workouts', 'Strength and conditioning sessions built for swimmers and synced to your pool training.'),
-            ('My Training dashboard', "Today's swim plan, dryland lift and meal plan in one place, plus progress tracking and your streak."),
-            ('Set archives & blog', 'Every past set, filterable by stroke, intensity and distance, plus technique articles written for swimmers.')
+            ('Personalized training, every day', "Today's swim set and dryland lift in My Training, matched to your level, focus, and schedule."),
+            ('Nutrition built around your training', 'Daily meal plans matched to your body, training load, and dietary preferences.'),
+            ('Progress tracking & workout log', 'Log sessions and track your volume, times, and trends over time.'),
+            ('Set & workout archives', 'Every past swim set and dryland workout, filterable by level, stroke, intensity, and distance.'),
+            ('Featured blog posts', 'Featured posts and technique deep-dives for swimmers, from stroke mechanics to training science.'),
+            ('Favorite sets and workouts', 'Save the swim sets and dryland workouts you love and find them again in one place.')
           ]
-          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming - purposeful pool sets, dryland work and nutrition guidance, planned for you every day so you can just show up and swim fast.'
-          NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
+          INTRO = 'Your free account is ready. STREAMLINE is your daily partner for competitive swimming: personalized pool sets, dryland, and nutrition, planned every day so you just show up and swim fast.'
+          NUDGE = 'Take two minutes to tell us your level, strokes, and goals so your daily plans truly fit. Update them any time from the Hi %s! button in the menu.'
           KNOW = [
-            'New swim sets drop every day just after midnight Pacific - check My Training each morning.',
-            'Pick the level that fits today; you can switch between Beginner, Intermediate, Advanced and Pro any time.',
-            'Questions, ideas or article requests? Send them through the contact page - we read everything.'
+            'A fresh plan (swim, dryland, and meals) drops at midnight Pacific, ready in My Training each morning.',
+            'Update your level, strokes, goals, or dietary preferences any time, and your plan adjusts to match.',
+            'Read the focus cue and pace guidance at the top of each set; that is where the coaching lives, not just the yardage.',
+            'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
 
           def div(css, t): return '<div style="' + css + '">' + t + '</div>'
+
+          # Logo art ships as hosted PNGs (rendered from the site CC Smash face)
+          # under /email, so every email client renders the logo identically.
+          LOGO_IMG = SITE + '/email/streamline-logo.png'       # goggles + wordmark
+          WORDMARK_IMG = SITE + '/email/streamline-wordmark.png'  # wordmark only
 
           def build_html(first):
             feats = ''
@@ -588,13 +596,13 @@ Resources:
             return ('<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f0f7f6;">'
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
-              '<tr><td style="background:#0d4f47;text-align:center;padding:36px 40px 40px;">'
-              + div(F + 'font-size:24px;font-weight:bold;letter-spacing:8px;color:#ffffff;', 'STREAMLINE')
-              + div(F + 'font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#5ddbc9;padding:6px 0 30px;', 'Train for the Fast Lane')
+              '<tr><td style="background:#0d4f47;text-align:center;padding:40px 40px 44px;">'
+              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px 16px;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
-              '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#091f1c;', INTRO) + '</td></tr>'
+              '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#3a6560;', INTRO) + '</td></tr>'
               '<tr><td style="padding:0 40px 10px;">' + div(eyebrow, 'What your account unlocks') + feats + '</td></tr>'
               '<tr><td style="padding:8px 40px;">'
               '<div style="background:#e6faf7;border-left:4px solid #5ddbc9;border-radius:8px;padding:22px 24px;">'
@@ -607,19 +615,24 @@ Resources:
               + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;padding-top:10px;',
                 '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
               + '</td></tr>'
-              '<tr><td style="background:#0d4f47;text-align:center;padding:26px 40px;">'
-              + div(F + 'font-size:13px;font-weight:bold;letter-spacing:4px;color:#ffffff;', 'STREAMLINE')
-              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:8px;',
-                '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved. &middot; <a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
-              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:8px;', 'You are receiving this because an account was created on STREAMLINE with this email address.')
+              '<tr><td style="padding:4px 40px 38px;">'
+              + div(F + 'font-size:15px;line-height:1.6;color:#3a6560;', 'Happy swimming,')
+              + div(G + 'font-size:20px;color:#0d4f47;padding-top:2px;', 'STREAMLINE')
+              + '</td></tr>'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
+              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
+                '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved.')
+              + div(F + 'font-size:12px;padding-top:6px;', '<a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
+              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', 'You are receiving this because an account was created on STREAMLINE with this email address.')
               + '</td></tr></table></td></tr></table></body></html>')
 
           def build_text(first):
             lines = ['You just dove in. Congrats!', 'Welcome to STREAMLINE, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
-            lines += ['* %s - %s' % ft for ft in FEATURES]
+            lines += ['* %s: %s' % ft for ft in FEATURES]
             lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#profile', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
-            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', '- The Streamline Team | Train for the Fast Lane']
+            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'STREAMLINE']
             return '\n'.join(lines)
 
           def send_welcome(user):
@@ -628,7 +641,7 @@ Resources:
               Source=FROM,
               Destination={'ToAddresses': [user['email']]},
               Message={
-                'Subject': {'Data': 'You just dove in - welcome to STREAMLINE, ' + first + '!'},
+                'Subject': {'Data': 'You just dove in! Welcome to STREAMLINE, ' + first + '!'},
                 'Body': {'Text': {'Data': build_text(first)}, 'Html': {'Data': build_html(first)}}
               }
             )
