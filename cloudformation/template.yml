@@ -563,13 +563,13 @@ Resources:
             ('Personalized training, every day', "Your My Training dashboard brings today's swim set and dryland lift together, customized to your skill level, training focus and schedule."),
             ('Nutrition built around your training', 'Daily meal-plan recommendations matched to your body profile, training load and the dietary preferences you set in your profile.'),
             ('Progress tracking & workout log', 'Log every session and track your training volume, times and trends over time as your history builds.'),
-            ('Set & workout archives', 'Browse every past swim set and dryland workout - filter by level, stroke, intensity and distance - plus technique articles on the blog.')
+            ('Set & workout archives', 'Browse every past swim set and dryland workout, filterable by level, stroke, intensity and distance, plus technique articles on the blog.')
           ]
-          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming - personalized pool sets, dryland work and nutrition, planned for you every day so you can just show up and swim fast.'
+          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming: personalized pool sets, dryland work and nutrition, planned for you every day so you can just show up and swim fast.'
           NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
           KNOW = [
-            'Your daily training plan - swim set, dryland lift and meal plan - drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
-            'Questions, ideas or article requests? Send them through the contact page - we read everything.'
+            'Your daily training plan (swim set, dryland lift and meal plan) drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
+            'Questions, ideas or article requests? Send them through the contact page; we read everything.'
           ]
 
           def div(css, t): return '<div style="' + css + '">' + t + '</div>'
@@ -663,7 +663,7 @@ Resources:
 
           def build_text(first):
             lines = ['You just dove in. Congrats!', 'Welcome to STREAMLINE, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
-            lines += ['* %s - %s' % ft for ft in FEATURES]
+            lines += ['* %s: %s' % ft for ft in FEATURES]
             lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#profile', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
             lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', '- The Streamline Team | Train for the Fast Lane']
@@ -675,7 +675,7 @@ Resources:
               Source=FROM,
               Destination={'ToAddresses': [user['email']]},
               Message={
-                'Subject': {'Data': 'You just dove in - welcome to STREAMLINE, ' + first + '!'},
+                'Subject': {'Data': 'You just dove in! Welcome to STREAMLINE, ' + first + '!'},
                 'Body': {'Text': {'Data': build_text(first)}, 'Html': {'Data': build_html(first)}}
               }
             )
