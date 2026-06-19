@@ -571,6 +571,8 @@ Resources:
           NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes, and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
           KNOW = [
             'Your daily training plan (swim set, dryland lift, and meal plan) drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
+            'Your plan adapts to you: update your level, strokes, goals, or dietary preferences any time from your profile, and your daily training adjusts to match.',
+            'Log any session (swim, dryland, or cross-training) to build your training history, and your progress charts fill in over time.',
             'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
 
@@ -638,7 +640,7 @@ Resources:
                  '<td style="vertical-align:middle;padding-right:14px;line-height:0;">' + GOGGLES + '</td>'
                  '<td style="vertical-align:middle;">' + wordmark(40, 3) + '</td>'
                  '</tr></table>')
-              + div(F + 'font-size:11px;letter-spacing:8px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px;', 'Train for the Fast Lane')
+              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
