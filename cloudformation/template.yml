@@ -560,16 +560,17 @@ Resources:
           G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
 
           FEATURES = [
-            ('Personalized training, every day', "Your My Training dashboard brings today's swim set and dryland lift together, customized to your skill level, training focus and schedule."),
-            ('Nutrition built around your training', 'Daily meal-plan recommendations matched to your body profile, training load and the dietary preferences you set in your profile.'),
-            ('Progress tracking & workout log', 'Log every session and track your training volume, times and trends over time as your history builds.'),
-            ('Set & workout archives', 'Browse every past swim set and dryland workout, filterable by level, stroke, intensity and distance, plus technique articles on the blog.')
+            ('Personalized training, every day', "Your My Training dashboard brings today's swim set and dryland lift together, customized to your skill level, training focus, and schedule."),
+            ('Nutrition built around your training', 'Daily meal-plan recommendations matched to your body profile, training load, and the dietary preferences you set in your profile.'),
+            ('Progress tracking & workout log', 'Log every session and track your training volume, times, and trends over time as your history builds.'),
+            ('Set & workout archives', 'Browse every past swim set and dryland workout, filterable by level, stroke, intensity, and distance.'),
+            ('Featured blog posts and favorites', 'Read featured blog posts and technique deep-dives, and favorite the swim sets and dryland workouts you want to come back to.')
           ]
-          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming: personalized pool sets, dryland work and nutrition, planned for you every day so you can just show up and swim fast.'
-          NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
+          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming: personalized pool sets, dryland work, and nutrition, planned for you every day so you can just show up and swim fast.'
+          NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes, and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
           KNOW = [
-            'Your daily training plan (swim set, dryland lift and meal plan) drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
-            'Questions, ideas or article requests? Send them through the contact page; we read everything.'
+            'Your daily training plan (swim set, dryland lift, and meal plan) drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
+            'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
 
           def div(css, t): return '<div style="' + css + '">' + t + '</div>'
@@ -636,7 +637,7 @@ Resources:
                  '<td style="vertical-align:middle;padding-right:14px;line-height:0;">' + GOGGLES + '</td>'
                  '<td style="vertical-align:middle;">' + wordmark(40, 3) + '</td>'
                  '</tr></table>')
-              + div(F + 'font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px;', 'Train for the Fast Lane')
+              + div(F + 'font-size:11px;letter-spacing:8px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
