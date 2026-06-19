@@ -598,7 +598,7 @@ Resources:
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
               '<tr><td style="background:#0d4f47;text-align:center;padding:40px 40px 44px;">'
               + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
-              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 10px 32px 0;', 'Train for the Fast Lane')
+              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px 16px;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
