@@ -45,17 +45,6 @@ jobs:
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset
 
-      # Welcomes accounts created in the past 24h that never got the email.
-      # Idempotent: users are marked welcomeEmailSentAt after each send.
-      - name: Send welcome emails to recent signups
-        run: |
-          aws lambda invoke \
-            --function-name streamline-welcome-email \
-            --cli-binary-format raw-in-base64-out \
-            --payload '{"hours": 24}' \
-            /tmp/welcome-backfill.json
-          cat /tmp/welcome-backfill.json
-
       - name: Get stack outputs
         id: stack
         run: |
@@ -92,3 +81,15 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ steps.stack.outputs.distribution_id }} \
             --paths "/*"
+
+      # Welcomes accounts created in the past 24h that never got the email.
+      # Runs after the S3 sync so the logo images the email links to are live.
+      # Idempotent: users are marked welcomeEmailSentAt after each send.
+      - name: Send welcome emails to recent signups
+        run: |
+          aws lambda invoke \
+            --function-name streamline-welcome-email \
+            --cli-binary-format raw-in-base64-out \
+            --payload '{"hours": 24}' \
+            /tmp/welcome-backfill.json
+          cat /tmp/welcome-backfill.json

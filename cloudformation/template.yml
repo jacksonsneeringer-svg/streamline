@@ -572,55 +572,16 @@ Resources:
           KNOW = [
             'Your daily training plan (swim set, dryland lift, and meal plan) drops at midnight Pacific time, so a fresh session is waiting in My Training every morning.',
             'Your plan adapts to you: update your level, strokes, goals, or dietary preferences any time from your profile, and your daily training adjusts to match.',
-            'Log any session (swim, dryland, or cross-training) to build your training history, and your progress charts fill in over time.',
+            'At the pool, print your set or pull it up on your phone, then follow it lane by lane with no guesswork on deck.',
             'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
 
           def div(css, t): return '<div style="' + css + '">' + t + '</div>'
 
-          # Goggles mark, copied verbatim from the site header logo (index.html).
-          # Renders in SVG-capable clients (Apple Mail, iOS); Gmail/Outlook-Win
-          # silently skip it, leaving the wordmark, which is fine.
-          GOGGLES = ('<svg width="134" height="30" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">'
-            '<path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>'
-            '<path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>'
-            '<defs>'
-            '<radialGradient id="slg" cx="40%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>'
-            '<radialGradient id="srg" cx="60%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>'
-            '<clipPath id="sll"><path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/></clipPath>'
-            '<clipPath id="srl"><path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/></clipPath>'
-            '</defs>'
-            '<path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>'
-            '<path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>'
-            '<g clip-path="url(#sll)">'
-            '<line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
-            '<line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
-            '<path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>'
-            '<circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>'
-            '<path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>'
-            '</g>'
-            '<g clip-path="url(#srl)">'
-            '<line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
-            '<line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
-            '<path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>'
-            '<circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>'
-            '<path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>'
-            '</g>'
-            '<path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>'
-            '<path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>'
-            '<path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>'
-            '</svg>')
-
-          # Site logo wordmark: Impact stands in for the site's 'CC Smash' face -
-          # the whole word is slanted (oblique), with the TRAIN letters
-          # (T R A I N inside STREAMLINE) accented in lap, exactly like the site.
-          def wordmark(size, ls):
-            base = ('font-family:Impact,"Haettenschweiler","Arial Narrow",Arial,sans-serif;'
-                    'font-size:%dpx;letter-spacing:%dpx;text-transform:uppercase;line-height:1;'
-                    'font-style:italic;color:#ffffff;' % (size, ls))
-            def lap(c): return '<span style="color:#5ddbc9;">' + c + '</span>'
-            letters = 'S' + lap('T') + lap('R') + 'E' + lap('A') + 'ML' + lap('I') + lap('N') + 'E'
-            return '<span style="' + base + '">' + letters + '</span>'
+          # Logo art ships as hosted PNGs (rendered from the site CC Smash face)
+          # under /email, so every email client renders the logo identically.
+          LOGO_IMG = SITE + '/email/streamline-logo.png'       # goggles + wordmark
+          WORDMARK_IMG = SITE + '/email/streamline-wordmark.png'  # wordmark only
 
           def build_html(first):
             feats = ''
@@ -636,11 +597,8 @@ Resources:
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
               '<tr><td style="background:#0d4f47;text-align:center;padding:40px 40px 44px;">'
-              + ('<table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr>'
-                 '<td style="vertical-align:middle;padding-right:14px;line-height:0;">' + GOGGLES + '</td>'
-                 '<td style="vertical-align:middle;">' + wordmark(40, 3) + '</td>'
-                 '</tr></table>')
-              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px;', 'Train for the Fast Lane')
+              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 10px 32px 0;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
@@ -658,7 +616,7 @@ Resources:
                 '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
               + '</td></tr>'
               '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
-              + wordmark(17, 2)
+              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
               + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
                 '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved.')
               + div(F + 'font-size:12px;padding-top:6px;', '<a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
