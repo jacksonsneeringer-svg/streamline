@@ -560,12 +560,12 @@ Resources:
           G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
 
           FEATURES = [
-            ('Daily swim sets', 'A fresh, coach-written workout every day at four levels - Beginner through Pro - with warm-ups, main sets, intervals and coaching cues.'),
-            ('Dryland workouts', 'Strength and conditioning sessions built for swimmers and synced to your pool training.'),
-            ('My Training dashboard', "Today's swim plan, dryland lift and meal plan in one place, plus progress tracking and your streak."),
-            ('Set archives & blog', 'Every past set, filterable by stroke, intensity and distance, plus technique articles written for swimmers.')
+            ('Personalized training, every day', "Your My Training dashboard brings today's swim set and dryland lift together, customized to your skill level, training focus and schedule."),
+            ('Nutrition built around your training', 'Daily meal-plan recommendations matched to your body profile, training load and the dietary preferences you set in your profile.'),
+            ('Progress tracking & workout log', 'Log every session and track your training volume, times and trends over time as your history builds.'),
+            ('Set & workout archives', 'Browse every past swim set and dryland workout - filter by level, stroke, intensity and distance - plus technique articles on the blog.')
           ]
-          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming - purposeful pool sets, dryland work and nutrition guidance, planned for you every day so you can just show up and swim fast.'
+          INTRO = 'Your free account is ready. STREAMLINE is your daily training partner for competitive swimming - personalized pool sets, dryland work and nutrition, planned for you every day so you can just show up and swim fast.'
           NUDGE = 'If you have not finished setting up your profile yet, take two minutes to tell us your level, strokes and goals so your daily plans actually fit you. You can do it any time from the Hi %s! button in the site menu.'
           KNOW = [
             'New swim sets drop every day just after midnight Pacific - check My Training each morning.',
@@ -574,6 +574,16 @@ Resources:
           ]
 
           def div(css, t): return '<div style="' + css + '">' + t + '</div>'
+
+          # Site logo wordmark: Impact stands in for the site's 'CC Smash' face,
+          # with the TRAIN letters (T R A I N inside STREAMLINE) accented in lap
+          # and slanted, exactly like the header logo on the site.
+          def wordmark(size, ls):
+            base = ('font-family:Impact,"Haettenschweiler","Arial Narrow",Arial,sans-serif;'
+                    'font-size:%dpx;letter-spacing:%dpx;text-transform:uppercase;line-height:1;color:#ffffff;' % (size, ls))
+            def lap(c): return '<span style="color:#5ddbc9;font-style:italic;">' + c + '</span>'
+            letters = 'S' + lap('T') + lap('R') + 'E' + lap('A') + 'ML' + lap('I') + lap('N') + 'E'
+            return '<span style="' + base + '">' + letters + '</span>'
 
           def build_html(first):
             feats = ''
@@ -588,9 +598,9 @@ Resources:
             return ('<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f0f7f6;">'
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
-              '<tr><td style="background:#0d4f47;text-align:center;padding:36px 40px 40px;">'
-              + div(F + 'font-size:24px;font-weight:bold;letter-spacing:8px;color:#ffffff;', 'STREAMLINE')
-              + div(F + 'font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#5ddbc9;padding:6px 0 30px;', 'Train for the Fast Lane')
+              '<tr><td style="background:#0d4f47;text-align:center;padding:40px 40px 44px;">'
+              + wordmark(40, 3)
+              + div(F + 'font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:11px 0 32px;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
               + '</td></tr>'
@@ -607,9 +617,9 @@ Resources:
               + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;padding-top:10px;',
                 '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
               + '</td></tr>'
-              '<tr><td style="background:#0d4f47;text-align:center;padding:26px 40px;">'
-              + div(F + 'font-size:13px;font-weight:bold;letter-spacing:4px;color:#ffffff;', 'STREAMLINE')
-              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:8px;',
+              '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
+              + wordmark(17, 2)
+              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
                 '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved. &middot; <a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
               + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:8px;', 'You are receiving this because an account was created on STREAMLINE with this email address.')
               + '</td></tr></table></td></tr></table></body></html>')
