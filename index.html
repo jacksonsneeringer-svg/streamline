@@ -171,6 +171,7 @@ strong { font-weight: 500; }
 
 /* ── Logo ── */
 .site-logo {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -178,7 +179,22 @@ strong { font-weight: 500; }
   text-decoration: none;
   flex-shrink: 0;
 }
+/* Darker box behind the logo + title: reaches the window's left edge
+   (cancels the nav's left padding) and stops a little past the logo's right side. */
+.site-logo::before {
+  content: "";
+  position: absolute;
+  top: -0.7rem;
+  bottom: -0.7rem;
+  left: -5.5rem;
+  right: -1.4rem;
+  background: #062b27;
+  border-radius: 0 6px 6px 0;
+  z-index: 0;
+}
 .logo-top-row {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -194,6 +210,7 @@ strong { font-weight: 500; }
   text-transform: uppercase;
   line-height: 1;
   display: inline-block;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.45);
 }
 .logo-wordmark .t-r-a-i-n {
   color: var(--lap);
@@ -201,6 +218,8 @@ strong { font-weight: 500; }
   transform: skewX(-10deg);
 }
 .logo-tagline {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-body);
   font-size: 0.64rem;
   font-weight: 400;
@@ -2299,6 +2318,7 @@ section { padding: 6rem 0; }
   .nav-links { display: none; }
   .nav-actions { margin-left: auto; }
   .nav-inner { padding: 0 1.5rem; }
+  .site-logo::before { left: -1.5rem; }
   .nav-hamburger { display: flex; }
 }
 
