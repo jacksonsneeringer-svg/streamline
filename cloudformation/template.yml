@@ -923,7 +923,7 @@ Resources:
 
           def invoke(prompt):
             r = bedrock.invoke_model(
-              modelId='us.anthropic.claude-3-5-sonnet-20241022-v2:0',
+              modelId='global.anthropic.claude-sonnet-4-6',
               body=json.dumps({'anthropic_version':'bedrock-2023-05-31','max_tokens':2500,'messages':[{'role':'user','content':prompt}]})
             )
             return json.loads(r['body'].read())['content'][0]['text'].strip()
