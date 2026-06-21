@@ -922,9 +922,13 @@ Resources:
           Sections in order: Warm-Up, Pre-Main, Main Set, optional Post-Main, Cool-Down. totalYards must equal the sum of the section yards and fall within the {level} range. Keep beginner notation plain (use "rest :30" rather than pace-clock sendoffs)."""
 
           def invoke(prompt):
+            # max_tokens must cover the largest level. The advanced/pro sets
+            # (5,000-8,000+ yds) produce long JSON with a coaching note on every
+            # piece; at 2,500 tokens they were truncated mid-object so json.loads
+            # threw and only the small beginner set (which fit) ever got written.
             r = bedrock.invoke_model(
               modelId='global.anthropic.claude-sonnet-4-6',
-              body=json.dumps({'anthropic_version':'bedrock-2023-05-31','max_tokens':2500,'messages':[{'role':'user','content':prompt}]})
+              body=json.dumps({'anthropic_version':'bedrock-2023-05-31','max_tokens':8000,'messages':[{'role':'user','content':prompt}]})
             )
             return json.loads(r['body'].read())['content'][0]['text'].strip()
 
