@@ -816,6 +816,12 @@ Resources:
         ZipFile: |
           import json, os, boto3, uuid, urllib.request
           from datetime import datetime, timezone
+          from zoneinfo import ZoneInfo
+
+          # Daily sets are keyed by the Pacific "service day" so the date only
+          # rolls over at midnight Pacific (when the schedule generates them),
+          # matching the "fresh plan at midnight Pacific" promise to users.
+          PACIFIC = ZoneInfo('America/Los_Angeles')
 
           bedrock = boto3.client('bedrock-runtime', region_name='us-east-1')
           dynamo = boto3.resource('dynamodb')
@@ -873,13 +879,13 @@ Resources:
 
           def invoke(prompt):
             r = bedrock.invoke_model(
-              modelId='anthropic.claude-3-5-sonnet-20241022-v2:0',
+              modelId='us.anthropic.claude-3-5-sonnet-20241022-v2:0',
               body=json.dumps({'anthropic_version':'bedrock-2023-05-31','max_tokens':2500,'messages':[{'role':'user','content':prompt}]})
             )
             return json.loads(r['body'].read())['content'][0]['text'].strip()
 
           def handler(event, context):
-            now = datetime.now(timezone.utc)
+            now = datetime.now(PACIFIC)
             date_str = now.strftime('%Y-%m-%d')
             dow = now.weekday()
             focus = SCHED[dow]
@@ -924,7 +930,9 @@ Resources:
       Code:
         ZipFile: |
           import json, boto3
-          from datetime import datetime, timezone
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          PACIFIC = ZoneInfo('America/Los_Angeles')
           dynamo = boto3.resource('dynamodb')
           tbl = dynamo.Table('streamline-daily-sets')
           CORS = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json'}
@@ -940,7 +948,7 @@ Resources:
               r = tbl.get_item(Key={'level':level})
               if 'Item' not in r:
                 return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
-              today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+              today = datetime.now(PACIFIC).strftime('%Y-%m-%d')
               if r['Item'].get('date') != today:
                 return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
               return {'statusCode':200,'headers':CORS,'body':r['Item']['setData']}
