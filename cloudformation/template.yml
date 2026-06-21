@@ -10,6 +10,12 @@ Parameters:
     Type: String
     Description: ACM certificate ARN (must be in us-east-1)
 
+  ResendApiKey:
+    Type: String
+    Description: Resend API key used to send transactional email (welcome, password reset, contact)
+    NoEcho: true
+    Default: ""
+
 Resources:
 
   # ─── S3 / CLOUDFRONT ───────────────────────────────────────────────────────
@@ -200,11 +206,6 @@ Resources:
                 Resource: "*"
               - Effect: Allow
                 Action:
-                  - ses:SendEmail
-                  - ses:SendRawEmail
-                Resource: "*"
-              - Effect: Allow
-                Action:
                   - lambda:InvokeFunction
                 Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:streamline-welcome-email"
               - Effect: Allow
@@ -224,15 +225,36 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Timeout: 15
+      Environment:
+        Variables:
+          RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
-          import json, boto3, uuid
+          import json, os, boto3, uuid, urllib.request
           from datetime import datetime, timezone
 
           dynamo = boto3.resource('dynamodb')
           contacts = dynamo.Table('streamline-contacts')
           subscribers = dynamo.Table('streamline-subscribers')
-          ses = boto3.client('ses', region_name='us-east-1')
+
+          RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+
+          def send_email(source, to, subject, html=None, text=None, reply_to=None):
+            payload = {'from': source, 'to': to if isinstance(to, list) else [to], 'subject': subject}
+            if html is not None:
+              payload['html'] = html
+            if text is not None:
+              payload['text'] = text
+            if reply_to:
+              payload['reply_to'] = reply_to if isinstance(reply_to, list) else [reply_to]
+            req = urllib.request.Request(
+              'https://api.resend.com/emails',
+              data=json.dumps(payload).encode(),
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              method='POST'
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+              return json.loads(r.read())
 
           CORS = {
             'Access-Control-Allow-Origin': '*',
@@ -283,14 +305,10 @@ Resources:
                   f"Submitted: {now}\n\n"
                   f"--- Message ---\n{message}"
                 )
-                ses.send_email(
-                  Source=NOTIFY_FROM,
-                  Destination={'ToAddresses': [NOTIFY_TO]},
-                  Message={
-                    'Subject': {'Data': f'[Streamline] {subject or "New contact message"}'},
-                    'Body': {'Text': {'Data': email_body}}
-                  },
-                  ReplyToAddresses=[email]
+                send_email(
+                  NOTIFY_FROM, [NOTIFY_TO],
+                  f'[Streamline] {subject or "New contact message"}',
+                  text=email_body, reply_to=email
                 )
               except Exception:
                 pass
@@ -310,15 +328,15 @@ Resources:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
           EMAIL_FROM: "Streamline <noreply@snurray.com>"
+          RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
-          import json, os, re, time, hmac, hashlib, secrets, boto3
+          import json, os, re, time, hmac, hashlib, secrets, boto3, urllib.request
           from datetime import datetime, timezone
 
           dynamo = boto3.resource('dynamodb')
           users = dynamo.Table('streamline-users')
           tokens = dynamo.Table('streamline-auth-tokens')
-          ses = boto3.client('ses', region_name='us-east-1')
           lam = boto3.client('lambda')
 
           CORS = {
@@ -329,9 +347,27 @@ Resources:
 
           SITE_URL = os.environ.get('SITE_URL', 'https://streamline.snurray.com')
           EMAIL_FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
+          RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
           SESSION_TTL = 30 * 24 * 3600  # 30 days
           RESET_TTL = 3600              # 1 hour
           ITERATIONS = 120000
+
+          def send_email(source, to, subject, html=None, text=None, reply_to=None):
+            payload = {'from': source, 'to': to if isinstance(to, list) else [to], 'subject': subject}
+            if html is not None:
+              payload['html'] = html
+            if text is not None:
+              payload['text'] = text
+            if reply_to:
+              payload['reply_to'] = reply_to if isinstance(reply_to, list) else [reply_to]
+            req = urllib.request.Request(
+              'https://api.resend.com/emails',
+              data=json.dumps(payload).encode(),
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              method='POST'
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+              return json.loads(r.read())
 
           def resp(code, data):
             return {'statusCode': code, 'headers': CORS, 'body': json.dumps(data)}
@@ -481,16 +517,9 @@ Resources:
               '<p>&mdash; The Streamline Team</p>'
             )
             try:
-              ses.send_email(
-                Source=EMAIL_FROM,
-                Destination={'ToAddresses': [email]},
-                Message={
-                  'Subject': {'Data': 'Reset your Streamline password'},
-                  'Body': {'Text': {'Data': text}, 'Html': {'Data': html}}
-                }
-              )
+              send_email(EMAIL_FROM, [email], 'Reset your Streamline password', html=html, text=text)
             except Exception as e:
-              print('SES send failed:', e)
+              print('Resend send failed:', e)
             return done
 
           def reset(body):
@@ -541,17 +570,35 @@ Resources:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
           EMAIL_FROM: "Streamline <noreply@snurray.com>"
+          RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
-          import json, os, time, boto3
+          import json, os, time, boto3, urllib.request
           from boto3.dynamodb.conditions import Attr
 
           dynamo = boto3.resource('dynamodb')
           users = dynamo.Table('streamline-users')
-          ses = boto3.client('ses', region_name='us-east-1')
 
           SITE = os.environ.get('SITE_URL', 'https://streamline.snurray.com')
           FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
+          RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+
+          def send_email(source, to, subject, html=None, text=None, reply_to=None):
+            payload = {'from': source, 'to': to if isinstance(to, list) else [to], 'subject': subject}
+            if html is not None:
+              payload['html'] = html
+            if text is not None:
+              payload['text'] = text
+            if reply_to:
+              payload['reply_to'] = reply_to if isinstance(reply_to, list) else [reply_to]
+            req = urllib.request.Request(
+              'https://api.resend.com/emails',
+              data=json.dumps(payload).encode(),
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              method='POST'
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+              return json.loads(r.read())
 
           # Brand palette (site :root): deep #0d4f47, teal #1a7a6e, lap #5ddbc9,
           # light lap #a8ede5, pale lap #e6faf7, surface #f0f7f6, ink #091f1c,
@@ -637,13 +684,10 @@ Resources:
 
           def send_welcome(user):
             first = (user.get('firstName') or '').strip() or 'swimmer'
-            ses.send_email(
-              Source=FROM,
-              Destination={'ToAddresses': [user['email']]},
-              Message={
-                'Subject': {'Data': 'You just dove in! Welcome to STREAMLINE, ' + first + '!'},
-                'Body': {'Text': {'Data': build_text(first)}, 'Html': {'Data': build_html(first)}}
-              }
+            send_email(
+              FROM, [user['email']],
+              'You just dove in! Welcome to STREAMLINE, ' + first + '!',
+              html=build_html(first), text=build_text(first)
             )
             users.update_item(Key={'email': user['email']},
               UpdateExpression='SET welcomeEmailSentAt = :t',
