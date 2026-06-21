@@ -809,15 +809,38 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Timeout: 300
+      Environment:
+        Variables:
+          SKILL_URL: !Sub "https://${DomainName}/swim-sets.md"
       Code:
         ZipFile: |
-          import json, boto3, uuid
+          import json, os, boto3, uuid, urllib.request
           from datetime import datetime, timezone
 
           bedrock = boto3.client('bedrock-runtime', region_name='us-east-1')
           dynamo = boto3.resource('dynamodb')
           daily_tbl = dynamo.Table('streamline-daily-sets')
           arch_tbl = dynamo.Table('streamline-set-archives')
+
+          # The swim-sets.md skill is the single source of truth for how daily
+          # sets are programmed. It is fetched from the live site and injected
+          # into the prompt; the inline LEVELS notes below are only a fallback
+          # for when the skill cannot be retrieved.
+          SKILL_URL = os.environ.get('SKILL_URL', '')
+          _skill_cache = {}
+
+          def load_skill():
+            if 'text' in _skill_cache:
+              return _skill_cache['text']
+            text = ''
+            if SKILL_URL:
+              try:
+                with urllib.request.urlopen(SKILL_URL, timeout=10) as r:
+                  text = r.read().decode('utf-8')
+              except Exception as ex:
+                print('skill fetch failed: %s' % ex)
+            _skill_cache['text'] = text
+            return text
 
           SCHED = {0:'Distance Freestyle',1:'Breaststroke',2:'Backstroke',3:'Butterfly',4:'IM',5:'Sprints & Dives',6:'Mid-Distance Choice Stroke'}
           STROKE = {0:'freestyle',1:'breaststroke',2:'backstroke',3:'butterfly',4:'im',5:'freestyle',6:'choice'}
@@ -838,9 +861,11 @@ Resources:
           ]
 
           PROMPT = """You are an elite competitive swim coach writing today's practice for a real team. Write sets exactly as a coach would — varied distances, smart intervals, purposeful pieces.
+          {skill}
           Day: {day}. Focus stroke/theme: {focus}. Level: {level}. Target distance: ~{yards} yards.
           Sections to include (in order): {sections}
           Level notes: {notes}
+          Follow the programming framework above. For the "{level}" level, apply that level's specific guidance (yardage, section structure, allowed language, piece limits, and intent).
           Interval format (use exactly): "4x 200 free @2:45" or "200 back @1:30" or "8x 50 fly @:55 w/ :15 rest" or "4x (100 free + 50 back) @2:30".
           Stroke abbreviations: free, back, fly, breast, IM, choice.
           Make each section serve a specific purpose (breath work, turns, head position, race pace, endurance, technique, etc.) and note it in the coaching notes.
@@ -859,10 +884,12 @@ Resources:
             date_str = now.strftime('%Y-%m-%d')
             dow = now.weekday()
             focus = SCHED[dow]
+            skill = load_skill()
+            skill_block = ('--- PROGRAMMING FRAMEWORK (swim-sets skill) ---\n' + skill + '\n--- END FRAMEWORK ---') if skill else ''
             results = []
             for level, yards, sections, notes in LEVELS:
               try:
-                p = PROMPT.format(day=now.strftime('%A'), focus=focus, level=level, yards=yards, sections=sections, notes=notes)
+                p = PROMPT.format(skill=skill_block, day=now.strftime('%A'), focus=focus, level=level, yards=yards, sections=sections, notes=notes)
                 raw = invoke(p)
                 s = raw.find('{'); e = raw.rfind('}') + 1
                 data = json.loads(raw[s:e])
