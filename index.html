@@ -5569,6 +5569,9 @@ const PAGE_TITLES = {
 
 function showPage(pageId) {
   closeMobileNav();
+  // If a signed-in user lands on the account-creation page (via any "Dive In",
+  // "Try it out", etc. link), send them to their training dashboard instead.
+  if (pageId === 'get-started' && getAccount()) pageId = 'my-training';
   // Unknown page id: do nothing rather than hiding every page and leaving a
   // blank screen. Guards bad hashes and any stale links.
   if (!document.getElementById('page-' + pageId)) return;
@@ -5620,6 +5623,8 @@ function showPage(pageId) {
 }
 
 function navigate(pageId) {
+  // Keep the pushed URL hash in sync with the redirect applied in showPage.
+  if (pageId === 'get-started' && getAccount()) pageId = 'my-training';
   showPage(pageId);
   history.pushState(null, '', '#' + pageId);
   return false;
