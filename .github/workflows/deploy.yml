@@ -83,6 +83,19 @@ jobs:
             --distribution-id ${{ steps.stack.outputs.distribution_id }} \
             --paths "/*"
 
+      # Generate today's swim sets immediately after deploy so the site never
+      # shows "no set generated yet" between a deployment and the 8:01 AM UTC
+      # EventBridge trigger. The Lambda is idempotent — it overwrites the same
+      # DynamoDB key if today's set already exists.
+      - name: Generate today's swim sets
+        run: |
+          aws lambda invoke \
+            --function-name streamline-generate-sets \
+            --cli-binary-format raw-in-base64-out \
+            --payload '{}' \
+            /tmp/generate-sets.json
+          cat /tmp/generate-sets.json
+
       # Welcomes accounts created in the past 24h that never got the email.
       # Runs after the S3 sync so the logo images the email links to are live.
       # Idempotent: users are marked welcomeEmailSentAt after each send.
