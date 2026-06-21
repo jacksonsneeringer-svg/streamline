@@ -842,35 +842,34 @@ Resources:
             _skill_cache['text'] = text
             return text
 
-          SCHED = {0:'Distance Freestyle',1:'Breaststroke',2:'Backstroke',3:'Butterfly',4:'IM',5:'Sprints & Dives',6:'Mid-Distance Choice Stroke'}
+          SCHED = {0:'Distance Freestyle',1:'Breaststroke',2:'Backstroke',3:'Butterfly',4:'IM',5:'Sprints & Dives',6:'Mid-Distance / Choice Stroke'}
           STROKE = {0:'freestyle',1:'breaststroke',2:'backstroke',3:'butterfly',4:'im',5:'freestyle',6:'choice'}
 
+          # Per-level target yardage (sits within the swim-sets skill's volume
+          # ranges) and a condensed fallback note used only when the skill file
+          # cannot be fetched. The skill is the source of truth when available.
           LEVELS = [
-            ('beginner', 1000,
-             'Warm-Up, Drill Set, Main Set, Cool-Down',
-             'Beginner: knows basic freestyle, maybe backstroke. No flip turns. No jargon (no "hypoxic", no "descend"). Max single piece: 100 yards. Use plain rest like "30 sec rest" not intervals.'),
-            ('intermediate', 2500,
-             'Warm-Up, Pre-Main, Main Set, Cool-Down',
-             'Intermediate: all 4 strokes, flip turns, reads a pace clock. Comfortable up to 200 per piece. Basic terms OK: descend, build, easy/moderate/fast. Intervals like @1:30.'),
-            ('advanced', 4500,
-             'Warm-Up, Pre-Main, Main Set, Second Main, Cool-Down',
-             'Advanced: race-trained, knows hypoxic sets, descend/negative split/lactate threshold. Comfortable up to 400+ per piece. All standard coaching terms fine.'),
-            ('pro', 7000,
-             'Warm-Up, Pre-Main, Main Set, Second Main, Third Main, Cool-Down',
-             'Pro/elite: use all technical terms freely. VO2, threshold blocks, race pace, breakout distance, underwaters, tempo sets. Pieces up to 1000. Precision pace targets.')
+            ('beginner', 1600,
+             'Beginner (~1,200-2,000): new/young swimmers learning fundamentals. Generous rest (30-45s+), focus on completion. Single-swim cap 100 on distance days. High technique emphasis, a clear focal point per piece. Warm, encouraging cues. Warm-up 200 (100 free / 50 back / 50 breast). Cool-down 2x50 easy free.'),
+            ('intermediate', 3000,
+             'Intermediate (~2,500-3,800): all four strokes legally, beginning to race. Moderate rest (15-25s), aerobic base + some threshold. Single-swim cap 200. Corrections embedded in sets. Warm-up 400 (200 free / 100 back / 100 breast). Cool-down 200 easy choice.'),
+            ('advanced', 5000,
+             'Advanced (~4,500-6,500): club/HS/college, strong aerobic base, technically sound. Tight rest (5-15s), descending intervals, pace and threshold work. Single-swim cap 400. Cues are refinements. Warm-up up to 600. Cool-down 400 easy choice.'),
+            ('pro', 8000,
+             'Pro (~7,000-12,000+): elite/Olympic, periodized. Very tight or no rest, threshold/VO2/race-pace repeats. No single-swim cap. Terse elite micro-adjustment cues. Warm-up up to 600. Cool-down 600 easy choice.')
           ]
 
-          PROMPT = """You are an elite competitive swim coach writing today's practice for a real team. Write sets exactly as a coach would — varied distances, smart intervals, purposeful pieces.
-          {skill}
-          Day: {day}. Focus stroke/theme: {focus}. Level: {level}. Target distance: ~{yards} yards.
-          Sections to include (in order): {sections}
-          Level notes: {notes}
-          Follow the programming framework above. For the "{level}" level, apply that level's specific guidance (yardage, section structure, allowed language, piece limits, and intent).
-          Interval format (use exactly): "4x 200 free @2:45" or "200 back @1:30" or "8x 50 fly @:55 w/ :15 rest" or "4x (100 free + 50 back) @2:30".
-          Stroke abbreviations: free, back, fly, breast, IM, choice.
-          Make each section serve a specific purpose (breath work, turns, head position, race pace, endurance, technique, etc.) and note it in the coaching notes.
-          Return ONLY valid JSON with no markdown, no preamble, no explanation:
-          {{"title":"descriptive set title based on stroke/intensity/theme","totalYards":{yards},"estimatedMinutes":N,"strokeFocus":"freestyle|backstroke|butterfly|breaststroke|im|choice","intensity":"aerobic|threshold|sprint|recovery","setType":"drill|kick|pull|race|endurance|technique","distanceCategory":"short|mid|long|ultra","focusCue":"2-3 sentence coaching cue that a coach would say at the start of practice — level-appropriate language","sections":[{{"name":"section name","yards":N,"items":[{{"text":"interval line exactly as written on a whiteboard","note":"coaching note for this piece or null"}}]}}]}}"""
+          PROMPT = """You are the Streamline daily swim-set coach. Write today's practice for ONE level only.
+
+          {framework}
+
+          Today is {day}. Stroke focus for the day: {focus}. Write the set for the {level} level only, aiming for ~{yards} yards.
+
+          Use the swim-sets framework above as your single source of truth: apply the {level} level's volume range, intervals, technique emphasis and coaching tone; honor the day's stroke focus, the single-swim distance caps, the warm-up / cool-down standards, the stroke-specific drill library (use the Pre-Main for day-stroke drills), and the set-design principles. Choose a sensible secondary focus (endurance, technique, speed/threshold, race prep, or recovery) as the framework describes, and reflect it in the title. On Saturday include a Dives block. Main sets must have internal structure (descending, build, pyramid, broken, neg split, odds/evens) — not flat repeats.
+
+          IMPORTANT — response format: IGNORE the framework's "Output Format" section and its markdown/whiteboard layout instructions for THIS response. Do NOT return markdown. Return ONLY valid JSON, no preamble, no explanation, matching exactly:
+          {{"title":"descriptive title ending with the secondary focus, e.g. Backstroke Threshold Builders","totalYards":N,"estimatedMinutes":N,"strokeFocus":"freestyle|backstroke|butterfly|breaststroke|im|choice","intensity":"aerobic|threshold|sprint|recovery","setType":"drill|kick|pull|race|endurance|technique","distanceCategory":"short|mid|long|ultra","focusCue":"2-3 sentence coach's cue said at the start of practice — level-appropriate language","sections":[{{"name":"Warm-Up|Pre-Main|Main Set|Post-Main|Cool-Down","yards":N,"items":[{{"text":"one whiteboard line, e.g. 4x 100 free @1:30 or 8x 50 fly @ :55 w/ :15 rest","note":"short coaching note for this piece or null"}}]}}]}}
+          Sections in order: Warm-Up, Pre-Main, Main Set, optional Post-Main, Cool-Down. totalYards must equal the sum of the section yards and fall within the {level} range. Keep beginner notation plain (use "rest :30" rather than pace-clock sendoffs)."""
 
           def invoke(prompt):
             r = bedrock.invoke_model(
@@ -885,11 +884,14 @@ Resources:
             dow = now.weekday()
             focus = SCHED[dow]
             skill = load_skill()
-            skill_block = ('--- PROGRAMMING FRAMEWORK (swim-sets skill) ---\n' + skill + '\n--- END FRAMEWORK ---') if skill else ''
             results = []
-            for level, yards, sections, notes in LEVELS:
+            for level, yards, notes in LEVELS:
               try:
-                p = PROMPT.format(skill=skill_block, day=now.strftime('%A'), focus=focus, level=level, yards=yards, sections=sections, notes=notes)
+                if skill:
+                  framework = '=== SWIM-SETS SKILL (programming framework) ===\n' + skill + '\n=== END SKILL ==='
+                else:
+                  framework = 'Level guidance (skill unavailable): ' + notes
+                p = PROMPT.format(framework=framework, day=now.strftime('%A'), focus=focus, level=level, yards=yards)
                 raw = invoke(p)
                 s = raw.find('{'); e = raw.rfind('}') + 1
                 data = json.loads(raw[s:e])
