@@ -6714,10 +6714,10 @@ function renderSwimSet(level, data) {
   <div class="set-block">${sectionsHtml}</div>
   ${focusCueHtml}
   </div>
-  <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
+  ${getAccount() ? '' : `<div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
     <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want workouts calibrated to your specific goals and schedule?</p>
     <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
-  </div>`;
+  </div>`}`;
 }
 
 function renderSwimSetError(level, msg) {
