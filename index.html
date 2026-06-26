@@ -2797,11 +2797,6 @@ section { padding: 6rem 0; }
       </div>
     </div>
     <div id="swim-level-favorites" style="display:none;">
-      <div style="margin-bottom:2rem;">
-        <span class="eyebrow">Your Saved Sets</span>
-        <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Favorites</h2>
-        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem; max-width:640px;">Sets you've starred from the daily sets and the archives. Click any set to view the full workout and print it. Saved on this device.</p>
-      </div>
       <div id="swim-favorites-list"></div>
     </div>
   </div>
@@ -2928,6 +2923,11 @@ section { padding: 6rem 0; }
 </div>
 <section style="background:var(--off-white); padding:3rem 0 5rem;">
   <div class="container">
+
+    <!-- Back to Swim Sets -->
+    <div style="margin-bottom:1.5rem;">
+      <a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">← Back to Swim Sets</a>
+    </div>
 
     <!-- Filter bar -->
     <div class="archive-filter-bar">
@@ -6756,8 +6756,15 @@ function renderArchiveCards(items) {
   };
   Object.values(containers).forEach(c => { if (c) c.innerHTML = ''; });
 
+  // Dedupe by setId so the same set never appears twice (e.g. if the API
+  // returns duplicates). Injury setIds are reserved by the static section.
+  const seen = new Set(INJURY_SETS.map(s => s.setId));
   items.forEach(item => {
     const set = archiveItemToSet(item);
+    if (set.setId) {
+      if (seen.has(set.setId)) return;
+      seen.add(set.setId);
+    }
     const c = containers[set.level];
     if (c) c.insertAdjacentHTML('beforeend', archiveCardHtml(set));
   });
