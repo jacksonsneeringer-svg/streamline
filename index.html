@@ -238,6 +238,7 @@ strong { font-weight: 500; }
   padding: 0 2rem;
 }
 #page-swim-sets .container,
+#page-set-archives .container,
 #page-dryland-workouts .container,
 #page-blog .container,
 #page-blog-technique .container,
@@ -2188,6 +2189,24 @@ section { padding: 6rem 0; }
 .archive-section-header { display: flex; align-items: center; gap: 0.75rem; margin: 2.5rem 0 1rem; }
 .archive-section-header h3 { font-size: 1rem; color: var(--deep); margin: 0; }
 .archive-section-divider { flex: 1; height: 1px; background: var(--gray-100); }
+/* Collapsible archive section (injury/mobility) */
+.archive-collapse-header { display: flex; align-items: center; gap: 0.75rem; width: 100%; background: none; border: none; padding: 0; margin: 2.5rem 0 1rem; cursor: pointer; text-align: left; font-family: var(--font-body); }
+.archive-collapse-chevron { color: var(--teal); transition: transform 0.2s; flex-shrink: 0; }
+.archive-collapse.collapsed .archive-collapse-chevron { transform: rotate(-90deg); }
+.archive-collapse.collapsed .archive-collapse-body { display: none; }
+/* Archive card actions + favorite controls */
+.archive-card-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+.archive-safe-badge { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 3px; background: rgba(93,219,201,0.12); color: var(--teal); border: 1px solid rgba(93,219,201,0.3); }
+.fav-icon-btn { background: none; border: 1px solid var(--gray-200); border-radius: var(--r-sm); width: 34px; height: 34px; font-size: 1.05rem; line-height: 1; color: var(--gray-400); cursor: pointer; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; padding: 0; }
+.fav-icon-btn:hover { border-color: #d9a441; color: #d9a441; }
+.fav-icon-btn.is-fav { color: #d9a441; border-color: #d9a441; background: rgba(217,164,65,0.1); }
+.fav-star { color: #d9a441; }
+/* Set detail modal */
+.set-detail-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.6); display: none; z-index: 3000; overflow-y: auto; padding: 3rem 1rem; }
+.set-detail-overlay.open { display: block; }
+.set-detail-modal { background: var(--off-white); border-radius: var(--r-xl); max-width: 780px; width: 100%; margin: 0 auto; padding: 2rem 2rem 2.5rem; position: relative; box-shadow: var(--shadow-xl); }
+.set-detail-close { position: absolute; top: 1rem; right: 1rem; width: 34px; height: 34px; border: none; background: var(--gray-100); border-radius: 50%; font-size: 1rem; cursor: pointer; color: var(--gray-400); display: flex; align-items: center; justify-content: center; }
+.set-detail-close:hover { background: var(--gray-200); color: var(--deep); }
 @media (max-width: 900px) {
   .swim-level-layout { flex-direction: column; }
   .swim-sidebar { width: 100%; position: static; }
@@ -2667,6 +2686,7 @@ section { padding: 6rem 0; }
       <button class="level-tab" id="swim-tab-intermediate" onclick="showSwimLevel('intermediate')">Intermediate</button>
       <button class="level-tab" id="swim-tab-advanced" onclick="showSwimLevel('advanced')">Advanced</button>
       <button class="level-tab" id="swim-tab-pro" onclick="showSwimLevel('pro')">Pro</button>
+      <button class="level-tab" id="swim-tab-favorites" onclick="showSwimLevel('favorites')" style="margin-left:auto;"><span class="fav-star">★</span>&nbsp;Favorites</button>
     </div>
     <div id="swim-level-beginner">
       <div class="swim-level-layout">
@@ -2775,6 +2795,14 @@ section { padding: 6rem 0; }
           </div>
         </div>
       </div>
+    </div>
+    <div id="swim-level-favorites" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <span class="eyebrow">Your Saved Sets</span>
+        <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Favorites</h2>
+        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem; max-width:640px;">Sets you've starred from the daily sets and the archives. Click any set to view the full workout and print it. Saved on this device.</p>
+      </div>
+      <div id="swim-favorites-list"></div>
     </div>
   </div>
 </section>
@@ -2965,254 +2993,54 @@ section { padding: 6rem 0; }
     <!-- Results list -->
     <div id="archive-results">
 
-      <!-- Dynamic generated sets (loaded from API) -->
-      <div id="archive-dynamic-wrap" style="display:none;">
-        <div class="archive-section-header"><h3>Generated Sets</h3><div class="archive-section-divider"></div></div>
-        <div id="archive-dynamic-cards"></div>
-        <div id="archive-dynamic-empty" style="display:none; color:var(--gray-400); font-size:0.9rem; padding:1rem 0 2rem;">No generated sets match the current filters.</div>
-      </div>
+      <!-- Loading indicator (dynamic archived sets from API) -->
       <div id="archive-dynamic-loading" style="padding:2rem 0; text-align:center; color:var(--gray-400); font-size:0.9rem; display:none;">
         <div class="swim-set-loading-spinner" style="margin:0 auto 0.75rem;"></div>
         Loading archived sets…
       </div>
 
-      <!-- Sample Sets (static) -->
-      <div class="archive-section-header" id="archive-static-header"><h3>Sample Sets</h3><div class="archive-section-divider"></div></div>
-
-      <!-- Beginner -->
-      <div class="archive-section-header"><h3>Beginner</h3><div class="archive-section-divider"></div></div>
-
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="aerobic" data-type="drill">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Aerobic Foundation #1</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~1,000 yds &nbsp;·&nbsp; 25–35 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Beginner</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Aerobic</span>
-            <span class="archive-tag">Drill</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      <!-- Limited Mobility & Injury Recovery — collapsed list at top -->
+      <div class="archive-collapse collapsed" id="archive-collapse-injury">
+        <button type="button" class="archive-collapse-header" onclick="toggleArchiveCollapse('injury')" aria-expanded="false">
+          <h3 style="color:var(--teal); margin:0; font-size:1rem;">Limited Mobility &amp; Injury Recovery</h3>
+          <div class="archive-section-divider"></div>
+          <svg class="archive-collapse-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="archive-collapse-body" id="archive-cards-injury"></div>
       </div>
 
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="backstroke" data-intensity="aerobic" data-type="technique">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Backstroke Introduction</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~900 yds &nbsp;·&nbsp; 25–30 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Beginner</span>
-            <span class="archive-tag">Backstroke</span>
-            <span class="archive-tag">Aerobic</span>
-            <span class="archive-tag">Technique</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
+      <!-- Archived sets organized by level (populated daily from the set generator) -->
+      <div class="archive-level-section" id="archive-section-beginner" style="display:none;">
+        <div class="archive-section-header"><h3>Beginner</h3><div class="archive-section-divider"></div></div>
+        <div id="archive-cards-beginner"></div>
+      </div>
+      <div class="archive-level-section" id="archive-section-intermediate" style="display:none;">
+        <div class="archive-section-header"><h3>Intermediate</h3><div class="archive-section-divider"></div></div>
+        <div id="archive-cards-intermediate"></div>
+      </div>
+      <div class="archive-level-section" id="archive-section-advanced" style="display:none;">
+        <div class="archive-section-header"><h3>Advanced</h3><div class="archive-section-divider"></div></div>
+        <div id="archive-cards-advanced"></div>
+      </div>
+      <div class="archive-level-section" id="archive-section-pro" style="display:none;">
+        <div class="archive-section-header"><h3>Pro</h3><div class="archive-section-divider"></div></div>
+        <div id="archive-cards-pro"></div>
       </div>
 
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="recovery" data-type="kick">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Easy Kick & Breathe</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~800 yds &nbsp;·&nbsp; 20–25 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Beginner</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Recovery</span>
-            <span class="archive-tag">Kick</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <!-- Intermediate -->
-      <div class="archive-section-header"><h3>Intermediate</h3><div class="archive-section-divider"></div></div>
-
-      <div class="archive-card" data-level="intermediate" data-distance="mid" data-stroke="freestyle" data-intensity="threshold" data-type="endurance">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Threshold Base Builder</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~2,500 yds &nbsp;·&nbsp; 45–55 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Intermediate</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Threshold</span>
-            <span class="archive-tag">Endurance</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="intermediate" data-distance="mid" data-stroke="im" data-intensity="aerobic" data-type="drill">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">IM Rotation</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~2,200 yds &nbsp;·&nbsp; 40–50 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Intermediate</span>
-            <span class="archive-tag">IM</span>
-            <span class="archive-tag">Aerobic</span>
-            <span class="archive-tag">Drill</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="intermediate" data-distance="mid" data-stroke="breaststroke" data-intensity="threshold" data-type="pull">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Breaststroke Pull Power</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~2,400 yds &nbsp;·&nbsp; 45–55 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Intermediate</span>
-            <span class="archive-tag">Breaststroke</span>
-            <span class="archive-tag">Threshold</span>
-            <span class="archive-tag">Pull</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <!-- Advanced -->
-      <div class="archive-section-header"><h3>Advanced</h3><div class="archive-section-divider"></div></div>
-
-      <div class="archive-card" data-level="advanced" data-distance="long" data-stroke="freestyle" data-intensity="sprint" data-type="race">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Race-Pace Sprint Block</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~4,500 yds &nbsp;·&nbsp; 70–85 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Advanced</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Sprint</span>
-            <span class="archive-tag">Race-Pace</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="advanced" data-distance="long" data-stroke="butterfly" data-intensity="threshold" data-type="drill">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Butterfly Threshold Series</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~4,000 yds &nbsp;·&nbsp; 65–80 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Advanced</span>
-            <span class="archive-tag">Butterfly</span>
-            <span class="archive-tag">Threshold</span>
-            <span class="archive-tag">Drill</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <!-- Pro -->
-      <div class="archive-section-header"><h3>Pro</h3><div class="archive-section-divider"></div></div>
-
-      <div class="archive-card" data-level="pro" data-distance="ultra" data-stroke="freestyle" data-intensity="sprint" data-type="race">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Volume Sprint Block</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~7,500 yds &nbsp;·&nbsp; 110–130 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Pro</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Sprint</span>
-            <span class="archive-tag">Race-Pace</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="pro" data-distance="ultra" data-stroke="im" data-intensity="threshold" data-type="endurance">
-        <div>
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Full IM Endurance</div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~8,000 yds &nbsp;·&nbsp; 120–140 min</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">Pro</span>
-            <span class="archive-tag">IM</span>
-            <span class="archive-tag">Threshold</span>
-            <span class="archive-tag">Endurance</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <!-- Limited Mobility / Injury Recovery -->
-      <div class="archive-section-header" style="margin-top:3rem;">
-        <h3 style="color:var(--teal);">Limited Mobility &amp; Injury Recovery</h3>
-        <div class="archive-section-divider"></div>
-      </div>
-      <p style="font-size:0.85rem; color:var(--gray-400); margin-bottom:1.5rem; max-width:680px;">These sets are designed for swimmers returning from injury, managing chronic pain, or working around limited range of motion. All sets minimize impact on common problem areas and can be adapted further — notes in each set indicate modifications.</p>
-
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="backstroke" data-intensity="recovery" data-type="technique">
-        <div>
-          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Shoulder Recovery Swim</div>
-            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Shoulder-Safe</span>
-          </div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~700 yds &nbsp;·&nbsp; 20–25 min &nbsp;·&nbsp; No fly, no overhead butterfly arms</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">All Levels</span>
-            <span class="archive-tag">Backstroke</span>
-            <span class="archive-tag">Recovery</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="recovery" data-type="kick">
-        <div>
-          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Knee-Friendly Kick Focus</div>
-            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Knee-Safe</span>
-          </div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~600 yds &nbsp;·&nbsp; 15–20 min &nbsp;·&nbsp; Flutter kick only, no breaststroke kick</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">All Levels</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Recovery</span>
-            <span class="archive-tag">Kick</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="freestyle" data-intensity="aerobic" data-type="pull">
-        <div>
-          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Pull Buoy Only — Low Back Relief</div>
-            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Back-Safe</span>
-          </div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~1,000 yds &nbsp;·&nbsp; 25–35 min &nbsp;·&nbsp; Pull buoy throughout, no kick</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">All Levels</span>
-            <span class="archive-tag">Freestyle</span>
-            <span class="archive-tag">Aerobic</span>
-            <span class="archive-tag">Pull</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div class="archive-card" data-level="beginner" data-distance="short" data-stroke="backstroke" data-intensity="recovery" data-type="technique">
-        <div>
-          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">Wrist &amp; Forearm Recovery Set</div>
-            <span style="font-size:0.67rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:3px; background:rgba(93,219,201,0.12); color:var(--teal); border:1px solid rgba(93,219,201,0.3);">Wrist-Safe</span>
-          </div>
-          <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">~800 yds &nbsp;·&nbsp; 20–30 min &nbsp;·&nbsp; Fist drills, minimized hand load</div>
-          <div class="archive-card-meta">
-            <span class="archive-tag">All Levels</span>
-            <span class="archive-tag">Backstroke</span>
-            <span class="archive-tag">Recovery</span>
-          </div>
-        </div>
-        <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Set</button>
-      </div>
-
-      <div id="archive-no-results" style="display:none; padding:3rem; text-align:center; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl); margin-top:1rem;">
-        <p style="font-size:0.88rem; color:var(--gray-400);">No sets match the selected filters. Try broadening your search.</p>
-        <button class="btn btn-outline-dark btn-sm" style="margin-top:1rem;" onclick="clearArchiveFilters()">Clear Filters</button>
-      </div>
+      <div id="archive-dynamic-empty" style="display:none; color:var(--gray-400); font-size:0.9rem; padding:1.5rem 0 2rem;">No archived sets match the current filters.</div>
     </div>
 
   </div>
 </section>
 </div><!-- end page-set-archives -->
+
+<!-- ══ ARCHIVED SET DETAIL MODAL ══ -->
+<div class="set-detail-overlay" id="set-detail-overlay" onclick="if(event.target===this)closeSetDetail()">
+  <div class="set-detail-modal">
+    <button class="set-detail-close no-print" onclick="closeSetDetail()" aria-label="Close">✕</button>
+    <div id="set-detail-body"></div>
+  </div>
+</div>
 
 <!-- ══ BLOG INDEX PAGE ══ -->
 <div class="page" id="page-blog">
@@ -6615,7 +6443,7 @@ document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-search-wrap')) closeNavSearch();
 });
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeNavSearch();
+  if (e.key === 'Escape') { closeNavSearch(); closeSetDetail(); }
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     toggleNavSearch();
@@ -6644,13 +6472,14 @@ document.addEventListener('keydown', function(e) {
 });
 
 function showSwimLevel(level) {
-  ['beginner', 'intermediate', 'advanced', 'pro'].forEach(l => {
+  ['beginner', 'intermediate', 'advanced', 'pro', 'favorites'].forEach(l => {
     const panel = document.getElementById('swim-level-' + l);
     if (panel) panel.style.display = l === level ? 'block' : 'none';
     const tab = document.getElementById('swim-tab-' + l);
     if (tab) tab.classList.toggle('active', l === level);
   });
-  loadSwimSet(level);
+  if (level === 'favorites') renderFavorites();
+  else loadSwimSet(level);
 }
 
 const _swimSetCache = {};
@@ -6688,16 +6517,11 @@ const SECTION_COLORS = {
   'Cool-Down':  '#1a7a6e'
 };
 
-function renderSwimSet(level, data) {
-  const container = document.getElementById('swim-set-content-' + level);
-  if (!container) return;
+const PRINT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
 
-  const today = new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
-  const levelLabel = level.charAt(0).toUpperCase() + level.slice(1);
-  const sections = data.sections || [];
-
-  let sectionsHtml = '';
-  sections.forEach((sec, idx) => {
+function buildSetSectionsHtml(sections) {
+  let html = '';
+  (sections || []).forEach((sec, idx) => {
     const color = SECTION_COLORS[sec.name] || 'var(--teal-2)';
     const divider = idx > 0 ? 'border-top:1px solid var(--gray-100);' : '';
     const items = (sec.items || []).map(item => {
@@ -6705,23 +6529,45 @@ function renderSwimSet(level, data) {
       if (item.note) h += `<div class="set-note">${escHtml(item.note)}</div>`;
       return h;
     }).join('');
-    sectionsHtml += `<div style="${divider}">
+    html += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
         <span class="set-label">${escHtml(sec.name)}</span><span class="set-yds">${sec.yards} yds</span>
       </div>
       <div class="set-rows">${items}</div>
     </div>`;
   });
+  return html;
+}
 
-  const focusCueText = data.focusCue ? String(data.focusCue).replace(/\s*—\s*/g, ', ').replace(/—/g, ', ') : '';
-  const focusCueHtml = focusCueText ? `<div class="focus-cue">
+function buildFocusCueHtml(focusCue) {
+  const focusCueText = focusCue ? String(focusCue).replace(/\s*—\s*/g, ', ').replace(/—/g, ', ') : '';
+  if (!focusCueText) return '';
+  return `<div class="focus-cue">
     <button type="button" class="focus-cue-toggle" aria-expanded="false" onclick="toggleFocusCue(this)">
       <svg class="focus-cue-bulb" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M8.4 14.2a5 5 0 1 1 7.2 0c-.78.78-1.3 1.45-1.45 2.3H9.85c-.15-.85-.67-1.52-1.45-2.3Z"/><path d="M12 6.5v2"/></svg>
       <span class="focus-cue-title">Today's focus cue</span>
       <svg class="focus-cue-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <p class="focus-cue-body">${escHtml(focusCueText)}</p>
-  </div>` : '';
+  </div>`;
+}
+
+function renderSwimSet(level, data) {
+  const container = document.getElementById('swim-set-content-' + level);
+  if (!container) return;
+
+  const today = new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
+  const levelLabel = level.charAt(0).toUpperCase() + level.slice(1);
+
+  // Register the set so it can be favorited / viewed from the archives & favorites.
+  data.level = level;
+  if (!data.date) data.date = new Date().toISOString().slice(0, 10);
+  const id = data.setId || (level + '-' + data.date);
+  data.setId = id;
+  _archiveSets[id] = data;
+
+  const sectionsHtml = buildSetSectionsHtml(data.sections);
+  const focusCueHtml = buildFocusCueHtml(data.focusCue);
 
   container.innerHTML = `<div class="swim-print-area">
   <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
@@ -6731,10 +6577,13 @@ function renderSwimSet(level, data) {
       <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${data.totalYards} yards &nbsp;·&nbsp; Est. ${data.estimatedMinutes} min</p>
       ${focusCueHtml}
     </div>
-    <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Print
-    </button>
+    <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
+      ${favoriteButtonHtml(id)}
+      <button onclick="window.print()" class="btn btn-outline-dark btn-sm">
+        ${PRINT_SVG}
+        Print
+      </button>
+    </div>
   </div>
   <div class="set-block">${sectionsHtml}</div>
   </div>
@@ -6764,8 +6613,104 @@ function renderSwimSetError(level, msg) {
 // ── Archive dynamic loading ──────────────────────────────────────────────────
 
 let _archiveLoaded = false;
+let _injuryRendered = false;
+
+// In-memory registry of every set we've seen, keyed by setId, so a set can be
+// opened in the detail modal or favorited from anywhere on the site.
+const _archiveSets = {};
+
+const ARCH_STROKE_LABEL = {freestyle:'Freestyle',backstroke:'Backstroke',butterfly:'Butterfly',breaststroke:'Breaststroke',im:'IM',choice:'Choice'};
+const ARCH_INTENSITY_LABEL = {aerobic:'Aerobic',threshold:'Threshold',sprint:'Sprint',recovery:'Recovery'};
+const ARCH_TYPE_LABEL = {drill:'Drill',kick:'Kick',pull:'Pull/Catch',race:'Race-Pace',endurance:'Endurance',technique:'Technique'};
+
+// Curated limited-mobility / injury-recovery sets. Full set data so they can be
+// viewed, printed, and favorited even when the set generator API is offline.
+const INJURY_SETS = [
+  {
+    setId: 'inj-shoulder', level: 'all', title: 'Shoulder Recovery Swim',
+    badge: 'Shoulder-Safe', note: 'No fly, no overhead butterfly arms',
+    totalYards: 700, estimatedMinutes: 22,
+    strokeFocus: 'backstroke', intensity: 'recovery', setType: 'technique', distanceCategory: 'short',
+    focusCue: 'Lead every stroke from a relaxed shoulder. If you feel any pinch, shorten the reach and slow down. This is recovery, not training.',
+    sections: [
+      { name: 'Warm-Up', yards: 200, items: [
+        { text: '4x 50 backstroke easy, rest :20', note: 'Long, relaxed recovery — no overreaching' },
+        { text: '100 kick on back, no board', note: 'Arms resting at sides' } ] },
+      { name: 'Main Set', yards: 400, items: [
+        { text: '6x 50 backstroke, rest :20', note: 'Smooth full rotation; stop if anything pinches' },
+        { text: '4x 25 single-arm backstroke', note: 'Resting arm stays at your side' } ] },
+      { name: 'Cool-Down', yards: 100, items: [
+        { text: '100 easy backstroke or freestyle choice', note: 'Loosen up, long and easy' } ] }
+    ]
+  },
+  {
+    setId: 'inj-knee', level: 'all', title: 'Knee-Friendly Kick Focus',
+    badge: 'Knee-Safe', note: 'Flutter kick only, no breaststroke kick',
+    totalYards: 600, estimatedMinutes: 18,
+    strokeFocus: 'freestyle', intensity: 'recovery', setType: 'kick', distanceCategory: 'short',
+    focusCue: 'Keep the kick small and quick, driven from the hip with soft knees. Avoid any breaststroke kick that loads the joint.',
+    sections: [
+      { name: 'Warm-Up', yards: 150, items: [
+        { text: '150 easy freestyle swim', note: 'Loosen up the legs' } ] },
+      { name: 'Main Set', yards: 350, items: [
+        { text: '5x 50 flutter kick on back, rest :20', note: 'Small fast kicks from the hip, knees soft' },
+        { text: '2x 50 freestyle swim, easy', note: 'Steady, relaxed' } ] },
+      { name: 'Cool-Down', yards: 100, items: [
+        { text: '100 easy choice, flutter kick only', note: 'No breaststroke kick' } ] }
+    ]
+  },
+  {
+    setId: 'inj-back', level: 'all', title: 'Pull Buoy Only — Low Back Relief',
+    badge: 'Back-Safe', note: 'Pull buoy throughout, no kick',
+    totalYards: 1000, estimatedMinutes: 30,
+    strokeFocus: 'freestyle', intensity: 'aerobic', setType: 'pull', distanceCategory: 'short',
+    focusCue: 'Let the pull buoy hold your hips up so the low back can relax. Drive each stroke from the lats, not by arching the spine.',
+    sections: [
+      { name: 'Warm-Up', yards: 200, items: [
+        { text: '200 freestyle pull, easy', note: 'Pull buoy between the thighs, relaxed' } ] },
+      { name: 'Main Set', yards: 600, items: [
+        { text: '6x 100 freestyle pull, rest :20', note: 'Long strokes, engage the lats not the low back' } ] },
+      { name: 'Cool-Down', yards: 200, items: [
+        { text: '200 easy pull', note: 'Keep hips up, breathe evenly' } ] }
+    ]
+  },
+  {
+    setId: 'inj-wrist', level: 'all', title: 'Wrist & Forearm Recovery Set',
+    badge: 'Wrist-Safe', note: 'Fist drills, minimized hand load',
+    totalYards: 800, estimatedMinutes: 25,
+    strokeFocus: 'backstroke', intensity: 'recovery', setType: 'technique', distanceCategory: 'short',
+    focusCue: 'Swim with closed fists so the catch comes from the forearm and the wrist stays unloaded. Keep hands loose everywhere else.',
+    sections: [
+      { name: 'Warm-Up', yards: 200, items: [
+        { text: '200 backstroke easy', note: 'Relaxed hands, no gripping' } ] },
+      { name: 'Main Set', yards: 500, items: [
+        { text: '5x 50 freestyle fist drill, rest :20', note: 'Closed fists — forearm catch, no wrist load' },
+        { text: '5x 50 backstroke, rest :15', note: 'Light, loose wrists' } ] },
+      { name: 'Cool-Down', yards: 100, items: [
+        { text: '100 easy choice', note: 'Shake out the hands' } ] }
+    ]
+  }
+];
+
+function toggleArchiveCollapse(key) {
+  const el = document.getElementById('archive-collapse-' + key);
+  if (!el) return;
+  const collapsed = el.classList.toggle('collapsed');
+  const btn = el.querySelector('.archive-collapse-header');
+  if (btn) btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+}
+
+function renderInjurySets() {
+  if (_injuryRendered) return;
+  const c = document.getElementById('archive-cards-injury');
+  if (!c) return;
+  c.innerHTML = INJURY_SETS.map(s => archiveCardHtml(s)).join('');
+  _injuryRendered = true;
+}
 
 async function loadArchives() {
+  renderInjurySets();
+  filterArchive();
   if (_archiveLoaded) return;
   const apiUrl = (window.STREAMLINE_API_URL || '');
   if (!apiUrl) return;
@@ -6777,45 +6722,201 @@ async function loadArchives() {
     const { items } = await res.json();
     _archiveLoaded = true;
     if (loadingEl) loadingEl.style.display = 'none';
-    if (!items || items.length === 0) return;
-    renderArchiveCards(items);
+    if (items && items.length) renderArchiveCards(items);
   } catch (e) {
     if (loadingEl) loadingEl.style.display = 'none';
   }
 }
 
+// Turn an API archive item (which carries setData as a JSON string) into a full
+// set object usable by the card renderer and the detail modal.
+function archiveItemToSet(item) {
+  let set = null;
+  if (item.setData) { try { set = JSON.parse(item.setData); } catch (e) { set = null; } }
+  if (!set) set = {};
+  set.setId = set.setId || item.setId;
+  set.level = set.level || item.level;
+  set.date = set.date || item.date;
+  set.title = set.title || item.title;
+  set.totalYards = set.totalYards || item.totalYards;
+  set.estimatedMinutes = set.estimatedMinutes || item.estimatedMinutes;
+  set.strokeFocus = set.strokeFocus || item.strokeFocus;
+  set.intensity = set.intensity || item.intensity;
+  set.setType = set.setType || item.setType;
+  set.distanceCategory = set.distanceCategory || item.distanceCategory;
+  return set;
+}
+
 function renderArchiveCards(items) {
-  const wrap = document.getElementById('archive-dynamic-wrap');
-  const cardsEl = document.getElementById('archive-dynamic-cards');
-  if (!wrap || !cardsEl) return;
-  wrap.style.display = 'block';
+  const containers = {
+    beginner: document.getElementById('archive-cards-beginner'),
+    intermediate: document.getElementById('archive-cards-intermediate'),
+    advanced: document.getElementById('archive-cards-advanced'),
+    pro: document.getElementById('archive-cards-pro')
+  };
+  Object.values(containers).forEach(c => { if (c) c.innerHTML = ''; });
 
-  const STROKE_LABEL = {freestyle:'Freestyle',backstroke:'Backstroke',butterfly:'Butterfly',breaststroke:'Breaststroke',im:'IM',choice:'Choice'};
-  const INTENSITY_LABEL = {aerobic:'Aerobic',threshold:'Threshold',sprint:'Sprint',recovery:'Recovery'};
-  const TYPE_LABEL = {drill:'Drill',kick:'Kick',pull:'Pull/Catch',race:'Race-Pace',endurance:'Endurance',technique:'Technique'};
-
-  cardsEl.innerHTML = items.map(item => {
-    const lvl = item.level || '';
-    const dist = item.distanceCategory || '';
-    const stroke = item.strokeFocus || '';
-    const intensity = item.intensity || '';
-    const type = item.setType || '';
-    const dateStr = item.date ? new Date(item.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-    const yds = item.totalYards ? `~${item.totalYards} yds` : '';
-    const mins = item.estimatedMinutes ? `${item.estimatedMinutes} min` : '';
-    const meta = [yds, mins].filter(Boolean).join(' · ');
-    const tags = [lvl, STROKE_LABEL[stroke], INTENSITY_LABEL[intensity], TYPE_LABEL[type]].filter(Boolean);
-    return `<div class="archive-card" data-level="${escHtml(lvl)}" data-distance="${escHtml(dist)}" data-stroke="${escHtml(stroke)}" data-intensity="${escHtml(intensity)}" data-type="${escHtml(type)}">
-      <div>
-        <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(item.title)}</div>
-        <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(meta)}${dateStr ? ` &nbsp;·&nbsp; ${escHtml(dateStr)}` : ''}</div>
-        <div class="archive-card-meta">${tags.map(t=>`<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
-      </div>
-      <button class="btn btn-outline-dark btn-sm" style="flex-shrink:0;" onclick="navigate('swim-sets'); showSwimLevel('${escHtml(lvl)}')">View Level</button>
-    </div>`;
-  }).join('');
+  items.forEach(item => {
+    const set = archiveItemToSet(item);
+    const c = containers[set.level];
+    if (c) c.insertAdjacentHTML('beforeend', archiveCardHtml(set));
+  });
 
   filterArchive();
+}
+
+// Shared archive-card markup with View Set + Favorite controls.
+function archiveCardHtml(set) {
+  if (set.setId) _archiveSets[set.setId] = set;
+  const lvl = set.level || '';
+  const dist = set.distanceCategory || '';
+  const stroke = set.strokeFocus || '';
+  const intensity = set.intensity || '';
+  const type = set.setType || '';
+  const levelTag = lvl === 'all' ? 'All Levels' : (lvl ? lvl.charAt(0).toUpperCase() + lvl.slice(1) : '');
+  const dateStr = (set.date && lvl !== 'all') ? new Date(set.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+  const yds = set.totalYards ? `~${set.totalYards} yds` : '';
+  const mins = set.estimatedMinutes ? `${set.estimatedMinutes} min` : '';
+  const metaParts = [yds, mins].filter(Boolean);
+  if (set.note) metaParts.push(set.note);
+  if (dateStr) metaParts.push(dateStr);
+  const meta = metaParts.join('  ·  ');
+  const tags = [levelTag, ARCH_STROKE_LABEL[stroke], ARCH_INTENSITY_LABEL[intensity], ARCH_TYPE_LABEL[type]].filter(Boolean);
+  const badge = set.badge ? `<span class="archive-safe-badge">${escHtml(set.badge)}</span>` : '';
+  const id = set.setId || '';
+  return `<div class="archive-card" data-level="${escHtml(lvl)}" data-distance="${escHtml(dist)}" data-stroke="${escHtml(stroke)}" data-intensity="${escHtml(intensity)}" data-type="${escHtml(type)}" data-setid="${escHtml(id)}">
+      <div>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(set.title || '')}</div>
+          ${badge}
+        </div>
+        <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(meta)}</div>
+        <div class="archive-card-meta">${tags.map(t=>`<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
+      </div>
+      <div class="archive-card-actions">
+        <button class="btn btn-outline-dark btn-sm" onclick="openArchivedSet('${escHtml(id)}')">View Set</button>
+        ${favoriteIconButtonHtml(id)}
+      </div>
+    </div>`;
+}
+
+function openArchivedSet(id) {
+  const set = _archiveSets[id];
+  if (!set) return;
+  if (!set.sections || !set.sections.length) {
+    // No full set data (older API) — fall back to the level's daily page.
+    closeSetDetail();
+    navigate('swim-sets');
+    if (set.level && set.level !== 'all') showSwimLevel(set.level);
+    return;
+  }
+  renderSetDetail(set);
+}
+
+function renderSetDetail(set) {
+  if (set.setId) _archiveSets[set.setId] = set;
+  const body = document.getElementById('set-detail-body');
+  if (body) body.innerHTML = swimSetMarkup(set);
+  const overlay = document.getElementById('set-detail-overlay');
+  if (overlay) { overlay.scrollTop = 0; overlay.classList.add('open'); }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSetDetail() {
+  const overlay = document.getElementById('set-detail-overlay');
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Printable set markup used by the archived-set detail modal and the favorites view.
+function swimSetMarkup(data) {
+  const id = data.setId;
+  const levelLabel = data.level ? (data.level === 'all' ? 'All Levels' : data.level.charAt(0).toUpperCase() + data.level.slice(1)) : '';
+  const dateLabel = data.date ? new Date(data.date + 'T12:00:00').toLocaleDateString('en-US',{weekday:'long', month:'long', day:'numeric', year:'numeric'}) : '';
+  const eyebrow = [dateLabel, levelLabel].filter(Boolean).join(' · ');
+  const sectionsHtml = buildSetSectionsHtml(data.sections);
+  const focusCueHtml = buildFocusCueHtml(data.focusCue);
+  return `<div class="swim-print-area">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+      <div>
+        ${eyebrow ? `<span class="eyebrow">${escHtml(eyebrow)}</span>` : ''}
+        <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || '')}</h2>
+        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(data.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(data.estimatedMinutes || ''))} min</p>
+        ${focusCueHtml}
+      </div>
+      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
+        ${favoriteButtonHtml(id)}
+        <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+      </div>
+    </div>
+    <div class="set-block">${sectionsHtml}</div>
+  </div>`;
+}
+
+// ── Favorites ────────────────────────────────────────────────────────────────
+
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem('streamline_favorites') || '[]'); } catch (e) { return []; }
+}
+function saveFavorites(f) { localStorage.setItem('streamline_favorites', JSON.stringify(f)); }
+function isFavorite(id) { return getFavorites().some(s => s.setId === id); }
+function toggleFavorite(set) {
+  const favs = getFavorites();
+  const i = favs.findIndex(s => s.setId === set.setId);
+  if (i >= 0) favs.splice(i, 1); else favs.unshift(set);
+  saveFavorites(favs);
+  return i < 0;
+}
+
+function favMarkup(fav, mode) {
+  if (mode === 'icon') return fav ? '★' : '☆';
+  return `<span class="fav-star">${fav ? '★' : '☆'}</span> ${fav ? 'Favorited' : 'Favorite'}`;
+}
+function favoriteButtonHtml(id) {
+  const fav = isFavorite(id);
+  return `<button type="button" class="btn ${fav ? 'btn-gold' : 'btn-outline-dark'} btn-sm fav-btn" data-fav-mode="text" data-fav-id="${escHtml(id)}" onclick="onFavoriteClick(this)">${favMarkup(fav,'text')}</button>`;
+}
+function favoriteIconButtonHtml(id) {
+  const fav = isFavorite(id);
+  return `<button type="button" class="fav-icon-btn fav-btn ${fav ? 'is-fav' : ''}" data-fav-mode="icon" data-fav-id="${escHtml(id)}" title="${fav ? 'Remove from favorites' : 'Add to favorites'}" aria-label="Favorite" onclick="onFavoriteClick(this)">${favMarkup(fav,'icon')}</button>`;
+}
+function onFavoriteClick(btn) {
+  const id = btn.dataset.favId;
+  const set = _archiveSets[id];
+  if (!set) return;
+  toggleFavorite(set);
+  updateFavButtons(id);
+  const favPanel = document.getElementById('swim-level-favorites');
+  if (favPanel && favPanel.style.display !== 'none') renderFavorites();
+}
+function updateFavButtons(id) {
+  const fav = isFavorite(id);
+  document.querySelectorAll('.fav-btn').forEach(btn => {
+    if (btn.dataset.favId !== id) return;
+    const mode = btn.dataset.favMode || 'text';
+    btn.innerHTML = favMarkup(fav, mode);
+    if (mode === 'icon') {
+      btn.classList.toggle('is-fav', fav);
+      btn.title = fav ? 'Remove from favorites' : 'Add to favorites';
+    } else {
+      btn.classList.toggle('btn-gold', fav);
+      btn.classList.toggle('btn-outline-dark', !fav);
+    }
+  });
+}
+function renderFavorites() {
+  const wrap = document.getElementById('swim-favorites-list');
+  if (!wrap) return;
+  const favs = getFavorites();
+  if (!favs.length) {
+    wrap.innerHTML = `<div style="text-align:center; padding:3rem 2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+      <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">No favorites yet</p>
+      <p style="font-size:0.88rem; color:var(--gray-400);">Star a set from the daily sets or the <a href="#set-archives" onclick="navigate('set-archives')" style="color:var(--lap-hover); font-weight:600;">archives</a> to save it here.</p>
+    </div>`;
+    return;
+  }
+  favs.forEach(s => { if (s.setId) _archiveSets[s.setId] = s; });
+  wrap.innerHTML = favs.map(s => archiveCardHtml(s)).join('');
 }
 
 function filterArchive() {
@@ -6825,36 +6926,39 @@ function filterArchive() {
   const intensity = (document.getElementById('af-intensity') || {}).value || '';
   const type = (document.getElementById('af-type') || {}).value || '';
 
-  let anyVisible = false;
-  document.querySelectorAll('#archive-results .archive-card').forEach(card => {
-    const show = (!level || card.dataset.level === level)
+  const matches = card => {
+    const dl = card.dataset.level;
+    return (!level || dl === level || dl === 'all')
       && (!distance || card.dataset.distance === distance)
       && (!stroke || card.dataset.stroke === stroke)
       && (!intensity || card.dataset.intensity === intensity)
       && (!type || card.dataset.type === type);
+  };
+
+  let total = 0;
+  document.querySelectorAll('#archive-results .archive-card').forEach(card => {
+    const show = matches(card);
     card.style.display = show ? '' : 'none';
-    if (show) anyVisible = true;
+    if (show) total++;
   });
 
-  // dynamic empty state
-  const dynCards = document.querySelectorAll('#archive-dynamic-cards .archive-card');
-  const dynVisible = Array.from(dynCards).some(c => c.style.display !== 'none');
-  const dynEmpty = document.getElementById('archive-dynamic-empty');
-  const dynWrap = document.getElementById('archive-dynamic-wrap');
-  if (dynWrap && dynWrap.style.display !== 'none') {
-    if (dynEmpty) dynEmpty.style.display = dynVisible ? 'none' : 'block';
+  // Per-level section visibility.
+  ['beginner','intermediate','advanced','pro'].forEach(lvl => {
+    const sec = document.getElementById('archive-section-' + lvl);
+    if (!sec) return;
+    const has = Array.from(sec.querySelectorAll('.archive-card')).some(c => c.style.display !== 'none');
+    sec.style.display = has ? '' : 'none';
+  });
+
+  // Injury / mobility collapsible visibility.
+  const inj = document.getElementById('archive-collapse-injury');
+  if (inj) {
+    const injHas = Array.from(inj.querySelectorAll('.archive-card')).some(c => c.style.display !== 'none');
+    inj.style.display = injHas ? '' : 'none';
   }
 
-  // section headers — hide if all cards in that section are hidden
-  document.querySelectorAll('#archive-results .archive-section-header').forEach(header => {
-    let next = header.nextElementSibling;
-    let sectionHasVisible = false;
-    while (next && !next.classList.contains('archive-section-header')) {
-      if (next.classList.contains('archive-card') && next.style.display !== 'none') sectionHasVisible = true;
-      next = next.nextElementSibling;
-    }
-    header.style.display = sectionHasVisible ? '' : 'none';
-  });
+  const empty = document.getElementById('archive-dynamic-empty');
+  if (empty) empty.style.display = total === 0 ? 'block' : 'none';
 }
 
 function showLiftLevel(level) {
