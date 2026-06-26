@@ -93,8 +93,16 @@ jobs:
             --function-name streamline-generate-sets \
             --cli-binary-format raw-in-base64-out \
             --payload '{}' \
-            /tmp/generate-sets.json
+            /tmp/generate-sets.json > /tmp/generate-sets-meta.json
+          cat /tmp/generate-sets-meta.json
           cat /tmp/generate-sets.json
+          # The Lambda raises (and the CLI records a FunctionError) when no level
+          # generated, so a broken model ID / Bedrock outage fails the deploy
+          # instead of silently leaving the site with no sets for the day.
+          if grep -q FunctionError /tmp/generate-sets-meta.json; then
+            echo "::error::generate-sets Lambda failed to produce any swim sets" >&2
+            exit 1
+          fi
 
       # Welcomes accounts created in the past 24h that never got the email.
       # Runs after the S3 sync so the logo images the email links to are live.

@@ -926,8 +926,15 @@ Resources:
             # (5,000-8,000+ yds) produce long JSON with a coaching note on every
             # piece; at 2,500 tokens they were truncated mid-object so json.loads
             # threw and only the small beginner set (which fit) ever got written.
+            #
+            # modelId must be a valid Bedrock identifier. The earlier value
+            # 'global.anthropic.claude-sonnet-4-6' was a malformed cross-region
+            # inference-profile string (the 'global.' prefix without a version
+            # suffix), so every InvokeModel call threw and NO level generated.
+            # Bedrock model IDs take a plain 'anthropic.' prefix, matching the
+            # haiku call elsewhere in this template.
             r = bedrock.invoke_model(
-              modelId='global.anthropic.claude-sonnet-4-6',
+              modelId='anthropic.claude-sonnet-4-6',
               body=json.dumps({'anthropic_version':'bedrock-2023-05-31','max_tokens':8000,'messages':[{'role':'user','content':prompt}]})
             )
             return json.loads(r['body'].read())['content'][0]['text'].strip()
@@ -964,7 +971,16 @@ Resources:
                 })
                 results.append({'level': level, 'status': 'ok'})
               except Exception as ex:
+                print('generate failed for %s: %s' % (level, ex))
                 results.append({'level': level, 'status': 'error', 'error': str(ex)})
+            ok = sum(1 for r in results if r['status'] == 'ok')
+            # If every level failed (bad model ID, Bedrock access revoked, etc.),
+            # raise so the failure is loud instead of a silent 200 with an empty
+            # results set. EventBridge then retries the schedule, and the deploy
+            # step's `aws lambda invoke` reports a FunctionError that fails CI —
+            # rather than leaving the site with no sets for the day unnoticed.
+            if ok == 0:
+              raise RuntimeError('generate-sets wrote no sets for %s: %s' % (date_str, json.dumps(results)))
             return {'statusCode': 200, 'body': json.dumps({'results': results, 'date': date_str})}
 
   GetDailySetsFunction:
