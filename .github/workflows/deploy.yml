@@ -88,10 +88,19 @@ jobs:
       # EventBridge trigger. The Lambda is idempotent — it overwrites the same
       # DynamoDB key if today's set already exists.
       - name: Generate today's swim sets
+        env:
+          # The synchronous invoke must wait for the Lambda to finish generating
+          # all four levels (four Sonnet 4.6 calls of up to 8000 tokens each can
+          # take a couple of minutes). The CLI's default 60s read timeout fires
+          # mid-run otherwise; raise it above the Lambda's 300s timeout. Cap
+          # retries at 1 so a slow run can't fan out into duplicate executions.
+          AWS_MAX_ATTEMPTS: "1"
         run: |
           aws lambda invoke \
             --function-name streamline-generate-sets \
             --cli-binary-format raw-in-base64-out \
+            --cli-read-timeout 360 \
+            --cli-connect-timeout 10 \
             --payload '{}' \
             /tmp/generate-sets.json > /tmp/generate-sets-meta.json
           cat /tmp/generate-sets-meta.json
