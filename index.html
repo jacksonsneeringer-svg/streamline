@@ -6538,7 +6538,7 @@ async function loadSwimSet(level) {
   try {
     const res = await fetch(`${apiUrl}/daily-sets?level=${level}`);
     if (res.status === 404) {
-      renderSwimSetError(level, "Today's set hasn't been generated yet — check back after 5 AM ET.");
+      renderSwimSetError(level, "Today's set hasn't been generated yet — check back after 12:01 AM Pacific.");
       return;
     }
     if (!res.ok) throw new Error('Server error');
