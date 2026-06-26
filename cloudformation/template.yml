@@ -1053,7 +1053,7 @@ Resources:
             if ins: add(Attr('intensity').eq(ins))
             if st: add(Attr('setType').eq(st))
             if ds: add(Attr('distanceCategory').eq(ds))
-            proj = 'setId,#lv,#dt,title,totalYards,estimatedMinutes,strokeFocus,intensity,setType,distanceCategory'
+            proj = 'setId,#lv,#dt,title,totalYards,estimatedMinutes,strokeFocus,intensity,setType,distanceCategory,setData'
             kw = {'ProjectionExpression':proj,'ExpressionAttributeNames':{'#lv':'level','#dt':'date'}}
             if fe: kw['FilterExpression'] = fe
             try:
