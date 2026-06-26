@@ -2686,7 +2686,7 @@ section { padding: 6rem 0; }
       <button class="level-tab" id="swim-tab-intermediate" onclick="showSwimLevel('intermediate')">Intermediate</button>
       <button class="level-tab" id="swim-tab-advanced" onclick="showSwimLevel('advanced')">Advanced</button>
       <button class="level-tab" id="swim-tab-pro" onclick="showSwimLevel('pro')">Pro</button>
-      <button class="level-tab" id="swim-tab-favorites" onclick="showSwimLevel('favorites')" style="margin-left:auto;"><span class="fav-star">★</span>&nbsp;Favorites</button>
+      <button class="level-tab" id="swim-tab-favorites" onclick="showSwimLevel('favorites')" style="margin-left:auto;"><span class="fav-star">♥</span>&nbsp;Favorites</button>
     </div>
     <div id="swim-level-beginner">
       <div class="swim-level-layout">
@@ -6869,8 +6869,8 @@ function toggleFavorite(set) {
 }
 
 function favMarkup(fav, mode) {
-  if (mode === 'icon') return fav ? '★' : '☆';
-  return `<span class="fav-star">${fav ? '★' : '☆'}</span> ${fav ? 'Favorited' : 'Favorite'}`;
+  if (mode === 'icon') return fav ? '♥' : '♡';
+  return `<span class="fav-star">${fav ? '♥' : '♡'}</span> ${fav ? 'Favorited' : 'Favorite'}`;
 }
 function favoriteButtonHtml(id) {
   const fav = isFavorite(id);
