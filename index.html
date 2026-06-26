@@ -6677,13 +6677,13 @@ function renderSwimSet(level, data) {
   let sectionsHtml = '';
   sections.forEach((sec, idx) => {
     const color = SECTION_COLORS[sec.name] || 'var(--teal-2)';
-    const span = idx < 2 ? '' : 'grid-column:1 / -1;';
+    const divider = idx > 0 ? 'border-top:1px solid var(--gray-100);' : '';
     const items = (sec.items || []).map(item => {
       let h = `<div class="set-row">${escHtml(item.text)}</div>`;
       if (item.note) h += `<div class="set-note">${escHtml(item.note)}</div>`;
       return h;
     }).join('');
-    sectionsHtml += `<div class="set-block" style="${span}">
+    sectionsHtml += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
         <span class="set-label">${escHtml(sec.name)}</span><span class="set-yds">${sec.yards} yds</span>
       </div>
@@ -6711,7 +6711,7 @@ function renderSwimSet(level, data) {
       Print
     </button>
   </div>
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">${sectionsHtml}</div>
+  <div class="set-block">${sectionsHtml}</div>
   ${focusCueHtml}
   </div>
   <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
