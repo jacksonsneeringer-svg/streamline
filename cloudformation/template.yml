@@ -191,6 +191,7 @@ Resources:
                   - dynamodb:GetItem
                   - dynamodb:UpdateItem
                   - dynamodb:DeleteItem
+                  - dynamodb:BatchWriteItem
                   - dynamodb:Scan
                   - dynamodb:Query
                 Resource:
@@ -957,7 +958,11 @@ Resources:
                 raw = invoke(p)
                 s = raw.find('{'); e = raw.rfind('}') + 1
                 data = json.loads(raw[s:e])
-                sid = str(uuid.uuid4())
+                # Deterministic setId (level + service day) so re-running the
+                # generator for a given day overwrites that day's archived set
+                # rather than creating a duplicate: exactly one set is archived
+                # per level per day.
+                sid = '%s-%s' % (level, date_str)
                 data.update({'date': date_str, 'level': level, 'setId': sid})
                 daily_tbl.put_item(Item={'level': level, 'setData': json.dumps(data), 'date': date_str, 'generatedAt': now.isoformat()})
                 arch_tbl.put_item(Item={
@@ -1063,6 +1068,30 @@ Resources:
               while 'LastEvaluatedKey' in r:
                 r = tbl.scan(**kw, ExclusiveStartKey=r['LastEvaluatedKey'])
                 items += r['Items']
+              # Only one set should be archived per level per day. Older runs
+              # used a random setId, so re-generations left duplicate rows for
+              # the same (level, date). Keep one per (level, date) and delete
+              # the rest from the table so the archive self-heals.
+              kept, dupes = [], []
+              seen = {}
+              for it in items:
+                key = (it.get('level',''), it.get('date',''))
+                if not key[0] or not key[1]:
+                  kept.append(it); continue
+                if key in seen:
+                  dupes.append(it)
+                else:
+                  seen[key] = True
+                  kept.append(it)
+              if dupes:
+                try:
+                  with tbl.batch_writer() as bw:
+                    for d in dupes:
+                      if d.get('setId'):
+                        bw.delete_item(Key={'setId': d['setId']})
+                except Exception as de:
+                  print('archive dedupe delete failed: %s' % de)
+              items = kept
               items.sort(key=lambda x: x.get('date',''), reverse=True)
               return {'statusCode':200,'headers':CORS,'body':json.dumps({'items':items},default=dec)}
             except Exception as e:
