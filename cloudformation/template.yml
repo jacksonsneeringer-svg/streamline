@@ -1000,9 +1000,6 @@ Resources:
       Code:
         ZipFile: |
           import json, boto3
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          PACIFIC = ZoneInfo('America/Los_Angeles')
           dynamo = boto3.resource('dynamodb')
           tbl = dynamo.Table('streamline-daily-sets')
           CORS = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json'}
@@ -1017,10 +1014,16 @@ Resources:
             try:
               r = tbl.get_item(Key={'level':level})
               if 'Item' not in r:
-                return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
-              today = datetime.now(PACIFIC).strftime('%Y-%m-%d')
-              if r['Item'].get('date') != today:
-                return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set generated yet for today'})}
+                return {'statusCode':404,'headers':CORS,'body':json.dumps({'error':'No set has been generated yet for this level'})}
+              # Always serve whatever set is currently stored for this level.
+              # The table holds exactly one row per level, overwritten only when
+              # the generator pushes a new set at 12:01 AM Pacific. So once a set
+              # is pushed it stays on the page, unchanged, until the next day's
+              # set replaces it — and if a day's generation ever fails, the most
+              # recent set keeps showing instead of the page breaking. We do not
+              # gate on the stored date: that previously 404'd yesterday's set
+              # the instant midnight Pacific rolled over, before (or if) the new
+              # set finished generating.
               return {'statusCode':200,'headers':CORS,'body':r['Item']['setData']}
             except Exception as e:
               return {'statusCode':500,'headers':CORS,'body':json.dumps({'error':str(e)})}
@@ -1275,24 +1278,44 @@ Resources:
 
   # ─── EVENTBRIDGE SCHEDULER ─────────────────────────────────────────────────
 
+  # Role EventBridge Scheduler assumes to invoke the generator.
+  SchedulerExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: streamline-scheduler-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: scheduler.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: streamline-scheduler-invoke
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt GenerateSetsFunction.Arn
+
+  # EventBridge Scheduler (not a classic Events::Rule) so the run time is
+  # expressed in Pacific local time and fires at 12:01 AM Pacific every day,
+  # year-round. A fixed UTC cron would drift by an hour across daylight-saving
+  # changes (firing at 1:01 AM Pacific from spring through fall).
   GenerateSetsSchedule:
-    Type: AWS::Events::Rule
+    Type: AWS::Scheduler::Schedule
     Properties:
       Name: streamline-generate-sets-daily
-      Description: Generate daily swim sets for all levels at 8:01 AM UTC (12:01 AM PST)
-      ScheduleExpression: "cron(1 8 * * ? *)"
+      Description: Generate daily swim sets for all levels at 12:01 AM Pacific
+      ScheduleExpression: "cron(1 0 * * ? *)"
+      ScheduleExpressionTimezone: America/Los_Angeles
+      FlexibleTimeWindow:
+        Mode: "OFF"
       State: ENABLED
-      Targets:
-        - Arn: !GetAtt GenerateSetsFunction.Arn
-          Id: GenerateSetsTarget
-
-  GenerateSetsEventPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref GenerateSetsFunction
-      Action: lambda:InvokeFunction
-      Principal: events.amazonaws.com
-      SourceArn: !GetAtt GenerateSetsSchedule.Arn
+      Target:
+        Arn: !GetAtt GenerateSetsFunction.Arn
+        RoleArn: !GetAtt SchedulerExecutionRole.Arn
 
 
 Outputs:
