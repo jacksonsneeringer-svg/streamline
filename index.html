@@ -2903,7 +2903,7 @@ section { padding: 6rem 0; }
             <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Full Rest</span></div>
           </div>
           <div class="swim-sidebar-section">
-            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Workout Archives</button>
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('dryland-archives')">Access Workout Archives</button>
           </div>
         </div>
       </div>
@@ -2930,7 +2930,7 @@ section { padding: 6rem 0; }
             <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Full Rest</span></div>
           </div>
           <div class="swim-sidebar-section">
-            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Workout Archives</button>
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('dryland-archives')">Access Workout Archives</button>
           </div>
         </div>
       </div>
@@ -2957,7 +2957,7 @@ section { padding: 6rem 0; }
             <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Full Rest</span></div>
           </div>
           <div class="swim-sidebar-section">
-            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Workout Archives</button>
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('dryland-archives')">Access Workout Archives</button>
           </div>
         </div>
       </div>
@@ -3098,6 +3098,112 @@ section { padding: 6rem 0; }
   </div>
 </section>
 </div><!-- end page-set-archives -->
+
+<!-- ══ DRYLAND WORKOUT ARCHIVES PAGE ══ -->
+<div class="page" id="page-dryland-archives">
+<div class="page-hero-sm">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--pool-100);">Dryland</span>
+    <h1>Workout Archives</h1>
+    <p class="sub">Browse and filter every dryland session in the library by equipment, training focus, stroke emphasis, and intensity. Find the workout that fits your gear and the day's focus.</p>
+  </div>
+</div>
+<section style="background:var(--off-white); padding:3rem 0 5rem;">
+  <div class="container">
+
+    <!-- Back to Dryland -->
+    <div style="margin-bottom:1.5rem;">
+      <a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">← Back to Dryland</a>
+    </div>
+
+    <!-- Account-required gate (shown to logged-out visitors) -->
+    <div id="dryland-archive-auth-lock" style="display:none;"></div>
+
+    <!-- Archive content (filters + results), hidden until signed in -->
+    <div id="dryland-archive-content">
+
+    <!-- Filter bar -->
+    <div class="archive-filter-bar">
+      <div class="archive-filter-group">
+        <label for="daf-category">Equipment</label>
+        <select id="daf-category" onchange="filterDrylandArchive()">
+          <option value="">All Equipment</option>
+          <option value="bodyweight">Bodyweight</option>
+          <option value="freeweights">Free Weights</option>
+          <option value="commercial">Commercial Gym</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="daf-focus">Training Focus</label>
+        <select id="daf-focus" onchange="filterDrylandArchive()">
+          <option value="">Any Focus</option>
+          <option value="Core &amp; Stability">Core &amp; Stability</option>
+          <option value="Shoulder, Lat &amp; Upper Back">Shoulder, Lat &amp; Upper Back</option>
+          <option value="Lower Body Power &amp; Explosiveness">Lower Body Power</option>
+          <option value="Upper Body Strength">Upper Body Strength</option>
+          <option value="Full Body Mobility &amp; Recovery">Mobility &amp; Recovery</option>
+          <option value="Rest or Light Movement">Rest / Light Movement</option>
+          <option value="Full Rest">Full Rest</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="daf-stroke">Stroke Emphasis</label>
+        <select id="daf-stroke" onchange="filterDrylandArchive()">
+          <option value="">Any Stroke</option>
+          <option value="freestyle">Freestyle</option>
+          <option value="backstroke">Backstroke</option>
+          <option value="butterfly">Butterfly</option>
+          <option value="breaststroke">Breaststroke</option>
+          <option value="im">IM</option>
+        </select>
+      </div>
+      <div class="archive-filter-group">
+        <label for="daf-intensity">Intensity</label>
+        <select id="daf-intensity" onchange="filterDrylandArchive()">
+          <option value="">Any Intensity</option>
+          <option value="strength">Strength</option>
+          <option value="power">Power</option>
+          <option value="stability">Stability</option>
+          <option value="mobility">Mobility</option>
+          <option value="recovery">Recovery</option>
+        </select>
+      </div>
+      <div style="margin-left:auto;">
+        <button class="btn btn-outline-dark btn-sm" onclick="clearDrylandArchiveFilters()">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Results list -->
+    <div id="dryland-archive-results">
+
+      <!-- Loading indicator (dynamic archived workouts from API) -->
+      <div id="dryland-archive-loading" style="padding:2rem 0; text-align:center; color:var(--gray-400); font-size:0.9rem; display:none;">
+        <div class="swim-set-loading-spinner" style="margin:0 auto 0.75rem;"></div>
+        Loading archived workouts…
+      </div>
+
+      <!-- Archived workouts organized by equipment category (populated daily from the dryland generator) -->
+      <div class="archive-level-section" id="dryland-archive-section-bodyweight" style="display:none;">
+        <div class="archive-section-header"><h3>Bodyweight</h3><div class="archive-section-divider"></div></div>
+        <div id="dryland-archive-cards-bodyweight"></div>
+      </div>
+      <div class="archive-level-section" id="dryland-archive-section-freeweights" style="display:none;">
+        <div class="archive-section-header"><h3>Free Weights</h3><div class="archive-section-divider"></div></div>
+        <div id="dryland-archive-cards-freeweights"></div>
+      </div>
+      <div class="archive-level-section" id="dryland-archive-section-commercial" style="display:none;">
+        <div class="archive-section-header"><h3>Commercial Gym</h3><div class="archive-section-divider"></div></div>
+        <div id="dryland-archive-cards-commercial"></div>
+      </div>
+
+      <div id="dryland-archive-empty" style="display:none; color:var(--gray-400); font-size:0.9rem; padding:1.5rem 0 2rem;">No archived workouts match the current filters.</div>
+    </div>
+
+    </div><!-- end #dryland-archive-content -->
+
+  </div>
+</section>
+</div><!-- end page-dryland-archives -->
 
 <!-- ══ ARCHIVED SET DETAIL MODAL ══ -->
 <div class="set-detail-overlay" id="set-detail-overlay" onclick="if(event.target===this)closeSetDetail()">
@@ -5460,6 +5566,7 @@ const PAGE_TITLES = {
   'swim-sets': 'STREAMLINE | Swim Sets',
   'dryland-workouts': 'STREAMLINE | Dryland',
   'set-archives': 'STREAMLINE | Set Archives',
+  'dryland-archives': 'STREAMLINE | Workout Archives',
   'blog': 'STREAMLINE | Blog',
   'blog-technique': 'STREAMLINE | Blog - Technique',
   'blog-training': 'STREAMLINE | Blog - Training',
@@ -5541,6 +5648,7 @@ function showPage(pageId) {
 
   // Trigger dynamic content loading when relevant pages are shown
   if (pageId === 'set-archives') { if (applyArchiveAuthGate()) { loadArchives(); refreshAllFavButtons(); } }
+  if (pageId === 'dryland-archives') { if (applyDrylandArchiveAuthGate()) { loadDrylandArchives(); refreshAllFavButtons(); } }
   if (pageId === 'swim-sets') { loadSwimSet('beginner'); refreshAllFavButtons(); }
   if (pageId === 'dryland-workouts') initLiftPage();
   if (pageId === 'profile') renderProfilePage();
@@ -6346,7 +6454,7 @@ function buildSnippet(entry, terms) {
 }
 
 const SEARCH_ALLOWED_PAGES = new Set([
-  'swim-sets','set-archives','dryland-workouts',
+  'set-archives','dryland-archives',
   'blog','blog-technique','blog-training','blog-gear','blog-guides','blog-nutrition',
   'freestyle-errors','training-intensity-zones','morning-practice-nutrition',
   'race-week-taper','breathing-mechanics','goggles-guide','training-fins-guide',
@@ -6366,6 +6474,125 @@ function searchSite(query) {
     .sort((a, b) => b.score - a.score)
     .slice(0, 5)
     .map(x => ({ page: x.entry.page, title: x.entry.title, description: buildSnippet(x.entry, terms) }));
+}
+
+// ── Smart filter routing ─────────────────────────────────────────────────────
+// A query like "butterfly workouts" should jump straight to the Set Archives
+// with the butterfly stroke filter applied; "core dryland" to the Workout
+// Archives with the Core & Stability focus, and so on. These maps translate
+// query keywords into archive filters.
+
+// [keyword, filterField, filterValue] — single words match as whole words,
+// multi-word keys match as substrings.
+const SWIM_SEARCH_MAP = [
+  ['butterfly','stroke','butterfly'], ['fly','stroke','butterfly'],
+  ['freestyle','stroke','freestyle'], ['backstroke','stroke','backstroke'],
+  ['breaststroke','stroke','breaststroke'], ['breast','stroke','breaststroke'],
+  ['medley','stroke','im'], ['im','stroke','im'], ['choice','stroke','choice'],
+  ['aerobic','intensity','aerobic'], ['threshold','intensity','threshold'],
+  ['sprint','intensity','sprint'], ['race pace','intensity','sprint'],
+  ['recovery','intensity','recovery'],
+  ['drill','type','drill'], ['kick','type','kick'], ['pull','type','pull'],
+  ['catch','type','pull'], ['endurance','type','endurance'], ['technique','type','technique'],
+  ['beginner','level','beginner'], ['intermediate','level','intermediate'],
+  ['advanced','level','advanced'], ['pro','level','pro'],
+  ['ultra','distance','ultra'], ['long','distance','long'], ['short','distance','short'],
+];
+const DRYLAND_SEARCH_MAP = [
+  ['bodyweight','category','bodyweight'],
+  ['free weights','category','freeweights'], ['freeweights','category','freeweights'],
+  ['dumbbell','category','freeweights'], ['dumbbells','category','freeweights'],
+  ['commercial','category','commercial'], ['gym','category','commercial'], ['barbell','category','commercial'],
+  ['core','focus','Core & Stability'], ['stability','focus','Core & Stability'],
+  ['shoulder','focus','Shoulder, Lat & Upper Back'], ['lat','focus','Shoulder, Lat & Upper Back'],
+  ['lats','focus','Shoulder, Lat & Upper Back'], ['upper back','focus','Shoulder, Lat & Upper Back'],
+  ['lower body','focus','Lower Body Power & Explosiveness'], ['legs','focus','Lower Body Power & Explosiveness'],
+  ['power','focus','Lower Body Power & Explosiveness'], ['explosive','focus','Lower Body Power & Explosiveness'],
+  ['upper body','focus','Upper Body Strength'], ['strength','focus','Upper Body Strength'],
+  ['press','focus','Upper Body Strength'], ['push','focus','Upper Body Strength'],
+  ['mobility','focus','Full Body Mobility & Recovery'], ['stretch','focus','Full Body Mobility & Recovery'],
+  ['butterfly','stroke','butterfly'], ['fly','stroke','butterfly'], ['freestyle','stroke','freestyle'],
+  ['backstroke','stroke','backstroke'], ['breaststroke','stroke','breaststroke'], ['breast','stroke','breaststroke'],
+  ['medley','stroke','im'],
+];
+// Words that signal the query is about dryland/strength rather than swimming.
+const DRYLAND_MARKERS = ['dryland','lift','lifts','bodyweight','free weights','freeweights','dumbbell','dumbbells','barbell','commercial','gym','squat','squats','plank','planks','deadlift','bench'];
+
+// Literal label maps (kept self-contained so this block loads before the
+// ARCH_* / LIFT_LEVEL_LABEL consts declared further down the script).
+const SWIM_FILTER_LABEL = {
+  level: {beginner:'Beginner',intermediate:'Intermediate',advanced:'Advanced',pro:'Pro'},
+  distance: {short:'Short',mid:'Mid',long:'Long',ultra:'Ultra'},
+  stroke: {freestyle:'Freestyle',backstroke:'Backstroke',butterfly:'Butterfly',breaststroke:'Breaststroke',im:'IM',choice:'Choice'},
+  intensity: {aerobic:'Aerobic',threshold:'Threshold',sprint:'Sprint',recovery:'Recovery'},
+  type: {drill:'Drill',kick:'Kick',pull:'Pull/Catch',race:'Race-Pace',endurance:'Endurance',technique:'Technique'}
+};
+const DRYLAND_FILTER_LABEL = {
+  category: {bodyweight:'Bodyweight',freeweights:'Free Weights',commercial:'Commercial Gym'},
+  stroke: {freestyle:'Freestyle',backstroke:'Backstroke',butterfly:'Butterfly',breaststroke:'Breaststroke',im:'IM'},
+  intensity: {strength:'Strength',power:'Power',stability:'Stability',mobility:'Mobility',recovery:'Recovery'}
+};
+
+// Resolve a query to an archive + filters, or null if it isn't filter-shaped.
+function smartArchiveMatch(query) {
+  const ql = query.toLowerCase().trim();
+  if (ql.length < 2) return null;
+  const tokens = ql.split(/[^a-z0-9]+/).filter(Boolean);
+  const has = key => (key.indexOf(' ') >= 0) ? ql.indexOf(key) >= 0 : tokens.indexOf(key) >= 0;
+  const build = map => {
+    const f = {};
+    map.forEach(([key, field, value]) => { if (!f[field] && has(key)) f[field] = value; });
+    return f;
+  };
+
+  const isDryland = DRYLAND_MARKERS.some(has);
+  if (isDryland) {
+    const filters = build(DRYLAND_SEARCH_MAP);
+    const labels = [];
+    if (filters.category) labels.push(DRYLAND_FILTER_LABEL.category[filters.category]);
+    if (filters.stroke) labels.push(DRYLAND_FILTER_LABEL.stroke[filters.stroke]);
+    if (filters.focus) labels.push(filters.focus.replace(/ &.*/, '').replace(' & ', ' & '));
+    if (filters.intensity) labels.push(DRYLAND_FILTER_LABEL.intensity[filters.intensity]);
+    const desc = labels.length ? 'Open the workout archives filtered to ' + labels.join(', ') + '.' : 'Browse every dryland workout in the archive.';
+    return { page: 'dryland-archives', filters, title: (labels.length ? labels.join(' · ') + ' · ' : '') + 'Workout Archives', description: desc };
+  }
+
+  const filters = build(SWIM_SEARCH_MAP);
+  if (!Object.keys(filters).length) return null;
+  const labels = [];
+  ['level','stroke','intensity','type','distance'].forEach(field => {
+    if (filters[field]) labels.push((SWIM_FILTER_LABEL[field] || {})[filters[field]] || filters[field]);
+  });
+  return { page: 'set-archives', filters, title: labels.join(' · ') + ' · Set Archives', description: 'Open the set archives filtered to ' + labels.join(', ') + '.' };
+}
+
+// Apply a smart match: navigate to the archive and set its filter dropdowns.
+function setSelectValue(id, v) { const el = document.getElementById(id); if (el) el.value = v || ''; }
+function openArchiveSearch(smart) {
+  if (!smart) return;
+  navigate(smart.page);
+  const f = smart.filters || {};
+  if (smart.page === 'set-archives') {
+    if (!getAccount()) return;
+    setSelectValue('af-level', f.level); setSelectValue('af-distance', f.distance);
+    setSelectValue('af-stroke', f.stroke); setSelectValue('af-intensity', f.intensity);
+    setSelectValue('af-type', f.type);
+    filterArchive();
+  } else if (smart.page === 'dryland-archives') {
+    if (!getAccount()) return;
+    setSelectValue('daf-category', f.category); setSelectValue('daf-focus', f.focus);
+    setSelectValue('daf-stroke', f.stroke); setSelectValue('daf-intensity', f.intensity);
+    filterDrylandArchive();
+  }
+}
+
+// Registry so smart-result onclick handlers can carry filter objects safely.
+let _searchActions = [];
+function runSearchAction(i) {
+  const a = _searchActions[i];
+  if (!a) return;
+  closeNavSearch();
+  openArchiveSearch(a);
 }
 
 function toggleNavSearch() {
@@ -6438,6 +6665,19 @@ function highlightMatch(text, query) {
 function renderSuggestions(query, aiResults) {
   const results = document.getElementById('nav-search-results');
   const suggestions = getSuggestions(query);
+  _searchActions = [];
+
+  // A filter-shaped query (e.g. "butterfly workouts", "core dryland") becomes a
+  // direct jump into the matching archive with the filter pre-applied.
+  let smartHtml = '';
+  const smart = smartArchiveMatch(query);
+  if (smart) {
+    const idx = _searchActions.push(smart) - 1;
+    smartHtml = `<div class="search-result-item" onclick="runSearchAction(${idx})" style="cursor:pointer;">
+        <h5>${escHtml(smart.title)}</h5>
+        <p>${escHtml(smart.description)}</p>
+      </div>`;
+  }
 
   // Primary results come from scanning the actual site content. If the optional
   // AI backend is configured and returns extra pages, merge those in (dedup'd).
@@ -6449,6 +6689,9 @@ function renderSuggestions(query, aiResults) {
       }
     });
   }
+  // Drop a plain page result that the smart action already covers, to avoid a
+  // duplicate-looking row for the same archive.
+  if (smart) matches = matches.filter(m => m.page !== smart.page);
   matches = matches.slice(0, 6);
 
   let html = '';
@@ -6464,9 +6707,10 @@ function renderSuggestions(query, aiResults) {
     html += '</div>';
   }
 
-  if (matches.length) {
+  if (matches.length || smartHtml) {
     html += '<div class="search-results-section">';
     if (suggestions.length) html += '<div class="search-section-label">Results</div>';
+    html += smartHtml;
     html += matches.map(r => `
       <div class="search-result-item" onclick="closeNavSearch(); navigate('${escHtml(r.page)}');" style="cursor:pointer;">
         <h5>${escHtml(r.title)}</h5>
@@ -6559,10 +6803,13 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     const active = document.querySelector('.search-suggestion-item.active');
     if (active) { selectSuggestion(active); return; }
-    // No suggestion highlighted: navigate to the best content match.
+    // No suggestion highlighted: a filter-shaped query jumps into the matching
+    // archive with the filter applied; otherwise go to the best content match.
     const input = document.getElementById('nav-search-input');
     const q = input ? input.value.trim() : '';
     if (q.length >= 2) {
+      const smart = smartArchiveMatch(q);
+      if (smart) { clearTimeout(_searchTimer); closeNavSearch(); openArchiveSearch(smart); return; }
       const top = searchSite(q)[0];
       if (top) { clearTimeout(_searchTimer); closeNavSearch(); navigate(top.page); }
     }
@@ -7242,12 +7489,17 @@ function renderDryland(category, data) {
     data.trainingFocus ? `Focus: ${data.trainingFocus}` : ''
   ].filter(Boolean);
 
-  // Register so the workout can be favorited from the dryland favorites tab.
-  // Stable per-category id so a favorite persists, carrying today's title/meta.
-  const id = 'lift-' + category;
+  // Register so the workout can be favorited from the dryland favorites tab and
+  // so the SAME workout shows as favorited in the archives. The id matches the
+  // archive workoutId (category + service day) exactly, mirroring how swim sets
+  // share one setId between the daily page and the archive.
+  const id = data.workoutId || (category + '-' + (data.date || new Date().toISOString().slice(0, 10)));
+  data.workoutId = id;
   _archiveSets[id] = {
-    setId: id, kind: 'dryland', level: category, title: data.title || (label + ' Dryland'),
-    meta: metaBits.join('  ·  '), levelLabel: label, workoutData: data
+    setId: id, kind: 'dryland', level: category, date: data.date || '',
+    title: data.title || (label + ' Dryland'), meta: metaBits.join('  ·  '), levelLabel: label,
+    strokeEmphasis: data.strokeEmphasis || '', trainingFocus: data.trainingFocus || '',
+    intensity: data.intensity || '', isRestDay: !!data.isRestDay, workoutData: data
   };
 
   let sectionsHtml;
@@ -7306,7 +7558,7 @@ function liftFavoriteCardHtml(set) {
         <div class="archive-card-meta">${tags.map(t => `<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
       </div>
       <div class="archive-card-actions">
-        <button class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts'); showLiftLevel('${escHtml(lvl)}')">View Workout</button>
+        <button class="btn btn-outline-dark btn-sm" onclick="openArchivedDryland('${escHtml(id)}')">View Workout</button>
         ${favoriteIconButtonHtml(id)}
       </div>
     </div>`;
@@ -7329,6 +7581,242 @@ function renderLiftFavorites() {
   }
   favs.forEach(s => { if (s.setId) _archiveSets[s.setId] = s; });
   wrap.innerHTML = favs.map(s => liftFavoriteCardHtml(s)).join('');
+}
+
+// ── Dryland workout archives ─────────────────────────────────────────────────
+// Mirrors the swim set archive: every dryland workout pushed at 12:01 AM Pacific
+// is saved to the archive (one per category per day, deduped). The page loads
+// them all once and filters client-side by equipment, focus, stroke, intensity.
+let _drylandArchiveLoaded = false;
+
+// Show/hide the dryland archive behind the same account gate as the swim archive.
+function applyDrylandArchiveAuthGate() {
+  const lock = document.getElementById('dryland-archive-auth-lock');
+  const content = document.getElementById('dryland-archive-content');
+  if (getAccount()) {
+    if (lock) { lock.style.display = 'none'; lock.innerHTML = ''; }
+    if (content) content.style.display = '';
+    return true;
+  }
+  if (content) content.style.display = 'none';
+  if (lock) {
+    lock.style.display = '';
+    lock.innerHTML = authLockHtml('The workout archives are a free account feature. Create an account or log in to browse and filter every dryland workout in the library.');
+  }
+  return false;
+}
+
+async function loadDrylandArchives() {
+  filterDrylandArchive();
+  if (_drylandArchiveLoaded) return;
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) return;
+  const loadingEl = document.getElementById('dryland-archive-loading');
+  if (loadingEl) loadingEl.style.display = 'block';
+  try {
+    const res = await fetch(`${apiUrl}/dryland-archives`);
+    if (!res.ok) throw new Error();
+    const { items } = await res.json();
+    _drylandArchiveLoaded = true;
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (items && items.length) renderDrylandArchiveCards(items);
+    else filterDrylandArchive();
+  } catch (e) {
+    if (loadingEl) loadingEl.style.display = 'none';
+  }
+}
+
+// Turn an API archive item (which carries workoutData as a JSON string) into a
+// full registry object usable by the card renderer and the detail modal.
+function drylandArchiveItemToWorkout(item) {
+  let data = null;
+  if (item.workoutData) { try { data = JSON.parse(item.workoutData); } catch (e) { data = null; } }
+  if (!data) data = {};
+  data.category = data.category || item.category;
+  data.date = data.date || item.date;
+  const id = item.workoutId || data.workoutId || ((data.category || '') + '-' + (data.date || ''));
+  data.workoutId = id;
+  const label = LIFT_LEVEL_LABEL[data.category] || data.category || '';
+  const metaBits = [
+    data.estimatedMinutes ? `~${data.estimatedMinutes} min` : '',
+    data.equipment || '',
+    data.trainingFocus ? `Focus: ${data.trainingFocus}` : ''
+  ].filter(Boolean);
+  return {
+    setId: id, kind: 'dryland', level: data.category || '', date: data.date || '',
+    title: data.title || item.title || (label + ' Dryland'), meta: metaBits.join('  ·  '), levelLabel: label,
+    strokeEmphasis: data.strokeEmphasis || item.strokeEmphasis || '',
+    trainingFocus: data.trainingFocus || item.trainingFocus || '',
+    intensity: data.intensity || item.intensity || '',
+    isRestDay: !!(data.isRestDay || item.isRestDay), workoutData: data
+  };
+}
+
+function renderDrylandArchiveCards(items) {
+  const containers = {
+    bodyweight: document.getElementById('dryland-archive-cards-bodyweight'),
+    freeweights: document.getElementById('dryland-archive-cards-freeweights'),
+    commercial: document.getElementById('dryland-archive-cards-commercial')
+  };
+  Object.values(containers).forEach(c => { if (c) c.innerHTML = ''; });
+
+  // Dedupe so the same workout never appears twice: by workoutId, and by
+  // (category, date) so only one workout shows per category per day even if
+  // older duplicate rows are still in the archive. Newest day first.
+  const seen = new Set();
+  const seenDay = new Set();
+  items.slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).forEach(item => {
+    const set = drylandArchiveItemToWorkout(item);
+    if (set.setId) {
+      if (seen.has(set.setId)) return;
+      seen.add(set.setId);
+    }
+    if (set.level && set.date) {
+      const dayKey = set.level + '|' + set.date;
+      if (seenDay.has(dayKey)) return;
+      seenDay.add(dayKey);
+    }
+    const c = containers[set.level];
+    if (c) c.insertAdjacentHTML('beforeend', drylandArchiveCardHtml(set));
+  });
+
+  filterDrylandArchive();
+}
+
+// Archive-card markup mirroring the swim archive card: title, meta, tags, and a
+// View Workout + favorite control. The favorite id is the workoutId so a workout
+// favorited on the daily dryland page shows as favorited here too.
+function drylandArchiveCardHtml(set) {
+  if (set.setId) _archiveSets[set.setId] = set;
+  const cat = set.level || '';
+  const data = set.workoutData || {};
+  const focus = set.trainingFocus || '';
+  const strokeRaw = set.strokeEmphasis || '';
+  const intensity = set.intensity || '';
+  const id = set.setId || '';
+  const catLabel = LIFT_LEVEL_LABEL[cat] || cat || '';
+  const dateStr = set.date ? new Date(set.date + 'T12:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : '';
+  const mins = data.estimatedMinutes ? `~${data.estimatedMinutes} min` : '';
+  const equip = data.equipment || '';
+  const meta = [mins, equip, dateStr].filter(Boolean).join('  ·  ');
+  const strokeTag = strokeRaw && strokeRaw !== '—' ? strokeRaw : '';
+  const intensityTag = intensity ? intensity.charAt(0).toUpperCase() + intensity.slice(1) : '';
+  const restBadge = set.isRestDay ? `<span class="archive-safe-badge">Rest Day</span>` : '';
+  const tags = [catLabel, focus, strokeTag, intensityTag].filter(Boolean);
+  return `<div class="archive-card" data-category="${escHtml(cat)}" data-focus="${escHtml(focus)}" data-stroke="${escHtml(strokeRaw.toLowerCase())}" data-intensity="${escHtml(intensity)}" data-workoutid="${escHtml(id)}">
+      <div>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(set.title || '')}</div>
+          ${restBadge}
+        </div>
+        <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(meta)}</div>
+        <div class="archive-card-meta">${tags.map(t => `<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
+      </div>
+      <div class="archive-card-actions">
+        <button class="btn btn-outline-dark btn-sm" onclick="openArchivedDryland('${escHtml(id)}')">View Workout</button>
+        ${favoriteIconButtonHtml(id)}
+      </div>
+    </div>`;
+}
+
+function openArchivedDryland(id) {
+  const set = _archiveSets[id];
+  if (!set) return;
+  const data = set.workoutData;
+  if (!data || (!((data.sections || []).length) && !data.isRestDay)) {
+    // No full workout data — fall back to the dryland page for this category.
+    closeSetDetail();
+    navigate('dryland-workouts');
+    if (set.level) showLiftLevel(set.level);
+    return;
+  }
+  const body = document.getElementById('set-detail-body');
+  if (body) body.innerHTML = drylandWorkoutMarkup(set);
+  const overlay = document.getElementById('set-detail-overlay');
+  if (overlay) { overlay.scrollTop = 0; overlay.classList.add('open'); }
+  document.body.style.overflow = 'hidden';
+}
+
+// Printable dryland markup used by the archived-workout detail modal and the
+// dryland favorites view. Same one-card layout as the swim set markup, with the
+// work separated under category section headers and the print button hidden in
+// the print preview (no-print, inside swim-print-area).
+function drylandWorkoutMarkup(set) {
+  const data = set.workoutData || {};
+  const id = set.setId;
+  const label = set.levelLabel || LIFT_LEVEL_LABEL[set.level] || set.level || '';
+  const dateLabel = set.date ? new Date(set.date + 'T12:00:00').toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}) : '';
+  const restBadge = data.isRestDay ? ' · Rest Day' : '';
+  const eyebrow = ([dateLabel, label].filter(Boolean).join(' · ') + restBadge).replace(/^ · /, '');
+  const metaBits = [
+    data.estimatedMinutes ? `~${data.estimatedMinutes} min` : '',
+    data.equipment || '',
+    data.trainingFocus ? `Focus: ${data.trainingFocus}` : ''
+  ].filter(Boolean);
+  const strokeLine = data.strokeEmphasis && data.strokeEmphasis !== '—' ? ` &nbsp;·&nbsp; Stroke: ${escHtml(data.strokeEmphasis)}` : '';
+  const focusCueHtml = buildFocusCueHtml(data.focusCue);
+  let sectionsHtml;
+  if (data.isRestDay && (!data.sections || !data.sections.length)) {
+    sectionsHtml = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:2.5rem 1.5rem; text-align:center;">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">🛌</div>
+      <p style="color:var(--gray-500); font-size:0.95rem; max-width:420px; margin:0 auto;">${escHtml(data.coachNote || 'Full rest today. Recovery is part of the program.')}</p>
+    </div>`;
+  } else {
+    sectionsHtml = buildDrylandSectionsHtml(data.sections);
+  }
+  return `<div class="swim-print-area">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+      <div>
+        ${eyebrow ? `<span class="eyebrow">${escHtml(eyebrow)}</span>` : ''}
+        <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || set.title || '')}</h2>
+        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}${strokeLine}</p>
+        ${focusCueHtml}
+      </div>
+      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
+        ${favoriteButtonHtml(id)}
+        <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+      </div>
+    </div>
+    ${sectionsHtml}
+  </div>`;
+}
+
+function filterDrylandArchive() {
+  const cat = (document.getElementById('daf-category') || {}).value || '';
+  const focus = (document.getElementById('daf-focus') || {}).value || '';
+  const stroke = (document.getElementById('daf-stroke') || {}).value || '';
+  const intensity = (document.getElementById('daf-intensity') || {}).value || '';
+
+  const matches = card =>
+    (!cat || card.dataset.category === cat)
+    && (!focus || card.dataset.focus === focus)
+    && (!stroke || (card.dataset.stroke || '').includes(stroke))
+    && (!intensity || card.dataset.intensity === intensity);
+
+  let total = 0;
+  document.querySelectorAll('#dryland-archive-results .archive-card').forEach(card => {
+    const show = matches(card);
+    card.style.display = show ? '' : 'none';
+    if (show) total++;
+  });
+
+  ['bodyweight', 'freeweights', 'commercial'].forEach(c => {
+    const sec = document.getElementById('dryland-archive-section-' + c);
+    if (!sec) return;
+    const has = Array.from(sec.querySelectorAll('.archive-card')).some(x => x.style.display !== 'none');
+    sec.style.display = has ? '' : 'none';
+  });
+
+  const empty = document.getElementById('dryland-archive-empty');
+  if (empty) empty.style.display = (total === 0 && _drylandArchiveLoaded) ? 'block' : 'none';
+}
+
+function clearDrylandArchiveFilters() {
+  ['daf-category', 'daf-focus', 'daf-stroke', 'daf-intensity'].forEach(idv => {
+    const el = document.getElementById(idv);
+    if (el) el.value = '';
+  });
+  filterDrylandArchive();
 }
 
 function goToStep(n) {
