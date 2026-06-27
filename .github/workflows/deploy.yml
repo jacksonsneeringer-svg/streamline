@@ -84,8 +84,8 @@ jobs:
             --paths "/*"
 
       # Generate today's swim sets immediately after deploy so the site never
-      # shows "no set generated yet" between a deployment and the 8:01 AM UTC
-      # EventBridge trigger. The Lambda is idempotent — it overwrites the same
+      # shows "no set generated yet" between a deployment and the 12:01 AM
+      # Pacific EventBridge Scheduler trigger. The Lambda is idempotent — it overwrites the same
       # DynamoDB key if today's set already exists.
       - name: Generate today's swim sets
         env:

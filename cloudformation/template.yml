@@ -1303,7 +1303,7 @@ Resources:
   # expressed in Pacific local time and fires at 12:01 AM Pacific every day,
   # year-round. A fixed UTC cron would drift by an hour across daylight-saving
   # changes (firing at 1:01 AM Pacific from spring through fall).
-  GenerateSetsSchedule:
+  GenerateSetsScheduler:
     Type: AWS::Scheduler::Schedule
     Properties:
       Name: streamline-generate-sets-daily
