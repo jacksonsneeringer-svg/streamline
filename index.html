@@ -952,8 +952,12 @@ section { padding: 6rem 0; }
   display: flex;
   gap: 0;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* Let vertical swipes scroll the page instead of getting trapped by this
+     horizontally-scrolling sticky bar on mobile. */
+  touch-action: pan-x;
 }
 .blog-nav-inner::-webkit-scrollbar { display: none; }
 .blog-nav-link {
@@ -2228,6 +2232,45 @@ section { padding: 6rem 0; }
 @media (max-width: 900px) {
   .swim-level-layout { flex-direction: column; }
   .swim-sidebar { width: 100%; position: static; }
+}
+/* Dryland exercise tables: stacked, readable cards on mobile instead of the
+   global nowrap horizontal-scroll fallback (which pushes the exercise
+   descriptions off-screen). */
+@media (max-width: 768px) {
+  #page-dryland-workouts .ex-table,
+  #page-dryland-workouts .ex-table tbody,
+  #page-dryland-workouts .ex-table tr,
+  #page-dryland-workouts .ex-table td {
+    display: block;
+    width: 100%;
+    overflow: visible;
+    white-space: normal;
+  }
+  #page-dryland-workouts .ex-table thead { display: none; }
+  #page-dryland-workouts .ex-table tr {
+    border: 1px solid var(--gray-100);
+    border-radius: var(--r-md);
+    padding: 0.8rem 0.95rem;
+    margin-bottom: 0.55rem;
+  }
+  #page-dryland-workouts .ex-table tr:last-child { margin-bottom: 0; }
+  #page-dryland-workouts .ex-table td {
+    border: none !important;
+    padding: 0;
+  }
+  #page-dryland-workouts .ex-table tr:hover td { background: transparent; }
+  #page-dryland-workouts .ex-table td:first-child {
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+  }
+  /* Reps / target sit together on a line under the exercise name */
+  #page-dryland-workouts .ex-table td:not(:first-child) {
+    display: inline-block;
+    width: auto;
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    margin-right: 0.85rem;
+  }
 }
 .reason-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
 .reason-card-header h4 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin: 0; }
