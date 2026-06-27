@@ -83,35 +83,10 @@ jobs:
             --distribution-id ${{ steps.stack.outputs.distribution_id }} \
             --paths "/*"
 
-      # Generate today's swim sets immediately after deploy so the site never
-      # shows "no set generated yet" between a deployment and the 12:01 AM
-      # Pacific EventBridge Scheduler trigger. The Lambda is idempotent — it overwrites the same
-      # DynamoDB key if today's set already exists.
-      - name: Generate today's swim sets
-        env:
-          # The synchronous invoke must wait for the Lambda to finish generating
-          # all four levels (four Sonnet 4.6 calls of up to 8000 tokens each can
-          # take a couple of minutes). The CLI's default 60s read timeout fires
-          # mid-run otherwise; raise it above the Lambda's 300s timeout. Cap
-          # retries at 1 so a slow run can't fan out into duplicate executions.
-          AWS_MAX_ATTEMPTS: "1"
-        run: |
-          aws lambda invoke \
-            --function-name streamline-generate-sets \
-            --cli-binary-format raw-in-base64-out \
-            --cli-read-timeout 360 \
-            --cli-connect-timeout 10 \
-            --payload '{}' \
-            /tmp/generate-sets.json > /tmp/generate-sets-meta.json
-          cat /tmp/generate-sets-meta.json
-          cat /tmp/generate-sets.json
-          # The Lambda raises (and the CLI records a FunctionError) when no level
-          # generated, so a broken model ID / Bedrock outage fails the deploy
-          # instead of silently leaving the site with no sets for the day.
-          if grep -q FunctionError /tmp/generate-sets-meta.json; then
-            echo "::error::generate-sets Lambda failed to produce any swim sets" >&2
-            exit 1
-          fi
+      # Today's swim sets are generated solely by the daily EventBridge Scheduler
+      # (streamline-generate-sets-daily, 12:01 AM Pacific). Deploys must NOT
+      # trigger the generator — pushing code should never produce a new daily
+      # set, so the generate-sets invocation is intentionally omitted here.
 
       # Welcomes accounts created in the past 24h that never got the email.
       # Runs after the S3 sync so the logo images the email links to are live.
