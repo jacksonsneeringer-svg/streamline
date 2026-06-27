@@ -2884,94 +2884,23 @@ section { padding: 6rem 0; }
     <div id="lift-level-bodyweight">
       <div class="swim-level-layout">
         <div class="swim-level-main">
-          <div class="swim-print-area">
-          <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-            <div>
-              <span class="eyebrow">Tuesday, June 2, 2026 · Bodyweight</span>
-              <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">Upper Pull &amp; Core Stability</h2>
-              <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~40 min &nbsp;·&nbsp; Minimal equipment (resistance band) &nbsp;·&nbsp; Focus: Lat activation, rotator cuff, anti-rotation core</p>
-              <div class="focus-cue">
-                <button type="button" class="focus-cue-toggle" aria-expanded="false" onclick="toggleFocusCue(this)">
-                  <svg class="focus-cue-bulb" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M8.4 14.2a5 5 0 1 1 7.2 0c-.78.78-1.3 1.45-1.45 2.3H9.85c-.15-.85-.67-1.52-1.45-2.3Z"/><path d="M12 6.5v2"/></svg>
-                  <span class="focus-cue-title">Today's focus cue</span>
-                  <svg class="focus-cue-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-                <p class="focus-cue-body">Today's swim focus is aerobic base and kick mechanics. This session targets the pull-side muscles that support a high-elbow catch, plus the rotational core stability that keeps hips elevated during long aerobic sets.</p>
-              </div>
+          <div id="dryland-content-bodyweight">
+            <div class="swim-set-loading" id="dryland-loading-bodyweight">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's Bodyweight workout…</p>
             </div>
-            <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
-              <button type="button" class="btn btn-outline-dark btn-sm fav-btn" data-fav-mode="text" data-fav-id="lift-bodyweight" onclick="onFavoriteClick(this)"><span class="fav-star">♡</span> Favorite</button>
-              <button onclick="window.print()" class="btn btn-outline-dark btn-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                Print
-              </button>
-            </div>
-          </div>
-          <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.25rem;">
-            <div style="background:var(--deep); padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
-              <span class="set-label">Warm-Up</span><span class="set-yds">8–10 min</span>
-            </div>
-            <div style="padding:1.25rem 1.5rem;">
-              <table class="ex-table">
-                <thead><tr><th>Exercise</th><th>Duration / Reps</th><th>Notes</th></tr></thead>
-                <tbody>
-                  <tr><td>Arm circles (fwd/back)</td><td>20 each direction</td><td>Shoulder mobility</td></tr>
-                  <tr><td>Band pull-aparts</td><td>3 × 15</td><td>Light resistance band, scapular retraction</td></tr>
-                  <tr><td>90/90 hip stretch</td><td>60 sec each side</td><td>Hip mobility for kick range</td></tr>
-                  <tr><td>Cat-cow + thoracic rotation</td><td>10 each</td><td>Spine prep, rotation warm-up</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.25rem;">
-            <div style="background:var(--teal-2); padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
-              <span class="set-label">Main Circuit · 3 Rounds</span><span class="set-yds">25–28 min · 60 sec rest between rounds</span>
-            </div>
-            <div style="padding:1.25rem 1.5rem;">
-              <table class="ex-table">
-                <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Target</th></tr></thead>
-                <tbody>
-                  <tr><td><strong>Band rows</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Anchor band at waist height. Row with high elbows, pause at finish.</span></td><td>3 × 12</td><td><span class="mtag">Lats</span> <span class="mtag">Mid back</span></td></tr>
-                  <tr><td><strong>Push-up + scapular push</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">At the top, actively push the floor away to spread shoulder blades.</span></td><td>3 × 10–12</td><td><span class="mtag">Serratus</span> <span class="mtag">Chest</span></td></tr>
-                  <tr><td><strong>Pallof press</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Band anchored to side. Press straight forward, hold 2 sec. Anti-rotation.</span></td><td>3 × 10 each side</td><td><span class="mtag">Core</span> <span class="mtag">Obliques</span></td></tr>
-                  <tr><td><strong>Prone Y-T-W</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Lie face down. Lift arms into each shape. Slow: small muscles, no momentum.</span></td><td>3 × 8 each</td><td><span class="mtag">Rotator cuff</span> <span class="mtag">Lower trap</span></td></tr>
-                  <tr><td><strong>Dead bug</strong><br/><span style="font-size:0.78rem; color:var(--gray-400);">Flat back throughout. Extend opposite arm/leg. Don't let the low back arch.</span></td><td>3 × 8 each side</td><td><span class="mtag">Deep core</span></td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.5rem;">
-            <div style="background:var(--teal); padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
-              <span class="set-label">Cool-Down Stretch</span><span class="set-yds">5–8 min</span>
-            </div>
-            <div style="padding:1.25rem 1.5rem;">
-              <table class="ex-table">
-                <thead><tr><th>Stretch</th><th>Duration</th></tr></thead>
-                <tbody>
-                  <tr><td>Doorway chest stretch</td><td>45 sec each side</td></tr>
-                  <tr><td>Lat stretch (band or doorframe)</td><td>45 sec each side</td></tr>
-                  <tr><td>Child's pose with shoulder reach</td><td>60 sec</td></tr>
-                  <tr><td>Supine twist</td><td>45 sec each side</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          </div><!-- end swim-print-area -->
-          <div id="lift-account-cta" style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
-            <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want a dryland program built around your swim schedule and goals?</p>
-            <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
           </div>
         </div>
         <div class="swim-sidebar no-print">
           <div class="swim-sidebar-section">
             <div class="swim-sidebar-label">Weekly Schedule</div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Distance Freestyle</span></div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Breaststroke</span></div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Backstroke</span></div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Butterfly</span></div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">IM</span></div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Sprints &amp; Dives</span></div>
-            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Mid-Distance Choice Stroke</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Core &amp; Stability</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Shoulder, Lat &amp; Upper Back</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Lower Body Power</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Upper Body Strength</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">Mobility &amp; Recovery</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Rest / Light Movement</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Full Rest</span></div>
           </div>
           <div class="swim-sidebar-section">
             <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Workout Archives</button>
@@ -2980,19 +2909,57 @@ section { padding: 6rem 0; }
       </div>
     </div>
     <div id="lift-level-freeweights" style="display:none;">
-      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-        <div class="placeholder-icon">🏋️</div>
-        <h3>Free Weights: Coming Soon</h3>
-        <p>Dumbbell and barbell sessions with the same swim-specific focus, for swimmers training with free weights at home.</p>
-        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized workouts with an account</a>
+      <div class="swim-level-layout">
+        <div class="swim-level-main">
+          <div id="dryland-content-freeweights">
+            <div class="swim-set-loading" id="dryland-loading-freeweights">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's Free Weights workout…</p>
+            </div>
+          </div>
+        </div>
+        <div class="swim-sidebar no-print">
+          <div class="swim-sidebar-section">
+            <div class="swim-sidebar-label">Weekly Schedule</div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Core &amp; Stability</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Shoulder, Lat &amp; Upper Back</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Lower Body Power</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Upper Body Strength</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">Mobility &amp; Recovery</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Rest / Light Movement</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Full Rest</span></div>
+          </div>
+          <div class="swim-sidebar-section">
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Workout Archives</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="lift-level-commercial" style="display:none;">
-      <div class="placeholder-content" style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
-        <div class="placeholder-icon">💪</div>
-        <h3>Commercial Gym: Coming Soon</h3>
-        <p>Full-gym programming using cables, machines, and racks for swimmers with access to a commercial gym.</p>
-        <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Get personalized workouts with an account</a>
+      <div class="swim-level-layout">
+        <div class="swim-level-main">
+          <div id="dryland-content-commercial">
+            <div class="swim-set-loading" id="dryland-loading-commercial">
+              <div class="swim-set-loading-spinner"></div>
+              <p>Loading today's Commercial Gym workout…</p>
+            </div>
+          </div>
+        </div>
+        <div class="swim-sidebar no-print">
+          <div class="swim-sidebar-section">
+            <div class="swim-sidebar-label">Weekly Schedule</div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Mon</span><span class="swim-sched-focus">Core &amp; Stability</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Tue</span><span class="swim-sched-focus">Shoulder, Lat &amp; Upper Back</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Wed</span><span class="swim-sched-focus">Lower Body Power</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Thu</span><span class="swim-sched-focus">Upper Body Strength</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Fri</span><span class="swim-sched-focus">Mobility &amp; Recovery</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sat</span><span class="swim-sched-focus">Rest / Light Movement</span></div>
+            <div class="swim-sched-row"><span class="swim-sched-day">Sun</span><span class="swim-sched-focus">Full Rest</span></div>
+          </div>
+          <div class="swim-sidebar-section">
+            <button class="btn btn-outline-dark" style="width:100%; font-size:0.78rem; padding:0.7rem 1rem;" onclick="navigate('set-archives')">Access Workout Archives</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="lift-level-favorites" style="display:none;">
@@ -7186,27 +7153,17 @@ function filterArchive() {
 // workout is registered as a set object (kind:'dryland') so the shared
 // favorite/registry helpers work, while the swim and dryland favorites tabs
 // each show only their own kind.
-const LIFT_SETS = {
-  bodyweight: {
-    setId: 'lift-bodyweight', kind: 'dryland', level: 'bodyweight',
-    title: 'Upper Pull & Core Stability',
-    meta: '~40 min  ·  Minimal equipment (resistance band)',
-    levelLabel: 'Bodyweight'
-  }
-};
 const LIFT_LEVEL_LABEL = { bodyweight: 'Bodyweight', freeweights: 'Free Weights', commercial: 'Commercial Gym' };
+const DRYLAND_CATS = ['bodyweight', 'freeweights', 'commercial'];
 
-function registerLiftSets() {
-  Object.values(LIFT_SETS).forEach(s => { _archiveSets[s.setId] = s; });
-}
+// Today's loaded dryland workout per category, so switching tabs doesn't refetch.
+const _drylandCache = {};
 
 function initLiftPage() {
-  registerLiftSets();
-  // Hide the "Create a Free Account" card for signed-in users.
-  const cta = document.getElementById('lift-account-cta');
-  if (cta) cta.style.display = getAccount() ? 'none' : '';
-  // Reflect the saved favorite state on each workout's favorite button.
-  Object.values(LIFT_SETS).forEach(s => updateFavButtons(s.setId));
+  // Load whichever category tab is active on open (Bodyweight by default).
+  const active = document.querySelector('.level-tab.active[id^="lift-tab-"]');
+  const cat = active ? active.id.slice('lift-tab-'.length) : 'bodyweight';
+  loadDrylandWorkout(DRYLAND_CATS.includes(cat) ? cat : 'bodyweight');
 }
 
 function showLiftLevel(level) {
@@ -7217,6 +7174,125 @@ function showLiftLevel(level) {
     if (tab) tab.classList.toggle('active', l === level);
   });
   if (level === 'favorites') renderLiftFavorites();
+  else loadDrylandWorkout(level);
+}
+
+async function loadDrylandWorkout(category) {
+  if (!DRYLAND_CATS.includes(category)) return;
+  if (_drylandCache[category]) return; // already loaded this session
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) {
+    renderDrylandError(category, 'Workout generator not connected yet — check back soon.');
+    return;
+  }
+  try {
+    const res = await fetch(`${apiUrl}/daily-dryland?category=${category}`);
+    if (res.status === 404) {
+      renderDrylandError(category, "Today's workout hasn't been generated yet — check back after 12:01 AM Pacific.");
+      return;
+    }
+    if (!res.ok) throw new Error('Server error');
+    const data = await res.json();
+    _drylandCache[category] = data;
+    renderDryland(category, data);
+  } catch (err) {
+    renderDrylandError(category, 'Unable to load today\'s workout. Please try again in a moment.');
+  }
+}
+
+function drylandSectionColor(name) {
+  if (/^warm/i.test(name)) return 'var(--deep)';
+  if (/cool|mobility|stretch|recovery|rest|movement/i.test(name)) return 'var(--teal)';
+  return 'var(--teal-2)'; // main work
+}
+
+function buildDrylandSectionsHtml(sections) {
+  return (sections || []).map(sec => {
+    const color = drylandSectionColor(sec.name || '');
+    const rows = (sec.items || []).map(item => {
+      const ex = item.exercise || item.text || '';
+      const note = item.note ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(item.note)}</span>` : '';
+      const muscles = Array.isArray(item.muscles) && item.muscles.length
+        ? item.muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(' ') : '';
+      const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
+      return `<tr><td><strong>${escHtml(ex)}</strong>${note}</td><td>${presc}</td><td>${muscles}</td></tr>`;
+    }).join('');
+    return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); overflow:hidden; margin-bottom:1.25rem;">
+      <div style="background:${color}; padding:0.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+        <span class="set-label">${escHtml(sec.name || '')}</span><span class="set-yds">${escHtml(sec.duration || '')}</span>
+      </div>
+      <div style="padding:1.25rem 1.5rem;">
+        <table class="ex-table">
+          <thead><tr><th>Exercise</th><th>Sets / Reps</th><th>Target</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderDryland(category, data) {
+  const container = document.getElementById('dryland-content-' + category);
+  if (!container) return;
+  const label = LIFT_LEVEL_LABEL[category] || category;
+  const today = new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+  const metaBits = [
+    data.estimatedMinutes ? `~${data.estimatedMinutes} min` : '',
+    data.equipment || '',
+    data.trainingFocus ? `Focus: ${data.trainingFocus}` : ''
+  ].filter(Boolean);
+
+  // Register so the workout can be favorited from the dryland favorites tab.
+  // Stable per-category id so a favorite persists, carrying today's title/meta.
+  const id = 'lift-' + category;
+  _archiveSets[id] = {
+    setId: id, kind: 'dryland', level: category, title: data.title || (label + ' Dryland'),
+    meta: metaBits.join('  ·  '), levelLabel: label, workoutData: data
+  };
+
+  let sectionsHtml;
+  if (data.isRestDay && (!data.sections || !data.sections.length)) {
+    sectionsHtml = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:2.5rem 1.5rem; text-align:center;">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">🛌</div>
+      <p style="color:var(--gray-500); font-size:0.95rem; max-width:420px; margin:0 auto;">${escHtml(data.coachNote || 'Full rest today. Recovery is part of the program.')}</p>
+    </div>`;
+  } else {
+    sectionsHtml = buildDrylandSectionsHtml(data.sections);
+  }
+
+  const restBadge = data.isRestDay ? ' · Rest Day' : '';
+  const strokeLine = data.strokeEmphasis && data.strokeEmphasis !== '—' ? ` &nbsp;·&nbsp; Stroke: ${escHtml(data.strokeEmphasis)}` : '';
+  const focusCueHtml = buildFocusCueHtml(data.focusCue);
+
+  container.innerHTML = `<div class="swim-print-area">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+      <div>
+        <span class="eyebrow">${today} · ${escHtml(label)}${restBadge}</span>
+        <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || '')}</h2>
+        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}${strokeLine}</p>
+        ${focusCueHtml}
+      </div>
+      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
+        ${favoriteButtonHtml(id)}
+        <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+      </div>
+    </div>
+    ${sectionsHtml}
+    </div>
+    ${getAccount() ? '' : `<div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);" class="no-print">
+      <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">Want a dryland program built around your swim schedule and goals?</p>
+      <a href="#get-started" class="btn btn-gold btn-sm" onclick="navigate('get-started')">Create a Free Account →</a>
+    </div>`}`;
+  updateFavButtons(id);
+}
+
+function renderDrylandError(category, msg) {
+  const container = document.getElementById('dryland-content-' + category);
+  if (!container) return;
+  container.innerHTML = `<div class="swim-set-error">
+    <h3>Workout not available</h3>
+    <p>${escHtml(msg)}</p>
+  </div>`;
 }
 
 function liftFavoriteCardHtml(set) {
