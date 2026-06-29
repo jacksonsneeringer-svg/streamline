@@ -16,6 +16,12 @@ Parameters:
     NoEcho: true
     Default: ""
 
+  EditorPassword:
+    Type: String
+    Description: Password that authorizes saving inline blog/article edits. Empty disables saving.
+    NoEcho: true
+    Default: ""
+
 Resources:
 
   # ─── S3 / CLOUDFRONT ───────────────────────────────────────────────────────
@@ -168,6 +174,22 @@ Resources:
         - AttributeName: workoutId
           KeyType: HASH
 
+  # Inline blog/article edits. One row per article page (pageId, e.g.
+  # "page-race-week-taper") holding the overridden headline and body HTML.
+  # Served to every visitor by GetBlogEditsFunction and written by the
+  # password-gated editor in the site footer.
+  BlogEditsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: streamline-blog-edits
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pageId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pageId
+          KeyType: HASH
+
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -231,6 +253,7 @@ Resources:
                   - !GetAtt DrylandArchivesTable.Arn
                   - !GetAtt UsersTable.Arn
                   - !GetAtt AuthTokensTable.Arn
+                  - !GetAtt BlogEditsTable.Arn
               - Effect: Allow
                 Action:
                   - bedrock:InvokeModel
@@ -1412,6 +1435,97 @@ Resources:
 
   # ─── API GATEWAY HTTP API ──────────────────────────────────────────────────
 
+  # Serves all stored blog edits (GET) and saves them after password check (POST).
+  BlogEditsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-blog-edits
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 15
+      Environment:
+        Variables:
+          EDITOR_PASSWORD: !Ref EditorPassword
+      Code:
+        ZipFile: |
+          import json, os, hmac, boto3
+          dynamo = boto3.resource('dynamodb')
+          tbl = dynamo.Table('streamline-blog-edits')
+          PW = os.environ.get('EDITOR_PASSWORD', '')
+          CORS = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Content-Type':'application/json'}
+          MAX_LEN = 200000  # per-region HTML cap (~200 KB)
+          def resp(code, obj):
+            return {'statusCode':code,'headers':CORS,'body':json.dumps(obj)}
+          def ok_pw(supplied):
+            # Constant-time compare; empty server password disables all writes.
+            return bool(PW) and isinstance(supplied, str) and hmac.compare_digest(supplied, PW)
+          def handler(event, context):
+            method = (event.get('requestContext') or {}).get('http', {}).get('method', '')
+            if method == 'OPTIONS':
+              return {'statusCode':200,'headers':CORS,'body':''}
+            if method == 'GET':
+              try:
+                out = {}
+                kw = {}
+                while True:
+                  r = tbl.scan(**kw)
+                  for it in r.get('Items', []):
+                    pid = it.get('pageId')
+                    if not pid: continue
+                    rec = {}
+                    if 'title' in it: rec['title'] = it['title']
+                    if 'body' in it: rec['body'] = it['body']
+                    out[pid] = rec
+                  if 'LastEvaluatedKey' not in r: break
+                  kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
+                return resp(200, {'edits': out})
+              except Exception as e:
+                return resp(500, {'error': str(e)})
+            if method == 'POST':
+              try:
+                body = json.loads(event.get('body') or '{}')
+              except Exception:
+                return resp(400, {'error': 'invalid JSON'})
+              if not ok_pw(body.get('password')):
+                return resp(401, {'error': 'unauthorized'})
+              # A verify ping carries no edits; a correct password alone is success.
+              edits = body.get('edits') or {}
+              if not isinstance(edits, dict):
+                return resp(400, {'error': 'edits must be an object'})
+              # Optional: list of page ids to clear back to their shipped text.
+              reset = body.get('reset') or []
+              saved = 0
+              try:
+                if isinstance(reset, list):
+                  for pid in reset:
+                    if isinstance(pid, str) and pid.startswith('page-'):
+                      tbl.delete_item(Key={'pageId': pid})
+                for pid, regions in edits.items():
+                  # Only accept real article page ids to keep the table clean.
+                  if not isinstance(pid, str) or not pid.startswith('page-'):
+                    continue
+                  if not isinstance(regions, dict):
+                    continue
+                  names, values, sets = {}, {}, []
+                  for k in ('title', 'body'):
+                    if k in regions and regions[k] is not None:
+                      v = str(regions[k])
+                      if len(v) > MAX_LEN:
+                        return resp(413, {'error': 'content too large for ' + pid})
+                      names['#' + k] = k
+                      values[':' + k] = v
+                      sets.append('#%s = :%s' % (k, k))
+                  if not sets:
+                    continue
+                  tbl.update_item(Key={'pageId': pid}, UpdateExpression='SET ' + ', '.join(sets),
+                                  ExpressionAttributeNames=names, ExpressionAttributeValues=values)
+                  saved += 1
+                return resp(200, {'ok': True, 'saved': saved})
+              except Exception as e:
+                return resp(500, {'error': str(e)})
+            return resp(405, {'error': 'method not allowed'})
+
   HttpApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
@@ -1633,6 +1747,37 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/dryland-archives"
+
+  # Blog edits route (GET to load overrides for everyone, POST to save)
+  BlogEditsIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt BlogEditsFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  BlogEditsGetRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "GET /blog-edits"
+      Target: !Sub "integrations/${BlogEditsIntegration}"
+
+  BlogEditsPostRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "POST /blog-edits"
+      Target: !Sub "integrations/${BlogEditsIntegration}"
+
+  BlogEditsFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref BlogEditsFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/blog-edits"
 
   # ─── EVENTBRIDGE SCHEDULER ─────────────────────────────────────────────────
 

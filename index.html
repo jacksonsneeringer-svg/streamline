@@ -8391,14 +8391,19 @@ async function handleNewsletterSubmit(event, source) {
 <script>
 // ── Password-gated inline blog editor ──────────────────────────────────────
 // Lets an authorized editor revise the text of blog/article pages directly on
-// the site. Edits are saved per-page in this browser's localStorage and
-// re-applied on every load. Note: storage is local to this browser; it does
-// not publish changes to other visitors or to the server.
+// the site. Edits are stored server-side (DynamoDB via the /blog-edits API)
+// and served to every visitor on load. The password is never stored in this
+// file: it is typed by the editor, verified by the server, and held in memory
+// only for the current session. A localStorage copy is kept purely as a fast
+// cache so returning visitors avoid a flash of the un-edited text.
 const blogEditor = (function () {
-  const PASSWORD = 'marNib-bigkek-2hovko';
-  const STORE_KEY = 'streamline_blog_edits_v1';
-  const SESSION_KEY = 'streamline_blog_editor_unlocked';
+  const CACHE_KEY = 'streamline_blog_edits_cache_v1';
   let editing = false;
+  let authPw = null;            // password held in memory after a successful unlock
+  const originalHtml = {};      // shipped HTML per "pageId|key", for reset
+  const baseline = {};          // HTML at edit-mode entry, to detect real changes
+
+  function api() { return (window.STREAMLINE_API_URL || '').replace(/\/+$/, ''); }
 
   // A blog/article page is any .page that contains an article body.
   function articlePages() {
@@ -8414,18 +8419,29 @@ const blogEditor = (function () {
     if (body) out.push({ key: 'body', el: body });
     return out;
   }
-  function load() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+
+  function cacheRead() {
+    try { return JSON.parse(localStorage.getItem(CACHE_KEY)) || {}; }
     catch (e) { return {}; }
   }
-  function store(data) {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); return true; }
-    catch (e) { return false; }
+  function cacheWrite(data) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
   }
 
-  // Re-apply saved edits to the live DOM. Called once on load.
-  function applyOverrides() {
-    const data = load();
+  // Capture the shipped HTML once, before any override is applied, so a reset
+  // can always restore the original article text.
+  function snapshotOriginals() {
+    articlePages().forEach(page => {
+      regions(page).forEach(r => {
+        const id = page.id + '|' + r.key;
+        if (!(id in originalHtml)) originalHtml[id] = r.el.innerHTML;
+      });
+    });
+  }
+
+  // Apply an { pageId: {title, body} } override map to the live DOM.
+  function applyOverrides(data) {
+    if (!data) return;
     articlePages().forEach(page => {
       const saved = data[page.id];
       if (!saved) return;
@@ -8433,6 +8449,22 @@ const blogEditor = (function () {
         if (typeof saved[r.key] === 'string') r.el.innerHTML = saved[r.key];
       });
     });
+  }
+
+  // On load: paint the cached overrides instantly, then refresh from the server.
+  function init() {
+    snapshotOriginals();
+    applyOverrides(cacheRead());
+    const base = api();
+    if (!base) return;
+    fetch(base + '/blog-edits')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d || !d.edits) return;
+        applyOverrides(d.edits);
+        cacheWrite(d.edits);
+      })
+      .catch(() => {});
   }
 
   function currentPage() {
@@ -8447,8 +8479,12 @@ const blogEditor = (function () {
   function setEditable(on) {
     articlePages().forEach(page => {
       regions(page).forEach(r => {
-        if (on) r.el.setAttribute('contenteditable', 'true');
-        else r.el.removeAttribute('contenteditable');
+        if (on) {
+          r.el.setAttribute('contenteditable', 'true');
+          baseline[page.id + '|' + r.key] = r.el.innerHTML;
+        } else {
+          r.el.removeAttribute('contenteditable');
+        }
       });
     });
     document.body.classList.toggle('blog-edit-mode', on);
@@ -8471,54 +8507,114 @@ const blogEditor = (function () {
     return false;
   }
 
+  // POST helper for verify / save / reset. Returns the fetch Response or null.
+  function post(payload) {
+    const base = api();
+    if (!base) return Promise.resolve(null);
+    return fetch(base + '/blog-edits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => null);
+  }
+
   function promptUnlock() {
     if (editing) { exit(); return false; }
-    if (sessionStorage.getItem(SESSION_KEY) === '1') { enter(); return false; }
+    if (!api()) {
+      window.alert('Editing is only available on the live site.');
+      return false;
+    }
+    if (authPw) { enter(); return false; }
     const pw = window.prompt('Enter editor password:');
     if (pw == null) return false;
-    if (pw === PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      enter();
-    } else {
-      window.alert('Incorrect password.');
-    }
+    // Verify the password with the server (a save with no edits).
+    post({ password: pw, edits: {} }).then(res => {
+      if (res && res.ok) {
+        authPw = pw;
+        enter();
+      } else if (res && res.status === 401) {
+        window.alert('Incorrect password.');
+      } else {
+        window.alert('Could not reach the editor service. Try again.');
+      }
+    });
     return false;
   }
 
-  function save() {
-    const data = load();
+  // Collect only the regions that actually changed since edit mode began.
+  function collectEdits() {
+    const edits = {};
     articlePages().forEach(page => {
       regions(page).forEach(r => {
         if (r.el.getAttribute('contenteditable') !== 'true') return;
-        if (!data[page.id]) data[page.id] = {};
-        data[page.id][r.key] = r.el.innerHTML;
+        const html = r.el.innerHTML;
+        if (html === baseline[page.id + '|' + r.key]) return; // unchanged
+        if (!edits[page.id]) edits[page.id] = {};
+        edits[page.id][r.key] = html;
       });
     });
-    const ok = store(data);
-    setStatus(ok ? 'Saved ✓' : 'Save failed');
-    setTimeout(() => { if (editing) setStatus('Edit mode'); }, 1800);
+    return edits;
   }
 
-  // Discard saved edits for the page being viewed and restore original text.
+  function save() {
+    if (!authPw) { setStatus('Unlock first'); return; }
+    const edits = collectEdits();
+    if (!Object.keys(edits).length) { setStatus('No changes to save'); return; }
+    setStatus('Saving…');
+    post({ password: authPw, edits: edits }).then(res => {
+      if (res && res.ok) {
+        // Refresh the local cache and the change baseline.
+        const cache = cacheRead();
+        Object.keys(edits).forEach(pid => {
+          cache[pid] = Object.assign({}, cache[pid], edits[pid]);
+          Object.keys(edits[pid]).forEach(k => { baseline[pid + '|' + k] = edits[pid][k]; });
+        });
+        cacheWrite(cache);
+        setStatus('Saved ✓ live for everyone');
+      } else if (res && res.status === 401) {
+        authPw = null;
+        setStatus('Password rejected');
+      } else {
+        setStatus('Save failed');
+      }
+      setTimeout(() => { if (editing) setStatus('Edit mode'); }, 2500);
+    });
+  }
+
+  // Clear the current page's edits everywhere and restore its shipped text.
   function resetCurrent() {
+    if (!authPw) { setStatus('Unlock first'); return; }
     const page = currentPage();
     if (!page || !page.querySelector('.post-body')) {
       setStatus('Open the article to reset it');
       return;
     }
-    if (!window.confirm('Reset this page to its original text? Saved edits for this page will be removed.')) return;
-    const data = load();
-    delete data[page.id];
-    store(data);
-    setStatus('Reset — reloading…');
-    setTimeout(() => location.reload(), 400);
+    if (!window.confirm('Reset this page to its original text for all visitors? Saved edits for this page will be removed.')) return;
+    setStatus('Resetting…');
+    post({ password: authPw, reset: [page.id] }).then(res => {
+      if (res && res.ok) {
+        regions(page).forEach(r => {
+          const id = page.id + '|' + r.key;
+          if (id in originalHtml) {
+            r.el.innerHTML = originalHtml[id];
+            baseline[id] = originalHtml[id];
+          }
+        });
+        const cache = cacheRead();
+        delete cache[page.id];
+        cacheWrite(cache);
+        setStatus('Reset ✓');
+      } else {
+        setStatus('Reset failed');
+      }
+      setTimeout(() => { if (editing) setStatus('Edit mode'); }, 2500);
+    });
   }
 
-  // Apply any saved edits as early as the DOM is ready.
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyOverrides);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    applyOverrides();
+    init();
   }
 
   return { promptUnlock, save, exit, resetCurrent };

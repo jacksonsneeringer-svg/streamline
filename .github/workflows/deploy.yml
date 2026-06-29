@@ -42,6 +42,7 @@ jobs:
               DomainName=${{ env.DOMAIN_NAME }} \
               CertificateArn=${{ secrets.ACM_CERTIFICATE_ARN }} \
               ResendApiKey=${{ secrets.RESEND_API_KEY }} \
+              EditorPassword=${{ secrets.EDITOR_PASSWORD }} \
             --capabilities CAPABILITY_NAMED_IAM \
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset
