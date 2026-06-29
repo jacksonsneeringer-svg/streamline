@@ -1263,6 +1263,52 @@ section { padding: 6rem 0; }
 }
 .footer-bottom a { color: rgba(255,255,255,0.18); }
 .footer-bottom a:hover { color: rgba(255,255,255,0.5); }
+.footer-sep { color: rgba(255,255,255,0.18); margin: 0 0.4rem; }
+
+/* ── Blog inline editor ── */
+body.blog-edit-mode .post-body[contenteditable="true"],
+body.blog-edit-mode .post-header h1[contenteditable="true"] {
+  outline: 2px dashed var(--lap-hover);
+  outline-offset: 6px;
+  border-radius: var(--r-sm);
+  cursor: text;
+  transition: outline-color 0.15s;
+}
+body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal); background: var(--lap-pale); }
+.blog-editor-bar {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--deep);
+  color: var(--white);
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-xl);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+}
+.blog-editor-bar.is-open { display: flex; }
+.blog-editor-bar .be-status { color: var(--lap); font-weight: 400; }
+.blog-editor-bar button {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--r-md);
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+.be-save { background: var(--lap); color: var(--deep); }
+.be-save:hover { background: var(--lap-hover); }
+.be-reset { background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.25) !important; }
+.be-reset:hover { color: var(--white); }
+.be-exit { background: rgba(255,255,255,0.12); color: var(--white); }
+.be-exit:hover { background: rgba(255,255,255,0.22); }
 
 /* ── Nav inline search ── */
 .nav-search-wrap {
@@ -1838,6 +1884,16 @@ section { padding: 6rem 0; }
 }
 .post-number-body h3 { margin: 0 0 0.5rem; }
 .post-number-body p { margin: 0; }
+.post-tip {
+  background: var(--lap-pale);
+  border: 1px solid var(--gray-100);
+  border-left: 3px solid var(--lap-hover);
+  border-radius: var(--r-md);
+  padding: 1.1rem 1.5rem;
+  margin: 2rem 0;
+}
+.post-tip p { margin: 0; font-size: 0.95rem; font-weight: 400; color: var(--gray-700); line-height: 1.7; }
+.post-tip strong { color: var(--deep); font-weight: 600; }
 .inline-cta {
   background: var(--surface);
   border: 1px solid var(--gray-100);
@@ -2681,7 +2737,7 @@ section { padding: 6rem 0; }
           </div>
         </div>
         <div class="blog-side-card">
-          <a class="blog-side-title" href="#race-week-taper" onclick="navigate('race-week-taper')">How to Build a Race-Week Taper That Actually Works</a>
+          <a class="blog-side-title" href="#race-week-taper" onclick="navigate('race-week-taper')">How to Taper for a Swim Meet Without Losing Your Speed</a>
           <div class="blog-side-meta">
             <span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026 · 6 min read</span>
           </div>
@@ -3403,7 +3459,7 @@ section { padding: 6rem 0; }
       </div>
       <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div>
+        <div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">A swimmer trains for eight months, then gets scared in the final week, swims easy to "save herself," and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.</p></div>
       </div>
       <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
@@ -3637,7 +3693,7 @@ section { padding: 6rem 0; }
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div></div>
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">A swimmer trains for eight months, then gets scared in the final week, swims easy to "save herself," and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.</p></div></div>
       <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
     </div>
@@ -3684,7 +3740,7 @@ section { padding: 6rem 0; }
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('post-workout-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Mar 17, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.</p></div></div>
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div></div>
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">A swimmer trains for eight months, then gets scared in the final week, swims easy to "save herself," and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.</p></div></div>
     </div>
   </div>
 </section>
@@ -3694,7 +3750,7 @@ section { padding: 6rem 0; }
 <div class="page" id="page-race-week-taper">
 <div class="post-header">
   <div class="container">
-    <h1>How to Build a Race-Week Taper<br/>That Actually Works</h1>
+    <h1>How to Taper for a Swim Meet<br/>Without Losing Your Speed</h1>
     <div class="post-header-sub">
       <span class="post-back-btn" onclick="navigate('blog-training')">← Training</span>
       <div class="post-meta"><span>May 24, 2026</span><span class="dot"></span><span>6 min read</span></div>
@@ -3702,28 +3758,40 @@ section { padding: 6rem 0; }
   </div>
 </div>
 <article class="post-body">
-  <p>The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish. Neither extreme produces optimal performance.</p>
-  <p>A well-constructed taper reduces accumulated fatigue while maintaining the physiological adaptations built during training. The result, when executed correctly, is that you race faster than you've swum in practice. Here's how to build one.</p>
-  <blockquote>"The taper doesn't create fitness. It reveals the fitness that was already there by removing the fatigue obscuring it."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Volume down, intensity preserved</h3><p>The defining principle of an effective taper: volume drops significantly while intensity is maintained or slightly increased. Research consistently shows that reducing training volume by 40–60% over 7–14 days, while keeping intensity close to race pace, produces the best performance outcomes. Swimmers who reduce both volume and intensity — essentially resting — show smaller performance gains than those who maintain sharpness through quality work.</p></div></div>
-  <p><strong>In practice:</strong> Your total yardage per session should be roughly half of peak training volume, but the pace of key intervals should be at or near race pace. The body needs the neural stimulus of fast swimming to stay sharp.</p>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Race-pace work every day</h3><p>During taper week, include a short block of race-pace swimming in every session — even easy days. The goal isn't training load; it's neuromuscular priming. Short, fast efforts keep the fast-twitch fiber recruitment patterns active and ensure the nervous system is ready to produce speed on race day. A few 25s or 50s at race pace, with full recovery between each, is enough.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>The 7-day structure</h3><p>A practical race-week structure for a swimmer targeting Saturday competition:</p></div></div>
-  <p><strong>Sunday (7 days out):</strong> Last moderate-volume session. 3,000–4,000 yards, mix of aerobic base and threshold. Get the work done.</p>
-  <p><strong>Monday:</strong> 2,000–2,500 yards. Mostly aerobic. 4–6 × 50 at race pace with full rest.</p>
-  <p><strong>Tuesday:</strong> 2,000 yards. Drill work, stroke focus, some speed. Leave the water feeling good.</p>
-  <p><strong>Wednesday:</strong> 1,500–2,000 yards. Race simulation: warm-up, then 1–2 race-distance efforts at goal pace. Warm down thoroughly.</p>
-  <p><strong>Thursday:</strong> 1,200–1,500 yards. Easy swimming. A few short fast efforts. Focus on feel, not pace.</p>
-  <p><strong>Friday (day before):</strong> 800–1,000 yards. Activation only. 10–12 minutes of easy swimming, 4 × 25 at race pace from a push. Done.</p>
-  <p><strong>Saturday (race day):</strong> Warm-up per your event schedule. Standard pool warm-up protocol for your event group.</p>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Sleep, nutrition, and logistics</h3><p>The taper is not only a physical process. Consistently prioritizing 8–9 hours of sleep per night during taper week has a larger performance impact than most swimmers realize. Sleep is when adaptation consolidates, hormonal balance normalizes, and nervous system recovery occurs. Cutting sleep short during taper week is one of the most reliable ways to leave performance on the table.</p></div></div>
-  <p>Nutrition during taper week should increase slightly in carbohydrate to top off glycogen stores. Muscle glycogen loading — increasing carbohydrate intake by 20–30% in the 48–72 hours before competition — is well-supported by research for events lasting more than 90 seconds. For sprint events, the effect is smaller but still positive.</p>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Managing taper anxiety</h3><p>Most competitive swimmers experience some form of taper anxiety: irritability, restlessness, the sense that reduced training is costing them fitness. It isn't. These feelings are normal and partly biochemical — reduced training load changes cortisol and adrenaline patterns. They are not evidence that the taper is failing.</p></div></div>
-  <p>The antidote is trust in the process. Review your training log. The fitness is there. The taper is revealing it.</p>
-  <hr />
-  <h2>Adapting for longer tapers</h2>
-  <p>For major competitions — a championship meet, an important masters race — a two-week taper may be appropriate. The structure is similar: reduce volume in week one by roughly 30%, then apply the race-week protocol above in week two. Maintain intensity throughout both weeks.</p>
-  <p>For shorter events or less important competitions, a three-to-four-day mini-taper applies the same principles compressed into a shorter window.</p>
+  <p>Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool. This is a guide for competitive and masters swimmers who want a race-week taper that actually delivers a best time, not a meltdown — and it starts with understanding what the taper is doing to your body in the first place.</p>
+  <blockquote>"A real taper asks you to believe in work you can no longer touch, then sharpen it and get out of the way."</blockquote>
+  <h2>What a race-week taper actually does</h2>
+  <p>A taper is a planned drop in training volume that lets your body cash in the work you already banked. All season you've been carrying chronic fatigue: micro-damaged muscle, drained glycogen, a nervous system running on fumes. None of your fitness vanishes when you back off. The fatigue fades faster than the fitness does, and what surfaces underneath is the swimmer who was fast all along and finally gets to feel it.</p>
+  <p>The science is unusually tidy for this stuff. Bosquet's 2003 meta-analysis found performance improves about 3 percent during a well-built taper, with the biggest gains coming from cutting volume by roughly 41 to 60 percent while keeping intensity high. Three percent sounds like rounding error until you put it on a 100 freestyle, where it's worth more than a second. That's the wall between making the A final and watching it from the warm-down pool.</p>
+  <p>The operative word is <em>volume</em>. You cut how much you swim. You guard how fast.</p>
+  <h2>The number one taper mistake: going soft</h2>
+  <p>Most blown tapers die the same way. A swimmer hears "rest" and turns every set into a slow aerobic float, swimming gentle laps all week and arriving at the meet feeling like a deflated pool toy.</p>
+  <p>Your muscles hold a memory for pace. Spend race week cruising at 70 percent and your body forgets what race effort feels like, your stroke rate drifts, and your turnover goes to sleep. Intensity is what protects your speed. Volume is the part you're allowed to throw away.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> During taper week your total yardage drops hard, but you keep hitting race-pace and faster-than-race efforts in short bursts with long rest. Quality reps with full recovery — never grinding sets.</p></div>
+  <p>I coached a masters swimmer named Dana, 46, who had just qualified for nationals in the 50 fly for the first time in her life. The week before, she got nervous and swam easy all week to protect herself. She showed up flat, added four tenths, and was livid in the parking lot afterward. The next season we kept her sprinting straight through taper — sharp 25s at race pace with a wall of rest between them — and she dropped six tenths and made the podium. Same body, same training block. The only change was that we kept the engine revving instead of letting it idle.</p>
+  <h2>How long should your race-week taper be?</h2>
+  <p>"Race week" implies seven days, and for a single big meet that's about right for most age-groupers and masters swimmers. Elite swimmers carrying enormous training loads often taper two to three weeks because they have far more fatigue to shed. The bigger your normal volume, the longer the unload.</p>
+  <p>For a one-week taper aimed at sprint and mid-distance events, here's a framework that holds up:</p>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Seven to five days out</h3><p>Cut to roughly 60 percent of normal volume. Keep two real race-pace sets with long rest. This is where you remind the body what fast feels like.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Four to three days out</h3><p>Drop to around 40 to 50 percent. Short race-pace efforts, sharp starts and turns, a few all-out 25s. Done lifting anything heavy by now.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Two days out</h3><p>Light swim of maybe 1,500 to 2,500 yards with a handful of race-pace 50s tucked into easy swimming. Dial in stroke rate.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Day before</h3><p>Short and loose. Starts, turns, a couple of 25s to feel snappy, then climb out. Twenty to thirty minutes is plenty.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Race day</h3><p>A full warm-up. Do not skip it because you feel good. You want to reach the blocks already primed.</p></div></div>
+  <p>A 1500 freestyler and a 50 sprinter should not taper identically. Distance swimmers and triathletes can hold a little more volume deeper into the week, because their events reward aerobic durability over raw pop. I once watched a triathlete copy a sprinter's taper to the letter, then fade in the back half of her open-water swim because she'd rested away the engine she actually needed.</p>
+  <h2>The taper crazies are real</h2>
+  <p>Nobody warns you about the head game, so I will. Around day three or four you will feel awful: heavy, sluggish, slow, and dead certain you've lost every ounce of fitness. Your sleep gets strange. Phantom aches show up. You watch a lanemate rip a practice 50 and spiral into quiet doom.</p>
+  <p>This is normal and it happens to everyone. It happened to me before every major meet of my career, and I never once got used to it. It's the athletic version of the final season of a show you love, where you're so close to the payoff that the waiting becomes the worst part.</p>
+  <p>The reason is recalibration. As fatigue lifts, your sense of effort gets scrambled before it resettles into real freshness. The flatness in the middle of taper is not lost speed. It's the awkward middle chapter before the speed shows up.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> Do not add a hard "confidence set" mid-taper because you feel slow. That panic set has wrecked more meets than I can count. The bank is full — stop trying to make one more deposit the day before the withdrawal.</p></div>
+  <h2>What to do outside the pool during taper week</h2>
+  <p>Taper isn't only a pool program. The habits around it matter more this week than any other, and three of them carry most of the weight.</p>
+  <p><strong>Sleep like it's your job.</strong> The week your training drops is the week your body does its repair work. The nervous-system recovery that makes you fast happens while you're unconscious, so chase more sleep, not less.</p>
+  <p><strong>Keep carbs steady and top off the tank.</strong> You're swimming less, so you don't need a dramatic feast, but you want glycogen full by race day. The night before is not the moment to try the new spicy place you've been eyeing.</p>
+  <p><strong>Change nothing.</strong> No new dryland move, no new pre-race supplement, no tech suit you've never worn. Race week executes the plan — it doesn't audition ideas.</p>
+  <p>I had a college teammate who decided taper week was the perfect time to deep-clean his apartment and reorganize every closet because he had "all this energy." He stood up at conference with quads full of lactic acid from six hours of squatting over a vacuum. Taper energy is a loan against your race. Spend it in the pool or don't spend it at all.</p>
+  <h2>Trust the build, then trust the rest</h2>
+  <p>Go back to that swimmer behind the blocks with the sandbag legs. Her problem was never the training. It was the last seven days, when fear told her to do less of everything instead of less of one thing. A real taper asks you to believe in work you can no longer touch, then sharpen it and get out of the way.</p>
+  <p>So when day four lands and you feel like a stranger in your own body, don't panic and don't add yardage. Sharpen, sleep, and let the fatigue drain out from under your speed. Then step up, find your feet on the block, and go collect what you already earned.</p>
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Periodized training plans</h3>
@@ -3977,7 +4045,7 @@ section { padding: 6rem 0; }
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction affects both performance and recovery.</p></div></div>
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Race week nutrition and training load interact — getting one wrong affects the other. Here's how to build a taper that actually works.</p></div></div>
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">A swimmer trains for eight months, then gets scared in the final week, swims easy to "save herself," and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.</p></div></div>
     </div>
   </div>
 </section>
@@ -4016,7 +4084,7 @@ section { padding: 6rem 0; }
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
       <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Build a Race-Week Taper That Actually Works</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.</p></div></div>
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">A swimmer trains for eight months, then gets scared in the final week, swims easy to "save herself," and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.</p></div></div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Errors and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">The technique errors that limit most recreational and masters swimmers share a common thread: they are largely invisible to the swimmer making them. Unlike a sport where inefficiency is immediately punishable, swimming lets you reinforce poor movement patterns for months or years while still making forward progress.</p></div></div>
     </div>
   </div>
@@ -5554,8 +5622,18 @@ section { padding: 6rem 0; }
   </div>
   <div class="footer-bottom">
     <span>© 2026 STREAMLINE. All rights reserved.</span>
+    <span class="footer-sep"> · </span>
+    <a href="#" id="footer-editor-link" onclick="return blogEditor.promptUnlock();">Editor</a>
   </div>
 </footer>
+
+<div class="blog-editor-bar" id="blog-editor-bar">
+  <span class="be-status">Edit mode</span>
+  <span>Click any article text to edit.</span>
+  <button type="button" class="be-save" onclick="blogEditor.save()">Save changes</button>
+  <button type="button" class="be-reset" onclick="blogEditor.resetCurrent()">Reset this page</button>
+  <button type="button" class="be-exit" onclick="blogEditor.exit()">Done</button>
+</div>
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
@@ -5576,7 +5654,7 @@ const PAGE_TITLES = {
   'freestyle-errors': 'STREAMLINE | Blog - 7 Common Freestyle Errors',
   'training-intensity-zones': 'STREAMLINE | Blog - Training Intensity Zones',
   'morning-practice-nutrition': 'STREAMLINE | Blog - Morning Practice Nutrition',
-  'race-week-taper': 'STREAMLINE | Blog - Race-Week Taper',
+  'race-week-taper': 'STREAMLINE | Blog - Taper Without Losing Speed',
   'breathing-mechanics': 'STREAMLINE | Blog - Breathing Mechanics',
   'goggles-guide': 'STREAMLINE | Blog - How to Choose Goggles',
   'training-fins-guide': 'STREAMLINE | Blog - Best Training Fins',
@@ -6781,6 +6859,15 @@ async function performSearch(query) {
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+// Keep generated set/exercise descriptors purely informational: no em dashes,
+// and drop any motivational/coaching tail the model appends after one.
+function cleanNote(note) {
+  if (note == null) return '';
+  let t = String(note);
+  const dash = t.search(/[—–]/);
+  if (dash !== -1) t = t.slice(0, dash);
+  return t.replace(/[\s,;:.\-]+$/, '').trim();
+}
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-search-wrap')) closeNavSearch();
 });
@@ -6876,7 +6963,8 @@ function buildSetSectionsHtml(sections) {
     const divider = idx > 0 ? 'border-top:1px solid var(--gray-100);' : '';
     const items = (sec.items || []).map(item => {
       let h = `<div class="set-row">${escHtml(item.text)}</div>`;
-      if (item.note) h += `<div class="set-note">${escHtml(item.note)}</div>`;
+      const note = cleanNote(item.note);
+      if (note) h += `<div class="set-note">${escHtml(note)}</div>`;
       return h;
     }).join('');
     html += `<div style="${divider}">
@@ -7463,7 +7551,8 @@ function buildDrylandSectionsHtml(sections) {
     const color = drylandSectionColor(sec.name || '');
     const rows = (sec.items || []).map(item => {
       const ex = item.exercise || item.text || '';
-      const note = item.note ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(item.note)}</span>` : '';
+      const noteText = cleanNote(item.note);
+      const note = noteText ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(noteText)}</span>` : '';
       const muscles = Array.isArray(item.muscles) && item.muscles.length
         ? item.muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(' ') : '';
       const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
@@ -7959,13 +8048,13 @@ const BLOG_POSTS = [
   },
   {
     id: 'race-week-taper',
-    title: 'How to Build a Race-Week Taper That Actually Works',
+    title: 'How to Taper for a Swim Meet Without Losing Your Speed',
     category: 'Training',
     homeSection: 'training',
     date: '2026-05-10',
     readTime: 6,
-    openingText: "The taper is one of the most misunderstood concepts in competitive swimming. Swimmers who have trained hard for weeks or months arrive at race week and either do too much — afraid to lose fitness — or do too little, spending the last days sitting still and arriving at the blocks flat and sluggish.",
-    excerpt: 'Reducing volume, maintaining intensity, and arriving at the blocks race-ready.',
+    openingText: "A swimmer trains for eight months, then gets scared in the final week, swims easy to \"save herself,\" and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.",
+    excerpt: 'Cut volume, guard intensity, and arrive at the blocks sharp instead of flat.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
     thumbPaths: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
   },
@@ -8296,6 +8385,239 @@ async function handleNewsletterSubmit(event, source) {
     const active = document.querySelector('.page.active');
     if (active) onPageChange(active.id.replace('page-', ''));
   });
+}());
+</script>
+
+<script>
+// ── Password-gated inline blog editor ──────────────────────────────────────
+// Lets an authorized editor revise the text of blog/article pages directly on
+// the site. Edits are stored server-side (DynamoDB via the /blog-edits API)
+// and served to every visitor on load. The password is never stored in this
+// file: it is typed by the editor, verified by the server, and held in memory
+// only for the current session. A localStorage copy is kept purely as a fast
+// cache so returning visitors avoid a flash of the un-edited text.
+const blogEditor = (function () {
+  const CACHE_KEY = 'streamline_blog_edits_cache_v1';
+  let editing = false;
+  let authPw = null;            // password held in memory after a successful unlock
+  const originalHtml = {};      // shipped HTML per "pageId|key", for reset
+  const baseline = {};          // HTML at edit-mode entry, to detect real changes
+
+  function api() { return (window.STREAMLINE_API_URL || '').replace(/\/+$/, ''); }
+
+  // A blog/article page is any .page that contains an article body.
+  function articlePages() {
+    return Array.from(document.querySelectorAll('.page'))
+      .filter(p => p.id && p.id.indexOf('page-') === 0 && p.querySelector('.post-body'));
+  }
+  // The editable regions within a page: the headline and the article body.
+  function regions(page) {
+    const out = [];
+    const h1 = page.querySelector('.post-header h1');
+    if (h1) out.push({ key: 'title', el: h1 });
+    const body = page.querySelector('.post-body');
+    if (body) out.push({ key: 'body', el: body });
+    return out;
+  }
+
+  function cacheRead() {
+    try { return JSON.parse(localStorage.getItem(CACHE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function cacheWrite(data) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  // Capture the shipped HTML once, before any override is applied, so a reset
+  // can always restore the original article text.
+  function snapshotOriginals() {
+    articlePages().forEach(page => {
+      regions(page).forEach(r => {
+        const id = page.id + '|' + r.key;
+        if (!(id in originalHtml)) originalHtml[id] = r.el.innerHTML;
+      });
+    });
+  }
+
+  // Apply an { pageId: {title, body} } override map to the live DOM.
+  function applyOverrides(data) {
+    if (!data) return;
+    articlePages().forEach(page => {
+      const saved = data[page.id];
+      if (!saved) return;
+      regions(page).forEach(r => {
+        if (typeof saved[r.key] === 'string') r.el.innerHTML = saved[r.key];
+      });
+    });
+  }
+
+  // On load: paint the cached overrides instantly, then refresh from the server.
+  function init() {
+    snapshotOriginals();
+    applyOverrides(cacheRead());
+    const base = api();
+    if (!base) return;
+    fetch(base + '/blog-edits')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d || !d.edits) return;
+        applyOverrides(d.edits);
+        cacheWrite(d.edits);
+      })
+      .catch(() => {});
+  }
+
+  function currentPage() {
+    return document.querySelector('.page.active') || document.querySelector('.page');
+  }
+  function bar() { return document.getElementById('blog-editor-bar'); }
+  function setStatus(msg) {
+    const s = bar() && bar().querySelector('.be-status');
+    if (s) s.textContent = msg;
+  }
+
+  function setEditable(on) {
+    articlePages().forEach(page => {
+      regions(page).forEach(r => {
+        if (on) {
+          r.el.setAttribute('contenteditable', 'true');
+          baseline[page.id + '|' + r.key] = r.el.innerHTML;
+        } else {
+          r.el.removeAttribute('contenteditable');
+        }
+      });
+    });
+    document.body.classList.toggle('blog-edit-mode', on);
+    if (bar()) bar().classList.toggle('is-open', on);
+  }
+
+  function enter() {
+    editing = true;
+    setEditable(true);
+    setStatus('Edit mode');
+    const active = currentPage();
+    if (!active || !active.querySelector('.post-body')) {
+      setStatus('Open any blog article to edit it');
+    }
+  }
+
+  function exit() {
+    editing = false;
+    setEditable(false);
+    return false;
+  }
+
+  // POST helper for verify / save / reset. Returns the fetch Response or null.
+  function post(payload) {
+    const base = api();
+    if (!base) return Promise.resolve(null);
+    return fetch(base + '/blog-edits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => null);
+  }
+
+  function promptUnlock() {
+    if (editing) { exit(); return false; }
+    if (!api()) {
+      window.alert('Editing is only available on the live site.');
+      return false;
+    }
+    if (authPw) { enter(); return false; }
+    const pw = window.prompt('Enter editor password:');
+    if (pw == null) return false;
+    // Verify the password with the server (a save with no edits).
+    post({ password: pw, edits: {} }).then(res => {
+      if (res && res.ok) {
+        authPw = pw;
+        enter();
+      } else if (res && res.status === 401) {
+        window.alert('Incorrect password.');
+      } else {
+        window.alert('Could not reach the editor service. Try again.');
+      }
+    });
+    return false;
+  }
+
+  // Collect only the regions that actually changed since edit mode began.
+  function collectEdits() {
+    const edits = {};
+    articlePages().forEach(page => {
+      regions(page).forEach(r => {
+        if (r.el.getAttribute('contenteditable') !== 'true') return;
+        const html = r.el.innerHTML;
+        if (html === baseline[page.id + '|' + r.key]) return; // unchanged
+        if (!edits[page.id]) edits[page.id] = {};
+        edits[page.id][r.key] = html;
+      });
+    });
+    return edits;
+  }
+
+  function save() {
+    if (!authPw) { setStatus('Unlock first'); return; }
+    const edits = collectEdits();
+    if (!Object.keys(edits).length) { setStatus('No changes to save'); return; }
+    setStatus('Saving…');
+    post({ password: authPw, edits: edits }).then(res => {
+      if (res && res.ok) {
+        // Refresh the local cache and the change baseline.
+        const cache = cacheRead();
+        Object.keys(edits).forEach(pid => {
+          cache[pid] = Object.assign({}, cache[pid], edits[pid]);
+          Object.keys(edits[pid]).forEach(k => { baseline[pid + '|' + k] = edits[pid][k]; });
+        });
+        cacheWrite(cache);
+        setStatus('Saved ✓ live for everyone');
+      } else if (res && res.status === 401) {
+        authPw = null;
+        setStatus('Password rejected');
+      } else {
+        setStatus('Save failed');
+      }
+      setTimeout(() => { if (editing) setStatus('Edit mode'); }, 2500);
+    });
+  }
+
+  // Clear the current page's edits everywhere and restore its shipped text.
+  function resetCurrent() {
+    if (!authPw) { setStatus('Unlock first'); return; }
+    const page = currentPage();
+    if (!page || !page.querySelector('.post-body')) {
+      setStatus('Open the article to reset it');
+      return;
+    }
+    if (!window.confirm('Reset this page to its original text for all visitors? Saved edits for this page will be removed.')) return;
+    setStatus('Resetting…');
+    post({ password: authPw, reset: [page.id] }).then(res => {
+      if (res && res.ok) {
+        regions(page).forEach(r => {
+          const id = page.id + '|' + r.key;
+          if (id in originalHtml) {
+            r.el.innerHTML = originalHtml[id];
+            baseline[id] = originalHtml[id];
+          }
+        });
+        const cache = cacheRead();
+        delete cache[page.id];
+        cacheWrite(cache);
+        setStatus('Reset ✓');
+      } else {
+        setStatus('Reset failed');
+      }
+      setTimeout(() => { if (editing) setStatus('Edit mode'); }, 2500);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  return { promptUnlock, save, exit, resetCurrent };
 }());
 </script>
 
