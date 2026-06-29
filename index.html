@@ -6864,6 +6864,11 @@ const SECTION_COLORS = {
 
 const PRINT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
 
+// Original Streamline rest-day mark: a hand-built crescent moon (recovery /
+// sleep) with two stylized "Z" sleep cues, replacing the bed emoji so the rest
+// card uses our own iconography in the brand teal.
+const REST_DAY_SVG = '<svg width="46" height="46" viewBox="0 0 64 64" fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Rest day"><path d="M41 13 A 20.5 20.5 0 1 0 41 51 A 15.5 15.5 0 1 1 41 13 Z" fill="var(--teal)" fill-opacity="0.12"/><path d="M43 11 h11 l-11 11 h11"/><path d="M52 27 h7 l-7 7 h7"/></svg>';
+
 function buildSetSectionsHtml(sections) {
   let html = '';
   (sections || []).forEach((sec, idx) => {
@@ -7505,7 +7510,7 @@ function renderDryland(category, data) {
   let sectionsHtml;
   if (data.isRestDay && (!data.sections || !data.sections.length)) {
     sectionsHtml = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:2.5rem 1.5rem; text-align:center;">
-      <div style="font-size:2rem; margin-bottom:0.5rem;">🛌</div>
+      <div style="margin-bottom:0.5rem; line-height:0;">${REST_DAY_SVG}</div>
       <p style="color:var(--gray-500); font-size:0.95rem; max-width:420px; margin:0 auto;">${escHtml(data.coachNote || 'Full rest today. Recovery is part of the program.')}</p>
     </div>`;
   } else {
@@ -7667,6 +7672,9 @@ function renderDrylandArchiveCards(items) {
   const seenDay = new Set();
   items.slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).forEach(item => {
     const set = drylandArchiveItemToWorkout(item);
+    // Saturday/Sunday rest days are not part of the workout library — never list
+    // them in the archive even if older rest-day rows are still in the table.
+    if (set.isRestDay) return;
     if (set.setId) {
       if (seen.has(set.setId)) return;
       seen.add(set.setId);
@@ -7758,7 +7766,7 @@ function drylandWorkoutMarkup(set) {
   let sectionsHtml;
   if (data.isRestDay && (!data.sections || !data.sections.length)) {
     sectionsHtml = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:2.5rem 1.5rem; text-align:center;">
-      <div style="font-size:2rem; margin-bottom:0.5rem;">🛌</div>
+      <div style="margin-bottom:0.5rem; line-height:0;">${REST_DAY_SVG}</div>
       <p style="color:var(--gray-500); font-size:0.95rem; max-width:420px; margin:0 auto;">${escHtml(data.coachNote || 'Full rest today. Recovery is part of the program.')}</p>
     </div>`;
   } else {
