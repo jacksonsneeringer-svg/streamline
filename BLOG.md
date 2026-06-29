@@ -12,8 +12,9 @@ Once a post is in `BLOG_POSTS`, the pipeline in the `DOMContentLoaded` handler
 (in `index.html`) does the rest:
 
 1. **Ordering** — posts are sorted by `date`, newest first. The newest post
-   becomes the featured "Recently Published" story and leads its category list.
-   The per-category blog pages are re-sorted by date too.
+   becomes the featured story in both the home page "From the blog" block and
+   the blog's "Recently Published" section, and leads its category list. The
+   per-category blog pages are re-sorted by date too.
 2. **Read time** — recomputed from each article's live body text at ~200 wpm
    (rounded up). It updates whenever the article's text changes (an edit, or a
    push that changes the article HTML). The `readTime` field is only a fallback.

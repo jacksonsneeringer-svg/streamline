@@ -8443,6 +8443,41 @@ function renderCategoryPosts() {
   });
 }
 
+// Point the home page "From the blog" block at the newest posts: the featured
+// card shows the newest article, the side cards the next four. Dates and the
+// hero image are filled in afterwards by syncBlogMeta (via the navigate hooks).
+function renderHomeFeatured() {
+  const top = BLOG_POSTS.slice(0, 5);
+  if (!top.length) return;
+  const setLink = (a, p) => {
+    if (!a || !p) return;
+    a.textContent = p.title;
+    a.setAttribute('href', '#' + p.id);
+    a.setAttribute('onclick', "navigate('" + p.id + "')");
+  };
+  // Featured = newest post.
+  const feat = top[0];
+  const featCard = document.querySelector('.blog-feature-card');
+  if (featCard) {
+    setLink(featCard.querySelector('.blog-feature-title'), feat);
+    const badge = featCard.querySelector('.cat-badge');
+    if (badge) badge.textContent = feat.category;
+    const exc = featCard.querySelector('.blog-feature-body p');
+    if (exc) exc.textContent = feat.openingText || feat.excerpt || '';
+  }
+  // Side cards = the next posts, in order.
+  const sideCards = document.querySelectorAll('.blog-side-col .blog-side-card');
+  const sidePosts = top.slice(1);
+  sideCards.forEach(function(card, i) {
+    const p = sidePosts[i];
+    if (!p) { card.style.display = 'none'; return; }
+    card.style.display = '';
+    setLink(card.querySelector('.blog-side-title'), p);
+    const badge = card.querySelector('.cat-badge');
+    if (badge) badge.textContent = p.category;
+  });
+}
+
 window.addEventListener('DOMContentLoaded', function() {
   // Newest first, by publish date — this is what reorganizes the blog around
   // a freshly pushed article (drives Recently Published + category ordering).
@@ -8452,6 +8487,7 @@ window.addEventListener('DOMContentLoaded', function() {
   // Data-driven sections.
   renderRecentlyPublished();
   renderCategoryPosts();
+  renderHomeFeatured();
   // Bring every hardcoded card + article header into agreement with the data
   // (dates, read times, hero images), and re-sort per-category pages by date.
   syncBlogMeta();
