@@ -1281,13 +1281,16 @@ Resources:
                 wid = '%s-%s' % (cat, date_str)
                 data.update({'date': date_str, 'category': cat, 'workoutId': wid, 'day': day_name})
                 daily_tbl.put_item(Item={'category': cat, 'workoutData': json.dumps(data), 'date': date_str, 'generatedAt': now.isoformat()})
-                arch_tbl.put_item(Item={
-                  'workoutId': wid, 'category': cat, 'date': date_str, 'day': day_name,
-                  'title': data.get('title', ''), 'trainingFocus': data.get('trainingFocus', focus),
-                  'strokeEmphasis': data.get('strokeEmphasis', stroke), 'intensity': data.get('intensity', intensity),
-                  'estimatedMinutes': data.get('estimatedMinutes', MINUTES), 'isRestDay': bool(data.get('isRestDay', is_rest)),
-                  'workoutData': json.dumps(data), 'generatedAt': now.isoformat()
-                })
+                # Saturday/Sunday rest days still appear on the daily page, but
+                # they are not workouts so they are never written to the archive.
+                if not bool(data.get('isRestDay', is_rest)):
+                  arch_tbl.put_item(Item={
+                    'workoutId': wid, 'category': cat, 'date': date_str, 'day': day_name,
+                    'title': data.get('title', ''), 'trainingFocus': data.get('trainingFocus', focus),
+                    'strokeEmphasis': data.get('strokeEmphasis', stroke), 'intensity': data.get('intensity', intensity),
+                    'estimatedMinutes': data.get('estimatedMinutes', MINUTES), 'isRestDay': False,
+                    'workoutData': json.dumps(data), 'generatedAt': now.isoformat()
+                  })
                 results.append({'category': cat, 'status': 'ok'})
               except Exception as ex:
                 print('generate dryland failed for %s: %s' % (cat, ex))
@@ -1377,10 +1380,13 @@ Resources:
               while 'LastEvaluatedKey' in r:
                 r = tbl.scan(**kw, ExclusiveStartKey=r['LastEvaluatedKey'])
                 items += r['Items']
-              # One workout per category per day. Keep one per (category, date) and
-              # delete any duplicates so the archive self-heals.
+              # One workout per category per day. Keep one per (category, date),
+              # and drop Saturday/Sunday rest days entirely (they are not workouts).
+              # Duplicates and rest-day rows are deleted so the archive self-heals.
               kept, dupes, seen = [], [], {}
               for it in items:
+                if it.get('isRestDay'):
+                  dupes.append(it); continue
                 key = (it.get('category',''), it.get('date',''))
                 if not key[0] or not key[1]:
                   kept.append(it); continue
