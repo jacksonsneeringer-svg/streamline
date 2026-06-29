@@ -1793,6 +1793,34 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .placeholder-content p { color: var(--gray-400); font-size: 0.88rem; font-weight: 300; max-width: 360px; }
 
 /* ── Post / Article ── */
+.post-hero {
+  width: 100%;
+  max-height: 460px;
+  overflow: hidden;
+  position: relative;
+  background: var(--deep);
+  line-height: 0;
+}
+.post-hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 460px;
+  object-fit: cover;
+}
+.post-hero-credit {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(0, 0, 0, 0.42);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  line-height: 1.2;
+}
 .post-header {
   padding: 4rem 0 2.5rem;
   text-align: center;
@@ -8017,10 +8045,27 @@ async function handleContactSubmit(event) {
   }
 }
 
-// ── Blog post data ─────────────────────────────────────────────────────────
-// Add new posts to the TOP of this array (most recent first).
-// The first RECENTLY_PUBLISHED_COUNT posts appear in "Recently Published".
-// Posts beyond that threshold automatically appear in their category section.
+// ── Blog post data (single source of truth) ────────────────────────────────
+// This array drives every place a post's date, read time, ordering and hero
+// image appear: the home page, the blog pages, and the article header. The
+// rendering pipeline (see DOMContentLoaded below) does the rest automatically:
+//
+//   • ORDER     — posts are sorted by `date` (newest first) on load, so a new
+//                 article surfaces at the top of "Recently Published" and its
+//                 category list with no manual reordering.
+//   • READ TIME — recomputed from each article's live body text (~200 wpm) on
+//                 every load, so editing or pushing an article updates it.
+//   • DATES     — the formatted `date` is written into every card and the
+//                 article header, so the three locations can never disagree.
+//
+// To publish a NEW article (full workflow in BLOG.md):
+//   1. Add the article page markup (`<div class="page" id="...">`) to the HTML.
+//   2. Add an entry here. Set `date` to the publish date (the push date),
+//      `category`/`homeSection`, `openingText`/`excerpt`, and `keywords`.
+//   3. Use the keywords to find a HORIZONTAL photo on Pexels and set
+//      `heroImage` to its base image URL (…/pexels-photo-<id>.jpeg). Add
+//      `heroAlt` and `heroCredit`. It renders on the card and atop the article.
+//   `readTime` is a fallback only; the live word-count value overrides it.
 const BLOG_POSTS = [
   {
     id: 'freestyle-errors',
@@ -8051,8 +8096,14 @@ const BLOG_POSTS = [
     title: 'How to Taper for a Swim Meet Without Losing Your Speed',
     category: 'Training',
     homeSection: 'training',
-    date: '2026-05-10',
+    date: '2026-06-29',
     readTime: 6,
+    keywords: ['swim meet taper', 'competitive swimming', 'race start', 'swimmer'],
+    // Horizontal Pexels photo (People Doing Swim Race, ID 1263349). The base
+    // URL is resized to a landscape crop at render time by _heroSrc().
+    heroImage: 'https://images.pexels.com/photos/1263349/pexels-photo-1263349.jpeg',
+    heroAlt: 'Competitive swimmers racing through the water in a pool',
+    heroCredit: 'Photo by Jim De Ramos on Pexels',
     openingText: "A swimmer trains for eight months, then gets scared in the final week, swims easy to \"save herself,\" and shows up flat. That's a broken taper — the most common way fast swimmers leave time in the pool. The fix isn't doing less of everything; it's cutting volume while you guard your speed.",
     excerpt: 'Cut volume, guard intensity, and arrive at the blocks sharp instead of flat.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
@@ -8199,6 +8250,116 @@ function _blogFmtDate(dateStr) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+// Resize a Pexels base image URL to a landscape crop. Works for any source
+// orientation because fit=crop centre-crops to the requested aspect ratio.
+function _heroSrc(base, w, h) {
+  if (!base) return '';
+  const sep = base.indexOf('?') >= 0 ? '&' : '?';
+  return base + sep + 'auto=compress&cs=tinysrgb&fit=crop&w=' + w + '&h=' + h;
+}
+// Inline style that paints a hero image as a cover background on a thumb block.
+function _heroBg(base, w, h) {
+  return "background-image:url('" + _heroSrc(base, w, h) + "'); background-size:cover; background-position:center;";
+}
+
+// Read time, recomputed from the article's live body text (~200 wpm) so it
+// tracks edits and pushes. Falls back to the data value when no body is found.
+function _computeReadTime(p) {
+  const page = document.getElementById('page-' + p.id);
+  const body = page && page.querySelector('.post-body');
+  if (!body) return p.readTime || 1;
+  const words = (body.textContent || '').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200)); // round up, standard read-time convention
+}
+
+// Drop a horizontal hero image at the very top of an article, above the
+// headline. Inserted before .post-header so it sits clear of the editor's
+// editable regions (.post-header h1 and .post-body). Idempotent.
+function _injectArticleHero(p) {
+  if (!p.heroImage) return;
+  const page = document.getElementById('page-' + p.id);
+  if (!page || page.querySelector('.post-hero')) return;
+  const header = page.querySelector('.post-header');
+  if (!header) return;
+  const band = document.createElement('div');
+  band.className = 'post-hero';
+  band.innerHTML = '<img src="' + _heroSrc(p.heroImage, 1600, 720) + '" alt="' +
+    escHtml(p.heroAlt || p.title) + '" loading="lazy">' +
+    (p.heroCredit ? '<span class="post-hero-credit">' + escHtml(p.heroCredit) + '</span>' : '');
+  header.parentNode.insertBefore(band, header);
+}
+
+// Write each post's formatted date + read time (and hero image, where a card
+// has a thumb) into every hardcoded card and article header that links to it,
+// keeping the home page, blog pages and article pages perfectly in sync.
+function syncBlogMeta() {
+  BLOG_POSTS.forEach(function(p) {
+    const dateStr = _blogFmtDate(p.date);
+    const sel = '[onclick*="navigate(\'' + p.id + '\')"]';
+    document.querySelectorAll(sel).forEach(function(el) {
+      const root = el.closest('.blog-card, .blog-side-card, .blog-feature-card, .recent-side-card, .recent-main-card') || el.parentElement;
+      if (!root) return;
+      // Date · read time — collapse any split spans into the first one.
+      const slots = root.querySelectorAll('.blog-card-date, .recent-date');
+      if (slots.length) {
+        const unit = slots[0].classList.contains('recent-date') ? ' min' : ' min read';
+        slots[0].textContent = dateStr + ' · ' + p.readTime + unit;
+        slots[0].style.fontStyle = '';
+        for (let i = 1; i < slots.length; i++) slots[i].remove();
+      }
+      // Hero image on the card thumb, if this post has one.
+      if (p.heroImage) {
+        const thumb = root.querySelector('.blog-card-thumb-pattern, .blog-feature-thumb, .recent-main-thumb, .recent-side-thumb');
+        if (thumb && !thumb.dataset.hero) {
+          thumb.style.cssText += ';' + _heroBg(p.heroImage, 900, 560);
+          const icon = thumb.querySelector('svg');
+          if (icon) icon.style.display = 'none';
+          thumb.dataset.hero = '1';
+        }
+      }
+    });
+    _injectArticleHero(p);
+    // Article header meta line: <date> · <dot> · <read time>.
+    const page = document.getElementById('page-' + p.id);
+    const meta = page && page.querySelector('.post-meta');
+    if (meta) meta.innerHTML = '<span>' + dateStr + '</span><span class="dot"></span><span>' + p.readTime + ' min read</span>';
+  });
+}
+
+// Re-sort the curated 3-up grids on the per-category blog pages so the newest
+// post in each category leads. Cards with no known publish date (e.g. "coming
+// soon" placeholders) keep their relative order at the end.
+function sortCategoryGrids() {
+  const dateOf = {};
+  BLOG_POSTS.forEach(function(p) { dateOf[p.id] = p.date; });
+  ['blog-technique', 'blog-training', 'blog-nutrition', 'blog-gear', 'blog-guides'].forEach(function(pid) {
+    const page = document.getElementById('page-' + pid);
+    const grid = page && page.querySelector('.grid-3');
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll(':scope > .blog-card'));
+    const keyed = cards.map(function(card, i) {
+      const link = card.matches('[onclick*="navigate("]') ? card : card.querySelector('[onclick*="navigate("]');
+      const m = link && (link.getAttribute('onclick') || '').match(/navigate\('([^']+)'\)/);
+      const d = m && dateOf[m[1]];
+      return { card: card, key: d || '', i: i };
+    });
+    keyed.sort(function(a, b) {
+      if (a.key && b.key) return a.key < b.key ? 1 : a.key > b.key ? -1 : a.i - b.i;
+      if (a.key) return -1;      // dated cards first
+      if (b.key) return 1;
+      return a.i - b.i;          // undated keep original order, at the end
+    });
+    keyed.forEach(function(k) { grid.appendChild(k.card); });
+  });
+}
+
+// Recompute read times and re-sync the visible meta. Exposed so the blog
+// editor can refresh read time after it applies saved article overrides.
+window.__refreshBlogMeta = function() {
+  BLOG_POSTS.forEach(function(p) { p.readTime = _computeReadTime(p); });
+  syncBlogMeta();
+};
+
 function renderRecentlyPublished() {
   const container = document.getElementById('blog-recently-published');
   if (!container) return;
@@ -8209,7 +8370,7 @@ function renderRecentlyPublished() {
 
   const sideHtml = sideItems.map((p, i) =>
     '<div class="recent-side-card" onclick="navigate(\'' + escHtml(p.id) + '\')">' +
-      '<div class="recent-side-thumb" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 28) + '</div>' +
+      '<div class="recent-side-thumb" data-hero="' + (p.heroImage ? '1' : '') + '" style="' + (p.heroImage ? _heroBg(p.heroImage, 200, 175) : escHtml(p.thumbStyle)) + '">' + (p.heroImage ? '' : _blogSvg(p.thumbPaths, 28)) + '</div>' +
       '<div class="recent-side-body">' +
         '<h3 class="recent-side-title">' + escHtml(p.title) + '</h3>' +
         '<div class="recent-meta">' +
@@ -8224,7 +8385,7 @@ function renderRecentlyPublished() {
   container.innerHTML =
     '<div class="recent-posts-grid">' +
       '<div class="recent-main-card" onclick="navigate(\'' + escHtml(featured.id) + '\')">' +
-        '<div class="recent-main-thumb" style="' + escHtml(featured.thumbStyle) + '">' + _blogSvg(featured.thumbPaths, 56) + '</div>' +
+        '<div class="recent-main-thumb" data-hero="' + (featured.heroImage ? '1' : '') + '" style="' + (featured.heroImage ? _heroBg(featured.heroImage, 1000, 667) : escHtml(featured.thumbStyle)) + '">' + (featured.heroImage ? '' : _blogSvg(featured.thumbPaths, 56)) + '</div>' +
         '<h2 class="recent-main-title">' + escHtml(featured.title) + '</h2>' +
         '<div class="recent-meta">' +
           '<span class="cat-badge">' + escHtml(featured.category) + '</span>' +
@@ -8253,7 +8414,7 @@ function renderCategoryPosts() {
   });
   const cardHtml = p =>
     '<div class="blog-card" onclick="navigate(\'' + escHtml(p.id) + '\')" style="cursor:pointer;">' +
-      '<div class="blog-card-thumb-pattern" style="' + escHtml(p.thumbStyle) + '">' + _blogSvg(p.thumbPaths, 36) + '</div>' +
+      '<div class="blog-card-thumb-pattern" data-hero="' + (p.heroImage ? '1' : '') + '" style="' + (p.heroImage ? _heroBg(p.heroImage, 700, 350) : escHtml(p.thumbStyle)) + '">' + (p.heroImage ? '' : _blogSvg(p.thumbPaths, 36)) + '</div>' +
       '<div class="blog-card-body">' +
         '<h3 class="blog-card-title">' + escHtml(p.title) + '</h3>' +
         '<div class="blog-card-meta">' +
@@ -8283,12 +8444,23 @@ function renderCategoryPosts() {
 }
 
 window.addEventListener('DOMContentLoaded', function() {
+  // Newest first, by publish date — this is what reorganizes the blog around
+  // a freshly pushed article (drives Recently Published + category ordering).
+  BLOG_POSTS.sort(function(a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+  // Read time is derived from the live article body, so it tracks edits/pushes.
+  BLOG_POSTS.forEach(function(p) { p.readTime = _computeReadTime(p); });
+  // Data-driven sections.
   renderRecentlyPublished();
   renderCategoryPosts();
-  // Fix hardcoded blog cards: merge split date+readtime spans and truncate excerpts
+  // Bring every hardcoded card + article header into agreement with the data
+  // (dates, read times, hero images), and re-sort per-category pages by date.
+  syncBlogMeta();
+  sortCategoryGrids();
+  // Safety net: merge any split date/read-time spans on cards not represented
+  // in the data, so they match the synced single-span format.
   document.querySelectorAll('.blog-card-meta').forEach(function(meta) {
     const dates = meta.querySelectorAll('.blog-card-date');
-    if (dates.length >= 2 && !dates[0].style.fontStyle) {
+    if (dates.length >= 2) {
       dates[0].textContent = dates[0].textContent + ' · ' + dates[1].textContent;
       dates[1].remove();
     }
@@ -8449,6 +8621,8 @@ const blogEditor = (function () {
         if (typeof saved[r.key] === 'string') r.el.innerHTML = saved[r.key];
       });
     });
+    // Edited article bodies change the word count, so refresh read times.
+    if (window.__refreshBlogMeta) window.__refreshBlogMeta();
   }
 
   // On load: paint the cached overrides instantly, then refresh from the server.
@@ -8570,6 +8744,7 @@ const blogEditor = (function () {
           Object.keys(edits[pid]).forEach(k => { baseline[pid + '|' + k] = edits[pid][k]; });
         });
         cacheWrite(cache);
+        if (window.__refreshBlogMeta) window.__refreshBlogMeta();
         setStatus('Saved ✓ live for everyone');
       } else if (res && res.status === 401) {
         authPw = null;
