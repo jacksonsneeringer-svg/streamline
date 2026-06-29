@@ -1263,6 +1263,52 @@ section { padding: 6rem 0; }
 }
 .footer-bottom a { color: rgba(255,255,255,0.18); }
 .footer-bottom a:hover { color: rgba(255,255,255,0.5); }
+.footer-sep { color: rgba(255,255,255,0.18); margin: 0 0.4rem; }
+
+/* ── Blog inline editor ── */
+body.blog-edit-mode .post-body[contenteditable="true"],
+body.blog-edit-mode .post-header h1[contenteditable="true"] {
+  outline: 2px dashed var(--lap-hover);
+  outline-offset: 6px;
+  border-radius: var(--r-sm);
+  cursor: text;
+  transition: outline-color 0.15s;
+}
+body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal); background: var(--lap-pale); }
+.blog-editor-bar {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--deep);
+  color: var(--white);
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-xl);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+}
+.blog-editor-bar.is-open { display: flex; }
+.blog-editor-bar .be-status { color: var(--lap); font-weight: 400; }
+.blog-editor-bar button {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--r-md);
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+.be-save { background: var(--lap); color: var(--deep); }
+.be-save:hover { background: var(--lap-hover); }
+.be-reset { background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.25) !important; }
+.be-reset:hover { color: var(--white); }
+.be-exit { background: rgba(255,255,255,0.12); color: var(--white); }
+.be-exit:hover { background: rgba(255,255,255,0.22); }
 
 /* ── Nav inline search ── */
 .nav-search-wrap {
@@ -5576,8 +5622,18 @@ section { padding: 6rem 0; }
   </div>
   <div class="footer-bottom">
     <span>© 2026 STREAMLINE. All rights reserved.</span>
+    <span class="footer-sep"> · </span>
+    <a href="#" id="footer-editor-link" onclick="return blogEditor.promptUnlock();">Editor</a>
   </div>
 </footer>
+
+<div class="blog-editor-bar" id="blog-editor-bar">
+  <span class="be-status">Edit mode</span>
+  <span>Click any article text to edit.</span>
+  <button type="button" class="be-save" onclick="blogEditor.save()">Save changes</button>
+  <button type="button" class="be-reset" onclick="blogEditor.resetCurrent()">Reset this page</button>
+  <button type="button" class="be-exit" onclick="blogEditor.exit()">Done</button>
+</div>
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
@@ -6803,6 +6859,15 @@ async function performSearch(query) {
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+// Keep generated set/exercise descriptors purely informational: no em dashes,
+// and drop any motivational/coaching tail the model appends after one.
+function cleanNote(note) {
+  if (note == null) return '';
+  let t = String(note);
+  const dash = t.search(/[—–]/);
+  if (dash !== -1) t = t.slice(0, dash);
+  return t.replace(/[\s,;:.\-]+$/, '').trim();
+}
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-search-wrap')) closeNavSearch();
 });
@@ -6898,7 +6963,8 @@ function buildSetSectionsHtml(sections) {
     const divider = idx > 0 ? 'border-top:1px solid var(--gray-100);' : '';
     const items = (sec.items || []).map(item => {
       let h = `<div class="set-row">${escHtml(item.text)}</div>`;
-      if (item.note) h += `<div class="set-note">${escHtml(item.note)}</div>`;
+      const note = cleanNote(item.note);
+      if (note) h += `<div class="set-note">${escHtml(note)}</div>`;
       return h;
     }).join('');
     html += `<div style="${divider}">
@@ -7485,7 +7551,8 @@ function buildDrylandSectionsHtml(sections) {
     const color = drylandSectionColor(sec.name || '');
     const rows = (sec.items || []).map(item => {
       const ex = item.exercise || item.text || '';
-      const note = item.note ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(item.note)}</span>` : '';
+      const noteText = cleanNote(item.note);
+      const note = noteText ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(noteText)}</span>` : '';
       const muscles = Array.isArray(item.muscles) && item.muscles.length
         ? item.muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(' ') : '';
       const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
@@ -8318,6 +8385,143 @@ async function handleNewsletterSubmit(event, source) {
     const active = document.querySelector('.page.active');
     if (active) onPageChange(active.id.replace('page-', ''));
   });
+}());
+</script>
+
+<script>
+// ── Password-gated inline blog editor ──────────────────────────────────────
+// Lets an authorized editor revise the text of blog/article pages directly on
+// the site. Edits are saved per-page in this browser's localStorage and
+// re-applied on every load. Note: storage is local to this browser; it does
+// not publish changes to other visitors or to the server.
+const blogEditor = (function () {
+  const PASSWORD = 'marNib-bigkek-2hovko';
+  const STORE_KEY = 'streamline_blog_edits_v1';
+  const SESSION_KEY = 'streamline_blog_editor_unlocked';
+  let editing = false;
+
+  // A blog/article page is any .page that contains an article body.
+  function articlePages() {
+    return Array.from(document.querySelectorAll('.page'))
+      .filter(p => p.id && p.id.indexOf('page-') === 0 && p.querySelector('.post-body'));
+  }
+  // The editable regions within a page: the headline and the article body.
+  function regions(page) {
+    const out = [];
+    const h1 = page.querySelector('.post-header h1');
+    if (h1) out.push({ key: 'title', el: h1 });
+    const body = page.querySelector('.post-body');
+    if (body) out.push({ key: 'body', el: body });
+    return out;
+  }
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function store(data) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); return true; }
+    catch (e) { return false; }
+  }
+
+  // Re-apply saved edits to the live DOM. Called once on load.
+  function applyOverrides() {
+    const data = load();
+    articlePages().forEach(page => {
+      const saved = data[page.id];
+      if (!saved) return;
+      regions(page).forEach(r => {
+        if (typeof saved[r.key] === 'string') r.el.innerHTML = saved[r.key];
+      });
+    });
+  }
+
+  function currentPage() {
+    return document.querySelector('.page.active') || document.querySelector('.page');
+  }
+  function bar() { return document.getElementById('blog-editor-bar'); }
+  function setStatus(msg) {
+    const s = bar() && bar().querySelector('.be-status');
+    if (s) s.textContent = msg;
+  }
+
+  function setEditable(on) {
+    articlePages().forEach(page => {
+      regions(page).forEach(r => {
+        if (on) r.el.setAttribute('contenteditable', 'true');
+        else r.el.removeAttribute('contenteditable');
+      });
+    });
+    document.body.classList.toggle('blog-edit-mode', on);
+    if (bar()) bar().classList.toggle('is-open', on);
+  }
+
+  function enter() {
+    editing = true;
+    setEditable(true);
+    setStatus('Edit mode');
+    const active = currentPage();
+    if (!active || !active.querySelector('.post-body')) {
+      setStatus('Open any blog article to edit it');
+    }
+  }
+
+  function exit() {
+    editing = false;
+    setEditable(false);
+    return false;
+  }
+
+  function promptUnlock() {
+    if (editing) { exit(); return false; }
+    if (sessionStorage.getItem(SESSION_KEY) === '1') { enter(); return false; }
+    const pw = window.prompt('Enter editor password:');
+    if (pw == null) return false;
+    if (pw === PASSWORD) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      enter();
+    } else {
+      window.alert('Incorrect password.');
+    }
+    return false;
+  }
+
+  function save() {
+    const data = load();
+    articlePages().forEach(page => {
+      regions(page).forEach(r => {
+        if (r.el.getAttribute('contenteditable') !== 'true') return;
+        if (!data[page.id]) data[page.id] = {};
+        data[page.id][r.key] = r.el.innerHTML;
+      });
+    });
+    const ok = store(data);
+    setStatus(ok ? 'Saved ✓' : 'Save failed');
+    setTimeout(() => { if (editing) setStatus('Edit mode'); }, 1800);
+  }
+
+  // Discard saved edits for the page being viewed and restore original text.
+  function resetCurrent() {
+    const page = currentPage();
+    if (!page || !page.querySelector('.post-body')) {
+      setStatus('Open the article to reset it');
+      return;
+    }
+    if (!window.confirm('Reset this page to its original text? Saved edits for this page will be removed.')) return;
+    const data = load();
+    delete data[page.id];
+    store(data);
+    setStatus('Reset — reloading…');
+    setTimeout(() => location.reload(), 400);
+  }
+
+  // Apply any saved edits as early as the DOM is ready.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyOverrides);
+  } else {
+    applyOverrides();
+  }
+
+  return { promptUnlock, save, exit, resetCurrent };
 }());
 </script>
 
