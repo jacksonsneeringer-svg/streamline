@@ -2314,7 +2314,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .set-detail-close { position: absolute; top: 1rem; right: 1rem; width: 34px; height: 34px; border: none; background: var(--gray-100); border-radius: 50%; font-size: 1rem; cursor: pointer; color: var(--gray-400); display: flex; align-items: center; justify-content: center; }
 .set-detail-close:hover { background: var(--gray-200); color: var(--deep); }
 @media (max-width: 900px) {
-  .swim-level-layout { flex-direction: column; }
+  .swim-level-layout { flex-direction: column; align-items: stretch; }
   .swim-sidebar { width: 100%; position: static; }
 }
 /* Dryland exercise tables: stacked, readable cards on mobile instead of the
@@ -7036,8 +7036,8 @@ function renderSwimSet(level, data) {
   const focusCueHtml = buildFocusCueHtml(data.focusCue);
 
   container.innerHTML = `<div class="swim-print-area">
-  <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-    <div>
+  <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+    <div style="min-width:0;">
       <span class="eyebrow">${today} · ${levelLabel}</span>
       <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title)}</h2>
       <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${data.totalYards} yards &nbsp;·&nbsp; Est. ${data.estimatedMinutes} min</p>
@@ -7318,8 +7318,8 @@ function swimSetMarkup(data) {
   const sectionsHtml = buildSetSectionsHtml(data.sections);
   const focusCueHtml = buildFocusCueHtml(data.focusCue);
   return `<div class="swim-print-area">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-      <div>
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+      <div style="min-width:0;">
         ${eyebrow ? `<span class="eyebrow">${escHtml(eyebrow)}</span>` : ''}
         <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || '')}</h2>
         <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(data.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(data.estimatedMinutes || ''))} min</p>
@@ -7642,8 +7642,8 @@ function renderDryland(category, data) {
   const focusCueHtml = buildFocusCueHtml(data.focusCue);
 
   container.innerHTML = `<div class="swim-print-area">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-      <div>
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+      <div style="min-width:0;">
         <span class="eyebrow">${today} · ${escHtml(label)}${restBadge}</span>
         <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || '')}</h2>
         <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}${strokeLine}</p>
@@ -7893,8 +7893,8 @@ function drylandWorkoutMarkup(set) {
     sectionsHtml = `<div class="set-block">${buildDrylandSectionsHtml(data.sections)}</div>`;
   }
   return `<div class="swim-print-area">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
-      <div>
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+      <div style="min-width:0;">
         ${eyebrow ? `<span class="eyebrow">${escHtml(eyebrow)}</span>` : ''}
         <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || set.title || '')}</h2>
         <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}${strokeLine}</p>
