@@ -9,7 +9,8 @@ on:
 env:
   AWS_REGION: us-east-1
   STACK_NAME: streamline-website
-  DOMAIN_NAME: streamline.snurray.com
+  DOMAIN_NAME: winlanefour.com
+  CERTIFICATE_ARN: arn:aws:acm:us-east-1:667291328503:certificate/716a486a-36ba-43d4-b8c5-00bbba3130b1
 
 jobs:
   deploy:
@@ -40,7 +41,7 @@ jobs:
             --stack-name ${{ env.STACK_NAME }} \
             --parameter-overrides \
               DomainName=${{ env.DOMAIN_NAME }} \
-              CertificateArn=${{ secrets.ACM_CERTIFICATE_ARN }} \
+              CertificateArn=${{ env.CERTIFICATE_ARN }} \
               ResendApiKey=${{ secrets.RESEND_API_KEY }} \
               EditorPassword=${{ secrets.EDITOR_PASSWORD }} \
             --capabilities CAPABILITY_NAMED_IAM \

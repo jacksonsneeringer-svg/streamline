@@ -4,11 +4,12 @@ Description: Streamline static website - S3 + CloudFront + ACM + API (Lambda/Dyn
 Parameters:
   DomainName:
     Type: String
-    Default: streamline.snurray.com
+    Default: winlanefour.com
 
   CertificateArn:
     Type: String
     Description: ACM certificate ARN (must be in us-east-1)
+    Default: arn:aws:acm:us-east-1:667291328503:certificate/716a486a-36ba-43d4-b8c5-00bbba3130b1
 
   ResendApiKey:
     Type: String
@@ -399,7 +400,7 @@ Resources:
             'Content-Type': 'application/json'
           }
 
-          SITE_URL = os.environ.get('SITE_URL', 'https://streamline.snurray.com')
+          SITE_URL = os.environ.get('SITE_URL', 'https://winlanefour.com')
           EMAIL_FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
           SESSION_TTL = 30 * 24 * 3600  # 30 days
@@ -633,7 +634,7 @@ Resources:
           dynamo = boto3.resource('dynamodb')
           users = dynamo.Table('streamline-users')
 
-          SITE = os.environ.get('SITE_URL', 'https://streamline.snurray.com')
+          SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
           FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 
