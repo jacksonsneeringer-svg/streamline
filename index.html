@@ -248,18 +248,7 @@ strong { font-weight: 500; }
 #page-blog-gear .container,
 #page-blog-guides .container,
 #page-freestyle-errors .container,
-#page-training-intensity-zones .container,
-#page-morning-practice-nutrition .container,
-#page-race-week-taper .container,
-#page-breathing-mechanics .container,
-#page-goggles-guide .container,
-#page-training-fins-guide .container,
-#page-swim-paddles-guide .container,
-#page-pool-wetsuit-guide .container,
-#page-post-workout-nutrition .container,
-#page-dryland-training .container,
-#page-beginners-lap-swimming .container,
-#page-pull-buoys-guide .container {
+#page-race-week-taper .container {
   padding: 0 5.5rem;
 }
 section { padding: 6rem 0; }
@@ -2794,41 +2783,22 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
               <path d="M155 196 Q130 200 110 208 Q90 218 75 222" stroke-width="14"/>
               <path d="M160 190 Q138 188 118 183 Q100 179 85 178" stroke-width="14"/>
             </svg>
-            <span style="font-family:'DM Sans',sans-serif; font-size:0.62rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:rgba(93,219,201,0.5);">Featured Post</span>
           </div>
         </div>
         <div class="blog-feature-body">
           <a href="#freestyle-errors" class="blog-feature-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Mistakes and How to Fix Them</a>
           <div class="blog-side-meta" style="margin-top:0.65rem;">
-            <span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026 · 8 min read</span>
+            <span class="cat-badge">Technique</span><span class="blog-card-date">Jun 30, 2026 · 8 min read</span>
           </div>
           <p style="font-size:0.85rem; font-weight:300; color:var(--text-muted); line-height:1.65; margin-top:0.75rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p>
         </div>
       </div>
-      <!-- Right: three compact posts -->
+      <!-- Right: latest posts (populated newest-first by renderHomeFeatured) -->
       <div class="blog-side-col">
-        <div class="blog-side-card">
-          <a class="blog-side-title" href="#training-intensity-zones" onclick="navigate('training-intensity-zones')">Understanding Training Intensity Zones for Swimmers</a>
-          <div class="blog-side-meta">
-            <span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026 · 7 min read</span>
-          </div>
-        </div>
-        <div class="blog-side-card">
-          <a class="blog-side-title" href="#morning-practice-nutrition" onclick="navigate('morning-practice-nutrition')">What Swimmers Should Eat Before a Morning Practice</a>
-          <div class="blog-side-meta">
-            <span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026 · 5 min read</span>
-          </div>
-        </div>
         <div class="blog-side-card">
           <a class="blog-side-title" href="#race-week-taper" onclick="navigate('race-week-taper')">How to Taper for a Swim Meet Without Losing Your Speed</a>
           <div class="blog-side-meta">
-            <span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026 · 6 min read</span>
-          </div>
-        </div>
-        <div class="blog-side-card">
-          <a class="blog-side-title" href="#breathing-mechanics" onclick="navigate('breathing-mechanics')">Breathing Mechanics and Frequency in Freestyle</a>
-          <div class="blog-side-meta">
-            <span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026 · 6 min read</span>
+            <span class="cat-badge">Training</span><span class="blog-card-date">Jun 29, 2026 · 6 min read</span>
           </div>
         </div>
       </div>
@@ -3393,14 +3363,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-guides')">View all →</span>
           </div>
           <div class="grid-2" id="blog-cat-grid-guides">
-            <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-              <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-              <div class="blog-card-body"><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected: breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.</p></div>
-            </div>
-            <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-              <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-              <div class="blog-card-body"><h3 class="blog-card-title">How to Build a 12-Week Swim Base</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Building a swim base isn't about logging maximum yardage. It's about developing the aerobic engine that all other swimming intensity depends on. The swimmers who progress most reliably are the ones who spend time doing unglamorous, aerobic-paced work before introducing threshold training and sprint sets.</p></div>
-            </div>
           </div>
         </div>
 
@@ -3411,14 +3373,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-technique')">View all →</span>
           </div>
           <div class="grid-2" id="blog-cat-grid-technique">
-            <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-              <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-              <div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long — creating disruptions in the stroke cycle that compound over thousands of yards.</p></div>
-            </div>
-            <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-              <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-              <div class="blog-card-body"><h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">The flip turn is the fastest phase of every lap swim, and most recreational swimmers execute it poorly. A poorly timed or off-axis turn sacrifices the most valuable propulsive moment in the pool — the push-off from the wall.</p></div>
-            </div>
           </div>
         </div>
 
@@ -3439,14 +3393,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <span class="blog-nav-link" style="padding:0; cursor:pointer;" onclick="navigate('blog-nutrition')">View all →</span>
           </div>
           <div class="grid-2" id="blog-cat-grid-nutrition">
-            <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-              <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div>
-              <div class="blog-card-body"><h3 class="blog-card-title">Hydration for Swimmers: What to Drink and When</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Pool swimmers often underestimate how much fluid they lose during training. The water masks the sensation of sweat, and most swimmers don't feel thirsty during a session the way runners do. But dehydration affects performance even at mild levels, and most swimmers finish practice in a modest fluid deficit.</p></div>
-            </div>
-            <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-              <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div>
-              <div class="blog-card-body"><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.</p></div>
-            </div>
           </div>
         </div>
 
@@ -3501,14 +3447,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p>
         </div>
       </div>
-      <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long — creating disruptions in the stroke cycle that compound over thousands of yards.</p></div>
-      </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Flip Turns: A Step-by-Step Guide</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">The flip turn is the fastest phase of every lap swim, and most recreational swimmers execute it poorly. A poorly timed or off-axis turn sacrifices the most valuable propulsive moment in the pool — the push-off from the wall.</p></div>
-      </div>
     </div>
   </div>
 </section>
@@ -3536,17 +3474,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div>
-      </div>
       <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool.</p></div>
-      </div>
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.</p></div>
       </div>
     </div>
   </div>
@@ -3575,26 +3505,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div>
-      </div>
-      <div class="blog-card" onclick="navigate('training-fins-guide')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Best Training Fins for Every Level</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 7, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.</p></div>
-      </div>
-      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5H5V9zM13 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5h-6V9z"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div>
-      </div>
-      <div class="blog-card" onclick="navigate('pool-wetsuit-guide')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Pool vs. Open Water Wetsuits Explained</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 24, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Open water swimmers face a decision that pool swimmers don't: whether to wear a wetsuit, and which kind. The options range from full tri suits to swim skins to just a swimsuit, and the right choice depends on water temperature, race rules, your level, and what you're optimizing for.</p></div>
-      </div>
-      <div class="blog-card" onclick="navigate('pull-buoys-guide')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Pull Buoys: How to Use Them Without Developing Bad Habits</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 17, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">The pull buoy is one of the most common pieces of equipment in a swimmer's bag, and one of the most misused. Used correctly, it isolates the upper body and lets swimmers focus on catch mechanics and pulling power.</p></div>
-      </div>
+      <p style="color:var(--gray-400); font-size:0.95rem; padding:1rem 0;">No posts in this category yet — check back soon.</p>
     </div>
   </div>
 </section>
@@ -3622,18 +3533,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected: breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.</p></div>
-      </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep));"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">How to Build a 12-Week Swim Base</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Building a swim base isn't about logging maximum yardage. It's about developing the aerobic engine that all other swimming intensity depends on. The swimmers who progress most reliably are the ones who spend time doing unglamorous, aerobic-paced work before introducing threshold training and sprint sets.</p></div>
-      </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Race Prep: A Week-by-Week Countdown</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">In the weeks before a major competition, training decisions have outsized consequences. Doing too much risks arriving fatigued. Doing too little risks arriving flat. The race prep countdown is about threading this needle — arriving at the start line with fresh legs, sharp skills, and full glycogen stores.</p></div>
-      </div>
+      <p style="color:var(--gray-400); font-size:0.95rem; padding:1rem 0;">No posts in this category yet — check back soon.</p>
     </div>
   </div>
 </section>
@@ -3661,18 +3561,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 5, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.</p></div>
-      </div>
-      <div class="blog-card" style="opacity:0.6; pointer-events:none;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Hydration for Swimmers: What to Drink and When</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date" style="font-style:italic;">Coming soon</span></div><p class="blog-card-excerpt">Pool swimmers often underestimate how much fluid they lose during training. The water masks sweat, and most swimmers don't feel thirsty the way runners do. But dehydration at even mild levels measurably impairs endurance performance.</p></div>
-      </div>
-      <div class="blog-card" onclick="navigate('post-workout-nutrition')" style="cursor:pointer;">
-        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div>
-        <div class="blog-card-body"><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Mar 17, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.</p></div>
-      </div>
+      <p style="color:var(--gray-400); font-size:0.95rem; padding:1rem 0;">No posts in this category yet — check back soon.</p>
     </div>
   </div>
 </section>
@@ -3685,7 +3574,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <h1>7 Common Freestyle Mistakes<br/>and How to Fix Them</h1>
     <div class="post-header-sub">
       <span class="post-back-btn" onclick="navigate('blog-technique')">← Technique</span>
-      <div class="post-meta"><span>May 20, 2026</span><span class="dot"></span><span>8 min read</span></div>
+      <div class="post-meta"><span>Jun 30, 2026</span><span class="dot"></span><span>8 min read</span></div>
     </div>
   </div>
 </div>
@@ -3758,109 +3647,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long.</p></div></div>
-      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 29, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat.</p></div></div>
     </div>
   </div>
 </section>
 </div><!-- end page-freestyle-errors -->
-
-<!-- ══ POST: TRAINING INTENSITY ZONES ══ -->
-<div class="page" id="page-training-intensity-zones">
-<div class="post-header">
-  <div class="container">
-    <h1>Understanding Training<br/>Intensity Zones for Swimmers</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-training')">← Training</span>
-      <div class="post-meta"><span>Jun 2, 2026</span><span class="dot"></span><span>7 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p>
-  <p>The answer, almost always, is that the body has adapted to the single stimulus you keep giving it. Training with intention means exposing your energy systems to different demands on a systematic basis. That requires understanding what those systems are and how to target them.</p>
-  <blockquote>"Training harder isn't the same as training smarter. The swimmers who improve most consistently are the ones who understand what they're asking their body to do on a given day."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Zone 1 — Active Recovery</h3><p>Very easy effort, 50–60% of maximum heart rate. The point is not to develop fitness; it's to promote blood flow, flush metabolic waste, and allow the nervous system to recover without adding stress. Most swimmers skip this zone entirely, which is a mistake after hard sessions or during high-volume weeks.</p></div></div>
-  <p><strong>When to use it:</strong> The day after a hard set, during warm-up and cool-down, or on low-priority training days where the goal is to stay in the water without accumulating fatigue.</p>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Zone 2 — Aerobic Base</h3><p>The most underused zone in recreational swimming and the most important for long-term development. Zone 2 sits at a comfortable but deliberate effort — conversational pace, 60–70% max heart rate, roughly 70–75% of your best 1,000-yard time. You should be able to hold this pace for a very long time without going anaerobic.</p></div></div>
-  <p><strong>When to use it:</strong> The majority of your training volume should live here. Zone 2 builds the aerobic engine that all other intensities depend on. Swimmers who skip zone 2 in favor of constant moderate-to-hard efforts often hit performance ceilings earlier than those who build a strong aerobic base first.</p>
-  <p>A practical marker: if you can't easily carry on a conversation at your current pace, you're above zone 2.</p>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Zone 3 — Threshold</h3><p>This is the pace you can hold for roughly 20–60 minutes at maximum sustained effort. It sits at lactate threshold — the point at which lactate production begins to exceed the body's ability to clear it. Training at and slightly above this zone shifts the threshold upward over time, meaning you can sustain faster speeds before tipping into anaerobic territory.</p></div></div>
-  <p><strong>When to use it:</strong> Threshold sets typically make up 10–15% of total weekly volume. Classic formats include long cruise intervals at T-pace (your threshold pace per 100), or straight swims of 1,000–2,000 yards at a sustained effort.</p>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Zone 4 — VO2 Max</h3><p>Short, intense intervals that push your cardiovascular system to its ceiling. Typical durations are 2–8 minutes at maximum aerobic effort, with recovery intervals of equal or greater length. This zone develops your aerobic capacity — the absolute size of your engine — and is where significant speed gains occur.</p></div></div>
-  <p><strong>When to use it:</strong> Once or twice per week maximum during hard training blocks. These sessions are demanding and require full recovery between sessions. A representative set: 6 × 200 on 3:30, descending pace with the last two swum at or near best effort.</p>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Zone 5 — Anaerobic / Sprint</h3><p>All-out efforts lasting 10–60 seconds. Zone 5 develops the anaerobic capacity used in race finishes and sprint events. Recovery requirements are high — full rest between repetitions is not optional here. Incomplete recovery turns a sprint set into a threshold set, which defeats the purpose.</p></div></div>
-  <p><strong>When to use it:</strong> Sprint work belongs in a periodized plan, not in every session. It's most productive in race-prep phases after a solid aerobic base has been established. A typical sprint set: 10 × 25 on 2:00, all-out from a push, focusing on maximum stroke rate and breakout distance.</p>
-  <hr />
-  <h2>How to apply zones in practice</h2>
-  <p>A useful weekly structure distributes effort roughly as follows: 70–75% zone 2, 10–15% zone 3, 10% zone 4, and 5% zone 5. This distribution is consistent with what research shows in elite endurance athletes across multiple sports and is often called the polarized or pyramidal model depending on the exact ratios.</p>
-  <p>The mistake most recreational swimmers make is spending the majority of their training in the zone 3–4 range — hard enough to be tiring, not hard enough to be maximally productive. This "black hole" of training produces fatigue without the specific adaptations of either base work or true high-intensity training.</p>
-  <p>LANE FOUR's daily swim sets specify the intended intensity zone for each segment. Use the pace targets as a guide and adjust to your current fitness level.</p>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>Each workout includes intensity zone markers so you know exactly what energy system you're targeting. Updated every morning across all levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool.</p></div></div>
-      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-training-intensity-zones -->
-
-<!-- ══ POST: MORNING PRACTICE NUTRITION ══ -->
-<div class="page" id="page-morning-practice-nutrition">
-<div class="post-header">
-  <div class="container">
-    <h1>What Swimmers Should Eat<br/>Before a Morning Practice</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-nutrition')">← Nutrition</span>
-      <div class="post-meta"><span>May 28, 2026</span><span class="dot"></span><span>5 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.</p>
-  <p>The right approach depends on when practice starts and what kind of session it is.</p>
-  <blockquote>"The goal before a morning practice isn't a perfect meal. It's enough substrate to fuel the work without creating GI problems in the water."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>The case for eating something</h3><p>Glycogen stores — the liver's carbohydrate reservoir — are partially depleted after an overnight fast. For a short, easy aerobic session, this may not matter much. For anything involving threshold work, sprint sets, or sessions longer than 60 minutes, starting with depleted glycogen limits performance and accelerates fatigue. The argument for training fasted ("fat adaptation") is real for specific, low-intensity training blocks, but it does not apply across all session types.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>30–60 minutes before practice</h3><p>With limited time before hitting the water, the priority is quick-digesting carbohydrate with minimal fat and fiber, both of which slow gastric emptying and increase the risk of GI discomfort. Good options at this window: a banana, a small serving of white rice or plain toast, a few dates, or a sports drink with glucose. Keep portions small — 150–250 calories is usually sufficient.</p></div></div>
-  <p><strong>What to avoid:</strong> High-fat foods (nut butters in large amounts, full dairy), high-fiber foods (bran, most raw vegetables, whole grain breads), and large protein-heavy meals. These are appropriate post-workout, not pre.</p>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>90+ minutes before practice</h3><p>A larger window allows a more balanced small meal. A combination of moderate-glycemic carbohydrate and a small amount of protein supports blood sugar stability and provides amino acids for muscle protein synthesis after training. A bowl of oatmeal with a small amount of fruit, eggs on toast, or Greek yogurt with granola are all practical options that most athletes tolerate well.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Hydration before and during</h3><p>Mild dehydration — as little as 2% body weight in fluid deficit — measurably impairs endurance performance. Waking up mildly dehydrated after 7–8 hours without fluids is normal. 12–16 oz of water in the 30–60 minutes before practice is a reasonable starting point. During the session, most swimmers need 12–20 oz per hour of moderate training, more in warm conditions or during high-intensity work.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>After the session</h3><p>The post-workout window is where most of the nutritional work happens. Within 30–60 minutes of finishing, prioritize carbohydrate to replenish glycogen and protein to support muscle repair. A ratio of roughly 3:1 or 4:1 carbohydrate to protein is well-supported by research. Practical examples: chocolate milk (genuinely a solid recovery option), a smoothie with fruit and protein powder, eggs and rice, or a sandwich with lean meat.</p></div></div>
-  <hr />
-  <h2>A note on individual variation</h2>
-  <p>GI sensitivity during exercise is highly individual. Some swimmers train at high intensity on an empty stomach without issues; others need 90 minutes of digestion time before any hard effort. Experimentation during low-stakes training sessions is the only reliable way to calibrate your own pre-practice nutrition strategy. Do not try something new before a race or important time trial.</p>
-  <p>The guidance above represents a reasonable starting framework for most swimmers. Adjust based on your own GI tolerance, training intensity, and how your body responds.</p>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Nutrition guidance built for swimmers</h3>
-      <p>Create a free account to get meal timing and fueling recommendations calibrated to your training schedule and goals.</p>
-    </div>
-    <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Get Started →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('post-workout-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Post-Workout Recovery Nutrition for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Mar 17, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.</p></div></div>
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-morning-practice-nutrition -->
 
 <!-- ══ POST: RACE-WEEK TAPER ══ -->
 <div class="page" id="page-race-week-taper">
@@ -3920,372 +3711,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="container">
     <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
     <div class="grid-3">
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.</p></div></div>
-      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
+      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Jun 30, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time.</p></div></div>
     </div>
   </div>
 </section>
 </div><!-- end page-race-week-taper -->
-
-<!-- ══ POST: BREATHING MECHANICS ══ -->
-<div class="page" id="page-breathing-mechanics">
-<div class="post-header">
-  <div class="container">
-    <h1>Breathing Mechanics and<br/>Frequency in Freestyle</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-technique')">← Technique</span>
-      <div class="post-meta"><span>Apr 28, 2026</span><span class="dot"></span><span>6 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long — creating disruptions in the stroke cycle that compound over thousands of yards.</p>
-  <p>Breathing in freestyle is a skill, and like all skills it requires deliberate practice to automate. Most swimmers breathe in ways they've never examined.</p>
-  <blockquote>"The breath should feel like a natural extension of body rotation. If it feels like an interruption, the timing is wrong."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Rotation, not elevation</h3><p>The most common breathing error in freestyle is lifting the head rather than rotating it. A proper freestyle breath happens through body rotation: as the body rolls to the breathing side, the head stays in alignment with the spine, rotating just enough to clear the mouth above the waterline. The ear stays submerged. The eye facing up should see sky, not pool deck.</p></div></div>
-  <p><strong>Why it matters:</strong> When the head lifts rather than rotates, the hips drop in compensation, increasing drag significantly. The lift also disrupts stroke timing, creating a pause that breaks forward momentum.</p>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Breath timing within the stroke cycle</h3><p>The breath should be initiated as the stroking arm sweeps past the hip — not at the beginning of the pull. Initiating the breath too early, during the catch, forces a head turn that disrupts the high-elbow position. Waiting until the arm passes the hip ensures the breath happens at the moment of peak body rotation, requiring the least additional effort.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Exhaling underwater</h3><p>Many recreational swimmers hold their breath underwater and exhale when they turn to breathe — creating a rushed, incomplete breath exchange. The correct pattern is to exhale continuously underwater so that when you rotate to breathe, you can inhale fully without first clearing the lungs. During warmup, practice a slow, steady stream of bubbles from the moment your face enters the water until you rotate to breathe.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Breathing frequency</h3><p>How often to breathe depends on the event, your aerobic capacity, and your technique. For distance swimming, breathing every 2 strokes (to one side) or every 3 strokes (bilateral, alternating sides) is most common. Bilateral breathing forces a symmetrical stroke because the mechanics of breathing to both sides must both work — asymmetrical swimmers tend to have an underdeveloped stroke on their non-dominant side.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Using the bow wave</h3><p>At faster swimming speeds, the body creates a bow wave — a small trough of water running along the side of the head. An experienced swimmer can take a breath into this trough without rotating the head above the water surface, keeping the head in better alignment and reducing drag. Learning to use the bow wave is a refinement that becomes relevant as speed increases.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>Workouts include technique cues and breathing drills. Updated every day across Beginner, Intermediate, and Advanced levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-      <div class="blog-card" onclick="navigate('beginners-lap-swimming')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date">Mar 3, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected — breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.</p></div></div>
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-breathing-mechanics -->
-
-<!-- ══ POST: GOGGLES GUIDE ══ -->
-<div class="page" id="page-goggles-guide">
-<div class="post-header">
-  <div class="container">
-    <h1>How to Choose Goggles:<br/>A Practical Guide</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
-      <div class="post-meta"><span>Apr 14, 2026</span><span class="dot"></span><span>5 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p>
-  <p>The right pair keeps water out, doesn't fog, and doesn't create a headache after 30 minutes. Finding that pair requires understanding a few key variables.</p>
-  <blockquote>"A good pair of goggles shouldn't cross your mind during a swim. If you're thinking about your goggles, they're not doing their job."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Fit and seal — the only thing that matters first</h3><p>Before evaluating lens type, strap design, or anti-fog coating, a goggle has to seal against your face. The seal is created by the gasket pressing against the orbital bone around your eye socket. Eye socket shapes vary significantly, and goggle manufacturers design around different anatomies. Press the goggles gently against your eyes without the strap — if they create a light suction and stay for a second or two, the gasket shape matches your face.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Lens types and tinting</h3><p>Clear lenses are best for indoor pools with variable or low lighting. Tinted lenses (smoke, blue, or mirrored) reduce glare and are preferred for outdoor swimming or very bright indoor pools. Polarized lenses eliminate horizontal glare and are valuable for open water. Photochromic lenses adjust to light conditions automatically, which is convenient but adds cost.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Anti-fog performance</h3><p>All goggles ship with an anti-fog coating. Most coatings degrade within 2–4 months of regular use, especially if wiped with fingers or cloth. Once the coating is gone, the lens fogs permanently. Rubbing the inside of the lens with saliva before getting in the water is a reliable short-term trick that competitive swimmers have used for decades. Anti-fog sprays can extend lens life modestly.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Strap and nose bridge adjustment</h3><p>The strap should be snug but not tight. Over-tightening is the most common reason for goggle-related headaches and pressure marks around the eyes. A properly fit goggle requires only modest strap tension. Most goggles offer an adjustable nose bridge; try the widest setting first and work narrower until the seal improves.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Racing vs. training goggles</h3><p>Racing goggles sit closer to the face with a lower-profile gasket, offering a wider field of vision and less drag at speed. Training goggles have thicker gaskets and more cushioning, making them comfortable for long sets but less suitable for competition. Most serious swimmers own both types.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts every day across Beginner, Intermediate, and Advanced levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('training-fins-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Best Training Fins for Every Level</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 7, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-      <div class="blog-card" onclick="navigate('beginners-lap-swimming')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">The Complete Beginner's Guide to Lap Swimming</h3><div class="blog-card-meta"><span class="cat-badge">Guide</span><span class="blog-card-date">Mar 3, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected: breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-goggles-guide -->
-
-<!-- ══ POST: TRAINING FINS ══ -->
-<div class="page" id="page-training-fins-guide">
-<div class="post-header">
-  <div class="container">
-    <h1>Best Training Fins<br/>for Every Level</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
-      <div class="post-meta"><span>Apr 7, 2026</span><span class="dot"></span><span>6 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.</p>
-  <p>Most swimmers own one pair and use it for everything. Understanding the functional differences between fin types lets you make deliberate choices about what to put on your feet.</p>
-  <blockquote>"Fins should make your kick better, not substitute for it. The goal is to build power and feel that transfers when the fins come off."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Short training fins</h3><p>Short-blade fins (blade length roughly 6–10 inches) are designed to add propulsion while maintaining a kick tempo close to natural freestyle. They allow a relatively normal kick rate and are appropriate for technique drills, kick sets, and any work where you want fin assistance without completely altering mechanics. Short fins develop hip-driven kick mechanics and are the default recommendation for competitive swimming training.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Long-blade fins</h3><p>Long-blade fins (blade length 14–18 inches) generate significant propulsion and substantially lower kick tempo. They are most appropriate for body position drills — learning to maintain a flat, streamlined position — and for developing ankle flexibility. Long fins are less appropriate for mimicking race mechanics; the kick rate and muscular demand are too different from natural freestyle.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Monofins</h3><p>Monofins connect both feet to a single blade and require a dolphin kick motion. They are used in underwater swimming and by butterfly specialists to develop undulation mechanics and core-driven propulsion. Outside of these specific contexts, monofins have limited training value for most swimmers.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Fit matters</h3><p>Fins that are too tight create foot cramping and blisters; fins that are too loose slip off mid-set and become a hazard. Silicone fins are generally more comfortable than rubber for longer sets. Try fins on before buying if possible, or check the manufacturer's sizing chart carefully — sizing varies considerably between brands.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>How often to use fins</h3><p>Fins are a tool, not a crutch. Overuse leads to dependence — swimmers who use fins in every set often struggle to maintain body position or kick effectiveness without them. A reasonable guideline is fins in 20–30% of total kick yardage, with the remainder swum unassisted. Fin yardage should complement your technique work, not replace it.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>Each workout specifies which equipment is needed. Updated daily across all levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5H5V9zM13 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5h-6V9z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div></div>
-      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-training-fins-guide -->
-
-<!-- ══ POST: SWIM PADDLES ══ -->
-<div class="page" id="page-swim-paddles-guide">
-<div class="post-header">
-  <div class="container">
-    <h1>Hand Paddles: How to Use Them<br/>Without Wrecking Your Shoulders</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
-      <div class="post-meta"><span>Mar 31, 2026</span><span class="dot"></span><span>5 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p>
-  <p>The key is using the right paddle size for your current ability, in the right sets, with correct mechanics throughout.</p>
-  <blockquote>"A paddle that's too large doesn't build more power — it just amplifies whatever mechanics you already have, good or bad."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Paddle size</h3><p>The most common mistake is using paddles that are too large. Oversized paddles mask poor catch mechanics and place excessive load on the shoulder by increasing resistance beyond what the joint can handle without compromising form. A paddle should be approximately the size of your hand, maybe slightly larger. If you're new to paddles, start small and work up. Fingertip paddles (which cover only the fingertips) are an excellent starting point that develops feel and catch mechanics without overloading the shoulder.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Which sets to use them in</h3><p>Paddles are most appropriate for pull sets with a buoy — sets where the legs are resting and the upper body is doing all the work. They can also be used during full-stroke technical work if the focus is on catch mechanics and you're swimming at moderate intensity. Paddles are not appropriate for fast sprinting or race-pace work; at high speed, the increased resistance creates mechanical stress the shoulder isn't designed to handle repeatedly.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>The catch is the point</h3><p>The main benefit of paddles is proprioceptive feedback — you feel the water pressure on a larger surface and can sense whether your catch is engaged early and your elbow is high. If your elbow drops during the catch, you'll feel the paddle lose resistance. Use that feedback to adjust. A proper high-elbow catch engages the water early; the paddle stays loaded throughout the pull.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Warning signs</h3><p>Shoulder pain, clicking, or impingement-like sensations during or after paddle sets are signs to stop. Paddles place real load on the rotator cuff, biceps tendon, and AC joint. Swimmers with a history of shoulder issues should introduce paddles cautiously and consult a sports medicine professional before heavy use. Pain is not something to work through with paddles.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>Pull sets with appropriate paddle guidance included. Updated daily across all levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-swim-paddles-guide -->
-
-<!-- ══ POST: WETSUITS ══ -->
-<div class="page" id="page-pool-wetsuit-guide">
-<div class="post-header">
-  <div class="container">
-    <h1>Pool vs. Open Water<br/>Wetsuits Explained</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
-      <div class="post-meta"><span>Mar 24, 2026</span><span class="dot"></span><span>5 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Open water swimmers face a decision that pool swimmers don't: whether to wear a wetsuit, and which kind. The options range from full tri suits to swim skins to just a swimsuit, and the right choice depends on water temperature, race rules, your level, and what you're optimizing for.</p>
-  <p>The categories overlap more than marketing materials suggest, and the decision is often simpler than it appears once you understand what each type actually does.</p>
-  <blockquote>"The wetsuit that makes you fastest isn't always the thickest or most expensive one. Fit and mobility matter more than buoyancy above a certain threshold."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Full wetsuits</h3><p>Full triathlon wetsuits (also called full suits or full-sleeve suits) cover the entire body and are made from neoprene panels of varying thickness. They provide the most buoyancy and warmth and are appropriate for water temperatures below approximately 68°F (20°C). Buoyancy raises the hips and improves body position, which benefits swimmers with naturally low-lying legs. The tradeoff is reduced shoulder mobility, which can affect stroke mechanics, particularly in the catch phase.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Sleeveless wetsuits</h3><p>Sleeveless suits provide buoyancy through a neoprene torso and legs while leaving the shoulders and arms unrestricted. They are a common choice for swimmers who prioritize stroke mechanics over maximum buoyancy. Shoulder mobility is fully preserved, and many swimmers find them easier to put on and remove. Appropriate in water temperatures between roughly 68°F and 78°F depending on comfort.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Swim skins</h3><p>Swim skins (also called speed suits) are thin, full-body garments made from low-drag fabrics rather than neoprene. They provide no meaningful buoyancy or insulation but reduce hydrodynamic drag compared to a standard swimsuit. They are used in warm-water open water racing where wetsuits are not allowed and in pool competition where they comply with the relevant rules.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Race rules</h3><p>Wetsuit legality in competition is determined by water temperature on race day. USA Triathlon allows wetsuits in water below 78°F (25.6°C) and requires them below 60°F (15.6°C). Rules vary by federation and event type — always check the specific race's rules before investing in a suit. Some open water swimming events (particularly FINA-sanctioned marathon swims) prohibit wetsuits entirely.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Fit and care</h3><p>A wetsuit should be snug without restricting breathing. The neck seal should not chafe; the shoulders should allow a full range of motion. Rinse with fresh water after every use, dry away from direct sunlight, and store flat or on a wide hanger. Neoprene degrades with UV exposure, chlorine contact, and improper storage. A well-maintained suit lasts 4–6 seasons of regular use.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>Open water sets included. Updated daily across Beginner, Intermediate, and Advanced levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
-      <div class="blog-card" onclick="navigate('training-fins-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Best Training Fins for Every Level</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 7, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.</p></div></div>
-      <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-pool-wetsuit-guide -->
-
-<!-- ══ POST: POST-WORKOUT NUTRITION ══ -->
-<div class="page" id="page-post-workout-nutrition">
-<div class="post-header">
-  <div class="container">
-    <h1>Post-Workout Recovery<br/>Nutrition for Swimmers</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-nutrition')">← Nutrition</span>
-      <div class="post-meta"><span>Mar 17, 2026</span><span class="dot"></span><span>5 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.</p>
-  <p>Most swimmers underinvest in post-workout nutrition, either from lack of appetite after hard training or from the mistaken belief that eating soon after exercise undermines performance or body composition goals. The research is clear on both counts.</p>
-  <blockquote>"What you eat after training determines how much of that session you actually keep. Adaptation happens during recovery, not during the work itself."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>The carbohydrate priority</h3><p>Glycogen resynthesis is fastest in the 30–60 minutes post-exercise. A carbohydrate intake of approximately 1–1.2 grams per kilogram of bodyweight in this window maximizes the rate of replenishment. For a 70kg swimmer, that's 70–84 grams of carbohydrate — roughly the amount in a large banana and a cup of rice, or two slices of bread and a sports drink. Moderately high-glycemic carbohydrates (white rice, fruit juice, bread) absorb faster than low-glycemic options in this context.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Protein for muscle repair</h3><p>Muscle protein synthesis is elevated for several hours after training. Consuming 20–40 grams of high-quality protein alongside the post-workout carbohydrate supports repair and adaptation. Leucine-rich proteins — whey, eggs, lean meat, Greek yogurt — are most effective at stimulating protein synthesis. Plant proteins can be equally effective when leucine thresholds are met, often requiring slightly higher total protein intake.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Practical options that work</h3><p>Chocolate milk is genuinely one of the best post-workout options — it provides roughly the right carbohydrate-to-protein ratio (3:1 to 4:1), is palatable after hard training when solid food is unappealing, and requires no preparation. Other practical options: a smoothie with fruit and Greek yogurt, rice and eggs, a sandwich with lean protein, or oatmeal with milk and fruit. The exact composition matters less than actually consuming something in the window.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Rehydration</h3><p>Fluid and electrolyte replacement is part of recovery. Swimmers underestimate fluid losses because the pool water masks sweat. A practical approach: weigh yourself before and after training. Each kilogram of weight lost represents approximately one liter of fluid deficit. Replace 1.5 liters of fluid for every kilogram lost to account for ongoing urinary losses. Adding sodium to the recovery drink (or consuming a salty food) accelerates fluid retention.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Nutrition guidance for swimmers</h3>
-      <p>Create a free account to get meal timing and fueling recommendations calibrated to your training schedule and goals.</p>
-    </div>
-    <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Get Started →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('morning-practice-nutrition')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">What Swimmers Should Eat Before a Morning Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">May 28, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.</p></div></div>
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-post-workout-nutrition -->
-
-<!-- ══ POST: DRYLAND TRAINING ══ -->
-<div class="page" id="page-dryland-training">
-<div class="post-header">
-  <div class="container">
-    <h1>Dryland Training for Swimmers:<br/>What Actually Transfers</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-training')">← Training</span>
-      <div class="post-meta"><span>Mar 10, 2026</span><span class="dot"></span><span>7 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p>
-  <p>The exercises that transfer most to pool performance are not always the ones that look most like swimming from the outside. Understanding the underlying demands of the stroke is what makes a dryland program actually useful.</p>
-  <blockquote>"The question isn't whether dryland helps swimming. It does. The question is whether the dryland you're doing helps your specific swimming."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Pulling mechanics and lat development</h3><p>The freestyle pull is primarily a lat and posterior shoulder movement — the arm sweeps from full extension above the head to the hip in a motion similar to a lat pulldown. Exercises that develop this movement directly include pull-ups, lat pulldowns, single-arm cable rows, and band pull-aparts. The key is training through the full range of motion, including the catch position (shoulder at roughly 90 degrees of flexion with the elbow high).</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Shoulder stability</h3><p>The shoulder complex in swimming is under repeated stress at the end range of external rotation and flexion — positions where the rotator cuff is most vulnerable. Dryland work that directly trains rotator cuff stability (external rotation with band, prone Y-T-W, face pulls) has clear transfer to shoulder health and injury prevention. This work doesn't look impressive in the gym, but it has a measurable effect on both performance and durability.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Core for rotation and stability</h3><p>The freestyle stroke involves significant rotational force through the core. The muscles responsible — obliques, transverse abdominis, and spinal extensors — are best trained through anti-rotation and rotational exercises rather than traditional sit-ups. Pallof press, rotational medicine ball throws, plank variations with movement, and deadbugs are all appropriate. These develop the core stability and rotational power that drive hip rotation and body roll.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Hip drive</h3><p>The kick originates at the hip, not the knee. Hip flexor strength and hip extensor power (primarily glutes) directly affect kick propulsion. Exercises with the best transfer: hip thrusts, single-leg Romanian deadlifts, cable kickbacks, and banded hip flexion work. These train the hip muscles through ranges of motion that mirror the kick cycle.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>What doesn't transfer as well</h3><p>Bench press, bicep curls, and most machine chest and shoulder work have limited transfer to swimming-specific performance. They build mass and general strength but don't address the specific movement patterns or stability demands of the stroke. Swimmers who spend most of their dryland time on these exercises are missing the higher-value work. This doesn't mean they're harmful — just that the time is better spent elsewhere.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Dryland Workouts (free)</h3>
-      <p>Dryland sessions built specifically for swimmers — pulling mechanics, shoulder stability, core, and hip drive. Updated daily.</p>
-    </div>
-    <a href="#dryland-workouts" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('dryland-workouts')">View Today's Lift →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('training-intensity-zones')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Understanding Training Intensity Zones for Swimmers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 2, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.</p></div></div>
-      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">May 24, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-dryland-training -->
-
-<!-- ══ POST: BEGINNER'S GUIDE ══ -->
-<div class="page" id="page-beginners-lap-swimming">
-<div class="post-header">
-  <div class="container">
-    <h1>The Complete Beginner's<br/>Guide to Lap Swimming</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-guides')">← Guides</span>
-      <div class="post-meta"><span>Mar 3, 2026</span><span class="dot"></span><span>8 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected: breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.</p>
-  <p>This guide covers everything you need to get started — pool etiquette, essential gear, what to expect in your first weeks, and a framework for building from zero.</p>
-  <blockquote>"Almost every adult who struggled at the start of lap swimming says the same thing later: 'I wish someone had told me it gets easier much faster than I expected.'"</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Essential gear</h3><p>You need very little to start. A swimsuit, goggles, and a cap are the core requirements. Goggles are not optional — swimming without them is unnecessary and unpleasant. For goggles, prioritize seal and fit over brand or price (see our <a href="#goggles-guide" onclick="navigate('goggles-guide')">goggle guide</a> for details). A silicone cap keeps hair out of your face and goggles, reduces drag slightly, and extends goggle strap life. Everything else — fins, paddles, kickboards — is optional and can be added later.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Pool etiquette</h3><p>Most lap pools divide lanes by speed: slow, medium, and fast. Choose the lane that matches your honest pace. When a lane has one swimmer, split it down the middle; when it has two or more, swim in a circle (counterclockwise in the US). Before entering a lane, make eye contact with a swimmer at the wall to signal your intent. Pass only at the wall, not mid-length. Resting at the corner of the wall, not the center, leaves room for others to turn.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>The breathing problem</h3><p>Most adult beginners have the same experience: they get into the water, swim a length or two, and run out of breath. This is not a fitness problem — it is a breathing mechanics problem. The fix is to exhale continuously underwater so that when you turn to breathe, you're inhaling into a cleared airway rather than trying to both exhale and inhale in the half-second you have. Practice this specifically: push off the wall and exhale the entire length in a slow, steady stream. The fitness feeling of "can't breathe" usually resolves within 2–3 weeks once the exhale pattern is automatic.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Pacing your first sessions</h3><p>New swimmers almost universally start too fast. The goal of early sessions is to establish a pace you can sustain for 200–400 yards continuously while breathing comfortably. If you can't hold a conversation at your current pace, you're swimming too hard. Start each session with 5 minutes of easy, slow kicking with a kickboard to warm up. Then attempt a slow 50 or 100, rest, repeat. Add yardage only when you can complete the current amount at an easy effort.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Your first month</h3><p>Week 1–2: Establish the breathing pattern. 3 sessions per week, 20–30 minutes each. Focus entirely on exhaling underwater and maintaining a slow, sustainable pace. Week 3–4: Begin building continuous distance. Try to complete one 200-yard continuous swim per session, resting as needed. By the end of month one, most beginners can complete 400–600 yards in a session. This is a completely normal starting point and is the foundation everything else builds on.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets for Beginners (free)</h3>
-      <p>Beginner-level sets posted every day. Structured, short, and designed to build the habits that make swimming sustainable long-term.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-      <div class="blog-card" onclick="navigate('breathing-mechanics')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Breathing Mechanics and Frequency in Freestyle</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Apr 28, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long — creating disruptions in the stroke cycle that compound over thousands of yards.</p></div></div>
-      <div class="blog-card" onclick="navigate('goggles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Choose Goggles: A Practical Guide</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Apr 14, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-beginners-lap-swimming -->
-
-<!-- ══ POST: PULL BUOYS ══ -->
-<div class="page" id="page-pull-buoys-guide">
-<div class="post-header">
-  <div class="container">
-    <h1>Pull Buoys: How to Use Them<br/>Without Developing Bad Habits</h1>
-    <div class="post-header-sub">
-      <span class="post-back-btn" onclick="navigate('blog-gear')">← Gear</span>
-      <div class="post-meta"><span>Mar 17, 2026</span><span class="dot"></span><span>5 min read</span></div>
-    </div>
-  </div>
-</div>
-<article class="post-body">
-  <p>The pull buoy is one of the most common pieces of equipment in a swimmer's bag, and one of the most misused. Used correctly, it isolates the upper body and lets swimmers focus on catch mechanics and pulling power. Used incorrectly, it props up a weak body position and prevents swimmers from developing the core tension required for efficient freestyle.</p>
-  <p>Understanding what a pull buoy actually does — and what it doesn't do — is the key to using it productively.</p>
-  <blockquote>"A pull buoy lifts your hips so you don't have to. That's the benefit and the problem. The goal is to earn that position without the float."</blockquote>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>What the pull buoy is actually for</h3><p>The pull buoy adds buoyancy at the hips, which raises the lower body and allows swimmers to focus entirely on their arm stroke without the cognitive and muscular load of kicking. This makes it ideal for catch and pull drills, technique work that benefits from slower, more deliberate execution, and high-intensity pulling sets where the goal is maximum upper-body output. The buoy isn't a shortcut — it's a tool that changes the focus of training.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>The body position trap</h3><p>The most common problem with pull buoy use is that it masks a poor body position. Many swimmers have hips that naturally sit low in the water — a result of weak core tension, insufficient ankle flexibility, or inadequate hip drive from the kick. Slap a pull buoy between their legs and they suddenly look like they're swimming efficiently. But remove it and everything collapses. If you rely on a pull buoy to achieve a flat body position you can't maintain without it, the buoy is solving a symptom rather than the underlying cause.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>How to use it productively</h3><p>Productive pull buoy sets have a specific focus: catch mechanics, high-elbow positioning, pull power, or stroke rate work. Squeeze the buoy lightly with the thighs and maintain the same core tension you'd use without it — don't let the float do the work your core should be doing. If you find yourself completely relaxing your midsection and just floating through sets, you're training a passive body position that won't transfer to your normal swimming.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>Pull buoy with paddles</h3><p>Combining a pull buoy with hand paddles is one of the most common training combinations in competitive swimming. The combination allows very high pulling load with isolated upper body mechanics. The caution: paddles amplify whatever technique you have. Using paddles and a pull buoy before your catch mechanics are solid reinforces inefficient patterns at higher resistance. Learn the catch without paddles first. Add paddles once the mechanics are consistent.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>How much is too much</h3><p>Pull buoy yardage in competitive training typically runs 20–30% of total volume. For recreational swimmers, less is often better — because the buoy's main value (isolating technique under controlled conditions) is most useful when the rest of your training is developing the coordination and fitness the buoy is temporarily bypassing. If your pull split is significantly faster than your free split with a kick, that gap is information: either your kick is inefficient or your core tension without a float needs work. Either way, more buoy time won't fix it.</p></div></div>
-  <div class="inline-cta">
-    <div class="inline-cta-body">
-      <h3>Daily Swim Sets (free)</h3>
-      <p>Pull sets with appropriate technique guidance built in. Updated daily across Beginner, Intermediate, and Advanced levels.</p>
-    </div>
-    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
-  </div>
-</article>
-<section style="background:var(--off-white); padding:4rem 0;">
-  <div class="container">
-    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
-    <div class="grid-3">
-      <div class="blog-card" onclick="navigate('swim-paddles-guide')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M5 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5H5V9zM13 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5h-6V9z"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Hand Paddles: How to Use Them Without Wrecking Your Shoulders</h3><div class="blog-card-meta"><span class="cat-badge">Gear</span><span class="blog-card-date">Mar 31, 2026</span><span class="blog-card-date">5 min read</span></div><p class="blog-card-excerpt">Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.</p></div></div>
-      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">May 20, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
-      <div class="blog-card" onclick="navigate('dryland-training')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Dryland Training for Swimmers: What Actually Transfers</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Mar 10, 2026</span><span class="blog-card-date">7 min read</span></div><p class="blog-card-excerpt">Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.</p></div></div>
-    </div>
-  </div>
-</section>
-</div><!-- end page-pull-buoys-guide -->
 
 <!-- ══ CONTACT PAGE ══ -->
 <div class="page" id="page-contact">
@@ -5768,18 +5198,7 @@ const PAGE_TITLES = {
   'blog-guides': 'LANE FOUR | Blog - Guides',
   'blog-nutrition': 'LANE FOUR | Blog - Nutrition',
   'freestyle-errors': 'LANE FOUR | Blog - 7 Common Freestyle Mistakes',
-  'training-intensity-zones': 'LANE FOUR | Blog - Training Intensity Zones',
-  'morning-practice-nutrition': 'LANE FOUR | Blog - Morning Practice Nutrition',
   'race-week-taper': 'LANE FOUR | Blog - Taper Without Losing Speed',
-  'breathing-mechanics': 'LANE FOUR | Blog - Breathing Mechanics',
-  'goggles-guide': 'LANE FOUR | Blog - How to Choose Goggles',
-  'training-fins-guide': 'LANE FOUR | Blog - Best Training Fins',
-  'swim-paddles-guide': 'LANE FOUR | Blog - Hand Paddles Guide',
-  'pool-wetsuit-guide': 'LANE FOUR | Blog - Pool vs. Open Water Wetsuits',
-  'post-workout-nutrition': 'LANE FOUR | Blog - Post-Workout Nutrition',
-  'dryland-training': 'LANE FOUR | Blog - Dryland Training',
-  'beginners-lap-swimming': 'LANE FOUR | Blog - Beginner\'s Guide to Lap Swimming',
-  'pull-buoys-guide': 'LANE FOUR | Blog - Pull Buoys Guide',
   'contact': 'LANE FOUR | Contact',
   'my-training': 'LANE FOUR | My Training',
   'sign-in': 'LANE FOUR | Log In',
@@ -6579,18 +5998,7 @@ const SEARCH_SUGGESTIONS = [
   // Blog articles
   { text: 'blog articles', page: 'blog' },
   { text: 'swimming tips', page: 'blog' },
-  { text: 'training intensity zones', page: 'training-intensity-zones' },
-  { text: 'morning practice nutrition', page: 'morning-practice-nutrition' },
   { text: 'race week taper', page: 'race-week-taper' },
-  { text: 'breathing mechanics', page: 'breathing-mechanics' },
-  { text: 'goggles guide', page: 'goggles-guide' },
-  { text: 'training fins guide', page: 'training-fins-guide' },
-  { text: 'swim paddles guide', page: 'swim-paddles-guide' },
-  { text: 'pool wetsuit guide', page: 'pool-wetsuit-guide' },
-  { text: 'post workout nutrition', page: 'post-workout-nutrition' },
-  { text: 'dryland training article', page: 'dryland-training' },
-  { text: 'beginners lap swimming', page: 'beginners-lap-swimming' },
-  { text: 'pull buoys guide', page: 'pull-buoys-guide' },
 ];
 
 // Friendly result titles. Pages not listed fall back to their first heading.
@@ -6650,10 +6058,7 @@ function buildSnippet(entry, terms) {
 const SEARCH_ALLOWED_PAGES = new Set([
   'set-archives','dryland-archives',
   'blog','blog-technique','blog-training','blog-gear','blog-guides','blog-nutrition',
-  'freestyle-errors','training-intensity-zones','morning-practice-nutrition',
-  'race-week-taper','breathing-mechanics','goggles-guide','training-fins-guide',
-  'swim-paddles-guide','pool-wetsuit-guide','post-workout-nutrition',
-  'dryland-training','beginners-lap-swimming','pull-buoys-guide',
+  'freestyle-errors','race-week-taper',
 ]);
 
 // Scan the indexed site content and return the best-matching pages.
@@ -8167,7 +7572,7 @@ const BLOG_POSTS = [
     title: '7 Common Freestyle Mistakes and How to Fix Them',
     category: 'Technique',
     homeSection: 'technique',
-    date: '2026-05-20',
+    date: '2026-06-30',
     readTime: 6,
     keywords: ['freestyle swimming', 'lap swimmer', 'swim technique', 'pool'],
     // Horizontal Pexels photo (Person Swimming in Body of Water, ID 1263348,
@@ -8180,18 +7585,6 @@ const BLOG_POSTS = [
     excerpt: 'The seven freestyle mistakes that gas out most adult and masters swimmers, and the exact fix for each one.',
     thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);',
     thumbPaths: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
-  },
-  {
-    id: 'training-intensity-zones',
-    title: 'Understanding Training Intensity Zones for Swimmers',
-    category: 'Training',
-    homeSection: 'training',
-    date: '2026-05-15',
-    readTime: 7,
-    openingText: "Most recreational swimmers train at one speed: moderately hard. It's fast enough to feel like exercise, slow enough to sustain for the length of a practice. And for the first few months, this works. Then progress stalls, and the question becomes why.",
-    excerpt: 'How to set and use pace-based zones to develop every energy system systematically.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);',
-    thumbPaths: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
   },
   {
     id: 'race-week-taper',
@@ -8210,126 +7603,6 @@ const BLOG_POSTS = [
     excerpt: 'Cut volume, guard intensity, and arrive at the blocks sharp instead of flat.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
     thumbPaths: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
-  },
-  {
-    id: 'morning-practice-nutrition',
-    title: 'What Swimmers Should Eat Before a Morning Practice',
-    category: 'Nutrition',
-    homeSection: 'nutrition',
-    date: '2026-05-05',
-    readTime: 5,
-    openingText: "Morning practice presents a specific fueling challenge: the training session starts close to the end of an overnight fast, appetite is often minimal, and there's rarely enough time for a full meal and proper digestion. Getting nutrition wrong in either direction — eating too much, too close to the session, or eating nothing at all — affects both performance and recovery.",
-    excerpt: 'Fueling strategies for early-morning training when appetite and time are both limited.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M3 2l18 0M3 7h18M3 12h18M3 17h12"/>',
-  },
-  {
-    id: 'breathing-mechanics',
-    title: 'Breathing Mechanics and Frequency in Freestyle',
-    category: 'Technique',
-    homeSection: 'technique',
-    date: '2026-04-28',
-    readTime: 6,
-    openingText: 'Every freestyle stroke requires a breath, and how that breath is taken determines as much about stroke efficiency as any other technical variable. The tendency among recreational swimmers is to over-rotate, to rush the breath, or to hold it too long — creating disruptions in the stroke cycle that compound over thousands of yards.',
-    excerpt: 'How breathing patterns, rotation timing, and bilateral breathing affect stroke efficiency and race performance.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
-  },
-  {
-    id: 'goggles-guide',
-    title: 'How to Choose Goggles: A Practical Guide',
-    category: 'Gear',
-    homeSection: 'gear',
-    date: '2026-04-14',
-    readTime: 5,
-    openingText: 'Goggles are the most personalized piece of equipment in swimming. What fits and seals perfectly for one swimmer will leak for another. Yet most swimmers choose goggles based on aesthetics or price rather than the functional variables that actually determine whether a pair will work.',
-    excerpt: 'Lens type, fit, anti-fog performance: the factors that matter and how to evaluate them.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
-    thumbPaths: '<circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/>',
-  },
-  {
-    id: 'training-fins-guide',
-    title: 'Best Training Fins for Every Level',
-    category: 'Gear',
-    homeSection: 'gear',
-    date: '2026-04-07',
-    readTime: 6,
-    openingText: "Training fins are among the most effective tools in a swimmer's bag, but their benefits depend entirely on which type you use and when. Short training fins and long-blade fins produce different adaptations, and using the wrong type for your training goal produces the wrong result.",
-    excerpt: 'Short blade vs. long blade: what the research says, which drills benefit from each, and what to buy at every budget.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>',
-  },
-  {
-    id: 'swim-paddles-guide',
-    title: 'Hand Paddles: How to Use Them Without Wrecking Your Shoulders',
-    category: 'Gear',
-    homeSection: 'gear',
-    date: '2026-03-31',
-    readTime: 5,
-    openingText: 'Hand paddles are a standard part of most masters and club training programs, but they are also one of the most frequently misused training tools. Used correctly, paddles develop catch mechanics and pulling power. Used incorrectly, they reinforce poor habits and put unnecessary stress on the shoulder joint.',
-    excerpt: 'The right paddle size, the right sets, and the technique cues that make paddles productive rather than injurious.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--deep)); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M5 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5H5V9zM13 9c0-1.7 1.3-3 3-3s3 1.3 3 3v5h-6V9z"/>',
-  },
-  {
-    id: 'pool-wetsuit-guide',
-    title: 'Pool vs. Open Water Wetsuits Explained',
-    category: 'Gear',
-    homeSection: 'gear',
-    date: '2026-03-24',
-    readTime: 5,
-    openingText: "Open water swimmers face a decision that pool swimmers don't: whether to wear a wetsuit, and which kind. The options range from full tri suits to swim skins to just a swimsuit, and the right choice depends on water temperature, race rules, your level, and what you're optimizing for.",
-    excerpt: 'What separates a triathlon wetsuit from a swim skin, when each is allowed by race rules, and when each is worth the investment.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);',
-    thumbPaths: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>',
-  },
-  {
-    id: 'post-workout-nutrition',
-    title: 'Post-Workout Recovery Nutrition for Swimmers',
-    category: 'Nutrition',
-    homeSection: 'nutrition',
-    date: '2026-03-17',
-    readTime: 5,
-    openingText: 'The 30-minute window after training is when the body is most receptive to nutrition. Muscle glycogen stores are depleted, muscle protein synthesis is elevated, and the enzymes responsible for glycogen resynthesis are at their most active. This is not a window to skip.',
-    excerpt: 'The timing and composition of your recovery meal matters more than most swimmers realize. Here is what the research supports.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v6l4 2"/>',
-  },
-  {
-    id: 'dryland-training',
-    title: 'Dryland Training for Swimmers: What Actually Transfers',
-    category: 'Training',
-    homeSection: 'training',
-    date: '2026-03-10',
-    readTime: 7,
-    openingText: "Dryland training for swimmers is often misunderstood. Swimmers go to the gym and do generic upper body work, or they skip dryland entirely. The problem is that swimming makes specific demands — pulling mechanics, shoulder stability at end range, hip drive with rotation — that most gym programs don't address.",
-    excerpt: 'Which exercises transfer to pool performance, which are a waste of time, and how to structure dryland work around your swim schedule.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/>',
-  },
-  {
-    id: 'pull-buoys-guide',
-    title: 'Pull Buoys: How to Use Them Without Developing Bad Habits',
-    category: 'Gear',
-    homeSection: 'gear',
-    date: '2026-03-17',
-    readTime: 5,
-    openingText: 'The pull buoy is one of the most common pieces of equipment in a swimmer\'s bag, and one of the most misused. Used correctly, it isolates the upper body and lets swimmers focus on catch mechanics and pulling power. Used incorrectly, it props up a weak body position and prevents swimmers from developing the core tension required for efficient freestyle.',
-    excerpt: 'How to get real value from pull buoy sets — and the mistakes that make them counterproductive.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#1a6fa8); background-image:var(--pattern-waves);',
-    thumbPaths: '<circle cx="12" cy="8" r="6"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/>',
-  },
-  {
-    id: 'beginners-lap-swimming',
-    title: "The Complete Beginner's Guide to Lap Swimming",
-    category: 'Guide',
-    homeSection: 'guides',
-    date: '2026-03-03',
-    readTime: 8,
-    openingText: 'Starting lap swimming as an adult is one of the better athletic decisions you can make. Swimming is low-impact, full-body, and scalable to any fitness level. It is also, for most beginners, harder than expected: breathing problems, poor pacing, and incorrect technique can make early sessions discouraging.',
-    excerpt: 'Everything you need to know before getting in the water: pool etiquette, essential gear, breathing basics, and your first month of workouts.',
-    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
-    thumbPaths: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
   },
 ];
 
@@ -8502,17 +7775,11 @@ function renderRecentlyPublished() {
 function renderCategoryPosts() {
   const CATEGORY_STORY_CAP = 3;
   const overflow = BLOG_POSTS.slice(RECENTLY_PUBLISHED_COUNT);
-  const recent = BLOG_POSTS.slice(0, RECENTLY_PUBLISHED_COUNT);
   // Group by homeSection
   const bySection = {};
   overflow.forEach(p => {
     if (!bySection[p.homeSection]) bySection[p.homeSection] = [];
     bySection[p.homeSection].push(p);
-  });
-  const recentBySection = {};
-  recent.forEach(p => {
-    if (!recentBySection[p.homeSection]) recentBySection[p.homeSection] = [];
-    recentBySection[p.homeSection].push(p);
   });
   const cardHtml = p =>
     '<div class="blog-card" onclick="navigate(\'' + escHtml(p.id) + '\')" style="cursor:pointer;">' +
@@ -8526,58 +7793,65 @@ function renderCategoryPosts() {
         '<p class="blog-card-excerpt">' + escHtml(_truncateExcerpt(p.openingText)) + '</p>' +
       '</div>' +
     '</div>';
+  // Only stories beyond the Recently Published block populate the category
+  // rows, so a post is never listed twice on the page. A section with nothing
+  // to show is hidden rather than left as an empty header.
+  let anyShown = false;
   ['technique', 'training', 'nutrition', 'gear', 'guides'].forEach(sec => {
     const grid = document.getElementById('blog-cat-grid-' + sec);
     if (!grid) return;
     const posts = bySection[sec] || [];
-    if (sec === 'gear') {
-      grid.insertAdjacentHTML('afterbegin', posts.map(cardHtml).join(''));
-      return;
-    }
-    const room = Math.max(0, CATEGORY_STORY_CAP - grid.children.length);
-    const html = posts.slice(0, room).map(cardHtml).join('');
+    const html = (sec === 'gear' ? posts : posts.slice(0, CATEGORY_STORY_CAP)).map(cardHtml).join('');
     if (html) grid.insertAdjacentHTML('afterbegin', html);
-    // Top up short categories with recently-published stories so each
-    // section carries three; appended last to keep the lead slots intact.
-    const fill = (recentBySection[sec] || []).slice(0, Math.max(0, CATEGORY_STORY_CAP - grid.children.length));
-    if (fill.length) grid.insertAdjacentHTML('beforeend', fill.map(cardHtml).join(''));
-    while (grid.children.length > CATEGORY_STORY_CAP) grid.removeChild(grid.lastElementChild);
+    const row = grid.closest('.blog-section-row');
+    const hasPosts = grid.children.length > 0;
+    if (row) row.style.display = hasPosts ? '' : 'none';
+    if (hasPosts) anyShown = true;
   });
+  // If nothing made it into any category, drop the whole news-style block.
+  const wrap = document.querySelector('#page-blog .blog-sections-with-gear');
+  if (wrap && !anyShown) {
+    const outer = wrap.closest('section');
+    if (outer) outer.style.display = 'none';
+  }
 }
 
-// Point the home page "From the blog" block at the newest posts: the featured
-// card shows the newest article, the side cards the next four. Dates and the
-// hero image are filled in afterwards by syncBlogMeta (via the navigate hooks).
+// Home page "From the blog" block: the featured card is pinned to the freestyle
+// article and does not rotate, while the side column tracks the latest other
+// posts (newest first). Dates and the hero image are filled in afterwards by
+// syncBlogMeta (via the navigate hooks).
+const HOME_FEATURED_ID = 'freestyle-errors';
 function renderHomeFeatured() {
-  const top = BLOG_POSTS.slice(0, 5);
-  if (!top.length) return;
-  const setLink = (a, p) => {
-    if (!a || !p) return;
-    a.textContent = p.title;
-    a.setAttribute('href', '#' + p.id);
-    a.setAttribute('onclick', "navigate('" + p.id + "')");
-  };
-  // Featured = newest post.
-  const feat = top[0];
+  if (!BLOG_POSTS.length) return;
+  // Featured = the pinned freestyle post (fall back to newest if it's gone).
+  const feat = BLOG_POSTS.find(p => p.id === HOME_FEATURED_ID) || BLOG_POSTS[0];
   const featCard = document.querySelector('.blog-feature-card');
   if (featCard) {
-    setLink(featCard.querySelector('.blog-feature-title'), feat);
+    const titleEl = featCard.querySelector('.blog-feature-title');
+    if (titleEl) {
+      titleEl.textContent = feat.title;
+      titleEl.setAttribute('href', '#' + feat.id);
+      titleEl.setAttribute('onclick', "navigate('" + feat.id + "')");
+    }
     const badge = featCard.querySelector('.cat-badge');
     if (badge) badge.textContent = feat.category;
     const exc = featCard.querySelector('.blog-feature-body p');
     if (exc) exc.textContent = feat.openingText || feat.excerpt || '';
   }
-  // Side cards = the next posts, in order.
-  const sideCards = document.querySelectorAll('.blog-side-col .blog-side-card');
-  const sidePosts = top.slice(1);
-  sideCards.forEach(function(card, i) {
-    const p = sidePosts[i];
-    if (!p) { card.style.display = 'none'; return; }
-    card.style.display = '';
-    setLink(card.querySelector('.blog-side-title'), p);
-    const badge = card.querySelector('.cat-badge');
-    if (badge) badge.textContent = p.category;
-  });
+  // Side column = the latest posts other than the featured one, newest first.
+  const sideCol = document.querySelector('.blog-side-col');
+  if (sideCol) {
+    const sidePosts = BLOG_POSTS.filter(p => p.id !== feat.id).slice(0, 4);
+    sideCol.innerHTML = sidePosts.map(p =>
+      '<div class="blog-side-card">' +
+        '<a class="blog-side-title" href="#' + escHtml(p.id) + '" onclick="navigate(\'' + escHtml(p.id) + '\')">' + escHtml(p.title) + '</a>' +
+        '<div class="blog-side-meta">' +
+          '<span class="cat-badge">' + escHtml(p.category) + '</span>' +
+          '<span class="blog-card-date">' + _blogFmtDate(p.date) + ' · ' + p.readTime + ' min read</span>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+  }
 }
 
 window.addEventListener('DOMContentLoaded', function() {
