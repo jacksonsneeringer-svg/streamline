@@ -9,7 +9,7 @@ on:
 env:
   AWS_REGION: us-east-1
   STACK_NAME: streamline-website
-  DOMAIN_NAME: streamline.snurray.com
+  DOMAIN_NAME: winlanefour.com
 
 jobs:
   deploy:
