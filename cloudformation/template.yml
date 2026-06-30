@@ -9,7 +9,6 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM certificate ARN (must be in us-east-1)
-    Default: arn:aws:acm:us-east-1:667291328503:certificate/716a486a-36ba-43d4-b8c5-00bbba3130b1
 
   ResendApiKey:
     Type: String
