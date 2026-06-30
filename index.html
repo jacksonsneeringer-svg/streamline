@@ -1943,6 +1943,40 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 }
 .post-visual-row { margin: 0; font-size: 0.93rem; font-weight: 400; color: var(--gray-700); line-height: 1.65; }
 .post-visual-row strong { color: var(--deep); font-weight: 600; }
+.post-body ul.post-list { margin: 1.25rem 0; padding-left: 1.4rem; list-style: disc; }
+.post-body ul.post-list li { font-size: 1rem; font-weight: 300; color: var(--text-muted); line-height: 1.85; margin: 0.4rem 0; }
+.post-body ul.post-list li strong { color: var(--deep); font-weight: 600; }
+.video-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0 2.5rem;
+}
+.video-card {
+  display: block;
+  text-decoration: none;
+  border: 1px solid var(--gray-100);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--surface);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.video-card:hover { box-shadow: 0 10px 28px rgba(6,20,30,0.12); transform: translateY(-2px); }
+.video-thumb { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 56px; height: 40px; border-radius: 11px;
+  background: rgba(18,18,18,0.78);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s ease;
+}
+.video-card:hover .video-play { background: #ff0000; }
+.video-play svg { width: 20px; height: 20px; margin-left: 2px; }
+.video-foot { display: flex; align-items: center; gap: 0.55rem; padding: 0.7rem 0.95rem; }
+.video-foot-yt { color: #ff0000; flex-shrink: 0; }
+.video-foot span { font-size: 0.84rem; font-weight: 500; color: var(--gray-700); }
+@media (max-width: 600px) { .video-links { grid-template-columns: 1fr; } }
 .inline-cta {
   background: var(--surface);
   border: 1px solid var(--gray-100);
@@ -3658,43 +3692,60 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <article class="post-body">
   <p>A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p>
   <p>If your freestyle leaves you gassed, slow, or sore in the shoulders, you're probably making a few of these same errors. This is a fix-it guide for adult and masters swimmers who want a freestyle stroke that finally feels smooth instead of like a wrestling match. Here are the seven I see most, and exactly how to clean each one up.</p>
-  <blockquote>"Fix the leaks and the water stops fighting back."</blockquote>
   <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><h3>Lifting the head to breathe</h3><p>This is the original sin of freestyle, and almost everyone does it. The instant you lift your head to grab air, your hips and legs sink, your body tilts into a downhill slant, and now you're dragging an anchor. You've turned a sleek shape into a plow.</p></div></div>
-  <p><strong>The fix:</strong> Breathe to the <em>side</em>, not the front, and keep one goggle in the water the whole time. Think about pressing your ear into your extended arm as you rotate. You're looking at the wall beside the pool, not the end of it.</p>
+  <p>The fix is to breathe to the <em>side</em>, not the front, and to keep one goggle in the water the whole time. Think about pressing your ear into your extended arm as you rotate. You're looking at the wall beside the pool, not the end of it.</p>
   <div class="post-tip"><p><strong>Tip:</strong> Imagine a glass of water balanced on the back of your head. Breathe without spilling it. That single image fixes head-lift faster than any cue I know.</p></div>
-  <p>I had Pete swim a length breathing to the side with his cheek resting on the water. He stopped two-thirds in, stunned, and said it felt like cheating. It wasn't. It was just the first time his legs had stayed up.</p>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> from the side, the head juts up like a driver peering over the hood, a wall of water piling at the forehead, and the hips and feet sagging deep below the surface.</p><p class="post-visual-row"><strong>Done right:</strong> the waterline cuts across the crown of the head, one goggle stays submerged, and the body lies flat as a plank with the heels just kissing the surface.</p></div></div>
   <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><h3>Crossing over the centerline</h3><p>Watch a struggling swimmer's hands from above and you'll see them stab into the water past the middle of their body, crossing an invisible centerline that runs from their head to their feet. The result is a fishtail wiggle, your hips snaking side to side, scrubbing off speed with every stroke.</p></div></div>
-  <p><strong>The fix:</strong> Your hand should enter the water roughly in line with the same-side shoulder, not in front of your nose. Picture two railroad tracks running forward from your shoulders. Each hand stays on its own rail.</p>
+  <p>Your hand should enter the water roughly in line with the same-side shoulder, not in front of your nose. Picture two railroad tracks running forward from your shoulders. Each hand stays on its own rail.</p>
   <p>If you can't feel it, swim a few lengths of catch-up drill, where one hand waits out front until the other arrives to "tap" it before pulling. It forces a clean, wide entry and kills the crossover almost immediately.</p>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> from directly overhead, each hand spears in past the nose toward the opposite shoulder and the body bends into a snaking S, the hips swishing out behind it.</p><p class="post-visual-row"><strong>Done right:</strong> two parallel wakes, each hand entering on its own track in line with the shoulder, the spine staying straight as an arrow from head to toes.</p></div></div>
   <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><h3>Dropping the elbow on the catch</h3><p>Here's where real freestyle speed lives, and where most adult swimmers leave it on the table. After your hand enters, you want a <strong>high elbow catch</strong>: fingertips angled down, elbow held high near the surface, forearm turned into a big flat paddle that grabs water and pushes it straight back toward your feet.</p></div></div>
-  <p>The common mistake is dropping the elbow and pulling with a straight arm, like you're sweeping crumbs off a table. A straight arm pushes water down and out instead of back, which lifts you up and moves you nowhere.</p>
-  <p>To feel the high elbow, try sculling drills or swim with a focus on "reaching over a barrel" at the front of each stroke. Adam Peaty built a career on grabbing absurd amounts of water early. You're chasing a smaller version of that same catch.</p>
+  <p>The common freestyle mistake is dropping the elbow and pulling with a straight arm, like you're sweeping crumbs off a table. A straight arm pushes water down and out instead of back, which lifts you up and moves you nowhere.</p>
+  <p>To feel the high elbow, try sculling drills or swim with a tennis ball-sized focus on "reaching over a barrel" at the front of each stroke. Adam Peaty built a career on grabbing absurd amounts of water early. You're chasing a smaller version of that same catch.</p>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> an underwater shot of a straight arm windmilling down, palm shoving toward the pool floor, the whole limb slipping through the water like an oar with no blade.</p><p class="post-visual-row"><strong>Done right:</strong> the elbow rides high near the surface while the forearm and hand hang straight down like a vertical paddle, fingertips pointing at the bottom, hugging an imaginary barrel out front.</p></div></div>
   <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><h3>A lazy, bent-knee kick</h3><p>If your kick comes from your knees, bicycling along like you're pedaling underwater, you're making drag, not propulsion. A bent-knee kick punches a hole in the water in front of your shins and parachutes you to a stop.</p></div></div>
-  <p><strong>The fix:</strong> The freestyle kick starts at the hip, runs through a loose knee, and finishes with a relaxed, floppy ankle. Small, fast, mostly from the hip. Your heels should just break the surface and boil the water, not splash like you're stomping grapes.</p>
-  <p><strong>Point the toes.</strong> Stiff, flexed feet act like brakes. Tight ankles are the number one reason adult swimmers have a "dead" kick.</p>
-  <p><strong>Kick from the hip.</strong> Initiate the motion up high, and let the knee bend only slightly as a consequence.</p>
-  <p><strong>Stay narrow.</strong> A kick wider than your body line is just more surface area to drag.</p>
+  <p>The freestyle kick starts at the hip, runs through a loose knee, and finishes with a relaxed, floppy ankle. Small, fast, mostly from the hip. Your heels should just break the surface and boil the water, not splash like you're stomping grapes.</p>
+  <ul class="post-list">
+    <li><strong>Point the toes.</strong> Stiff, flexed feet act like brakes. Tight ankles are the number one reason adult swimmers have a "dead" kick.</li>
+    <li><strong>Kick from the hip.</strong> Initiate the motion up high, let the knee bend only slightly as a consequence.</li>
+    <li><strong>Stay narrow.</strong> A kick wider than your body line is just more surface area to drag.</li>
+  </ul>
   <p>Ankle flexibility takes months to improve, so be patient. Years of running and cycling leave most adults with ankles like rusted hinges.</p>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> from the side, the knees bend deep and the feet churn up behind like pedaling a bike, throwing a big white boil of bubbles and going nowhere.</p><p class="post-visual-row"><strong>Done right:</strong> long legs driven from the hips with only a soft knee bend, loose pointed toes, the heels barely dimpling the surface in a narrow, quiet flutter.</p></div></div>
   <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><h3>Gliding too long (dead spots in the stroke)</h3><p>Somewhere a well-meaning coach told a generation of swimmers to "glide more," and freestyle has suffered ever since. When you stretch out front and pause, waiting on that lead arm, you create a dead spot where the water grabs you and slows you down. Every stroke becomes a series of little stops and restarts, and restarting a body in water is brutally expensive.</p></div></div>
-  <p><strong>The fix:</strong> You want continuous, connected propulsion. As one hand finishes the pull at your hip, the other should already be catching up front. Think of a freestyle pull like pedaling a bike: there's never a moment with zero force on the pedals.</p>
+  <p>You want continuous, connected propulsion. As one hand finishes the pull at your hip, the other should already be catching up front. Think of a freestyle pull like pedaling a bike: there's never a moment with zero force on the pedals.</p>
   <p>This doesn't mean thrashing. Katie Ledecky looks unhurried because she's relentlessly connected, never because she's gliding. Long and smooth, yes. Stalled and waiting, no.</p>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> a freeze-frame with both arms stretched out front at once, the swimmer stalled and parachuting, momentum visibly bleeding away before the next pull begins.</p><p class="post-visual-row"><strong>Done right:</strong> one hand catching out front the instant the other finishes at the hip, the arms always overlapping in the front quadrant so the body never stops moving.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">6</div><div class="post-number-body"><h3>Holding the breath underwater</h3><p>Plenty of swimmers hold their breath the whole time their face is down, then try to blast out and suck in air during one frantic window. That's a recipe for the breathless, panicked feeling Pete had after his 50. You end up oxygen-starved and tense.</p></div></div>
-  <p><strong>The fix:</strong> Exhale steadily through your nose and mouth the entire time your face is in the water. By the time you rotate to breathe, your lungs are nearly empty and ready to fill. The rhythm should feel like a slow, constant hum of bubbles, not a held breath followed by an explosion.</p>
+  <div class="post-number"><div class="post-number-badge">6</div><div class="post-number-body"><h3>Holding the breath underwater</h3><p>Plenty of swimmers hold their breath the whole time their face is down, then try to blast out and suck in air during one frantic window. That's a recipe for a breathless, panicked feeling since you end up oxygen-starved and tense.</p></div></div>
+  <p>Exhale steadily through your nose and mouth the entire time your face is in the water. By the time you rotate to breathe, your lungs are nearly empty and ready to fill. The rhythm should feel like a slow, constant hum of bubbles, not a held breath followed by an explosion.</p>
   <div class="post-tip"><p><strong>Tip:</strong> Practice it standing in the shallow end. Face in, hum out a long stream of bubbles, turn, inhale, repeat. Boring, but it rewires the panic response that wrecks so many freestyle breaths.</p></div>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> face down with the cheeks puffed and not a single bubble escaping, then a tense, gasping scramble for air the moment the head turns.</p><p class="post-visual-row"><strong>Done right:</strong> a steady ribbon of bubbles trailing from the nose and mouth the whole time the face is down, so the turn to breathe is a calm, unhurried inhale.</p></div></div>
-  <div class="post-number"><div class="post-number-badge">7</div><div class="post-number-body"><h3>No body rotation (swimming flat)</h3><p>The last common mistake ties most of the others together. Swimming flat on your stomach, shoulders square to the bottom of the pool, robs you of power and makes breathing a fight. Freestyle is swum on your sides, rotating from one to the other along the line of your spine.</p></div></div>
-  <p><strong>The fix:</strong> Good rotation, around 30 to 45 degrees to each side, lets your big back and core muscles drive the pull instead of just your arm and shoulder. It also brings your mouth to the air naturally, so you don't have to crank your neck to breathe. Think of your body as a log rolling on a spit, not a raft lying flat.</p>
+  <div class="post-number"><div class="post-number-badge">7</div><div class="post-number-body"><h3>No body rotation (swimming flat)</h3><p>The last common freestyle mistake ties most of the others together. Swimming flat on your stomach, shoulders square to the bottom of the pool, robs you of power and makes breathing a fight. Freestyle is swum on your sides, rotating from one to the other along the line of your spine.</p></div></div>
+  <p>Good rotation, around 30 to 45 degrees to each side, lets your big back and core muscles drive the pull instead of just your arm and shoulder. It also brings your mouth to the air naturally, so you don't have to crank your neck to breathe. Think of your body as a log rolling on a spit, not a raft lying flat.</p>
   <p>Drive the rotation from your hips and core, not by throwing your head. The head stays quiet and steady while the body turns underneath it.</p>
   <div class="post-visual"><svg class="post-visual-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><div class="post-visual-body"><span class="post-visual-label">Picture it</span><p class="post-visual-row"><strong>The mistake:</strong> from overhead, the chest and both shoulders lie flat and square to the bottom the whole way, the swimmer plowing along on the belly like a raft.</p><p class="post-visual-row"><strong>Done right:</strong> the body rolls 30 to 45 degrees onto each side along the spine, one shoulder lifting clear as the other drops, head quiet and steady, like a log turning on a spit.</p></div></div>
   <hr />
   <h2>Pick one and drown it</h2>
   <p>Don't try to fix all seven at once. You'll overload, swim worse, and quit halfway through a Tuesday practice. Choose the single biggest leak in your stroke, usually the head-lift or the dropped elbow, and obsess over it for two weeks until it's automatic. Then move to the next.</p>
-  <p>Pete picked two: side breathing and a high elbow catch. Three months later he swam a 500 freestyle without stopping for the first time in his adult life, climbed out, and looked genuinely offended that nobody had told him sooner. Fix the leaks and the water stops fighting back. That's the whole game.</p>
+  <p>Fix the leaks and the water stops fighting back. That's the whole game.</p>
+  <p>For my visual learners, here are some of my favorite YouTube videos I've used to improve my own technique and help others improve theirs.</p>
+  <div class="video-links">
+    <a class="video-card" href="https://youtu.be/_zrLrGl4WOU" target="_blank" rel="noopener noreferrer" aria-label="Watch freestyle technique video on YouTube">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/_zrLrGl4WOU/hqdefault.jpg" alt="Freestyle technique video on YouTube" loading="lazy" />
+        <span class="video-play"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+      </div>
+      <div class="video-foot"><svg class="video-foot-yt" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51A3.02 3.02 0 0 0 23.5 17.8 31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.6 15.6V8.4l6.27 3.6z"/></svg><span>Watch on YouTube</span></div>
+    </a>
+    <a class="video-card" href="https://youtu.be/y5LZKOy7qZ4" target="_blank" rel="noopener noreferrer" aria-label="Watch freestyle technique video on YouTube">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/y5LZKOy7qZ4/hqdefault.jpg" alt="Freestyle technique video on YouTube" loading="lazy" />
+        <span class="video-play"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+      </div>
+      <div class="video-foot"><svg class="video-foot-yt" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51A3.02 3.02 0 0 0 23.5 17.8 31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.6 15.6V8.4l6.27 3.6z"/></svg><span>Watch on YouTube</span></div>
+    </a>
+  </div>
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
