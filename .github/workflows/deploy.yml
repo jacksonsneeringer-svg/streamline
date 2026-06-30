@@ -10,6 +10,11 @@ env:
   AWS_REGION: us-east-1
   STACK_NAME: streamline-website
   DOMAIN_NAME: winlanefour.com
+  # Dedicated, domain-independent bucket for staging the CloudFormation
+  # template artifact. Kept separate from the website bucket (which the stack
+  # creates and renames on a domain change) so deploys don't depend on a
+  # bucket that doesn't exist yet.
+  ARTIFACTS_BUCKET: streamline-website-cfn-artifacts
 
 jobs:
   deploy:
@@ -29,13 +34,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # --s3-bucket: the template now exceeds the 51,200-byte body limit, so it
-      # is uploaded and deployed by URL (the sync step cleans the artifact up).
+      # The template exceeds the 51,200-byte body limit, so it is uploaded to
+      # S3 and deployed by URL. Create the staging bucket if it doesn't exist
+      # yet (idempotent) so the first deploy of a new domain isn't blocked.
+      - name: Ensure CloudFormation artifacts bucket exists
+        run: |
+          if ! aws s3api head-bucket --bucket "${{ env.ARTIFACTS_BUCKET }}" 2>/dev/null; then
+            aws s3 mb "s3://${{ env.ARTIFACTS_BUCKET }}" --region ${{ env.AWS_REGION }}
+          fi
+
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
             --template-file cloudformation/template.yml \
-            --s3-bucket ${{ env.DOMAIN_NAME }}-website \
+            --s3-bucket ${{ env.ARTIFACTS_BUCKET }} \
             --s3-prefix cfn-artifacts \
             --stack-name ${{ env.STACK_NAME }} \
             --parameter-overrides \
