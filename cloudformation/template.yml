@@ -799,6 +799,10 @@ Resources:
             print('welcome backfill: sent=%d errors=%s' % (sent, errors))
             return {'statusCode': 200, 'body': json.dumps({'sent': sent, 'errors': errors})}
 
+  # Captures newsletter sign-ups (POST /newsletter) and honors one-click
+  # unsubscribe links (GET /newsletter/unsubscribe) embedded in every broadcast
+  # sent by streamline-newsletter-send. Each subscriber row carries an opaque
+  # unsubToken so unsubscribe links can't be forged from the email alone.
   NewsletterFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -807,13 +811,19 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Timeout: 10
+      Environment:
+        Variables:
+          SITE_URL: !Sub "https://${DomainName}"
       Code:
         ZipFile: |
-          import json, boto3
+          import json, os, secrets, boto3
           from datetime import datetime, timezone
+          from html import escape
 
           dynamo = boto3.resource('dynamodb')
           subscribers = dynamo.Table('streamline-subscribers')
+
+          SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
 
           CORS = {
             'Access-Control-Allow-Origin': '*',
@@ -821,22 +831,261 @@ Resources:
             'Content-Type': 'application/json'
           }
 
+          def page(title, message):
+            html = (
+              '<!DOCTYPE html><html><head><meta charset="utf-8">'
+              '<meta name="viewport" content="width=device-width,initial-scale=1">'
+              '<title>' + escape(title) + '</title></head>'
+              '<body style="margin:0;background:#f0f7f6;font-family:Arial,Helvetica,sans-serif;">'
+              '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:60px 16px;">'
+              '<table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:26px;">'
+              '<div style="font-size:20px;letter-spacing:5px;color:#ffffff;font-weight:bold;">STREAMLINE</div></td></tr>'
+              '<tr><td style="padding:36px 40px;text-align:center;">'
+              '<div style="font-family:Georgia,serif;font-size:24px;color:#0d4f47;padding-bottom:12px;">' + escape(title) + '</div>'
+              '<div style="font-size:15px;line-height:1.7;color:#3a6560;">' + message + '</div>'
+              '<div style="padding-top:24px;"><a href="' + SITE + '" style="color:#1a7a6e;">Return to STREAMLINE &rarr;</a></div>'
+              '</td></tr></table></td></tr></table></body></html>'
+            )
+            return {'statusCode': 200, 'headers': {'Content-Type': 'text/html; charset=utf-8'}, 'body': html}
+
+          def subscribe(event):
+            body = json.loads(event.get('body') or '{}')
+            email = (body.get('email') or '').strip().lower()
+            if not email or '@' not in email:
+              return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Valid email required'})}
+            existing = subscribers.get_item(Key={'email': email}).get('Item') or {}
+            # put_item replaces the row, which also clears any prior unsubscribedAt
+            # (an explicit re-subscribe is a fresh opt-in). Keep the existing token
+            # so links in older emails stay valid.
+            subscribers.put_item(Item={
+              'email': email,
+              'source': (body.get('source') or 'hero').strip(),
+              'timestamp': datetime.now(timezone.utc).isoformat(),
+              'unsubToken': existing.get('unsubToken') or secrets.token_urlsafe(24)
+            })
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'success': True})}
+
+          def unsubscribe(event):
+            params = event.get('queryStringParameters') or {}
+            email = (params.get('email') or '').strip().lower()
+            token = (params.get('token') or '').strip()
+            if not email or not token:
+              return page('Invalid link', 'This unsubscribe link is missing information. Please use the link from a recent newsletter, or contact us to be removed.')
+            item = subscribers.get_item(Key={'email': email}).get('Item')
+            if not item or item.get('unsubToken') != token:
+              return page('We could not verify this link', 'This unsubscribe link is invalid or has expired. Please use the link from a recent newsletter, or contact us and we will remove you.')
+            subscribers.update_item(
+              Key={'email': email},
+              UpdateExpression='SET unsubscribedAt = :t',
+              ExpressionAttributeValues={':t': datetime.now(timezone.utc).isoformat()})
+            return page('You are unsubscribed', 'You will no longer receive the STREAMLINE newsletter at <b>' + escape(email) + '</b>. Changed your mind? You can sign up again any time from our site.')
+
           def handler(event, context):
-            if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
+            method = (event.get('requestContext') or {}).get('http', {}).get('method', '')
+            if method == 'OPTIONS':
               return {'statusCode': 200, 'headers': CORS, 'body': ''}
             try:
-              body = json.loads(event.get('body') or '{}')
-              email = (body.get('email') or '').strip().lower()
-              if not email or '@' not in email:
-                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Valid email required'})}
-              subscribers.put_item(Item={
-                'email': email,
-                'source': (body.get('source') or 'hero').strip(),
-                'timestamp': datetime.now(timezone.utc).isoformat()
-              })
-              return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'success': True})}
+              if method == 'GET':
+                return unsubscribe(event)
+              return subscribe(event)
             except Exception as e:
               return {'statusCode': 500, 'headers': CORS, 'body': json.dumps({'error': str(e)})}
+
+  # Broadcasts a newsletter to every current subscriber via Resend. Invoked by
+  # IAM principals only (the Send Newsletter GitHub workflow or a manual
+  # `aws lambda invoke`), never exposed over the API. Event payload:
+  #   {"subject": "...",           # required
+  #    "preheader": "...",         # optional inbox preview text
+  #    "heading": "...",           # optional serif headline
+  #    "intro": "...",             # optional lead paragraph (HTML allowed)
+  #    "body": "..." | "bodyHtml": "...",  # main content; body splits blank
+  #                                #   lines into paragraphs, bodyHtml used as-is
+  #    "ctaText": "...", "ctaUrl": "...",  # optional call-to-action button
+  #    "test": "you@example.com",  # send ONLY to this address (preview)
+  #    "limit": 50}                # optional cap on recipients (testing)
+  NewsletterSendFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: streamline-newsletter-send
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+      Environment:
+        Variables:
+          SITE_URL: !Sub "https://${DomainName}"
+          # Unsubscribe links must hit the API (streamline-newsletter), not the
+          # static site, so they point at the raw API Gateway endpoint.
+          API_URL: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+          EMAIL_FROM: "Streamline <newsletter@snurray.com>"
+          RESEND_API_KEY: !Ref ResendApiKey
+      Code:
+        ZipFile: |
+          import json, os, time, secrets, boto3, urllib.request
+          from urllib.parse import quote
+          from html import escape
+
+          dynamo = boto3.resource('dynamodb')
+          subscribers = dynamo.Table('streamline-subscribers')
+
+          SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
+          API = os.environ.get('API_URL', SITE)
+          FROM = os.environ.get('EMAIL_FROM', 'Streamline <newsletter@snurray.com>')
+          RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+
+          def send_email(source, to, subject, html=None, text=None, headers=None):
+            payload = {'from': source, 'to': to if isinstance(to, list) else [to], 'subject': subject}
+            if html is not None:
+              payload['html'] = html
+            if text is not None:
+              payload['text'] = text
+            if headers:
+              payload['headers'] = headers
+            req = urllib.request.Request(
+              'https://api.resend.com/emails',
+              data=json.dumps(payload).encode(),
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              method='POST'
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+              return json.loads(r.read())
+
+          # Brand palette + email-safe fonts, matched to the welcome email.
+          F = 'font-family:Arial,Helvetica,sans-serif;'  # ~ DM Sans
+          G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
+          LOGO_IMG = SITE + '/email/streamline-logo.png'
+          WORDMARK_IMG = SITE + '/email/streamline-wordmark.png'
+
+          def div(css, t): return '<div style="' + css + '">' + t + '</div>'
+
+          def unsub_url(email, token):
+            return API + '/newsletter/unsubscribe?email=' + quote(email) + '&token=' + quote(token)
+
+          def body_to_html(body):
+            # Turn a plain-text body into paragraphs: blank lines split
+            # paragraphs, single newlines become <br>. HTML is left intact.
+            html = ''
+            for para in [p for p in body.replace('\r\n', '\n').split('\n\n') if p.strip()]:
+              html += div(F + 'font-size:15px;line-height:1.75;color:#3a6560;margin:0 0 18px;',
+                          para.strip().replace('\n', '<br>'))
+            return html
+
+          def build_html(subject, heading, intro, body_html, cta_text, cta_url, unsub, preheader):
+            eyebrow = F + 'font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#1a7a6e;padding-bottom:14px;'
+            hidden = ''
+            if preheader:
+              hidden = ('<div style="display:none;max-height:0;overflow:hidden;opacity:0;'
+                        'color:transparent;height:0;width:0;">' + escape(preheader) + '</div>')
+            head = div(G + 'font-size:32px;line-height:1.25;color:#ffffff;', heading or subject)
+            lead = div(F + 'font-size:15px;line-height:1.75;color:#3a6560;margin:0 0 18px;', intro) if intro else ''
+            cta = ''
+            if cta_text and cta_url:
+              cta = div('padding:6px 0 8px;',
+                '<a href="' + cta_url + '" style="display:inline-block;background:#5ddbc9;color:#0d4f47;' + F
+                + 'font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;text-decoration:none;'
+                'padding:13px 30px;border-radius:4px;">' + escape(cta_text) + ' &rarr;</a>')
+            return ('<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f0f7f6;">'
+              + hidden +
+              '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
+              '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:38px 40px 40px;">'
+              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;max-width:100%;">'
+              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 30px 16px;', 'Train for the Fast Lane')
+              + head
+              + '</td></tr>'
+              '<tr><td style="padding:36px 40px 8px;">' + lead + body_html + cta + '</td></tr>'
+              '<tr><td style="padding:22px 40px 34px;">'
+              + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;',
+                '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; '
+                '<a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
+              + '</td></tr>'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
+              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
+                '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved.')
+              + div(F + 'font-size:11px;color:rgba(255,255,255,0.45);padding-top:12px;line-height:1.6;',
+                'You are receiving this because you subscribed to the STREAMLINE newsletter.<br>'
+                '<a href="' + unsub + '" style="color:#a8ede5;text-decoration:underline;">Unsubscribe</a>')
+              + '</td></tr></table></td></tr></table></body></html>')
+
+          def build_text(subject, heading, intro, body, cta_text, cta_url, unsub):
+            lines = [heading or subject, '']
+            if intro:
+              lines += [intro, '']
+            lines += [body.strip(), '']
+            if cta_text and cta_url:
+              lines += [cta_text + ': ' + cta_url, '']
+            lines += ['-- ', 'You are receiving this because you subscribed to the STREAMLINE newsletter.',
+                      'Unsubscribe: ' + unsub]
+            return '\n'.join(lines)
+
+          def handler(event, context):
+            event = event or {}
+            subject = (event.get('subject') or '').strip()
+            if not subject:
+              return {'statusCode': 400, 'body': json.dumps({'error': 'subject is required'})}
+            heading = event.get('heading') or ''
+            intro = event.get('intro') or ''
+            preheader = event.get('preheader') or ''
+            cta_text = event.get('ctaText') or ''
+            cta_url = event.get('ctaUrl') or ''
+            raw_body = event.get('body') or ''
+            body_html = event.get('bodyHtml') or body_to_html(raw_body)
+            text_body = raw_body or (heading or subject)
+
+            def deliver(email, token):
+              unsub = unsub_url(email, token)
+              send_email(
+                FROM, [email], subject,
+                html=build_html(subject, heading, intro, body_html, cta_text, cta_url, unsub, preheader),
+                text=build_text(subject, heading, intro, text_body, cta_text, cta_url, unsub),
+                headers={'List-Unsubscribe': '<' + unsub + '>',
+                         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'}
+              )
+
+            # Preview mode: send a single copy to the given address, no scan.
+            test = (event.get('test') or '').strip().lower()
+            if test:
+              deliver(test, 'preview')
+              return {'statusCode': 200, 'body': json.dumps({'sent': 1, 'test': test})}
+
+            limit = event.get('limit')
+            sent, skipped, errors = 0, 0, []
+            kw = {}
+            done = False
+            while not done:
+              r = subscribers.scan(**kw)
+              for sub in r.get('Items', []):
+                email = (sub.get('email') or '').strip().lower()
+                if not email or sub.get('unsubscribedAt'):
+                  skipped += 1
+                  continue
+                token = sub.get('unsubToken')
+                if not token:
+                  token = secrets.token_urlsafe(24)
+                  subscribers.update_item(
+                    Key={'email': email},
+                    UpdateExpression='SET unsubToken = :t',
+                    ExpressionAttributeValues={':t': token})
+                try:
+                  deliver(email, token)
+                  subscribers.update_item(
+                    Key={'email': email},
+                    UpdateExpression='SET newsletterSentAt = :t',
+                    ExpressionAttributeValues={':t': int(time.time() * 1000)})
+                  sent += 1
+                  if isinstance(limit, int) and sent >= limit:
+                    done = True
+                    break
+                  time.sleep(0.06)  # stay under Resend's request rate limit
+                except Exception as ex:
+                  errors.append('%s: %s' % (email, ex))
+              if done or 'LastEvaluatedKey' not in r:
+                break
+              kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
+            print('newsletter send: sent=%d skipped=%d errors=%s' % (sent, skipped, errors))
+            return {'statusCode': 200, 'body': json.dumps({'sent': sent, 'skipped': skipped, 'errors': errors})}
 
   SearchFunction:
     Type: AWS::Lambda::Function
@@ -1620,13 +1869,22 @@ Resources:
       RouteKey: "POST /newsletter"
       Target: !Sub "integrations/${NewsletterIntegration}"
 
+  # One-click unsubscribe target for links embedded in every newsletter.
+  NewsletterUnsubscribeRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "GET /newsletter/unsubscribe"
+      Target: !Sub "integrations/${NewsletterIntegration}"
+
+  # Wildcard covers both /newsletter and /newsletter/unsubscribe.
   NewsletterFunctionPermission:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref NewsletterFunction
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/newsletter"
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/newsletter*"
 
   # Search route
   SearchIntegration:
