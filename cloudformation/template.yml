@@ -749,13 +749,14 @@ Resources:
 
           def handler(event, context):
             event = event or {}
-            # Single send - fired asynchronously by the auth lambda on signup
+            # Single send - fired asynchronously by the auth lambda on signup.
+            # Pass {"force": true} to resend to one address (used for test sends).
             if event.get('email'):
               # Consistent read: this fires right after signup writes the user
               user = users.get_item(Key={'email': event['email'].strip().lower()}, ConsistentRead=True).get('Item')
               if not user:
                 return {'statusCode': 404, 'body': json.dumps({'error': 'No such user'})}
-              if user.get('welcomeEmailSentAt'):
+              if user.get('welcomeEmailSentAt') and not event.get('force'):
                 return {'statusCode': 200, 'body': json.dumps({'sent': 0, 'alreadySent': 1})}
               send_welcome(user)
               return {'statusCode': 200, 'body': json.dumps({'sent': 1})}
