@@ -317,7 +317,7 @@ Resources:
           }
 
           NOTIFY_TO = 'jackson@snurray.com'
-          NOTIFY_FROM = 'Streamline Contact <noreply@snurray.com>'
+          NOTIFY_FROM = 'Streamline Contact <noreply@winlanefour.com>'
 
           def handler(event, context):
             if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
@@ -381,7 +381,7 @@ Resources:
       Environment:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
-          EMAIL_FROM: "Streamline <noreply@snurray.com>"
+          EMAIL_FROM: "Streamline <noreply@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -400,7 +400,7 @@ Resources:
           }
 
           SITE_URL = os.environ.get('SITE_URL', 'https://winlanefour.com')
-          EMAIL_FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
+          EMAIL_FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
           SESSION_TTL = 30 * 24 * 3600  # 30 days
           RESET_TTL = 3600              # 1 hour
@@ -623,7 +623,7 @@ Resources:
       Environment:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
-          EMAIL_FROM: "Streamline <noreply@snurray.com>"
+          EMAIL_FROM: "Streamline <noreply@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -634,7 +634,7 @@ Resources:
           users = dynamo.Table('streamline-users')
 
           SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
-          FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@snurray.com>')
+          FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 
           def send_email(source, to, subject, html=None, text=None, reply_to=None):
@@ -918,7 +918,7 @@ Resources:
           # Unsubscribe links must hit the API (streamline-newsletter), not the
           # static site, so they point at the raw API Gateway endpoint.
           API_URL: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
-          EMAIL_FROM: "Streamline <newsletter@snurray.com>"
+          EMAIL_FROM: "Streamline <newsletter@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -931,7 +931,7 @@ Resources:
 
           SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
           API = os.environ.get('API_URL', SITE)
-          FROM = os.environ.get('EMAIL_FROM', 'Streamline <newsletter@snurray.com>')
+          FROM = os.environ.get('EMAIL_FROM', 'Streamline <newsletter@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 
           def send_email(source, to, subject, html=None, text=None, headers=None):
