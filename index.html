@@ -218,7 +218,7 @@ strong { font-weight: 500; }
 .logo-wordmark .lane-four .four-o {
   font-size: 0.86em;
   position: relative;
-  top: -0.04em;
+  top: -0.08em;
 }
 .logo-tagline {
   position: relative;
@@ -1968,6 +1968,43 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .video-foot-yt { color: #ff0000; flex-shrink: 0; }
 .video-foot span { font-size: 0.84rem; font-weight: 500; color: var(--gray-700); }
 @media (max-width: 600px) { .video-links { grid-template-columns: 1fr; } }
+/* ── Meal cards (grab-and-go pre-swim fuel) ── */
+.meal-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+}
+.meal-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--gray-100);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+.meal-card-head {
+  padding: 0.85rem 1rem;
+  background: linear-gradient(150deg, var(--deep), var(--teal));
+  color: var(--white);
+}
+.meal-card-head h4 { margin: 0; font-size: 0.9rem; font-weight: 600; line-height: 1.35; color: var(--white); }
+.meal-card-body { padding: 0.9rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.85rem; flex: 1; }
+.meal-card-label {
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gray-400); margin: 0 0 0.35rem;
+}
+.meal-card-ingredients { margin: 0; padding-left: 1.05rem; list-style: disc; }
+.meal-card-ingredients li { font-size: 0.82rem; font-weight: 300; color: var(--text-muted); line-height: 1.55; margin: 0.15rem 0; }
+.meal-macros { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem; margin-top: auto; }
+.meal-macro {
+  background: var(--off-white); border-radius: var(--r-sm);
+  padding: 0.4rem 0.5rem; text-align: center;
+}
+.meal-macro-val { display: block; font-size: 0.95rem; font-weight: 700; color: var(--deep); line-height: 1.1; }
+.meal-macro-key { display: block; font-size: 0.56rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); margin-top: 0.15rem; }
+@media (max-width: 900px) { .meal-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .meal-cards { grid-template-columns: 1fr; } }
 .inline-cta {
   background: var(--surface);
   border: 1px solid var(--gray-100);
@@ -3655,6 +3692,162 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 </div><!-- end page-freestyle-errors -->
 
+<!-- ══ POST: PRE-SWIM BREAKFAST ══ -->
+<div class="page" id="page-pre-swim-breakfast">
+<div class="post-header">
+  <div class="container">
+    <h1>What to Eat Before<br/>Morning Swim Practice</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-nutrition')">← Nutrition</span>
+      <div class="post-meta"><span>Jul 1, 2026</span><span class="dot"></span><span>6 min read</span></div>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>It's 5:12am, your alarm just went off, and the last thing your body wants is food. I get it. For years I rolled into morning practice running on nothing but the half-life of yesterday's chicken alfredo, then wondered why I fell apart on the main set. What you eat before a morning swim practice decides whether you crush the workout or spend the last 800 fantasizing about the parking lot. This is a practical guide for age-groupers, masters swimmers, and anyone dragging themselves to a too-damn-early practice who wants to know what to eat, how much, and how early to make it actually work.</p>
+  <h2>Why Eating Before a Morning Swim Matters</h2>
+  <p>You wake up with a nearly empty fuel tank. Overnight, your liver burns through most of its stored glycogen just keeping your brain and organs running. By the time you hit the pool, your blood sugar is low and your muscle glycogen is only partly topped off.</p>
+  <p>Swimming is brutal on that fuel. A hard practice burns somewhere around 500 to 700 calories an hour, mostly from carbohydrates, and your body can't pull oxygen and stored fat fast enough to cover an all-out 100 on the interval. Show up empty and you'll feel it as that heavy-armed, gray-vision wall about 40 minutes in.</p>
+  <p>The goal before a morning swim is simple: get some fast, easy carbohydrates into your system to lift your blood sugar and prime your muscles, without sitting like a brick in your stomach when you push off the wall.</p>
+  <h2>The Golden Rule: Carbs First, Fat and Fiber Last</h2>
+  <p>Your pre-swim food should be mostly <strong>carbohydrates</strong>, low in fat and fiber, and modest in protein. Here's why the timing of each matters in the water:</p>
+  <ul class="post-list">
+    <li><strong>Carbs</strong> digest fast and go straight to blood sugar and muscle fuel. This is your priority before a morning practice.</li>
+    <li><strong>Fat</strong> digests slowly and sits heavy. A bacon-and-cheese situation before a 5:30 practice is a betrayal you'll feel on your first flip turn.</li>
+    <li><strong>Fiber</strong> is great for life and terrible right before hard swimming. Big bowls of bran or a giant apple can cramp you or send you off to a bathroom mid-set with your coach eyeing you down the entire time.</li>
+    <li><strong>Protein</strong> in a small amount is fine and even helpful, but a heavy protein load digests slowly, so keep it light.</li>
+  </ul>
+  <div class="post-tip"><p><strong>Tip:</strong> The closer to practice you're eating, the more it should look like pure sugar and simple carbs. The more lead time you have, the more real food you can get away with.</p></div>
+  <h2>What to Eat Based on How Much Time You Have</h2>
+  <p>Timing is everything with a pre-swim meal. Match the food to the clock and roll a die for any of these great options.</p>
+  <p><strong>If you have 60 to 90 minutes</strong> (you're an early riser, or it's a meet warm-up):</p>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><p>A bowl of oatmeal with banana and a drizzle of honey</p></div></div>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><p>Toast or a bagel with a thin layer of peanut butter and jam (my personal choice)</p></div></div>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><p>A bowl of low-fiber cereal with milk</p></div></div>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><p>Greek yogurt with a banana and a handful of granola</p></div></div>
+  <p><strong>If you have 30 to 45 minutes</strong> (the realistic weekday scenario):</p>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><p>A banana and a piece of toast with honey</p></div></div>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><p>A handful of dates or a couple of fig bars</p></div></div>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><p>A small smoothie with banana, a little milk, and a spoon of honey; toss in a little protein powder if you're feeling fancy</p></div></div>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><p>A slice of white toast with jam</p></div></div>
+  <p><strong>If you have 10 to 15 minutes</strong> (you hit snooze, we've all been there):</p>
+  <ul class="post-list">
+    <li>A banana</li>
+    <li>A few medjool dates</li>
+    <li>An applesauce pouch (the kind marketed to toddlers is unironically perfect)</li>
+    <li>A sports gel or a few swigs of a sports drink</li>
+  </ul>
+  <p>I swam with a 15-year-old named Sophia who swore she "couldn't eat that early" and kept bonking on morning distance sets. She ended up fixing it on accident with two dates and a few sips of my Gatorade in the car. Tiny, fast, no bloat. Her 400 pace jumped within a week. Sometimes the answer isn't more food, it's the <em>right</em> small thing at the right time.</p>
+  <h2>Don't Forget to Drink</h2>
+  <p>You wake up dehydrated after seven or eight hours without water, and you're about to immerse yourself in a pool, where you sweat without ever noticing it. Dehydrated muscles cramp and fatigue early.</p>
+  <p>Drink 8 to 16 ounces of water or a watered-down sports drink when you wake up. If you're someone whose stomach revolts at solid food before dawn, liquid carbohydrate is your best friend. A smoothie or even diluted juice can deliver fuel and fluid at the same time without the heaviness.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> Keep a banana and a bottle of water on your nightstand. Eat and drink before your feet even hit the floor. By the time you're at the pool, it's already working.</p></div>
+  <h2>What to Skip Before You Swim</h2>
+  <p>A few foods are landmines before a morning practice, no matter how much you love them.</p>
+  <ul class="post-list">
+    <li><strong>Greasy, high-fat breakfasts.</strong> Sausage, bacon, fried eggs, breakfast burritos. They digest like a rock and you'll taste them on your backstroke.</li>
+    <li><strong>Huge amounts of fiber.</strong> Save the Special K cereal and the giant raw salad for after.</li>
+    <li><strong>A large coffee on a totally empty stomach.</strong> A little caffeine genuinely helps performance and alertness, but black coffee and nothing else always left me jittery and nauseous. If coffee's your ritual, pair it with a banana or toast.</li>
+    <li><strong>Anything brand new on meet morning.</strong> Race day is not the time to experiment. The golden rule of competition nutrition is "nothing new," the same lesson every marathoner learns the hard way after one bad gel at mile 18.</li>
+  </ul>
+  <h2>Find Your Own Fuel and Lock It In</h2>
+  <p>There's no single perfect pre-swim breakfast, because stomachs are personal. Some swimmers handle oatmeal an hour out like champions. Others can't manage anything heavier than a date and a sip of sports drink. The only way to know yours is to test different options on regular training mornings, never on a meet day, and pay attention to how you feel 45 minutes into the main set.</p>
+  <p>Once you find the thing that gives you steady energy without weighing you down, treat it like Pavlov's dinner bell and eat it before every morning practice. Your body learns the pattern, your gut stops complaining, and you stop hitting that 40-minute wall. Start with a banana on the nightstand tomorrow. Your 5am self will hate you a little less, and your swimming will thank you on the main set.</p>
+  <hr />
+  <h2>Grab-and-Go Fuel at a Glance</h2>
+  <p>Four swimmer-approved options, with rough ingredients and macros so you can grab the one that fits your morning.</p>
+  <div class="meal-cards">
+    <div class="meal-card">
+      <div class="meal-card-head"><h4>Bagel with Peanut Butter &amp; Jam</h4></div>
+      <div class="meal-card-body">
+        <div>
+          <p class="meal-card-label">Ingredients</p>
+          <ul class="meal-card-ingredients">
+            <li>1 plain bagel</li>
+            <li>1 tbsp peanut butter (thin layer)</li>
+            <li>1 tbsp jam</li>
+          </ul>
+        </div>
+        <div class="meal-macros">
+          <div class="meal-macro"><span class="meal-macro-val">395</span><span class="meal-macro-key">Cal</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">68g</span><span class="meal-macro-key">Carbs</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">11g</span><span class="meal-macro-key">Protein</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">9g</span><span class="meal-macro-key">Fat</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-card-head"><h4>Banana &amp; Toast with Honey</h4></div>
+      <div class="meal-card-body">
+        <div>
+          <p class="meal-card-label">Ingredients</p>
+          <ul class="meal-card-ingredients">
+            <li>1 medium banana</li>
+            <li>1 slice white toast</li>
+            <li>1 tbsp honey</li>
+          </ul>
+        </div>
+        <div class="meal-macros">
+          <div class="meal-macro"><span class="meal-macro-val">280</span><span class="meal-macro-key">Cal</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">66g</span><span class="meal-macro-key">Carbs</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">4g</span><span class="meal-macro-key">Protein</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">1g</span><span class="meal-macro-key">Fat</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-card-head"><h4>A Couple of Fig Bars</h4></div>
+      <div class="meal-card-body">
+        <div>
+          <p class="meal-card-label">Ingredients</p>
+          <ul class="meal-card-ingredients">
+            <li>2 fig bars</li>
+          </ul>
+        </div>
+        <div class="meal-macros">
+          <div class="meal-macro"><span class="meal-macro-val">200</span><span class="meal-macro-key">Cal</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">40g</span><span class="meal-macro-key">Carbs</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">2g</span><span class="meal-macro-key">Protein</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">4g</span><span class="meal-macro-key">Fat</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-card-head"><h4>Applesauce Pouch</h4></div>
+      <div class="meal-card-body">
+        <div>
+          <p class="meal-card-label">Ingredients</p>
+          <ul class="meal-card-ingredients">
+            <li>1 unsweetened applesauce pouch (90g)</li>
+          </ul>
+        </div>
+        <div class="meal-macros">
+          <div class="meal-macro"><span class="meal-macro-val">60</span><span class="meal-macro-key">Cal</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">15g</span><span class="meal-macro-key">Carbs</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">0g</span><span class="meal-macro-key">Protein</span></div>
+          <div class="meal-macro"><span class="meal-macro-val">0g</span><span class="meal-macro-key">Fat</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Nutrition guidance built around your training</h3>
+      <p>Create a free account for fueling advice that matches what your actual sets demand, from morning practice to race day.</p>
+    </div>
+    <a href="#get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Get Started →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card" onclick="navigate('race-week-taper')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">How to Taper for a Swim Meet Without Losing Your Speed</h3><div class="blog-card-meta"><span class="cat-badge">Training</span><span class="blog-card-date">Jun 29, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat.</p></div></div>
+    </div>
+  </div>
+</section>
+</div><!-- end page-pre-swim-breakfast -->
+
 <!-- ══ POST: RACE-WEEK TAPER ══ -->
 <div class="page" id="page-race-week-taper">
 <div class="post-header">
@@ -5199,6 +5392,7 @@ const PAGE_TITLES = {
   'blog-gear': 'LANE FOUR | Blog - Gear',
   'blog-guides': 'LANE FOUR | Blog - Guides',
   'blog-nutrition': 'LANE FOUR | Blog - Nutrition',
+  'pre-swim-breakfast': 'LANE FOUR | Blog - What to Eat Before Morning Swim',
   'freestyle-errors': 'LANE FOUR | Blog - 7 Common Freestyle Mistakes',
   'race-week-taper': 'LANE FOUR | Blog - Taper Without Losing Speed',
   'contact': 'LANE FOUR | Contact',
@@ -7569,6 +7763,25 @@ async function handleContactSubmit(event) {
 //      `heroAlt` and `heroCredit`. It renders on the card and atop the article.
 //   `readTime` is a fallback only; the live word-count value overrides it.
 const BLOG_POSTS = [
+  {
+    id: 'pre-swim-breakfast',
+    title: 'What to Eat Before Morning Swim Practice',
+    category: 'Nutrition',
+    homeSection: 'nutrition',
+    date: '2026-07-01',
+    readTime: 6,
+    keywords: ['swim nutrition', 'pre-workout breakfast', 'morning swim practice', 'oatmeal banana'],
+    // Horizontal Pexels photo (Healthy Breakfast Bowl with Oatmeal and Fruits,
+    // ID 4220141) — oatmeal with banana, matching the article's go-to meal. The
+    // base URL is resized to a landscape crop at render time by _heroSrc().
+    heroImage: 'https://images.pexels.com/photos/4220141/pexels-photo-4220141.jpeg',
+    heroAlt: 'Bowl of oatmeal topped with banana, berries, and nuts for a pre-swim breakfast',
+    heroCredit: 'Photo by Javier Disabato on Pexels',
+    openingText: "It's 5:12am, your alarm just went off, and the last thing your body wants is food. I get it. For years I rolled into morning practice running on nothing but the half-life of yesterday's chicken alfredo, then wondered why I fell apart on the main set. What you eat before a morning swim practice decides whether you crush the workout or spend the last 800 fantasizing about the parking lot.",
+    excerpt: 'What to eat, how much, and how early to fuel a 5am swim practice without sitting like a brick in your stomach.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);',
+    thumbPaths: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>',
+  },
   {
     id: 'freestyle-errors',
     title: '7 Common Freestyle Mistakes and How to Fix Them',
