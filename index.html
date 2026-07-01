@@ -1933,6 +1933,31 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   color: var(--teal);
 }
 .post-visual-row { margin: 0; font-size: 0.93rem; font-weight: 400; color: var(--gray-700); line-height: 1.65; }
+.post-related {
+  background: linear-gradient(150deg, var(--deep), var(--teal));
+  border-radius: var(--r-md);
+  padding: 1.5rem 1.6rem;
+  margin: 2.75rem 0;
+}
+.post-related-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.7rem; }
+.post-related-label {
+  font-family: var(--font-body);
+  font-size: 0.62rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--lap);
+}
+.post-related-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.35;
+  color: #fff !important;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.15s;
+}
+.post-related-title:hover { color: var(--lap) !important; opacity: 1; }
+.post-related-blurb { margin: 0 !important; font-size: 0.9rem; font-weight: 300 !important; color: rgba(255,255,255,0.85) !important; line-height: 1.65; }
 .post-visual-row strong { color: var(--deep); font-weight: 600; }
 .post-body ul.post-list { margin: 1.25rem 0; padding-left: 1.4rem; list-style: disc; }
 .post-body ul.post-list li { font-size: 1rem; font-weight: 300; color: var(--text-muted); line-height: 1.85; margin: 0.4rem 0; }
@@ -3476,6 +3501,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
+      <div class="blog-card" onclick="navigate('pull-buoy-basics')" style="cursor:pointer;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M8 3a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M16 3a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="15" x2="16" y2="15"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <h3 class="blog-card-title">Pull Buoy 101: How to Actually Use That Foam Peanut</h3>
+          <div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Jul 1, 2026</span><span class="blog-card-date">7 min read</span></div>
+          <p class="blog-card-excerpt">There's a foam peanut floating in a milk crate at the end of almost every lap pool, and most swimmers either ignore it or use it completely wrong. That foam peanut is a pull buoy, and used well, it's one of the best tools in the building for fixing your freestyle. Used badly, it's a crutch that papers over a sinking-leg problem you should actually be solving.</p>
+        </div>
+      </div>
       <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -3692,6 +3727,85 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 </div><!-- end page-freestyle-errors -->
 
+<!-- ══ POST: PULL BUOY 101 ══ -->
+<div class="page" id="page-pull-buoy-basics">
+<div class="post-header">
+  <div class="container">
+    <h1>Pull Buoy 101: How to Actually<br/>Use That Foam Peanut</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-technique')">← Technique</span>
+      <div class="post-meta"><span>Jul 1, 2026</span><span class="dot"></span><span>7 min read</span></div>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>There's a foam peanut floating in a milk crate at the end of almost every lap pool, and most swimmers either ignore it or use it completely wrong. That foam peanut is a pull buoy, and used well, it's one of the best tools in the building for fixing your freestyle. Used badly, it's a crutch that papers over a sinking-leg problem you should actually be solving. This guide covers what a pull buoy does, how to use one correctly in swim training, the drills worth your time, and the mistakes that quietly hold swimmers back. Whether you're a triathlete, a masters swimmer, or an adult still sorting out your stroke, you'll get more out of that foam peanut by the end of this.</p>
+  <h2>What Is a Pull Buoy and What Does It Actually Do?</h2>
+  <p>A pull buoy is a figure-eight shaped piece of foam you squeeze between your thighs or knees. It floats your hips and legs up toward the surface, which does two things at once.</p>
+  <p>First, it takes your legs out of the equation. With your lower half floating, you stop kicking and force your arms, shoulders, and core to do all the propulsion. That's the "pull" in pull buoy. It isolates the upper-body engine of your stroke.</p>
+  <p>Second, it simulates a perfect body position. When your hips ride high and flat, you feel what good freestyle is supposed to feel like, the long, downhill-sliding sensation that strong swimmers get for free and everyone else chases for years.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> The pull buoy is not a flotation device for tired swimmers. It's a training tool with a specific job. If you only reach for it when you want an easy lap, you're wasting it.</p></div>
+  <h2>Why Swimmers Use a Pull Buoy</h2>
+  <p>The pull buoy earns its spot in the crate for a handful of real reasons, not just because it's there.</p>
+  <ul class="post-list">
+    <li><strong>Builds upper-body strength and feel for the water.</strong> Take the kick away and your arms have to pull their own weight, literally. It's resistance training for your catch.</li>
+    <li><strong>Isolates and improves your catch and pull.</strong> With legs parked, you can put all your attention on a high elbow catch and a clean finish at the hip, instead of splitting focus with your kick.</li>
+    <li><strong>Teaches better body position.</strong> Floating hips show your body what level swimming feels like, and that muscle memory carries over when you take the buoy off.</li>
+    <li><strong>Gives a kick-heavy swimmer a break.</strong> Triathletes and adult-onset swimmers often have dead, sinking legs. A pull buoy lets them train stroke volume without burning out a weak kick.</li>
+    <li><strong>Lets you swim through minor leg or ankle issues.</strong> Tweaked an ankle? You can still get a quality upper-body workout without kicking.</li>
+  </ul>
+  <h2>How to Use a Pull Buoy Correctly</h2>
+  <p>Putting it between your legs is the easy part. Using it well takes a little intention.</p>
+  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><p><strong>Place it high, between your upper thighs.</strong> The higher up you wedge it, the more it supports your hips and the more it challenges your core to keep everything aligned. Beginners can start lower, between the knees, for more float and stability, then move it up as they get stronger.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><p><strong>Squeeze, but stay relaxed.</strong> Hold it firmly enough that it doesn't pop out on every stroke, but don't clamp like your life depends on it. A death grip tenses your whole lower body.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><p><strong>Keep your legs still and together.</strong> No kicking. If your legs are scissoring or kicking anyway, you're cheating the drill. Let them trail like a rudder.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><p><strong>Focus on the catch.</strong> This is your chance to obsess over a <strong>high elbow catch</strong>: fingertips down, elbow up near the surface, forearm pressing water straight back to your hip. With no kick to think about, give it your full attention.</p></div></div>
+  <div class="post-number"><div class="post-number-badge">5</div><div class="post-number-body"><p><strong>Hold your body line.</strong> Long spine, head neutral, hips high. Use the buoy's float to feel what that alignment should feel like, then try to memorize it.</p></div></div>
+  <div class="post-related">
+    <div class="post-related-head">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span class="post-related-label">Related read</span>
+    </div>
+    <a href="#freestyle-errors" class="post-related-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Mistakes and How to Fix Them →</a>
+    <p class="post-related-blurb">A pull buoy is the perfect place to drill that high elbow catch, but the catch is only one piece of the puzzle. If your freestyle still fights back the moment the buoy comes off, start by fixing the seven errors that gas out most adult and masters swimmers.</p>
+  </div>
+  <h2>The Best Pull Buoy Drills and Sets</h2>
+  <p>Once you're comfortable, the pull buoy opens up some genuinely useful work.</p>
+  <p><strong>Straight pull sets.</strong> The classic. Swim a set like 6 x 100 with the buoy, focusing on a long, powerful pull and steady stroke count. Try to hold or lower your strokes per length as you go.</p>
+  <p><strong>Pull with paddles.</strong> Add hand paddles to the buoy and you've built a strength session. Paddles increase the surface area your arms move, so your catch and lats work harder. Go easy here at first. Paddles plus buoy is a fast way to aggravate a cranky shoulder if you pile on too much volume too soon.</p>
+  <p><strong>Band-and-buoy work.</strong> Advanced swimmers loop a small ankle band around the feet <em>and</em> use a buoy to fully shut the legs down, exposing every flaw in body position and core tension. This is humbling. The first time most people try it, their hips drop and they feel like they're swimming uphill.</p>
+  <p><strong>Breathing-pattern pulls.</strong> Use a pull set to practice bilateral breathing, every third stroke, since you're not distracted by your kick. It's the perfect time to smooth out a lopsided breathing habit.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> Count your strokes per length during pull sets and write the number down. The pull buoy is a fantastic way to measure whether your catch is getting more efficient over a season.</p></div>
+  <h2>Common Pull Buoy Mistakes to Avoid</h2>
+  <p>The foam peanut is easy to misuse, and these are the errors I see most at masters practice.</p>
+  <ul class="post-list">
+    <li><strong>Using it as a nap.</strong> Pulling should feel like work. If your buoy sets are where you mentally check out, you're missing the point entirely. This is the swimming equivalent of putting an exercise bike in the corner and using it as a coat rack.</li>
+    <li><strong>Kicking anyway.</strong> A sneaky little flutter kick defeats the whole purpose. Keep the legs quiet.</li>
+    <li><strong>Living on it.</strong> Some swimmers, especially triathletes, get so hooked on the easy high-hip feeling that they avoid swimming without it. The buoy hides your weak kick instead of fixing it. Use it as a tool, not a permanent fix, and keep training your kick separately.</li>
+    <li><strong>Clamping too hard.</strong> A tense lower body radiates tension up into your stroke. Relax the squeeze.</li>
+    <li><strong>Ignoring the carryover.</strong> The whole point is to take what the buoy teaches and bring it into your full-stroke swimming. If you never connect the two, you're just doing arm laps.</li>
+  </ul>
+  <h2>Make the Foam Peanut Work for You</h2>
+  <p>A pull buoy is cheap, nearly indestructible, and most pools hand them out for free, what really matters is how you use it.</p>
+  <p>Use it to feel high hips and a strong catch, then chase that same feeling when you take it away. Grab the foam peanut from the crate tomorrow, wedge it high, shut your legs off, and spend a few hundred yards thinking about nothing but your catch. Then pull it out and see if your normal freestyle suddenly rides a little higher. That carryover is the entire reason the thing exists.</p>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Daily Swim Sets (free)</h3>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, pull sets included. Structured, printable, and built around a clear training focus.</p>
+    </div>
+    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card" onclick="navigate('freestyle-errors')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--text),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">7 Common Freestyle Mistakes and How to Fix Them</h3><div class="blog-card-meta"><span class="cat-badge">Technique</span><span class="blog-card-date">Jun 30, 2026</span><span class="blog-card-date">8 min read</span></div><p class="blog-card-excerpt">A guy named Pete swam up to me at a masters practice once, completely out of breath after a single 50, and asked why he was so tired when he'd been swimming freestyle his whole life. I watched him do one more length. He was making five of the most common freestyle mistakes at the same time, fighting the water the entire way like it owed him money.</p></div></div>
+    </div>
+  </div>
+</section>
+</div><!-- end page-pull-buoy-basics -->
+
 <!-- ══ POST: PRE-SWIM BREAKFAST ══ -->
 <div class="page" id="page-pre-swim-breakfast">
 <div class="post-header">
@@ -3721,15 +3835,19 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <h2>What to Eat Based on How Much Time You Have</h2>
   <p>Timing is everything with a pre-swim meal. Match the food to the clock and roll a die for any of these great options.</p>
   <p><strong>If you have 60 to 90 minutes</strong> (you're an early riser, or it's a meet warm-up):</p>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><p>A bowl of oatmeal with banana and a drizzle of honey</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><p>Toast or a bagel with a thin layer of peanut butter and jam (my personal choice)</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><p>A bowl of low-fiber cereal with milk</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><p>Greek yogurt with a banana and a handful of granola</p></div></div>
+  <ul class="post-list">
+    <li>A bowl of oatmeal with banana and a drizzle of honey</li>
+    <li>Toast or a bagel with a thin layer of peanut butter and jam (my personal choice)</li>
+    <li>A bowl of low-fiber cereal with milk</li>
+    <li>Greek yogurt with a banana and a handful of granola</li>
+  </ul>
   <p><strong>If you have 30 to 45 minutes</strong> (the realistic weekday scenario):</p>
-  <div class="post-number"><div class="post-number-badge">1</div><div class="post-number-body"><p>A banana and a piece of toast with honey</p></div></div>
-  <div class="post-number"><div class="post-number-badge">2</div><div class="post-number-body"><p>A handful of dates or a couple of fig bars</p></div></div>
-  <div class="post-number"><div class="post-number-badge">3</div><div class="post-number-body"><p>A small smoothie with banana, a little milk, and a spoon of honey; toss in a little protein powder if you're feeling fancy</p></div></div>
-  <div class="post-number"><div class="post-number-badge">4</div><div class="post-number-body"><p>A slice of white toast with jam</p></div></div>
+  <ul class="post-list">
+    <li>A banana and a piece of toast with honey</li>
+    <li>A handful of dates or a couple of fig bars</li>
+    <li>A small smoothie with banana, a little milk, and a spoon of honey; toss in a little protein powder if you're feeling fancy</li>
+    <li>A slice of white toast with jam</li>
+  </ul>
   <p><strong>If you have 10 to 15 minutes</strong> (you hit snooze, we've all been there):</p>
   <ul class="post-list">
     <li>A banana</li>
@@ -7781,6 +7899,26 @@ const BLOG_POSTS = [
     excerpt: 'What to eat, how much, and how early to fuel a 5am swim practice without sitting like a brick in your stomach.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);',
     thumbPaths: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>',
+  },
+  {
+    id: 'pull-buoy-basics',
+    title: 'Pull Buoy 101: How to Actually Use That Foam Peanut',
+    category: 'Technique',
+    homeSection: 'technique',
+    date: '2026-07-01',
+    readTime: 7,
+    keywords: ['pull buoy', 'swim training', 'freestyle pull', 'swimmer pool training'],
+    // Horizontal Pexels photo (A Swimmer Training on a Pool, ID 5903226) — a
+    // swimmer working through laps in a pool, matching this pull/technique
+    // guide. The base URL is resized to a landscape crop at render time by
+    // _heroSrc().
+    heroImage: 'https://images.pexels.com/photos/5903226/pexels-photo-5903226.jpeg',
+    heroAlt: 'Swimmer training through laps in a pool',
+    heroCredit: 'Photo by Tima Miroshnichenko on Pexels',
+    openingText: "There's a foam peanut floating in a milk crate at the end of almost every lap pool, and most swimmers either ignore it or use it completely wrong. That foam peanut is a pull buoy, and used well, it's one of the best tools in the building for fixing your freestyle. Used badly, it's a crutch that papers over a sinking-leg problem you should actually be solving.",
+    excerpt: 'What a pull buoy really does, how to use it correctly, the drills worth your time, and the mistakes that hold swimmers back.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);',
+    thumbPaths: '<path d="M8 3a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M16 3a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="15" x2="16" y2="15"/>',
   },
   {
     id: 'freestyle-errors',
