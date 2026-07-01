@@ -1,0 +1,90 @@
+name: Send Newsletter
+
+# Composes and broadcasts a newsletter to every current subscriber via the
+# streamline-newsletter-send Lambda (which sends through Resend). Run it from
+# the Actions tab. Always do a preview send to yourself first by filling in
+# "Test email"; leave that blank to send to the full list.
+
+on:
+  workflow_dispatch:
+    inputs:
+      subject:
+        description: 'Subject line'
+        required: true
+      heading:
+        description: 'Headline at the top of the email (defaults to the subject)'
+        required: false
+      preheader:
+        description: 'Inbox preview text (optional)'
+        required: false
+      intro:
+        description: 'Lead paragraph (optional, HTML allowed)'
+        required: false
+      body:
+        description: 'Body content. Blank lines separate paragraphs; HTML allowed.'
+        required: false
+      cta_text:
+        description: 'Call-to-action button text (optional)'
+        required: false
+      cta_url:
+        description: 'Call-to-action button URL (optional)'
+        required: false
+      test_email:
+        description: 'Preview: send ONLY to this address. Leave blank to send to all subscribers.'
+        required: false
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  send:
+    name: Send newsletter
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Build payload
+        env:
+          SUBJECT: ${{ inputs.subject }}
+          HEADING: ${{ inputs.heading }}
+          PREHEADER: ${{ inputs.preheader }}
+          INTRO: ${{ inputs.intro }}
+          BODY: ${{ inputs.body }}
+          CTA_TEXT: ${{ inputs.cta_text }}
+          CTA_URL: ${{ inputs.cta_url }}
+          TEST_EMAIL: ${{ inputs.test_email }}
+        run: |
+          # jq --arg safely JSON-encodes each input (quotes, newlines, etc.);
+          # the "test" key is only added when a preview address is supplied.
+          jq -nc \
+            --arg subject "$SUBJECT" \
+            --arg heading "$HEADING" \
+            --arg preheader "$PREHEADER" \
+            --arg intro "$INTRO" \
+            --arg body "$BODY" \
+            --arg ctaText "$CTA_TEXT" \
+            --arg ctaUrl "$CTA_URL" \
+            --arg test "$TEST_EMAIL" \
+            '{subject:$subject, heading:$heading, preheader:$preheader, intro:$intro, body:$body, ctaText:$ctaText, ctaUrl:$ctaUrl}
+             + (if $test == "" then {} else {test:$test} end)' \
+            > /tmp/newsletter-payload.json
+          echo "=== Payload ==="
+          cat /tmp/newsletter-payload.json
+
+      - name: Invoke newsletter-send Lambda
+        run: |
+          aws lambda invoke \
+            --function-name streamline-newsletter-send \
+            --cli-binary-format raw-in-base64-out \
+            --payload file:///tmp/newsletter-payload.json \
+            /tmp/result.json
+          echo "=== Lambda response ==="
+          cat /tmp/result.json
