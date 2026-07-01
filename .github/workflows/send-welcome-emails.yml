@@ -11,6 +11,11 @@ on:
         options:
           - all-unsent   # every account that has never received the welcome email
           - all-force    # every account, including those already sent (resend)
+      test_email:
+        description: 'Optional: send a single test email to this address (resends even if already welcomed). Overrides "mode" when set.'
+        required: false
+        default: ''
+        type: string
 
 env:
   AWS_REGION: us-east-1
@@ -32,8 +37,12 @@ jobs:
 
       - name: Build payload
         id: payload
+        env:
+          TEST_EMAIL: ${{ inputs.test_email }}
         run: |
-          if [ "${{ inputs.mode }}" = "all-force" ]; then
+          if [ -n "$TEST_EMAIL" ]; then
+            echo "payload={\"email\":\"$TEST_EMAIL\",\"force\":true}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.mode }}" = "all-force" ]; then
             echo 'payload={"all":true,"force":true}' >> "$GITHUB_OUTPUT"
           else
             echo 'payload={"all":true}' >> "$GITHUB_OUTPUT"

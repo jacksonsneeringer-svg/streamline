@@ -623,7 +623,7 @@ Resources:
       Environment:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
-          EMAIL_FROM: "Streamline <noreply@winlanefour.com>"
+          EMAIL_FROM: "Lane Four <noreply@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -634,7 +634,7 @@ Resources:
           users = dynamo.Table('streamline-users')
 
           SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
-          FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@winlanefour.com>')
+          FROM = os.environ.get('EMAIL_FROM', 'Lane Four <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 
           def send_email(source, to, subject, html=None, text=None, reply_to=None):
@@ -668,7 +668,7 @@ Resources:
             ('Featured blog posts', 'Featured posts and technique deep-dives for swimmers, from stroke mechanics to training science.'),
             ('Favorite sets and workouts', 'Save the swim sets and dryland workouts you love and find them again in one place.')
           ]
-          INTRO = 'Your free account is ready. STREAMLINE is your daily partner for competitive swimming: personalized pool sets, dryland, and nutrition, planned every day so you just show up and swim fast.'
+          INTRO = 'Your free account is ready. LANE FOUR is your daily partner for competitive swimming: personalized pool sets, dryland, and nutrition, planned every day so you just show up and swim fast.'
           NUDGE = 'Take two minutes to tell us your level, strokes, and goals so your daily plans truly fit. Update them any time from the Hi %s! button in the menu.'
           KNOW = [
             'A fresh plan (swim, dryland, and meals) drops at midnight Pacific, ready in My Training each morning.',
@@ -681,8 +681,8 @@ Resources:
 
           # Logo art ships as hosted PNGs (rendered from the site CC Smash face)
           # under /email, so every email client renders the logo identically.
-          LOGO_IMG = SITE + '/email/streamline-logo.png'       # goggles + wordmark
-          WORDMARK_IMG = SITE + '/email/streamline-wordmark.png'  # wordmark only
+          LOGO_IMG = SITE + '/email/lane-four-logo.png'       # goggles + wordmark
+          WORDMARK_IMG = SITE + '/email/lane-four-wordmark.png'  # wordmark only
 
           def build_html(first):
             feats = ''
@@ -698,10 +698,10 @@ Resources:
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
               '<tr><td style="background:#0d4f47;text-align:center;padding:40px 40px 44px;">'
-              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="LANE FOUR" style="display:inline-block;border:0;outline:none;">'
               + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px 16px;', 'Train for the Fast Lane')
               + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
-              + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to STREAMLINE, ' + first + '!')
+              + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to LANE FOUR, ' + first + '!')
               + '</td></tr>'
               '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#3a6560;', INTRO) + '</td></tr>'
               '<tr><td style="padding:0 40px 10px;">' + div(eyebrow, 'What your account unlocks') + feats + '</td></tr>'
@@ -718,29 +718,29 @@ Resources:
               + '</td></tr>'
               '<tr><td style="padding:4px 40px 38px;">'
               + div(F + 'font-size:15px;line-height:1.6;color:#3a6560;', 'Happy swimming,')
-              + div(G + 'font-size:20px;color:#0d4f47;padding-top:2px;', 'STREAMLINE')
+              + div(G + 'font-size:20px;color:#0d4f47;padding-top:2px;', 'LANE FOUR')
               + '</td></tr>'
               '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
-              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="LANE FOUR" style="display:inline-block;border:0;outline:none;">'
               + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
-                '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved.')
+                '&copy; ' + str(time.gmtime().tm_year) + ' LANE FOUR. All rights reserved.')
               + div(F + 'font-size:12px;padding-top:6px;', '<a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
-              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', 'You are receiving this because an account was created on STREAMLINE with this email address.')
+              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', 'You are receiving this because an account was created on LANE FOUR with this email address.')
               + '</td></tr></table></td></tr></table></body></html>')
 
           def build_text(first):
-            lines = ['You just dove in. Congrats!', 'Welcome to STREAMLINE, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
+            lines = ['You just dove in. Congrats!', 'Welcome to LANE FOUR, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
             lines += ['* %s: %s' % ft for ft in FEATURES]
             lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#profile', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
-            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'STREAMLINE']
+            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'LANE FOUR']
             return '\n'.join(lines)
 
           def send_welcome(user):
             first = (user.get('firstName') or '').strip() or 'swimmer'
             send_email(
               FROM, [user['email']],
-              'You just dove in! Welcome to STREAMLINE, ' + first + '!',
+              'You just dove in! Welcome to LANE FOUR, ' + first + '!',
               html=build_html(first), text=build_text(first)
             )
             users.update_item(Key={'email': user['email']},
@@ -749,13 +749,14 @@ Resources:
 
           def handler(event, context):
             event = event or {}
-            # Single send - fired asynchronously by the auth lambda on signup
+            # Single send - fired asynchronously by the auth lambda on signup.
+            # Pass {"force": true} to resend to one address (used for test sends).
             if event.get('email'):
               # Consistent read: this fires right after signup writes the user
               user = users.get_item(Key={'email': event['email'].strip().lower()}, ConsistentRead=True).get('Item')
               if not user:
                 return {'statusCode': 404, 'body': json.dumps({'error': 'No such user'})}
-              if user.get('welcomeEmailSentAt'):
+              if user.get('welcomeEmailSentAt') and not event.get('force'):
                 return {'statusCode': 200, 'body': json.dumps({'sent': 0, 'alreadySent': 1})}
               send_welcome(user)
               return {'statusCode': 200, 'body': json.dumps({'sent': 1})}
