@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lane Four (winlanefour.com) is a single-page app that routes with URL
+  fragments (e.g. #swim-sets, #blog, #dryland-workouts). Google ignores
+  everything after "#", so those fragments are NOT separate indexable URLs —
+  they all resolve to the homepage below. Listing them here would only create
+  duplicate-of-homepage warnings in Search Console, so the sitemap contains the
+  single canonical URL. If the site later moves to real path-based routes
+  (e.g. /swim-sets), add one <url> entry per path.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://winlanefour.com/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
