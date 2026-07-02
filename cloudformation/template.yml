@@ -627,7 +627,7 @@ Resources:
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
-          import json, os, time, boto3, urllib.request
+          import json, os, time, boto3, urllib.request, urllib.error
           from boto3.dynamodb.conditions import Attr
 
           dynamo = boto3.resource('dynamodb')
@@ -651,8 +651,14 @@ Resources:
               headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
               method='POST'
             )
-            with urllib.request.urlopen(req, timeout=15) as r:
-              return json.loads(r.read())
+            try:
+              with urllib.request.urlopen(req, timeout=15) as r:
+                return json.loads(r.read())
+            except urllib.error.HTTPError as e:
+              # Surface Resend's response body (it explains 4xx reasons, e.g. an
+              # unverified sending domain) instead of a bare "HTTP Error 403".
+              body = e.read().decode('utf-8', 'replace')
+              raise RuntimeError('Resend API %s: %s' % (e.code, body))
 
           # Brand palette (site :root): deep #0d4f47, teal #1a7a6e, lap #5ddbc9,
           # light lap #a8ede5, pale lap #e6faf7, surface #f0f7f6, ink #091f1c,
