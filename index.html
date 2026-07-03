@@ -8404,13 +8404,13 @@ const BLOG_POSTS = [
     date: '2026-07-03',
     readTime: 8,
     keywords: ['best swim snorkel', 'swim training snorkel', 'FINIS snorkel', 'center-mount snorkel', 'cardio cap'],
-    // Horizontal Pexels photo (ID 8688569, by Kindel Media) of an athlete
-    // swimming freestyle underwater — a distinct feature image for this roundup
-    // so its card doesn't duplicate the Snorkel 101 guide's local snorkel photo.
-    // The base URL is resized to a landscape crop at render time by _heroSrc().
-    heroImage: 'https://images.pexels.com/photos/8688569/pexels-photo-8688569.jpeg',
-    heroAlt: 'Athlete swimming freestyle underwater in a training pool',
-    heroCredit: 'Photo by Kindel Media on Pexels',
+    // Local repo image (snorkel-training-underwater.jpeg) — a swimmer mid-stroke
+    // with a center-mount snorkel and hand paddles. A distinct feature image for
+    // this roundup so its card doesn't duplicate the Snorkel 101 guide's photo.
+    // _heroSrc appends sizing params, which S3 ignores for a local asset, so the
+    // file is served as-is and CSS object-fit crops it to the banner.
+    heroImage: 'snorkel-training-underwater.jpeg',
+    heroAlt: 'Swimmer using a center-mount snorkel and hand paddles during an underwater freestyle lap',
     openingText: "Walk into any swim shop and the snorkel wall looks like a rack of plastic elephant trunks, all vaguely similar, none of them explaining why one costs fifteen dollars and another costs fifty. A good swim snorkel disappears on your face and lets you fix your stroke. A bad one leaks, drags, and gets abandoned in a gear bag by week two. Here are the five best swim snorkels for training, ranked, with the honest case for who each one is actually for.",
     excerpt: 'The five best swim training snorkels ranked — best overall, best for breath control, best build quality, best for head position, and best budget pick.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
