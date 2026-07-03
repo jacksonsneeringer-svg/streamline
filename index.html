@@ -5880,11 +5880,13 @@ const PAGE_TITLES = {
   'terms-of-use': 'LANE FOUR | Terms of Use',
 };
 
-function showPage(pageId) {
+function showPage(pageId, allowSetup) {
   closeMobileNav();
   // If a signed-in user lands on the account-creation page (via any "Dive In",
   // "Try it out", etc. link), send them to their training dashboard instead.
-  if (pageId === 'get-started' && getAccount()) pageId = 'my-training';
+  // allowSetup bypasses this for intentional visits: continuing profile setup
+  // right after signup, or editing an existing profile.
+  if (pageId === 'get-started' && getAccount() && !allowSetup) pageId = 'my-training';
   // Unknown page id: do nothing rather than hiding every page and leaving a
   // blank screen. Guards bad hashes and any stale links.
   if (!document.getElementById('page-' + pageId)) return;
@@ -5937,10 +5939,10 @@ function showPage(pageId) {
   if (pageId === 'contact') prefillContactForm();
 }
 
-function navigate(pageId) {
+function navigate(pageId, allowSetup) {
   // Keep the pushed URL hash in sync with the redirect applied in showPage.
-  if (pageId === 'get-started' && getAccount()) pageId = 'my-training';
-  showPage(pageId);
+  if (pageId === 'get-started' && getAccount() && !allowSetup) pageId = 'my-training';
+  showPage(pageId, allowSetup);
   history.pushState(null, '', '#' + pageId);
   return false;
 }
@@ -6000,7 +6002,7 @@ function editProfile() {
   const profile = getProfile();
   if (!account) return;
 
-  navigate('get-started');
+  navigate('get-started', true);
 
   // Pre-fill step 1 fields
   setTimeout(() => {
@@ -6398,12 +6400,12 @@ async function createAccount() {
   const greeting = document.getElementById('account-created-greeting');
   if (greeting) greeting.textContent = 'Welcome, ' + firstName + '!';
 
-  navigate('get-started');
+  navigate('get-started', true);
   goToStep(2);
 }
 
 function setupProfile() {
-  navigate('get-started');
+  navigate('get-started', true);
   goToStep(2);
 }
 
