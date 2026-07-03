@@ -304,7 +304,11 @@ Resources:
             req = urllib.request.Request(
               'https://api.resend.com/emails',
               data=json.dumps(payload).encode(),
-              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              # A real User-Agent is required: Cloudflare (in front of the Resend
+              # API) blocks the default "Python-urllib/x.y" signature with a 403
+              # "error code: 1010" before the request reaches Resend.
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json',
+                       'User-Agent': 'lane-four-mailer/1.0 (+https://winlanefour.com)', 'Accept': 'application/json'},
               method='POST'
             )
             with urllib.request.urlopen(req, timeout=15) as r:
@@ -417,7 +421,11 @@ Resources:
             req = urllib.request.Request(
               'https://api.resend.com/emails',
               data=json.dumps(payload).encode(),
-              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              # A real User-Agent is required: Cloudflare (in front of the Resend
+              # API) blocks the default "Python-urllib/x.y" signature with a 403
+              # "error code: 1010" before the request reaches Resend.
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json',
+                       'User-Agent': 'lane-four-mailer/1.0 (+https://winlanefour.com)', 'Accept': 'application/json'},
               method='POST'
             )
             with urllib.request.urlopen(req, timeout=15) as r:
@@ -956,7 +964,11 @@ Resources:
             req = urllib.request.Request(
               'https://api.resend.com/emails',
               data=json.dumps(payload).encode(),
-              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json'},
+              # A real User-Agent is required: Cloudflare (in front of the Resend
+              # API) blocks the default "Python-urllib/x.y" signature with a 403
+              # "error code: 1010" before the request reaches Resend.
+              headers={'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json',
+                       'User-Agent': 'lane-four-mailer/1.0 (+https://winlanefour.com)', 'Accept': 'application/json'},
               method='POST'
             )
             with urllib.request.urlopen(req, timeout=15) as r:
