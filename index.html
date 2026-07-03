@@ -1962,6 +1962,45 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .post-body ul.post-list { margin: 1.25rem 0; padding-left: 1.4rem; list-style: disc; }
 .post-body ul.post-list li { font-size: 1rem; font-weight: 300; color: var(--text-muted); line-height: 1.85; margin: 0.4rem 0; }
 .post-body ul.post-list li strong { color: var(--deep); font-weight: 600; }
+/* In-article product pick card (affiliate) */
+.product-pick {
+  display: flex; gap: 1.25rem; align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--gray-100);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r-md);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0 2.75rem;
+}
+.product-pick-badge {
+  flex-shrink: 0; width: 66px; height: 66px;
+  border-radius: 14px;
+  background: var(--lap-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.1rem; position: relative;
+}
+.product-pick-rank {
+  position: absolute; top: -9px; left: -9px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--gold); color: var(--navy);
+  font-family: var(--font-display); font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.product-pick-body { flex: 1; min-width: 0; }
+.product-pick-meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.45rem; }
+.product-pick-stars { color: var(--gold); letter-spacing: 1px; font-size: 0.95rem; }
+.product-pick-rating { font-size: 0.78rem; color: var(--text-muted); }
+.product-pick-tag {
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--teal);
+  border-left: 1px solid var(--gray-100); padding-left: 0.6rem;
+}
+.product-pick-quote { margin: 0 0 0.9rem !important; font-size: 0.9rem !important; color: var(--gray-700) !important; line-height: 1.6; font-weight: 400 !important; }
+.product-pick-quote strong { color: var(--deep); font-weight: 600; }
+.product-pick .btn { text-decoration: none; }
+@media (max-width: 600px) {
+  .product-pick { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
 .video-links {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3597,6 +3636,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
+      <div class="blog-card" onclick="navigate('best-swim-snorkels')" style="cursor:pointer;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M9 4v11a4 4 0 0 0 8 0"/><rect x="6" y="3" width="4" height="5" rx="1.5"/></svg>
+        </div>
+        <div class="blog-card-body">
+          <h3 class="blog-card-title">The 5 Best Swim Snorkels for Training in 2026 (Tested and Ranked)</h3>
+          <div class="blog-card-meta"><span class="cat-badge">Guides</span><span class="blog-card-date">Jul 3, 2026</span><span class="blog-card-date">8 min read</span></div>
+          <p class="blog-card-excerpt">Walk into any swim shop and the snorkel wall looks like a rack of plastic elephant trunks, all vaguely similar, none of them explaining why one costs fifteen dollars and another costs fifty. A good swim snorkel disappears on your face and lets you fix your stroke. A bad one leaks, drags, and gets abandoned in a gear bag by week two. Here are the five best swim snorkels for training, ranked.</p>
+        </div>
+      </div>
       <div class="blog-card" onclick="navigate('swim-fins')" style="cursor:pointer;">
         <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2c-2 3-3 6-3 10l3 10 3-10c0-4-1-7-3-10z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
@@ -4008,6 +4057,116 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </div>
 </section>
 </div><!-- end page-swim-snorkel -->
+
+<!-- ══ POST: BEST SWIM SNORKELS ══ -->
+<div class="page" id="page-best-swim-snorkels">
+<div class="post-header">
+  <div class="container">
+    <h1>The 5 Best Swim Snorkels for<br/>Training in 2026 (Tested and Ranked)</h1>
+    <div class="post-header-sub">
+      <span class="post-back-btn" onclick="navigate('blog-guides')">← Guides</span>
+      <div class="post-meta"><span>Jul 3, 2026</span><span class="dot"></span><span>8 min read</span></div>
+    </div>
+  </div>
+</div>
+<article class="post-body">
+  <p>Walk into any swim shop and the snorkel wall looks like a rack of plastic elephant trunks, all vaguely similar, none of them explaining why one costs fifteen dollars and another costs fifty. A good swim snorkel disappears on your face and lets you fix your stroke. A bad one leaks, drags, and gets abandoned in a gear bag by week two. Here are the five best swim snorkels for training, ranked, with the honest case for who each one is actually for.</p>
+  <p class="note" style="margin:1.5rem 0; font-size:0.82rem; color:var(--text-muted); background:var(--surface); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:0.9rem 1.2rem;"><strong style="color:var(--deep);">Affiliate disclosure:</strong> Lane Four participates in affiliate programs. Clicking a link and buying may earn us a small commission at no cost to you. It never changes our rankings, which are based on real use and reviewer feedback.</p>
+  <h2>What Makes a Swim Snorkel Good</h2>
+  <p>Before the list, know what you're paying for. A training snorkel is not a scuba or vacation snorkel. It mounts in the center of your forehead so it stays out of your stroke, and the good ones share a few traits.</p>
+  <ul class="post-list">
+    <li><strong>A stable bracket</strong> that hugs your forehead and doesn't wobble on flip turns.</li>
+    <li><strong>A comfortable silicone mouthpiece</strong> you can hold without clenching your jaw sore.</li>
+    <li><strong>A purge valve</strong> at the bottom that lets water drain instead of pooling in your mouth.</li>
+    <li><strong>A one-way or cardio cap</strong> option if you want to build breath control and CO2 tolerance.</li>
+  </ul>
+  <p>Fit and comfort beat features every time. The fanciest snorkel is worthless if you can't stand wearing it.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> Whatever you buy, rinse it after every swim. Pool chemicals and saliva turn a neglected snorkel into something that smells like a gym sock left in a car.</p></div>
+  <div class="post-related">
+    <div class="post-related-head">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span class="post-related-label">New to snorkels?</span>
+    </div>
+    <a href="#swim-snorkel" class="post-related-title" onclick="navigate('swim-snorkel')">Swim Snorkel 101: The Most Underrated Tool in the Pool →</a>
+    <p class="post-related-blurb">If you're not sure snorkel training is for you yet, start with our full snorkel guide. It covers what a center-mount snorkel actually does, how to use one, the best drills, and how to get past those first claustrophobic laps before you spend a dime.</p>
+  </div>
+  <h2>1. FINIS Swimmer's Snorkel — Best Overall</h2>
+  <p>The <a href="https://amzn.to/4axSAyf" target="_blank" rel="nofollow sponsored noopener">FINIS Swimmer's Snorkel</a> is the one you see on more pool decks than any other, and for good reason. FINIS more or less invented the modern center-mount training snorkel, and this is the refined version. The bracket is stable, the silicone is comfortable, and the purge valve clears easily.</p>
+  <p>It hits the sweet spot of price and quality, usually in the thirty to forty dollar range. If you want one snorkel that just works and you don't want to think about it again, this is the default answer. I've put nervous first-timers on this exact model for years because it's forgiving enough that the "I can't breathe through this" panic passes fast.</p>
+  <div class="product-pick">
+    <div class="product-pick-badge">🤿<span class="product-pick-rank">1</span></div>
+    <div class="product-pick-body">
+      <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">Top-rated overall · ~$30–40</span><span class="product-pick-tag">Best Overall</span></div>
+      <p class="product-pick-quote"><strong>What reviewers say:</strong> Coaches and swimmers consistently rank it the best overall training snorkel — praised for the one thing that matters, that it "doesn't leak and stays in place" so you can focus on technique. Forgiving enough that most first-timers get comfortable within a few lengths.</p>
+      <a href="https://amzn.to/4axSAyf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+    </div>
+  </div>
+  <h2>2. FINIS Cardio Cap Snorkel — Best for Breath Control</h2>
+  <p>This is the same excellent FINIS design with a <a href="https://www.finisswim.com/Cardio-Cap" target="_blank" rel="nofollow sponsored noopener">restrictor cap</a> that limits your airflow, turning the snorkel into a respiratory training tool. Swim with the cap on and your body learns to stay calm with less air, building CO2 tolerance the way altitude masks pretend to but actually deliver.</p>
+  <p>It's for intermediate and advanced swimmers who already breathe comfortably through a normal snorkel and want the next challenge. Go in gradually, and never push a cap set to the point of dizziness. The cap fits on top of the FINIS Swimmer's Snorkel above, so you'll want that snorkel first.</p>
+  <div class="product-pick">
+    <div class="product-pick-badge">🫁<span class="product-pick-rank">2</span></div>
+    <div class="product-pick-body">
+      <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">~$10–13 · add-on cap</span><span class="product-pick-tag">Best for Breath Control</span></div>
+      <p class="product-pick-quote"><strong>What reviewers say:</strong> Swimmers report a real jump in breath control and CO2 tolerance, with FINIS citing up to a 40% increase in workload on the lungs. The main gripe is that the restriction isn't adjustable, so it's a one-setting tool — plenty for most, not enough for elite hypoxic work.</p>
+      <a href="https://www.finisswim.com/Cardio-Cap" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price at FINIS →</a>
+    </div>
+  </div>
+  <h2>3. Arena Swim Snorkel III — Best Build Quality</h2>
+  <p><a href="https://amzn.to/4v3ynrf" target="_blank" rel="nofollow sponsored noopener">Arena's swim snorkel</a> is the tank of the category. The frame feels sturdier than most, the head bracket is well-padded, and it holds up to seasons of chlorine abuse without the silicone going cloudy and stiff. It sits a touch heavier on the face than the FINIS, which some swimmers love for stability and others notice on long sets.</p>
+  <p>If you're the kind of person who buys the heavy-duty version of everything and keeps it for a decade, this is your snorkel. Triathletes putting in serious pool volume tend to gravitate here.</p>
+  <div class="product-pick">
+    <div class="product-pick-badge">🛡️<span class="product-pick-rank">3</span></div>
+    <div class="product-pick-body">
+      <div class="product-pick-meta"><span class="product-pick-stars">★★★★½</span><span class="product-pick-rating">4.4/5 · ~$25–30</span><span class="product-pick-tag">Best Build Quality</span></div>
+      <p class="product-pick-quote"><strong>What reviewers say:</strong> Owners rave about the durability and the leak-free seal — as one put it, these "will survive your whole college career, plus a few forgotten months in the bottom of your mesh bag." The soft liquid-silicone strap and easy-clearing purge valve earn repeat praise.</p>
+      <a href="https://amzn.to/4v3ynrf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+    </div>
+  </div>
+  <h2>4. MP Michael Phelps Focus Snorkel — Best for Head Position</h2>
+  <p>Designed under the Michael Phelps brand (MP, made by Aqua Sphere), the <a href="https://amzn.to/44aNtAl" target="_blank" rel="nofollow sponsored noopener">Focus snorkel</a> has a lower-profile frame and a hydrodynamic tube meant to reduce drag and encourage a still, neutral head. Swimmers who fight a persistent head-lift often find this one helps them lock in a quiet position.</p>
+  <p>It's a premium pick, usually pricier than the FINIS, and the payoff is a slightly cleaner feel in the water. Good for technique-obsessed swimmers chasing that last bit of stillness in their freestyle.</p>
+  <div class="product-pick">
+    <div class="product-pick-badge">🎯<span class="product-pick-rank">4</span></div>
+    <div class="product-pick-body">
+      <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">~$40 · premium</span><span class="product-pick-tag">Best for Head Position</span></div>
+      <p class="product-pick-quote"><strong>What reviewers say:</strong> Reviewers call it rock-stable and hydrodynamic even at all-out speed with fins, with very little wobble. Two things to know: breathing purely through your mouth takes some getting used to (a few testers got water up the nose at first), and a handful reported strap wear after heavy use.</p>
+      <a href="https://amzn.to/44aNtAl" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+    </div>
+  </div>
+  <h2>5. Speedo Center-Mount Snorkel — Best Budget Pick</h2>
+  <p>The <a href="https://amzn.to/4eJcGbj" target="_blank" rel="nofollow sponsored noopener">Speedo center-mount snorkel</a> does the core job for less money. It's not as refined as the FINIS or Arena, the purge valve and bracket feel a little more basic, but for a beginner testing whether snorkel training is for them, it's a low-risk way in.</p>
+  <p>If you're not sure you'll stick with snorkel work and don't want to spend forty dollars on a maybe, start here. You can always upgrade once you're hooked, and most people who commit eventually do end up on a FINIS.</p>
+  <div class="product-pick">
+    <div class="product-pick-badge">💧<span class="product-pick-rank">5</span></div>
+    <div class="product-pick-body">
+      <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">~$15–20 · best value</span><span class="product-pick-tag">Best Budget Pick</span></div>
+      <p class="product-pick-quote"><strong>What reviewers say:</strong> Reviewers like the comfortable, low-profile head mount and the color selection, and rate it a solid value for the money. The trade-off is a more basic clear compared with the FINIS purge valve, so beginners should expect to "push" a little harder to blow the tube clear.</p>
+      <a href="https://amzn.to/4eJcGbj" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+    </div>
+  </div>
+  <h2>How to Pick the One for You</h2>
+  <p>Skip the paralysis. Most swimmers should buy the <strong><a href="https://amzn.to/4axSAyf" target="_blank" rel="nofollow sponsored noopener">FINIS Swimmer's Snorkel</a></strong> and never look back. Want to train breath control? Add or upgrade to the <strong>Cardio Cap</strong> version. Want maximum durability? Go <strong>Arena</strong>. Fighting a head-lift? Try the <strong>MP Focus</strong>. On a tight budget? The <strong>Speedo</strong> gets you in the water.</p>
+  <p>The best swim snorkel is the one you'll actually wear past those first weird claustrophobic laps. Buy one, push through the awkward part, and let it show you what your stroke does when breathing stops getting in the way. Your freestyle will be quieter within a month, and you'll wonder why you spent so long staring at that wall of plastic elephant trunks.</p>
+  <p>Not sure how to actually train with the thing once it arrives? Our <a href="#swim-snorkel" onclick="navigate('swim-snorkel')">complete swim snorkel guide</a> walks through the drills, sets, and beginner mistakes that make the difference between a snorkel that transforms your stroke and one that lives in your gear bag.</p>
+  <div class="inline-cta">
+    <div class="inline-cta-body">
+      <h3>Daily Swim Sets (free)</h3>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, technique and pull sets included. Structured, printable, and built around a clear training focus.</p>
+    </div>
+    <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
+  </div>
+</article>
+<section style="background:var(--off-white); padding:4rem 0;">
+  <div class="container">
+    <h2 style="margin-bottom:2rem; font-size:1.4rem;">Continue reading</h2>
+    <div class="grid-3">
+      <div class="blog-card" onclick="navigate('swim-snorkel')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M9 4v11a4 4 0 0 0 8 0"/><rect x="6" y="3" width="4" height="5" rx="1.5"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Swim Snorkel 101: The Most Underrated Tool in the Pool</h3><div class="blog-card-meta"><span class="cat-badge">Guides</span><span class="blog-card-date">Jul 1, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The first time my coach handed me a center-mount snorkel, I looked at it like he'd offered me a kazoo. "Isn't this for vacations?" A swim snorkel is not a vacation toy, and it might be the single most underrated tool in the pool. By letting you breathe without turning your head, a front-mounted swim snorkel frees you to fix the parts of your stroke that breathing usually hides.</p></div></div>
+      <div class="blog-card" onclick="navigate('swim-fins')" style="cursor:pointer;"><div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2c-2 3-3 6-3 10l3 10 3-10c0-4-1-7-3-10z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="13" x2="15" y2="13"/></svg></div><div class="blog-card-body"><h3 class="blog-card-title">Are Swim Fins Cheating? How to Train With Them Properly</h3><div class="blog-card-meta"><span class="cat-badge">Guides</span><span class="blog-card-date">Jul 1, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The first time you put on a pair of swim fins, the pool feels broken in the best way. You push off the wall and suddenly you're flying, your kick finally goes somewhere, and you wonder why you ever swim without them. That feeling is exactly the trap.</p></div></div>
+    </div>
+  </div>
+</section>
+</div><!-- end page-best-swim-snorkels -->
 
 <!-- ══ POST: SWIM PADDLES ══ -->
 <div class="page" id="page-swim-paddles">
@@ -8237,6 +8396,26 @@ async function handleContactSubmit(event) {
 //      `heroAlt` and `heroCredit`. It renders on the card and atop the article.
 //   `readTime` is a fallback only; the live word-count value overrides it.
 const BLOG_POSTS = [
+  {
+    id: 'best-swim-snorkels',
+    title: 'The 5 Best Swim Snorkels for Training in 2026 (Tested and Ranked)',
+    category: 'Guides',
+    homeSection: 'guides',
+    date: '2026-07-03',
+    readTime: 8,
+    keywords: ['best swim snorkel', 'swim training snorkel', 'FINIS snorkel', 'center-mount snorkel', 'cardio cap'],
+    // Local repo image (snorkel-training-underwater.jpeg) — a swimmer mid-stroke
+    // with a center-mount snorkel and hand paddles. A distinct feature image for
+    // this roundup so its card doesn't duplicate the Snorkel 101 guide's photo.
+    // _heroSrc appends sizing params, which S3 ignores for a local asset, so the
+    // file is served as-is and CSS object-fit crops it to the banner.
+    heroImage: 'snorkel-training-underwater.jpeg',
+    heroAlt: 'Swimmer using a center-mount snorkel and hand paddles during an underwater freestyle lap',
+    openingText: "Walk into any swim shop and the snorkel wall looks like a rack of plastic elephant trunks, all vaguely similar, none of them explaining why one costs fifteen dollars and another costs fifty. A good swim snorkel disappears on your face and lets you fix your stroke. A bad one leaks, drags, and gets abandoned in a gear bag by week two. Here are the five best swim snorkels for training, ranked, with the honest case for who each one is actually for.",
+    excerpt: 'The five best swim training snorkels ranked — best overall, best for breath control, best build quality, best for head position, and best budget pick.',
+    thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
+    thumbPaths: '<path d="M9 4v11a4 4 0 0 0 8 0"/><rect x="6" y="3" width="4" height="5" rx="1.5"/>',
+  },
   {
     id: 'swim-fins',
     title: 'Are Swim Fins Cheating? How to Train With Them Properly',
