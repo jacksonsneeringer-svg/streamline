@@ -20,9 +20,16 @@ name: Weekly LANE FOUR Newsletter
 
 on:
   schedule:
-    # 13:00 UTC every Monday = 6am PT / 9am ET. Daily sets generate at 12:01am
-    # Pacific, so today's workout already exists when this fires.
-    - cron: '0 13 * * 1'
+    # Target: 6am ET every Monday. GitHub Actions cron is UTC-only and ignores
+    # daylight saving, so 6am ET is a different UTC hour depending on the
+    # season: 10:00 UTC while Eastern Daylight Time is in effect (mid-Mar to
+    # early Nov) and 11:00 UTC while Eastern Standard Time is in effect. We
+    # register BOTH; the guard step below reads the real Eastern-time hour and
+    # lets only the firing that is genuinely 6am ET proceed, so the issue goes
+    # out at 6am ET year-round and never twice. Daily sets generate at 12:01am
+    # Pacific (= 3am ET), so today's workout already exists when this fires.
+    - cron: '0 10 * * 1'   # 6am ET during EDT (7am ET during EST — gated out)
+    - cron: '0 11 * * 1'   # 6am ET during EST (5am ET during EDT — gated out)
   workflow_dispatch:
     inputs:
       test_email:
@@ -48,14 +55,31 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      # Re-run protection: a successful run commits issues/<date>.html to
-      # main, so if it's already there this week's issue went out — don't
-      # build and email it twice. Test previews bypass the guard.
-      - name: Skip if this week's issue was already published
+      # Two gates decide whether this run proceeds:
+      #  1. DST gate — the two schedules fire at 10:00 and 11:00 UTC; only the
+      #     one that is actually 6am Eastern right now should run (the other is
+      #     an hour off because Actions cron ignores DST). Manual runs skip
+      #     this gate so a preview works at any hour.
+      #  2. Re-run protection — a successful run commits issues/<date>.html to
+      #     main, so if it's already there this week's issue went out; don't
+      #     build and email it twice. Test previews bypass this too.
+      # The issue date is the Eastern date (same as UTC at 6am ET, but computed
+      # in ET so the whole workflow stays time-zone coherent).
+      - name: Decide whether to run
         id: guard
         run: |
-          DATE=$(date -u +%F)
+          DATE=$(TZ=America/New_York date +%F)
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ET_HOUR=$(TZ=America/New_York date +%H)
+            if [ "$ET_HOUR" != "06" ]; then
+              echo "It's ${ET_HOUR}:00 ET, not 6am — this is the off-DST cron firing. Skipping."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
           if [ -f "issues/$DATE.html" ] && [ -z "$TEST_EMAIL" ]; then
             echo "Issue $DATE already exists on main — nothing to do."
             echo "skip=true" >> "$GITHUB_OUTPUT"
