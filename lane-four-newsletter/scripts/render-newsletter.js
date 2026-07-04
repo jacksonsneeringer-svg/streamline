@@ -328,8 +328,13 @@ function main() {
     html = html.split(token).join(value);
   }
 
-  const remaining = html.match(/\{\{[A-Z_]+\}\}/g);
-  if (remaining) {
+  // {{UNSUBSCRIBE_URL}} is the one placeholder that must SURVIVE the render:
+  // the newsletter-send Lambda substitutes each recipient's one-click
+  // unsubscribe link at send time (see send-issue.js).
+  const remaining = (html.match(/\{\{[A-Z_]+\}\}/g) || []).filter(
+    (t) => t !== '{{UNSUBSCRIBE_URL}}'
+  );
+  if (remaining.length) {
     console.error(`Template has unfilled placeholders: ${[...new Set(remaining)].join(', ')}`);
     process.exit(1);
   }

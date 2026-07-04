@@ -1,0 +1,19 @@
+{
+  "_comment": "Pool of upcoming events for the 'Next Up on the Calendar' section. compose-draft.js automatically picks the soonest future-dated entries each week and derives the display fields and calendar link, and check-no-repeats.js allows an event to repeat weekly until its date passes. This is the ONE file worth topping up occasionally: when an event's date passes it drops out on its own, so just append new meets (name, date, optional endDate/location/url) as they get announced.",
+  "events": [
+    {
+      "name": "USMS Summer National Championship",
+      "date": "2026-08-05",
+      "endDate": "2026-08-09",
+      "location": "Details at usms.org",
+      "url": "https://www.usms.org"
+    },
+    {
+      "name": "Pan Pacific Championships",
+      "date": "2026-08-12",
+      "endDate": "2026-08-17",
+      "location": "Details at worldaquatics.com",
+      "url": "https://www.worldaquatics.com"
+    }
+  ]
+}

@@ -1,8 +1,11 @@
 # LANE FOUR Weekly Newsletter
 
-Code that generates the weekly LANE FOUR newsletter: pulls fresh blog posts and
-rotates gear automatically, enforces that nothing repeats week to week, and
-renders the final HTML from `data/draft-issue.json`.
+Code that generates AND sends the weekly LANE FOUR newsletter with zero human
+input: composes the editorial content (news, athlete of the week, workout
+blurbs) via the `streamline-newsletter-compose` Lambda, pulls fresh blog posts
+and rotates gear automatically, enforces that nothing repeats week to week,
+renders the final HTML, publishes it to the site, and emails every subscriber
+— all from the Monday GitHub Action.
 
 ## Where this lives in the repo
 
@@ -32,26 +35,61 @@ serving the repo root with `python3 -m http.server 8080`), and
 `NEWSLETTER_CHROMIUM_PATH` points Playwright at a system Chromium instead of
 downloading one.
 
-## The one thing that stays manual
+## Nothing stays manual — how the editorial writes itself
 
-Blog posts and gear are fully automated (see "How the pieces fit together"
-below). Athlete of the Week, "In the Water This Week" news, today's workout
-blurb, and calendar events are not scrapeable — they need a person to write
-them. Every week, before Monday:
+The old hand-authored `data/draft-issue.json` is now generated each Monday by
+`scripts/compose-draft.js` + the `streamline-newsletter-compose` Lambda
+(Claude on Bedrock, the same pattern as the site's daily set generator).
+Everything is grounded in a real source so the model can't invent facts:
 
-1. Copy `data/draft-issue.example.json` to `data/draft-issue.json` (or just
-   edit the existing one from last week).
-2. Fill in that week's athlete, news items, workout blurb, and events.
-3. Commit and push `data/draft-issue.json` to `main`.
+- **"In the Water This Week"** — summarized from the SwimSwam RSS feed
+  (last 7 days only). The topic slug IS the feed post's slug, so the
+  no-repeat history works across weeks, and the Lambda hard-rejects any
+  item that doesn't reference a real provided story.
+- **Athlete of the Week** — Claude proposes candidates not yet featured;
+  the first with a Wikipedia photo wins, which doubles as an existence
+  check and supplies a real photo.
+- **Today's workout blurbs** — read from the daily sets/dryland the site
+  already generates at 12:01 AM Pacific (DynamoDB).
+- **Calendar events** — taken ONLY from `data/events-catalog.json`, never
+  invented, so dates stay trustworthy. Past events drop out automatically.
+- **Subject line, preheader, hero teaser, gear headline** — written fresh
+  from that week's actual content.
 
-If it's not there when the Monday workflow runs, the workflow fails loudly
-with a message telling you exactly that, instead of silently reusing last
-week's content.
+If any grounding source comes up short (fewer than 4 fresh news stories, no
+usable athlete), the workflow fails loudly instead of sending a thin or
+stale issue.
+
+The two files worth topping up occasionally (each takes a minute, every
+month or two): `data/gear-catalog.json` when the unused pool runs low, and
+`data/events-catalog.json` as new meets get announced.
+
+## Sending and previews
+
+A real Monday run publishes the hero images and a web-archive copy of the
+issue to the site, then emails every subscriber through the
+`streamline-newsletter-send` Lambda (Resend) in `rawHtml` mode — the
+rendered document is sent verbatim, with each recipient's one-click
+unsubscribe link swapped into the `{{UNSUBSCRIBE_URL}}` token. Afterwards
+the updated history and issue are committed straight to `main`, which also
+acts as re-run protection (a re-run that finds `issues/<date>.html` already
+on `main` exits without sending twice).
+
+To preview without touching the list: run the workflow manually from the
+Actions tab with a **test_email** — it builds everything, emails only that
+address, and commits/publishes nothing.
 
 ## How the pieces fit together
 
 ```
 npm run weekly
+  ├─ compose             scripts/compose-draft.js
+  │                      gathers used athletes/topics from history and
+  │                      upcoming events from the catalog, invokes the
+  │                      streamline-newsletter-compose Lambda, validates the
+  │                      result, and writes the editorial draft
+  │                      → data/draft-issue.json
+  │
   ├─ fetch:blog          scripts/fetch-blog-posts.js
   │                      scrapes winlanefour.com/#blog, picks up to 3 posts
   │                      from the last 7 days (one per category), skipping
@@ -81,12 +119,18 @@ npm run weekly
                          renders templates/newsletter-template.html using
                          data/draft-issue.json + selected-gear.json +
                          newsletter-blog-picks.json (+ gear-ratings.json if
-                         present)
+                         present); leaves {{UNSUBSCRIBE_URL}} for send time
                          → issues/<date>.html
+
+npm run send             scripts/send-issue.js
+                         emails the rendered issue to every subscriber via
+                         the streamline-newsletter-send Lambda (rawHtml
+                         mode); set NEWSLETTER_TEST_EMAIL for a preview
 ```
 
-Run the whole thing locally with `npm run weekly`, or let the Monday GitHub
-Action run it and open a pull request for review.
+Run the whole thing locally with `npm run weekly` (compose and send need AWS
+credentials with `lambda:InvokeFunction`), or let the Monday GitHub Action do
+all of it — including the send — unattended.
 
 ## Why nothing can repeat
 
@@ -102,12 +146,14 @@ date passes, it has to be swapped for something new.
 
 ```
 data/
-  draft-issue.example.json   template for the weekly manual editorial input
-  draft-issue.json           this week's actual input (gitignored is NOT
-                             set — commit this each week so the Action can
-                             read it)
+  draft-issue.example.json   reference for the draft shape (kept for docs)
+  draft-issue.json           this week's editorial input — now GENERATED by
+                             compose-draft.js each run, committed by the
+                             workflow for auditability
   gear-catalog.json          full pool of gear to rotate through; add new
                              products here as the current ones get used up
+  events-catalog.json        pool of upcoming meets for the calendar
+                             section; append new ones as they're announced
   newsletter-history.json    permanent record of everything ever featured
   selected-gear.json         generated each run
   newsletter-blog-picks.json generated each run

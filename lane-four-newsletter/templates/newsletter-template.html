@@ -197,7 +197,11 @@
 <p style="font-family:'Inter',Arial,sans-serif; font-size:10px; margin:0 0 8px 0;">
 <a href="https://winlanefour.com/#privacy-policy" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Privacy Policy</a>
 <a href="https://winlanefour.com/#terms-of-service" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Terms of Service</a>
-<a href="#" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Unsubscribe</a>
+<!-- {{UNSUBSCRIBE_URL}} is intentionally NOT replaced at render time: the
+     newsletter-send Lambda swaps in each recipient's one-click unsubscribe
+     link at send time, and the workflow substitutes a site link in the copy
+     published to the web archive. -->
+<a href="{{UNSUBSCRIBE_URL}}" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Unsubscribe</a>
 </p>
 <p style="font-family:'Inter',Arial,sans-serif; font-size:9.5px; color:#CFE9E2; margin:0 0 6px 0;">You are receiving this email because you created a LANE FOUR account or subscribed at winlanefour.com.</p>
 <p style="font-family:'Inter',Arial,sans-serif; font-size:9.5px; color:#CFE9E2; margin:0;">1875 Mission St Ste 103 #302, San Francisco, CA 94103</p>
