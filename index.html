@@ -6299,11 +6299,12 @@ function clearArchiveFilters() {
 }
 
 function routeFromHash() {
-  // Hashes may carry a query, e.g. #reset-password?token=... from reset emails
+  // Hashes may carry a query, e.g. #reset-password?token=... from reset emails.
+  // #get-started?setup=1 (welcome email) opens profile setup even when signed in.
   const raw = location.hash.replace('#', '') || 'home';
   const [page, query] = raw.split('?');
   _hashQuery = new URLSearchParams(query || '');
-  showPage(page);
+  showPage(page, _hashQuery.get('setup') === '1');
 }
 
 window.addEventListener('popstate', routeFromHash);

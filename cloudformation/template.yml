@@ -385,7 +385,7 @@ Resources:
       Environment:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
-          EMAIL_FROM: "Streamline <noreply@winlanefour.com>"
+          EMAIL_FROM: "LANE FOUR <noreply@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -404,7 +404,7 @@ Resources:
           }
 
           SITE_URL = os.environ.get('SITE_URL', 'https://winlanefour.com')
-          EMAIL_FROM = os.environ.get('EMAIL_FROM', 'Streamline <noreply@winlanefour.com>')
+          EMAIL_FROM = os.environ.get('EMAIL_FROM', 'LANE FOUR <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
           SESSION_TTL = 30 * 24 * 3600  # 30 days
           RESET_TTL = 3600              # 1 hour
@@ -566,20 +566,20 @@ Resources:
             first = user.get('firstName') or 'there'
             text = (
               'Hi ' + first + ',\n\n'
-              'We received a request to reset the password for your Streamline account.\n\n'
+              'We received a request to reset the password for your LANE FOUR account.\n\n'
               'Reset it with this link (valid for 1 hour):\n' + link + '\n\n'
               'If you did not request this, you can safely ignore this email - your password will not change.\n\n'
-              '- The Streamline Team'
+              '- The LANE FOUR Team'
             )
             html = (
               '<p>Hi ' + first + ',</p>'
-              '<p>We received a request to reset the password for your <b>Streamline</b> account.</p>'
+              '<p>We received a request to reset the password for your <b>LANE FOUR</b> account.</p>'
               '<p><a href="' + link + '">Reset your password</a> (this link is valid for 1 hour)</p>'
               '<p>If you did not request this, you can safely ignore this email - your password will not change.</p>'
-              '<p>&mdash; The Streamline Team</p>'
+              '<p>&mdash; The LANE FOUR Team</p>'
             )
             try:
-              send_email(EMAIL_FROM, [email], 'Reset your Streamline password', html=html, text=text)
+              send_email(EMAIL_FROM, [email], 'Reset your LANE FOUR password', html=html, text=text)
             except Exception as e:
               print('Resend send failed:', e)
             return done
@@ -631,7 +631,7 @@ Resources:
       Environment:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
-          EMAIL_FROM: "Lane Four <noreply@winlanefour.com>"
+          EMAIL_FROM: "LANE FOUR <noreply@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -642,7 +642,7 @@ Resources:
           users = dynamo.Table('streamline-users')
 
           SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
-          FROM = os.environ.get('EMAIL_FROM', 'Lane Four <noreply@winlanefour.com>')
+          FROM = os.environ.get('EMAIL_FROM', 'LANE FOUR <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 
           def send_email(source, to, subject, html=None, text=None, reply_to=None):
@@ -681,17 +681,16 @@ Resources:
           FEATURES = [
             ('Personalized training, every day', "Today's swim set and dryland lift in My Training, matched to your level, focus, and schedule."),
             ('Nutrition built around your training', 'Daily meal plans matched to your body, training load, and dietary preferences.'),
-            ('Progress tracking & workout log', 'Log sessions and track your volume, times, and trends over time.'),
-            ('Set & workout archives', 'Every past swim set and dryland workout, filterable by level, stroke, intensity, and distance.'),
-            ('Featured blog posts', 'Featured posts and technique deep-dives for swimmers, from stroke mechanics to training science.'),
-            ('Favorite sets and workouts', 'Save the swim sets and dryland workouts you love and find them again in one place.')
+            ('Progress tracker & workout log', 'A workout log plus charts of your volume, times, and trends over time.'),
+            ('Set & workout archives', 'Every past swim set and dryland workout, filterable by level, stroke, intensity, and distance. Save your favorites and find them again in one place.'),
+            ('Featured blog posts', 'Featured posts and technique deep-dives for swimmers, from stroke mechanics to training science.')
           ]
           INTRO = 'Your free account is ready. LANE FOUR is your daily partner for competitive swimming: personalized pool sets, dryland, and nutrition, planned every day so you just show up and swim fast.'
           NUDGE = 'Take two minutes to tell us your level, strokes, and goals so your daily plans truly fit. Update them any time from the Hi %s! button in the menu.'
           KNOW = [
             'A fresh plan (swim, dryland, and meals) drops at midnight Pacific, ready in My Training each morning.',
-            'Update your level, strokes, goals, or dietary preferences any time, and your plan adjusts to match.',
-            'Read the focus cue and pace guidance at the top of each set; that is where the coaching lives, not just the yardage.',
+            'Update your level, strokes, goals, or dietary preferences at any time, and your plan adjusts to match.',
+            'Read the Focus Cue at the top of each set; that is where the coaching lives, not just in the yardage.',
             'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
 
@@ -700,7 +699,6 @@ Resources:
           # Logo art ships as hosted PNGs (rendered from the site CC Smash face)
           # under /email, so every email client renders the logo identically.
           LOGO_IMG = SITE + '/email/lane-four-logo.png'       # goggles + wordmark
-          WORDMARK_IMG = SITE + '/email/lane-four-wordmark.png'  # wordmark only
 
           def build_html(first):
             feats = ''
@@ -712,22 +710,34 @@ Resources:
             for k in KNOW:
               know += div(F + 'font-size:14px;line-height:1.8;color:#3a6560;', '&bull;&nbsp; ' + k)
             eyebrow = F + 'font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#1a7a6e;padding-bottom:14px;'
-            return ('<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f0f7f6;">'
+            return ('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+              # Mobile: bigger logo (band padding shrinks, logo fills the width)
+              # and title, smaller tagline.
+              '<style type="text/css">@media only screen and (max-width:480px){'
+              '.hdr-band{padding:14px 14px 16px !important;}'
+              '.hdr-logo{width:100% !important;height:auto !important;}'
+              '.hdr-title{font-size:38px !important;}'
+              '.hdr-tagline{font-size:9px !important;letter-spacing:6px !important;word-spacing:8px !important;}'
+              '}</style></head><body style="margin:0;padding:0;background:#f0f7f6;">'
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
-              '<tr><td style="background:#0d4f47;text-align:center;padding:40px 40px 44px;">'
-              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="LANE FOUR" style="display:inline-block;border:0;outline:none;">'
-              + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 32px 16px;', 'Train for the Fast Lane')
-              + div(G + 'font-size:34px;line-height:1.25;color:#ffffff;', 'You just dove in. Congrats!')
+              # Logo band uses the same darker box the site paints behind the
+              # logo (.site-logo::before), on top of the deep header below.
+              '<tr><td class="hdr-band" style="background:#062b27;text-align:center;padding:18px 40px 20px;">'
+              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="LANE FOUR" class="hdr-logo" style="display:inline-block;border:0;outline:none;max-width:100%;height:auto;">'
+              + '<div class="hdr-tagline" style="' + F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:12px 0 0 16px;">Train for the Fast Lane</div>'
+              + '</td></tr>'
+              '<tr><td style="background:#0d4f47;text-align:center;padding:24px 40px 28px;">'
+              + '<div class="hdr-title" style="' + G + 'font-size:34px;line-height:1.25;color:#ffffff;">You just dove in. Congrats!</div>'
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to LANE FOUR, ' + first + '!')
               + '</td></tr>'
               '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#3a6560;', INTRO) + '</td></tr>'
               '<tr><td style="padding:0 40px 10px;">' + div(eyebrow, 'What your account unlocks') + feats + '</td></tr>'
               '<tr><td style="padding:8px 40px;">'
-              '<div style="background:#e6faf7;border-left:4px solid #5ddbc9;border-radius:8px;padding:22px 24px;">'
+              '<div style="background:#e6faf7;border-radius:8px;padding:22px 24px;">'
               + div(G + 'font-size:19px;color:#0d4f47;padding-bottom:6px;', 'Make it yours: complete your profile')
               + div(F + 'font-size:14px;line-height:1.7;color:#3a6560;padding-bottom:16px;', NUDGE % ('<b>' + first + '</b>'))
-              + '<a href="' + SITE + '/#profile" style="display:inline-block;background:#5ddbc9;color:#0d4f47;' + F
+              + '<a href="' + SITE + '/#get-started?setup=1" style="display:inline-block;background:#5ddbc9;color:#0d4f47;' + F
               + 'font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:13px 30px;border-radius:4px;">Complete Your Profile &rarr;</a>'
               '</div></td></tr>'
               '<tr><td style="padding:26px 40px 36px;">' + div(eyebrow, 'Good to know') + know
@@ -739,26 +749,27 @@ Resources:
               + div(G + 'font-size:20px;color:#0d4f47;padding-top:2px;', 'LANE FOUR')
               + '</td></tr>'
               '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
-              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="LANE FOUR" style="display:inline-block;border:0;outline:none;">'
-              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
+              + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);',
                 '&copy; ' + str(time.gmtime().tm_year) + ' LANE FOUR. All rights reserved.')
               + div(F + 'font-size:12px;padding-top:6px;', '<a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
               + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', 'You are receiving this because an account was created on LANE FOUR with this email address.')
+              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', '1875 Mission St Ste 103 #302, San Francisco, CA 94103')
               + '</td></tr></table></td></tr></table></body></html>')
 
           def build_text(first):
             lines = ['You just dove in. Congrats!', 'Welcome to LANE FOUR, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
             lines += ['* %s: %s' % ft for ft in FEATURES]
-            lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#profile', '', 'GOOD TO KNOW']
+            lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#get-started?setup=1', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
             lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'LANE FOUR']
+            lines += ['', '1875 Mission St Ste 103 #302, San Francisco, CA 94103']
             return '\n'.join(lines)
 
           def send_welcome(user):
             first = (user.get('firstName') or '').strip() or 'swimmer'
             send_email(
               FROM, [user['email']],
-              'You just dove in! Welcome to LANE FOUR, ' + first + '!',
+              'Welcome to LANE FOUR, ' + first + '!',
               html=build_html(first), text=build_text(first)
             )
             users.update_item(Key={'email': user['email']},
