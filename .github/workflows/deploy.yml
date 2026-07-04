@@ -82,13 +82,31 @@ jobs:
         run: |
           echo "window.STREAMLINE_API_URL = '${{ steps.stack.outputs.api_url }}';" > api-config.js
 
+      # The newsletter pipeline (lane-four-newsletter/) is build tooling, not
+      # website content, so it's excluded from the site sync. Its two public
+      # outputs are published separately below under /newsletter-images and
+      # /issues — those bucket prefixes are excluded here so --delete doesn't
+      # wipe them out.
       - name: Sync website files to S3
         run: |
           aws s3 sync . s3://${{ steps.stack.outputs.bucket }} \
             --exclude ".git/*" \
             --exclude ".github/*" \
             --exclude "cloudformation/*" \
+            --exclude "lane-four-newsletter/*" \
+            --exclude "newsletter-images/*" \
+            --exclude "issues/*" \
             --delete
+
+      # Rendered newsletters reference their hero images at
+      # /newsletter-images/... on winlanefour.com, so the images (and the
+      # issue archive itself) go live with each deploy.
+      - name: Publish newsletter images and issue archive
+        run: |
+          aws s3 sync lane-four-newsletter/public/newsletter-images \
+            s3://${{ steps.stack.outputs.bucket }}/newsletter-images --exclude ".gitkeep"
+          aws s3 sync lane-four-newsletter/issues \
+            s3://${{ steps.stack.outputs.bucket }}/issues --exclude ".gitkeep"
 
       - name: Invalidate CloudFront cache
         run: |

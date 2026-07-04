@@ -1,0 +1,68 @@
+{
+  "_comment": "Copy this file to data/draft-issue.json and fill it in each week. This is the hand-authored editorial content that can't be scraped: athlete of the week, swim news, today's workout blurb, and calendar events. Gear and blog posts come from selected-gear.json / newsletter-blog-picks.json automatically and don't need to be duplicated here unless you're hand-picking them.",
+
+  "date": "2026-07-08",
+  "issueDateLabel": "July 8, 2026",
+  "heroHeading": "Good morning swimmers and happy Monday",
+  "heroTeaser": "One sentence that teases the biggest news item, the athlete, the gear hook, and the blog posts. Written to make someone want to open the rest of the email, not summarize it.",
+  "outroLine": "That's the week in the water. Happy swimming,",
+
+  "workout": {
+    "dateLabel": "Mon, Jul 8 &middot; Freestyle in the pool, Upper Body Pull on land",
+    "swimSet": {
+      "title": "Today's Swim Set",
+      "description": "One sentence describing today's focus, matches whatever scripts/swim-sets content is live on the site this week."
+    },
+    "lift": {
+      "title": "Today's Lift",
+      "description": "One sentence describing today's dryland focus."
+    }
+  },
+
+  "newsItems": [
+    {
+      "topicSlug": "unique-slug-for-this-topic-1",
+      "icon": "doc",
+      "title": "Short headline",
+      "body": "1-3 sentences. <strong>Bold</strong> athlete/organization names the way the template already does."
+    },
+    {
+      "topicSlug": "unique-slug-for-this-topic-2",
+      "icon": "trend",
+      "title": "Short headline",
+      "body": "1-3 sentences."
+    },
+    {
+      "topicSlug": "unique-slug-for-this-topic-3",
+      "icon": "medal",
+      "title": "Short headline",
+      "body": "1-3 sentences."
+    },
+    {
+      "topicSlug": "unique-slug-for-this-topic-4",
+      "icon": "globe",
+      "title": "Short headline",
+      "body": "1-3 sentences."
+    }
+  ],
+
+  "athlete": {
+    "name": "Full Name",
+    "photoUrl": "https://example.com/official-press-photo.jpg",
+    "badges": ["Stat badge 1", "Stat badge 2", "Stat badge 3", "Stat badge 4"],
+    "bio": "1-2 short paragraphs, no more than ~90 words total to keep the card scannable."
+  },
+
+  "gearHeadline": "What Swimmers Like Her Are Using",
+
+  "events": [
+    {
+      "name": "Event Name",
+      "date": "2026-08-05",
+      "displayMonth": "AUG",
+      "displayDay": "5-9",
+      "location": "Venue, City, State",
+      "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Event+Name&dates=20260805/20260810&details=...&location=..."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "issues": [
+    {
+      "date": "2026-07-01",
+      "athleteOfWeek": "Kate Douglass",
+      "inTheWaterTopics": [
+        "masters-rules-2026-usms-interim-eligibility",
+        "rising-talent-crush-stanton-coetsee",
+        "results-sam-short-sweep-aussie-trials",
+        "meet-watch-sette-colli-2026"
+      ],
+      "blogPosts": [
+        "https://winlanefour.com/#pull-buoy-basics",
+        "https://winlanefour.com/#race-week-taper",
+        "https://winlanefour.com/#blog"
+      ],
+      "gearItems": ["powerskin-veloce", "cobra-ultra-swipe", "form-smart-swim-2", "themagic5-vector"],
+      "events": [
+        { "name": "USMS Summer National Championship", "date": "2026-08-05" },
+        { "name": "Pan Pacific Championships", "date": "2026-08-12" }
+      ]
+    }
+  ]
+}
