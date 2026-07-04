@@ -1,0 +1,190 @@
+name: Weekly LANE FOUR Newsletter
+
+# Fully automated, end to end. Every Monday morning this:
+#   1. composes the issue's editorial content with zero human input
+#      (streamline-newsletter-compose Lambda: real SwimSwam news, a
+#      Wikipedia-verified Athlete of the Week, today's actual workout),
+#   2. scrapes fresh blog posts and rotates in never-before-featured gear,
+#   3. enforces the no-repeat rules and renders the HTML,
+#   4. publishes the hero images + web archive copy to the site bucket,
+#   5. emails the issue to every subscriber via streamline-newsletter-send,
+#   6. commits the updated no-repeat history and issue straight to main.
+#
+# The push in step 6 uses GITHUB_TOKEN, which intentionally does NOT trigger
+# the deploy workflow — the workflow already uploaded everything the site
+# needs directly to S3 in step 4.
+#
+# Manual runs from the Actions tab can set "test_email" to send a preview to
+# one address instead: a test run doesn't email the list, doesn't publish the
+# issue page, and doesn't commit anything, so it can be repeated safely.
+
+on:
+  schedule:
+    # Target: 6am ET every Monday. GitHub Actions cron is UTC-only and ignores
+    # daylight saving, so 6am ET is a different UTC hour depending on the
+    # season: 10:00 UTC while Eastern Daylight Time is in effect (mid-Mar to
+    # early Nov) and 11:00 UTC while Eastern Standard Time is in effect. We
+    # register BOTH; the guard step below reads the real Eastern-time hour and
+    # lets only the firing that is genuinely 6am ET proceed, so the issue goes
+    # out at 6am ET year-round and never twice. Daily sets generate at 12:01am
+    # Pacific (= 3am ET), so today's workout already exists when this fires.
+    - cron: '0 10 * * 1'   # 6am ET during EDT (7am ET during EST — gated out)
+    - cron: '0 11 * * 1'   # 6am ET during EST (5am ET during EDT — gated out)
+  workflow_dispatch:
+    inputs:
+      test_email:
+        description: 'Preview: send ONLY to this address; skips publishing and the history commit. Leave blank for a real send.'
+        required: false
+
+permissions:
+  contents: write
+
+env:
+  AWS_REGION: us-east-1
+  STACK_NAME: streamline-website
+  TEST_EMAIL: ${{ inputs.test_email }}
+
+jobs:
+  build-and-send:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # The newsletter pipeline lives in its own folder of the website repo.
+        working-directory: lane-four-newsletter
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      # Two gates decide whether this run proceeds:
+      #  1. DST gate — the two schedules fire at 10:00 and 11:00 UTC; only the
+      #     one that is actually 6am Eastern right now should run (the other is
+      #     an hour off because Actions cron ignores DST). Manual runs skip
+      #     this gate so a preview works at any hour.
+      #  2. Re-run protection — a successful run commits issues/<date>.html to
+      #     main, so if it's already there this week's issue went out; don't
+      #     build and email it twice. Test previews bypass this too.
+      # The issue date is the Eastern date (same as UTC at 6am ET, but computed
+      # in ET so the whole workflow stays time-zone coherent).
+      - name: Decide whether to run
+        id: guard
+        run: |
+          DATE=$(TZ=America/New_York date +%F)
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ET_HOUR=$(TZ=America/New_York date +%H)
+            if [ "$ET_HOUR" != "06" ]; then
+              echo "It's ${ET_HOUR}:00 ET, not 6am — this is the off-DST cron firing. Skipping."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          if [ -f "issues/$DATE.html" ] && [ -z "$TEST_EMAIL" ]; then
+            echo "Issue $DATE already exists on main — nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure AWS credentials
+        if: steps.guard.outputs.skip != 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Node
+        if: steps.guard.outputs.skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: lane-four-newsletter/package-lock.json
+
+      - name: Install dependencies
+        if: steps.guard.outputs.skip != 'true'
+        run: npm ci
+
+      - name: Install Playwright browser
+        if: steps.guard.outputs.skip != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Compose this week's editorial content
+        if: steps.guard.outputs.skip != 'true'
+        run: node scripts/compose-draft.js "${{ steps.guard.outputs.date }}"
+
+      - name: Fetch this week's blog posts
+        if: steps.guard.outputs.skip != 'true'
+        run: npm run fetch:blog
+
+      - name: Select this week's gear
+        if: steps.guard.outputs.skip != 'true'
+        run: npm run select:gear
+
+      - name: Fetch live gear ratings (best effort)
+        if: steps.guard.outputs.skip != 'true'
+        run: npm run fetch:gear-ratings
+        continue-on-error: true
+
+      - name: Enforce no-repeat rules and lock in history
+        if: steps.guard.outputs.skip != 'true'
+        run: npm run check:no-repeats
+
+      - name: Render the newsletter
+        if: steps.guard.outputs.skip != 'true'
+        run: npm run build
+
+      - name: Resolve the website bucket
+        if: steps.guard.outputs.skip != 'true'
+        id: stack
+        run: |
+          BUCKET=$(aws cloudformation describe-stacks \
+            --stack-name ${{ env.STACK_NAME }} \
+            --query "Stacks[0].Outputs[?OutputKey=='BucketName'].OutputValue" \
+            --output text)
+          echo "bucket=$BUCKET" >> "$GITHUB_OUTPUT"
+
+      # Hero images must be live BEFORE the send: the email references them at
+      # winlanefour.com/newsletter-images/... . Uploaded for test previews too
+      # (harmless — new files only) so the preview renders correctly.
+      - name: Publish newsletter images
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          aws s3 sync public/newsletter-images \
+            s3://${{ steps.stack.outputs.bucket }}/newsletter-images --exclude ".gitkeep"
+
+      # Web archive copy: same HTML with the per-recipient unsubscribe token
+      # swapped for a plain site link. Skipped for test previews so unsent
+      # issues never appear at a public URL.
+      - name: Publish the web archive copy
+        if: steps.guard.outputs.skip != 'true' && env.TEST_EMAIL == ''
+        run: |
+          sed 's|{{UNSUBSCRIBE_URL}}|https://winlanefour.com/#newsletter|g' \
+            "issues/${{ steps.guard.outputs.date }}.html" > /tmp/issue-web.html
+          aws s3 cp /tmp/issue-web.html \
+            "s3://${{ steps.stack.outputs.bucket }}/issues/${{ steps.guard.outputs.date }}.html" \
+            --content-type "text/html; charset=utf-8"
+
+      - name: Send the issue
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          NEWSLETTER_TEST_EMAIL: ${{ env.TEST_EMAIL }}
+        run: node scripts/send-issue.js
+
+      # Lock in this week's state: the history file is what guarantees next
+      # week can't repeat anything, and the committed issue file doubles as
+      # the re-run guard above.
+      - name: Commit history and issue to main
+        if: steps.guard.outputs.skip != 'true' && env.TEST_EMAIL == ''
+        working-directory: .
+        run: |
+          git config user.name "lane-four-newsletter[bot]"
+          git config user.email "newsletter@winlanefour.com"
+          # -A over the whole folder: picks up the issue, the history, the
+          # generated data files and downloaded images, and tolerates the
+          # optional gear-ratings.json being absent when its step failed.
+          git add -A lane-four-newsletter/
+          git commit -m "Weekly newsletter: publish issue ${{ steps.guard.outputs.date }}"
+          git push origin HEAD:main
