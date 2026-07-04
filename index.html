@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" />
   <style>
 /* ============================================================
-   LANE FOUR — Master Stylesheet
+   LANE FOUR: Master Stylesheet
    ============================================================ */
 
 
@@ -26,12 +26,12 @@
 /* ── Design tokens ── */
 :root {
   /* Brand palette */
-  --deep:      #0d4f47;   /* darkest — nav, footer, hero */
+  --deep:      #0d4f47;   /* darkest: nav, footer, hero */
   --deep-2:    #0f5a52;   /* slightly lighter deep */
   --teal:      #1a7a6e;   /* mid-tone sections */
   --teal-2:    #1f8f80;   /* lighter teal */
   --teal-3:    #279e8e;   /* highlight teal */
-  --lap:       #5ddbc9;   /* bright accent — links, CTAs on dark */
+  --lap:       #5ddbc9;   /* bright accent: links, CTAs on dark */
   --lap-hover: #28b5a1;   /* lap hover */
   --lap-pale:  #e6faf7;   /* very pale lap for light bg callouts */
   --surface:   #f0f7f6;   /* light section background */
@@ -71,7 +71,7 @@
   --shadow-lg: 0 12px 40px rgba(13,79,71,0.18);
   --shadow-xl: 0 24px 64px rgba(13,79,71,0.22);
 
-  /* SVG Patterns — teal-tinted strokes */
+  /* SVG Patterns: teal-tinted strokes */
   --pattern-waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M0 20 Q15 10 30 20 Q45 30 60 20 Q75 10 90 20 Q105 30 120 20' fill='none' stroke='%235ddbc9' stroke-width='1.0' opacity='0.08'/%3E%3Cpath d='M0 30 Q15 20 30 30 Q45 40 60 30 Q75 20 90 30 Q105 40 120 30' fill='none' stroke='%235ddbc9' stroke-width='0.8' opacity='0.05'/%3E%3Cpath d='M0 10 Q15 0 30 10 Q45 20 60 10 Q75 0 90 10 Q105 20 120 10' fill='none' stroke='%235ddbc9' stroke-width='0.7' opacity='0.04'/%3E%3C/svg%3E");
   --pattern-hatch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cpath d='M0 30 L30 0' stroke='%235ddbc9' stroke-width='0.4' opacity='0.03'/%3E%3Cpath d='M-15 30 L15 0' stroke='%235ddbc9' stroke-width='0.4' opacity='0.03'/%3E%3Cpath d='M15 30 L45 0' stroke='%235ddbc9' stroke-width='0.4' opacity='0.03'/%3E%3C/svg%3E");
   --pattern-grid:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0 L0 0 L0 40' fill='none' stroke='%235ddbc9' stroke-width='0.4' opacity='0.06'/%3E%3C/svg%3E");
@@ -150,7 +150,7 @@ p { color: var(--text-muted); margin-bottom: 1rem; line-height: 1.8; }
 p:last-child { margin-bottom: 0; }
 strong { font-weight: 500; }
 
-/* Italic serif — for subheads, pull quotes */
+/* Italic serif: for subheads, pull quotes */
 .serif-italic {
   font-family: var(--font-display);
   font-style: italic;
@@ -273,7 +273,7 @@ section { padding: 6rem 0; }
   transition: all 0.18s ease;
   white-space: nowrap;
 }
-/* Primary action on dark backgrounds — Lap line */
+/* Primary action on dark backgrounds: Lap line */
 .btn-gold {
   background: var(--lap);
   color: var(--deep);
@@ -2084,16 +2084,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .inline-cta {
   background: var(--surface);
   border: 1px solid var(--gray-100);
-  border-radius: var(--r-xl);
-  padding: 2rem 2.5rem;
+  border-radius: var(--r-lg);
+  padding: 1.35rem 1.75rem;
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-top: 3rem;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
   flex-wrap: wrap;
 }
-.inline-cta-body h3 { font-size: 1rem; color: var(--deep); margin-bottom: 0.35rem; }
-.inline-cta-body p { font-size: 0.86rem; color: var(--text-muted); margin: 0; font-weight: 300; }
+.inline-cta-body h3 { font-size: 0.92rem; color: var(--deep); margin-bottom: 0.25rem; }
+.inline-cta-body p { font-size: 0.8rem; color: var(--text-muted); margin: 0; font-weight: 300; }
 
 /* ── Utilities ── */
 .text-center { text-align: center; }
@@ -2940,7 +2940,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <span class="eyebrow">Who it's for</span>
         <h2>Everyone. And we mean everyone.</h2>
         <div class="accent-bar"></div>
-        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">Don't be intimidated — even if you can swim just two lengths of a lap pool without stopping, <strong>there is training and advice on here for you</strong>. LANE FOUR scales from <strong>absolute beginners</strong> finding their stroke all the way up to <strong>masters competitors chasing podiums</strong>. The programming adjusts. The technique explanations are universal. Wherever you're starting, <strong>you belong here.</strong></p>
+        <p style="margin-top:1.5rem; font-size:0.95rem; line-height:1.8;">Don't be intimidated. Even if you can swim just two lengths of a lap pool without stopping, <strong>there is training and advice on here for you</strong>. LANE FOUR scales from <strong>absolute beginners</strong> finding their stroke all the way up to <strong>masters competitors chasing podiums</strong>. The programming adjusts. The technique explanations are universal. Wherever you're starting, <strong>you belong here.</strong></p>
         <div class="for-who-grid">
           <div class="for-who-card"><h4>Masters competitors</h4><p>Periodized plans built around target events, with race-specific intervals and proper tapers.</p></div>
           <div class="for-who-card"><h4>Lap swimmers</h4><p>Structured sessions with a technique focus. Replace guesswork with programming that actually progresses.</p></div>
@@ -3286,7 +3286,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         Loading archived sets…
       </div>
 
-      <!-- Limited Mobility & Injury Recovery — collapsed list at top -->
+      <!-- Limited Mobility & Injury Recovery: collapsed list at top -->
       <div class="archive-collapse collapsed" id="archive-collapse-injury">
         <button type="button" class="archive-collapse-header" onclick="toggleArchiveCollapse('injury')" aria-expanded="false">
           <h3 style="color:var(--teal); margin:0; font-size:1rem;">Limited Mobility &amp; Injury Recovery</h3>
@@ -3738,7 +3738,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
-      <p style="color:var(--gray-400); font-size:0.95rem; padding:1rem 0;">No posts in this category yet — check back soon.</p>
+      <p style="color:var(--gray-400); font-size:0.95rem; padding:1rem 0;">No posts in this category yet. Check back soon.</p>
     </div>
   </div>
 </section>
@@ -3815,7 +3815,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and updated with the swim training focus in mind.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -3894,7 +3894,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, pull sets included. Structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -3939,7 +3939,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <span class="post-related-label">Related read</span>
     </div>
     <a href="#freestyle-errors" class="post-related-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Mistakes and How to Fix Them →</a>
-    <p class="post-related-blurb">Fins reward a kick that starts at the hip and punish a bent-knee flail, but they can't teach a clean stroke on their own. These are the seven errors — dropped elbow, bent-knee kick, lifted head — that quietly gas out most swimmers, fins or no fins.</p>
+    <p class="post-related-blurb">Fins reward a kick that starts at the hip and punish a bent-knee flail, but they can't teach a clean stroke on their own. These are the seven errors (dropped elbow, bent-knee kick, lifted head) that quietly gas out most swimmers, fins or no fins.</p>
   </div>
   <h2>The Best Swim Fin Drills and Sets</h2>
   <p>Once you're comfortable, fins make hard technique work possible that you couldn't do otherwise.</p>
@@ -3971,7 +3971,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, kick and fin sets included. Structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -4018,7 +4018,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <span class="post-related-label">Related read</span>
     </div>
     <a href="#freestyle-errors" class="post-related-title" onclick="navigate('freestyle-errors')">7 Common Freestyle Mistakes and How to Fix Them →</a>
-    <p class="post-related-blurb">A snorkel's whole job is to hold your head still and free you to fix your catch and body line — the exact errors that drag most swimmers down. Here's the full list of freestyle mistakes worth hunting once breathing stops hiding them.</p>
+    <p class="post-related-blurb">A snorkel's whole job is to hold your head still and free you to fix your catch and body line, the exact errors that drag most swimmers down. Here's the full list of freestyle mistakes worth hunting once breathing stops hiding them.</p>
   </div>
   <h2>How to Use a Swim Snorkel Correctly</h2>
   <p>Strapping it on takes a second. Getting comfortable takes a few laps of patience.</p>
@@ -4057,7 +4057,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, technique and pull sets included. Structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -4105,7 +4105,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <a href="#swim-snorkel" class="post-related-title" onclick="navigate('swim-snorkel')">Swim Snorkel 101: The Most Underrated Tool in the Pool →</a>
     <p class="post-related-blurb">If you're not sure snorkel training is for you yet, start with our full snorkel guide. It covers what a center-mount snorkel actually does, how to use one, the best drills, and how to get past those first claustrophobic laps before you spend a dime.</p>
   </div>
-  <h2>1. <a href="https://amzn.to/4axSAyf" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Swimmer's Snorkel</a> — Best Overall</h2>
+  <h2>1. <a href="https://amzn.to/4axSAyf" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Swimmer's Snorkel</a>: Best Overall</h2>
   <p>The <a href="https://amzn.to/4axSAyf" target="_blank" rel="nofollow sponsored noopener">FINIS Swimmer's Snorkel</a> is the one you see on more pool decks than any other, and for good reason. FINIS more or less invented the modern center-mount training snorkel, and this is the refined version. The bracket is stable, the silicone is comfortable, and the purge valve clears easily.</p>
   <p>It hits the sweet spot of price and quality, usually in the thirty to forty dollar range. If you want one snorkel that just works and you don't want to think about it again, this is the default answer. I've put nervous first-timers on this exact model for years because it's forgiving enough that the "I can't breathe through this" panic passes fast.</p>
   <div class="product-pick">
@@ -4117,7 +4117,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <a href="https://amzn.to/4axSAyf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
-  <h2>2. <a href="https://www.finisswim.com/Cardio-Cap" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Cardio Cap Snorkel</a> — Best for Breath Control</h2>
+  <h2>2. <a href="https://www.finisswim.com/Cardio-Cap" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Cardio Cap Snorkel</a>: Best for Breath Control</h2>
   <p>This is the same excellent FINIS design with a <a href="https://www.finisswim.com/Cardio-Cap" target="_blank" rel="nofollow sponsored noopener">restrictor cap</a> that limits your airflow, turning the snorkel into a respiratory training tool. Swim with the cap on and your body learns to stay calm with less air, building CO2 tolerance the way altitude masks pretend to but actually deliver.</p>
   <p>It's for intermediate and advanced swimmers who already breathe comfortably through a normal snorkel and want the next challenge. Go in gradually, and never push a cap set to the point of dizziness. The cap fits on top of the FINIS Swimmer's Snorkel above, so you'll want that snorkel first.</p>
   <div class="product-pick">
@@ -4129,7 +4129,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <a href="https://www.finisswim.com/Cardio-Cap" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price at FINIS →</a>
     </div>
   </div>
-  <h2>3. <a href="https://amzn.to/4v3ynrf" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Swim Snorkel III</a> — Best Build Quality</h2>
+  <h2>3. <a href="https://amzn.to/4v3ynrf" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Swim Snorkel III</a>: Best Build Quality</h2>
   <p><a href="https://amzn.to/4v3ynrf" target="_blank" rel="nofollow sponsored noopener">Arena's swim snorkel</a> is the tank of the category. The frame feels sturdier than most, the head bracket is well-padded, and it holds up to seasons of chlorine abuse without the silicone going cloudy and stiff. It sits a touch heavier on the face than the FINIS, which some swimmers love for stability and others notice on long sets.</p>
   <p>If you're the kind of person who buys the heavy-duty version of everything and keeps it for a decade, this is your snorkel. Triathletes putting in serious pool volume tend to gravitate here.</p>
   <div class="product-pick">
@@ -4141,7 +4141,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <a href="https://amzn.to/4v3ynrf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
-  <h2>4. <a href="https://amzn.to/44aNtAl" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">MP Michael Phelps Focus Snorkel</a> — Best for Head Position</h2>
+  <h2>4. <a href="https://amzn.to/44aNtAl" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">MP Michael Phelps Focus Snorkel</a>: Best for Head Position</h2>
   <p>Designed under the Michael Phelps brand (MP, made by Aqua Sphere), the <a href="https://amzn.to/44aNtAl" target="_blank" rel="nofollow sponsored noopener">Focus snorkel</a> has a lower-profile frame and a hydrodynamic tube meant to reduce drag and encourage a still, neutral head. Swimmers who fight a persistent head-lift often find this one helps them lock in a quiet position.</p>
   <p>It's a premium pick, usually pricier than the FINIS, and the payoff is a slightly cleaner feel in the water. Good for technique-obsessed swimmers chasing that last bit of stillness in their freestyle.</p>
   <div class="product-pick">
@@ -4153,7 +4153,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <a href="https://amzn.to/44aNtAl" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
-  <h2>5. <a href="https://amzn.to/4eJcGbj" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Center-Mount Snorkel</a> — Best Budget Pick</h2>
+  <h2>5. <a href="https://amzn.to/4eJcGbj" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Center-Mount Snorkel</a>: Best Budget Pick</h2>
   <p>The <a href="https://amzn.to/4eJcGbj" target="_blank" rel="nofollow sponsored noopener">Speedo center-mount snorkel</a> does the core job for less money. It's not as refined as the FINIS or Arena, the purge valve and bracket feel a little more basic, but for a beginner testing whether snorkel training is for them, it's a low-risk way in.</p>
   <p>If you're not sure you'll stick with snorkel work and don't want to spend forty dollars on a maybe, start here. You can always upgrade once you're hooked, and most people who commit eventually do end up on a FINIS.</p>
   <div class="product-pick">
@@ -4172,7 +4172,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, technique and pull sets included. Structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -4250,7 +4250,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, pull and paddle sets included. Structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -4323,7 +4323,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels, kick sets included. Structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -4511,7 +4511,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </div>
 </div>
 <article class="post-body">
-  <p>Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool. This is a guide for competitive and masters swimmers who want a race-week taper that actually delivers a best time, not a meltdown — and it starts with understanding what the taper is doing to your body in the first place.</p>
+  <p>Picture a swimmer standing behind the blocks at her biggest meet of the year, shaking out her arms, and quietly panicking because her legs feel like wet sandbags. She trained for eight months. She did everything right. And in the final week she got scared, swam easy every day to "save herself," and showed up flat. That's a broken taper, and it's the most common way fast swimmers leave time in the pool. This is a guide for competitive and masters swimmers who want a race-week taper that actually delivers a best time, not a meltdown, and it starts with understanding what the taper is doing to your body in the first place.</p>
   <blockquote>"A real taper asks you to believe in work you can no longer touch, then sharpen it and get out of the way."</blockquote>
   <h2>What a race-week taper actually does</h2>
   <p>A taper is a planned drop in training volume that lets your body cash in the work you already banked. All season you've been carrying chronic fatigue: micro-damaged muscle, drained glycogen, a nervous system running on fumes. None of your fitness vanishes when you back off. The fatigue fades faster than the fitness does, and what surfaces underneath is the swimmer who was fast all along and finally gets to feel it.</p>
@@ -4520,8 +4520,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <h2>The number one taper mistake: going soft</h2>
   <p>Most blown tapers die the same way. A swimmer hears "rest" and turns every set into a slow aerobic float, swimming gentle laps all week and arriving at the meet feeling like a deflated pool toy.</p>
   <p>Your muscles hold a memory for pace. Spend race week cruising at 70 percent and your body forgets what race effort feels like, your stroke rate drifts, and your turnover goes to sleep. Intensity is what protects your speed. Volume is the part you're allowed to throw away.</p>
-  <div class="post-tip"><p><strong>Tip:</strong> During taper week your total yardage drops hard, but you keep hitting race-pace and faster-than-race efforts in short bursts with long rest. Quality reps with full recovery — never grinding sets.</p></div>
-  <p>I coached a masters swimmer named Dana, 46, who had just qualified for nationals in the 50 fly for the first time in her life. The week before, she got nervous and swam easy all week to protect herself. She showed up flat, added four tenths, and was livid in the parking lot afterward. The next season we kept her sprinting straight through taper — sharp 25s at race pace with a wall of rest between them — and she dropped six tenths and made the podium. Same body, same training block. The only change was that we kept the engine revving instead of letting it idle.</p>
+  <div class="post-tip"><p><strong>Tip:</strong> During taper week your total yardage drops hard, but you keep hitting race-pace and faster-than-race efforts in short bursts with long rest. Quality reps with full recovery, never grinding sets.</p></div>
+  <p>I coached a masters swimmer named Dana, 46, who had just qualified for nationals in the 50 fly for the first time in her life. The week before, she got nervous and swam easy all week to protect herself. She showed up flat, added four tenths, and was livid in the parking lot afterward. The next season we kept her sprinting straight through taper (sharp 25s at race pace with a wall of rest between them) and she dropped six tenths and made the podium. Same body, same training block. The only change was that we kept the engine revving instead of letting it idle.</p>
   <h2>How long should your race-week taper be?</h2>
   <p>"Race week" implies seven days, and for a single big meet that's about right for most age-groupers and masters swimmers. Elite swimmers carrying enormous training loads often taper two to three weeks because they have far more fatigue to shed. The bigger your normal volume, the longer the unload.</p>
   <p>For a one-week taper aimed at sprint and mid-distance events, here's a framework that holds up:</p>
@@ -4535,12 +4535,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Nobody warns you about the head game, so I will. Around day three or four you will feel awful: heavy, sluggish, slow, and dead certain you've lost every ounce of fitness. Your sleep gets strange. Phantom aches show up. You watch a lanemate rip a practice 50 and spiral into quiet doom.</p>
   <p>This is normal and it happens to everyone. It happened to me before every major meet of my career, and I never once got used to it. It's the athletic version of the final season of a show you love, where you're so close to the payoff that the waiting becomes the worst part.</p>
   <p>The reason is recalibration. As fatigue lifts, your sense of effort gets scrambled before it resettles into real freshness. The flatness in the middle of taper is not lost speed. It's the awkward middle chapter before the speed shows up.</p>
-  <div class="post-tip"><p><strong>Tip:</strong> Do not add a hard "confidence set" mid-taper because you feel slow. That panic set has wrecked more meets than I can count. The bank is full — stop trying to make one more deposit the day before the withdrawal.</p></div>
+  <div class="post-tip"><p><strong>Tip:</strong> Do not add a hard "confidence set" mid-taper because you feel slow. That panic set has wrecked more meets than I can count. The bank is full. Stop trying to make one more deposit the day before the withdrawal.</p></div>
   <h2>What to do outside the pool during taper week</h2>
   <p>Taper isn't only a pool program. The habits around it matter more this week than any other, and three of them carry most of the weight.</p>
   <p><strong>Sleep like it's your job.</strong> The week your training drops is the week your body does its repair work. The nervous-system recovery that makes you fast happens while you're unconscious, so chase more sleep, not less.</p>
   <p><strong>Keep carbs steady and top off the tank.</strong> You're swimming less, so you don't need a dramatic feast, but you want glycogen full by race day. The night before is not the moment to try the new spicy place you've been eyeing.</p>
-  <p><strong>Change nothing.</strong> No new dryland move, no new pre-race supplement, no tech suit you've never worn. Race week executes the plan — it doesn't audition ideas.</p>
+  <p><strong>Change nothing.</strong> No new dryland move, no new pre-race supplement, no tech suit you've never worn. Race week executes the plan. It doesn't audition ideas.</p>
   <p>I had a college teammate who decided taper week was the perfect time to deep-clean his apartment and reorganize every closet because he had "all this energy." He stood up at conference with quads full of lactic acid from six hours of squatting over a vacuum. Taper energy is a loan against your race. Spend it in the pool or don't spend it at all.</p>
   <h2>Trust the build, then trust the rest</h2>
   <p>Go back to that swimmer behind the blocks with the sandbag legs. Her problem was never the training. It was the last seven days, when fear told her to do less of everything instead of less of one thing. A real taper asks you to believe in work you can no longer touch, then sharpen it and get out of the way.</p>
@@ -4596,7 +4596,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <span class="post-related-label">Related read</span>
     </div>
     <a href="#pre-swim-breakfast" class="post-related-title" onclick="navigate('pre-swim-breakfast')">What to Eat Before Morning Swim Practice →</a>
-    <p class="post-related-blurb">Rolling out of bed and straight into a main set on an empty stomach is where morning sessions fall apart. Here's exactly what to eat before a 5am practice — how much, how early, and the foods that will sit like a brick when you push off the wall.</p>
+    <p class="post-related-blurb">Rolling out of bed and straight into a main set on an empty stomach is where morning sessions fall apart. Here's exactly what to eat before a 5am practice: how much, how early, and the foods that will sit like a brick when you push off the wall.</p>
   </div>
   <p>I trained mornings for most of my career, and I'll be honest, I never once loved the alarm. What I loved was the feeling at 7am of already having done the hardest thing I'd do all day. There's a specific smugness to eating breakfast having already swum 6,000 yards. It's not a good look, but it's a real feeling.</p>
   <h2>The Case for Afternoon Practice</h2>
@@ -4618,7 +4618,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="inline-cta">
     <div class="inline-cta-body">
       <h3>Daily Swim Sets (free)</h3>
-      <p>Whichever session you swim, there's a workout waiting. New sets posted every day across Beginner, Intermediate, and Advanced levels — structured, printable, and built around a clear training focus.</p>
+      <p>New workouts posted every day across Beginner, Intermediate, and Advanced levels. Structured, printable, and built around a clear training focus.</p>
     </div>
     <a href="#swim-sets" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('swim-sets')">View Today's Set →</a>
   </div>
@@ -4774,7 +4774,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Daily Briefing</p>
           <h3 style="color:var(--deep);">Your Morning Plan</h3>
           <div class="lock-overlay" id="lock-briefing"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily briefing: open pools near you and today's workout preview.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Unlock</a></div>
-          <div class="dash-card-content" id="content-briefing" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem;">Your personalized daily briefing will appear here — coming soon.</p></div>
+          <div class="dash-card-content" id="content-briefing" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem;">Your personalized daily briefing will appear here, coming soon.</p></div>
         </div>
         <div class="dash-card">
           <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</p>
@@ -4798,7 +4798,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</p>
           <h3 style="color:var(--deep);">Training Log &amp; Trends</h3>
           <div class="lock-overlay" id="lock-progress" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div>
-          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your progress charts and training log will appear here — coming soon.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
+          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your progress charts and training log will appear here, coming soon.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
         </div>
       </div>
     </div>
@@ -5074,7 +5074,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <label class="form-label required-dot">Swimming Goal</label>
             <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply.</p>
             <div class="chip-grid" id="swim-goal-chips">
-              <div class="chip" onclick="this.classList.toggle('selected'); toggleSpeedTimes()">Speed — improve race times</div>
+              <div class="chip" onclick="this.classList.toggle('selected'); toggleSpeedTimes()">Speed: improve race times</div>
               <div class="chip" onclick="this.classList.toggle('selected'); toggleSpeedTimes()">Technique / skill development</div>
               <div class="chip" onclick="this.classList.toggle('selected'); toggleSpeedTimes()">Injury rehab / return to water</div>
               <div class="chip" onclick="this.classList.toggle('selected'); toggleSpeedTimes()">General improvement</div>
@@ -5197,7 +5197,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <div class="chip" onclick="this.classList.toggle('selected')">None</div>
           </div>
         </div>
-        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-injury-notes" class="form-input form-textarea" rows="2" placeholder="Any details we should know — chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
+        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-injury-notes" class="form-input form-textarea" rows="2" placeholder="Any details we should know: chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Allergies &amp; Dietary Restrictions</p>
           <div class="form-group"><label class="form-label">Dietary Style</label><select id="gs-dietary-style" class="form-input form-select"><option value="" disabled selected>Select…</option><option>No restrictions / omnivore</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Gluten-free</option><option>Dairy-free</option><option>Paleo / whole foods</option><option>Other (specify below)</option></select></div>
@@ -5242,7 +5242,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div class="setup-nav"><button class="btn btn-outline-dark" onclick="goToStep(3)">← Back</button><button class="btn btn-gold" onclick="goToStep(5)">Continue →</button></div>
     </div>
     <div class="setup-step-content" id="step-5">
-      <div class="setup-step-header"><span class="eyebrow">Step 5 of 5</span><h2>Schedule &amp; setup</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">When you train, what you have access to, and where you are — so we can build a realistic, personalized plan.</p></div>
+      <div class="setup-step-header"><span class="eyebrow">Step 5 of 5</span><h2>Schedule &amp; setup</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">When you train, what you have access to, and where you are, so we can build a realistic, personalized plan.</p></div>
       <div class="setup-fields">
         <div class="form-group">
           <label class="form-label required-dot">Which days can you swim?</label>
@@ -5310,7 +5310,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           </div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
-          <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location <span style="font-weight:400; letter-spacing:normal; text-transform:none; color:var(--text-muted); font-size:0.8rem;">— used to recommend outdoor or indoor training based on weather conditions</span></p>
+          <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location <span style="font-weight:400; letter-spacing:normal; text-transform:none; color:var(--text-muted); font-size:0.8rem;">helps us recommend outdoor or indoor training based on weather conditions</span></p>
           <div class="form-row">
             <div class="form-group"><label class="form-label required-dot">City</label><input type="text" id="gs-city" class="form-input" placeholder="Chicago" /></div>
           </div>
@@ -5790,16 +5790,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem; margin-top:0;">A. Information You Provide Directly</h3>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Account Registration:</strong> First name, last name, and email address. Your password is stored as a one-way cryptographic hash (PBKDF2 SHA-256) — we cannot read your password in plain text.</li>
+        <li><strong>Account Registration:</strong> First name, last name, and email address. Your password is stored as a one-way cryptographic hash (PBKDF2 SHA-256). We cannot read your password in plain text.</li>
         <li><strong>Body Profile (optional):</strong> Age, height, weight, and gender. This information is used solely to personalize your training recommendations.</li>
-        <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, and race or distance goals — used to tailor your daily workouts.</li>
+        <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, and race or distance goals, used to tailor your daily workouts.</li>
         <li><strong>Contact Form Submissions:</strong> Name, email address, subject, message, and optional newsletter opt-in when you contact us.</li>
         <li><strong>Newsletter Subscription:</strong> Email address when you subscribe to The Fast Lane newsletter.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">B. Information Collected Automatically</h3>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Log Data:</strong> IP address, browser type, device type, operating system, and pages visited — collected automatically by our servers when you use the Site.</li>
+        <li><strong>Log Data:</strong> IP address, browser type, device type, operating system, and pages visited, collected automatically by our servers when you use the Site.</li>
         <li><strong>Session Tokens:</strong> A unique identifier stored in your browser for up to 30 days to keep you signed in to your account.</li>
         <li><strong>Cookies:</strong> Small files placed on your device to maintain your login session and site preferences. We do not use cookies for advertising or cross-site tracking.</li>
       </ul>
@@ -5810,12 +5810,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">2. Categories of Personal Information (CCPA)</h2>
       <p style="margin-bottom:0.75rem;">The following categories of personal information may be collected about California residents:</p>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Identifiers:</strong> Name, email address, IP address, session token — Yes</li>
-        <li><strong>Personal Records:</strong> Name, age, height, weight — Yes (if profile completed)</li>
-        <li><strong>Protected Classification Characteristics:</strong> Age, gender — Yes (if profile completed)</li>
-        <li><strong>Internet / Network Activity:</strong> Pages visited, session data, server logs — Yes</li>
-        <li><strong>Inferences:</strong> Fitness level, training preferences, workout personalization profile — Yes (if profile completed)</li>
-        <li><strong>Sensitive Personal Information:</strong> Account login credentials (email + password hash); health-related body characteristics (height, weight, age) if voluntarily provided — Yes (for account holders)</li>
+        <li><strong>Identifiers:</strong> Name, email address, IP address, session token; collected: Yes</li>
+        <li><strong>Personal Records:</strong> Name, age, height, weight; collected: Yes (if profile completed)</li>
+        <li><strong>Protected Classification Characteristics:</strong> Age, gender; collected: Yes (if profile completed)</li>
+        <li><strong>Internet / Network Activity:</strong> Pages visited, session data, server logs; collected: Yes</li>
+        <li><strong>Inferences:</strong> Fitness level, training preferences, workout personalization profile; collected: Yes (if profile completed)</li>
+        <li><strong>Sensitive Personal Information:</strong> Account login credentials (email + password hash); health-related body characteristics (height, weight, age) if voluntarily provided; collected: Yes (for account holders)</li>
         <li><strong>Commercial information, geolocation data, biometric data, audio/visual data:</strong> Not collected</li>
       </ul>
 
@@ -5922,7 +5922,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1.5rem;">The Site is intended for users who are at least 13 years of age. Persons under 13 are not permitted to register or use the Site. If you are between 13 and 17 years old, you must have the permission of and be supervised by a parent or legal guardian, who must read and agree to these Terms on your behalf. By using the Site, you represent that you meet the applicable age requirement. In accordance with the Children's Online Privacy Protection Act (COPPA), if we discover we have collected information from a child under 13 without verifiable parental consent, we will delete that information as quickly as practicable.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">3. Intellectual Property Rights</h2>
-      <p style="margin-bottom:1rem;">All content on the Site — including but not limited to workout plans, training sets, articles, technique tutorials, coaching notes, nutrition guidance, design elements, logos, graphics, software, and code (collectively, "Content") — is the proprietary property of LANE FOUR or its licensors and is protected by United States and international copyright, trademark, and intellectual property laws.</p>
+      <p style="margin-bottom:1rem;">All content on the Site, including but not limited to workout plans, training sets, articles, technique tutorials, coaching notes, nutrition guidance, design elements, logos, graphics, software, and code (collectively, "Content"), is the proprietary property of LANE FOUR or its licensors and is protected by United States and international copyright, trademark, and intellectual property laws.</p>
       <p style="margin-bottom:0.75rem;">You are granted a limited, non-exclusive, non-transferable, revocable license to access and use the Site and Content solely for your personal, non-commercial training use. This license does not include the right to:</p>
       <ul style="margin-bottom:1rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li>Copy, reproduce, redistribute, sell, sublicense, or otherwise commercially exploit any Content</li>
@@ -5950,7 +5950,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1.5rem;">You assume full responsibility for any risks associated with your physical fitness activities. LANE FOUR is not responsible or liable for any injury, illness, death, or health complication arising from your use of content on this Site.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">6. AI-Generated Content</h2>
-      <p style="margin-bottom:1.5rem;">Some content on the Site — including daily workout sets and search results — is generated or enhanced using AI technology (Amazon Bedrock powered by Anthropic Claude). While we review AI-generated content for general quality, we do not guarantee that it is accurate, complete, or appropriate for your individual fitness level, health status, or goals. AI-generated workouts represent general training guidance only and are not personalized medical or professional advice. You are solely responsible for using good judgment when following any workout or training content on this Site.</p>
+      <p style="margin-bottom:1.5rem;">Some content on the Site, including daily workout sets and search results, is generated or enhanced using AI technology (Amazon Bedrock powered by Anthropic Claude). While we review AI-generated content for general quality, we do not guarantee that it is accurate, complete, or appropriate for your individual fitness level, health status, or goals. AI-generated workouts represent general training guidance only and are not personalized medical or professional advice. You are solely responsible for using good judgment when following any workout or training content on this Site.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">7. Affiliate Disclosure</h2>
       <p style="margin-bottom:1.5rem;">Some links on this Site are affiliate links to third-party products or services (such as swim gear, equipment, or nutrition products). If you click an affiliate link and make a purchase, LANE FOUR may receive a small commission at no additional cost to you. We only feature products we genuinely believe are useful for swimmers. Affiliate compensation does not influence our editorial content, workout programming, or product recommendations. All affiliate relationships are disclosed in accordance with Federal Trade Commission guidelines.</p>
@@ -5997,7 +5997,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">14. Governing Law</h2>
       <p style="margin-bottom:1.5rem;">These Terms and your use of the Site are governed by and construed in accordance with the laws of the State of California, without regard to conflict of law principles. The United Nations Convention on Contracts for the International Sale of Goods and the Uniform Computer Information Transaction Act (UCITA) do not apply to these Terms.</p>
 
-      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">15. Dispute Resolution — Binding Arbitration</h2>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">15. Dispute Resolution: Binding Arbitration</h2>
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem; margin-top:0;">Informal Resolution</h3>
       <p style="margin-bottom:1rem;">Before initiating arbitration, you agree to contact us in writing at the address below and attempt to resolve the dispute informally for at least 30 days.</p>
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Binding Arbitration</h3>
@@ -6017,7 +6017,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">18. Indemnification</h2>
       <p style="margin-bottom:1.5rem;">You agree to defend, indemnify, and hold harmless LANE FOUR and its operators, employees, and agents from and against any claims, liabilities, damages, losses, and expenses (including reasonable attorneys' fees) arising from: (1) your use of the Site; (2) your breach of these Terms; (3) your violation of any third-party right; or (4) any health or fitness related harm arising from your use of content on the Site in contravention of the disclaimer in Section 5. We reserve the right to assume exclusive control of any matter subject to indemnification at your expense, and you agree to cooperate with our defense of such claims.</p>
 
-      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">19. DMCA — Copyright Infringement</h2>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">19. DMCA: Copyright Infringement</h2>
       <p style="margin-bottom:0.75rem;">We respect intellectual property rights. If you believe that any material on the Site infringes a copyright you own or control, you may submit a notification pursuant to the Digital Millennium Copyright Act (17 U.S.C. § 512) that includes:</p>
       <ul style="margin-bottom:1rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li>A physical or electronic signature of the copyright owner or authorized agent</li>
@@ -6323,7 +6323,7 @@ function editProfile() {
     if (gymAccess)  gymAccess.value  = profile.gymAccess  || '';
     if (city)       city.value       = profile.city       || '';
 
-    // Skip account step — go straight to body profile
+    // Skip account step, go straight to body profile
     goToStep(2);
   }, 80);
 }
@@ -6359,7 +6359,7 @@ function renderWorkoutLog() {
   list.innerHTML = logs.slice(0, 10).map(l => `
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; gap:1rem; align-items:flex-start;">
       <div style="flex:1;">
-        <p style="font-weight:700; color:var(--deep); font-size:0.88rem; margin-bottom:0.2rem;">${l.type} — ${l.date}</p>
+        <p style="font-weight:700; color:var(--deep); font-size:0.88rem; margin-bottom:0.2rem;">${l.type} · ${l.date}</p>
         <p style="font-size:0.82rem; color:var(--gray-400);">${l.duration} min${l.distance ? ' · ' + l.distance : ''}${l.notes ? ' · ' + l.notes : ''}</p>
       </div>
     </div>`).join('');
@@ -6544,7 +6544,7 @@ async function sendResetLink() {
   try { await authApi('forgot', { email }); }
   catch (e) { showSignInMessage('Could not reach the server. Please check your connection and try again.', true); return; }
   document.getElementById('forgot-panel').style.display = 'none';
-  showSignInMessage('If an account exists for that email, a reset link is on its way — check your inbox.', false);
+  showSignInMessage('If an account exists for that email, a reset link is on its way. Check your inbox.', false);
 }
 
 function showResetMessage(text, isError) {
@@ -6718,7 +6718,7 @@ async function saveFullProfile() {
   const terms     = document.getElementById('gs-terms')?.checked;
 
   if (existingAccount) {
-    // Editing existing profile — keep account credentials, just update name/email + profile data
+    // Editing existing profile: keep account credentials, just update name/email + profile data
     const updatedAccount = { ...existingAccount, firstName: firstName || existingAccount.firstName, lastName: lastName || existingAccount.lastName, email: email || existingAccount.email };
     localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
     const sessionToken = localStorage.getItem('streamline_session');
@@ -6770,7 +6770,7 @@ const PROFILE_FIELDS = [
   { key: 'skillLevel',  label: 'Swim Skill Level',    type: 'select', options: ['Beginner: learning basics, building comfort','Intermediate: consistent technique, structured sets','Advanced: competitive background or high mileage','Pro: elite performance, high-volume training'] },
   { key: 'trainingFor', label: 'Training For',        type: 'text' },
   { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'text' },
-  { key: 'swimGoal',    label: 'Swimming Goal',       type: 'select', options: ['Speed — improve race times','Technique / skill development','Injury rehab / return to water','General improvement','Distance & endurance','Open water / triathlon swim'] },
+  { key: 'swimGoal',    label: 'Swimming Goal',       type: 'select', options: ['Speed: improve race times','Technique / skill development','Injury rehab / return to water','General improvement','Distance & endurance','Open water / triathlon swim'] },
   { key: 'injuryNotes', label: 'Injury Notes',        type: 'textarea' },
   { key: 'dietaryStyle',label: 'Dietary Style',       type: 'select', options: ['No restrictions / omnivore','Vegetarian','Vegan','Pescatarian','Gluten-free','Dairy-free','Paleo / whole foods','Other'] },
   { key: 'allergies',   label: 'Allergies',           type: 'text' },
@@ -6803,7 +6803,7 @@ function renderProfilePage() {
   ];
 
   card.innerHTML = allFields.map(({ label, val }) => {
-    const displayVal = val || '—';
+    const displayVal = val || '–';
     const isEmpty = !val;
     return `<div class="profile-row">
       <span class="profile-row-label">${label}</span>
@@ -6842,7 +6842,7 @@ function saveProfileField(key, value) {
   syncProfileToServer();
   const valEl = document.getElementById('pval-' + key);
   if (valEl) {
-    valEl.textContent = value || '—';
+    valEl.textContent = value || '–';
     valEl.classList.toggle('empty', !value);
   }
   if (document.getElementById('pedit-' + key)?.querySelector('select')) {
@@ -7002,7 +7002,7 @@ function searchSite(query) {
 // Archives with the Core & Stability focus, and so on. These maps translate
 // query keywords into archive filters.
 
-// [keyword, filterField, filterValue] — single words match as whole words,
+// [keyword, filterField, filterValue]: single words match as whole words,
 // multi-word keys match as substrings.
 const SWIM_SEARCH_MAP = [
   ['butterfly','stroke','butterfly'], ['fly','stroke','butterfly'],
@@ -7293,7 +7293,7 @@ async function performSearch(query) {
     const data = await res.json();
     if (query === _currentQuery.trim()) renderSuggestions(query, data.results || []);
   } catch (err) {
-    // Backend failure is non-fatal — local site-scan results still show.
+    // Backend failure is non-fatal; local site-scan results still show.
     if (query === _currentQuery.trim()) renderSuggestions(query, null);
   }
 }
@@ -7362,13 +7362,13 @@ async function loadSwimSet(level) {
   if (_swimSetCache[level]) return; // already loaded
   const apiUrl = (window.STREAMLINE_API_URL || '');
   if (!apiUrl) {
-    renderSwimSetError(level, 'Set generator not connected yet — check back soon.');
+    renderSwimSetError(level, 'Set generator not connected yet. Check back soon.');
     return;
   }
   try {
     const res = await fetch(`${apiUrl}/daily-sets?level=${level}`);
     if (res.status === 404) {
-      renderSwimSetError(level, "Today's set hasn't been generated yet — check back after 12:01 AM Pacific.");
+      renderSwimSetError(level, "Today's set hasn't been generated yet. Check back after 12:01 AM Pacific.");
       return;
     }
     if (!res.ok) throw new Error('Server error');
@@ -7404,7 +7404,7 @@ function buildSetSectionsHtml(sections) {
     const color = SECTION_COLORS[sec.name] || 'var(--teal-2)';
     const divider = idx > 0 ? 'border-top:1px solid var(--gray-100);' : '';
     // Warm-up and cool-down sections, and any "easy" swim, run without
-    // descriptor text for every level — the effort is self-explanatory.
+    // descriptor text for every level; the effort is self-explanatory.
     const suppressSectionNote = /warm|cool/i.test(sec.name || '');
     const items = (sec.items || []).map(item => {
       let h = `<div class="set-row">${escHtml(item.text)}</div>`;
@@ -7518,7 +7518,7 @@ const INJURY_SETS = [
     focusCue: 'Lead every stroke from a relaxed shoulder. If you feel any pinch, shorten the reach and slow down. This is recovery, not training.',
     sections: [
       { name: 'Warm-Up', yards: 200, items: [
-        { text: '4x 50 backstroke easy, rest :20', note: 'Long, relaxed recovery — no overreaching' },
+        { text: '4x 50 backstroke easy, rest :20', note: 'Long, relaxed recovery, no overreaching' },
         { text: '100 kick on back, no board', note: 'Arms resting at sides' } ] },
       { name: 'Main Set', yards: 400, items: [
         { text: '6x 50 backstroke, rest :20', note: 'Smooth full rotation; stop if anything pinches' },
@@ -7544,7 +7544,7 @@ const INJURY_SETS = [
     ]
   },
   {
-    setId: 'inj-back', level: 'all', title: 'Pull Buoy Only — Low Back Relief',
+    setId: 'inj-back', level: 'all', title: 'Pull Buoy Only: Low Back Relief',
     badge: 'Back-Safe', note: 'Pull buoy throughout, no kick',
     totalYards: 1000, estimatedMinutes: 30,
     strokeFocus: 'freestyle', intensity: 'aerobic', setType: 'pull', distanceCategory: 'short',
@@ -7568,7 +7568,7 @@ const INJURY_SETS = [
       { name: 'Warm-Up', yards: 200, items: [
         { text: '200 backstroke easy', note: 'Relaxed hands, no gripping' } ] },
       { name: 'Main Set', yards: 500, items: [
-        { text: '5x 50 freestyle fist drill, rest :20', note: 'Closed fists — forearm catch, no wrist load' },
+        { text: '5x 50 freestyle fist drill, rest :20', note: 'Closed fists, forearm catch, no wrist load' },
         { text: '5x 50 backstroke, rest :15', note: 'Light, loose wrists' } ] },
       { name: 'Cool-Down', yards: 100, items: [
         { text: '100 easy choice', note: 'Shake out the hands' } ] }
@@ -7703,7 +7703,7 @@ function openArchivedSet(id) {
   const set = _archiveSets[id];
   if (!set) return;
   if (!set.sections || !set.sections.length) {
-    // No full set data (older API) — fall back to the level's daily page.
+    // No full set data (older API); fall back to the level's daily page.
     closeSetDetail();
     navigate('swim-sets');
     if (set.level && set.level !== 'all') showSwimLevel(set.level);
@@ -7968,13 +7968,13 @@ async function loadDrylandWorkout(category) {
   if (_drylandCache[category]) return; // already loaded this session
   const apiUrl = (window.STREAMLINE_API_URL || '');
   if (!apiUrl) {
-    renderDrylandError(category, 'Workout generator not connected yet — check back soon.');
+    renderDrylandError(category, 'Workout generator not connected yet. Check back soon.');
     return;
   }
   try {
     const res = await fetch(`${apiUrl}/daily-dryland?category=${category}`);
     if (res.status === 404) {
-      renderDrylandError(category, "Today's workout hasn't been generated yet — check back after 12:01 AM Pacific.");
+      renderDrylandError(category, "Today's workout hasn't been generated yet. Check back after 12:01 AM Pacific.");
       return;
     }
     if (!res.ok) throw new Error('Server error');
@@ -8210,7 +8210,7 @@ function renderDrylandArchiveCards(items) {
   const seenDay = new Set();
   items.slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).forEach(item => {
     const set = drylandArchiveItemToWorkout(item);
-    // Saturday/Sunday rest days are not part of the workout library — never list
+    // Saturday/Sunday rest days are not part of the workout library; never list
     // them in the archive even if older rest-day rows are still in the table.
     if (set.isRestDay) return;
     if (set.setId) {
@@ -8270,7 +8270,7 @@ function openArchivedDryland(id) {
   if (!set) return;
   const data = set.workoutData;
   if (!data || (!((data.sections || []).length) && !data.isRestDay)) {
-    // No full workout data — fall back to the dryland page for this category.
+    // No full workout data; fall back to the dryland page for this category.
     closeSetDetail();
     navigate('dryland-workouts');
     if (set.level) showLiftLevel(set.level);
@@ -8471,12 +8471,12 @@ async function handleContactSubmit(event) {
 // image appear: the home page, the blog pages, and the article header. The
 // rendering pipeline (see DOMContentLoaded below) does the rest automatically:
 //
-//   • ORDER     — posts are sorted by `date` (newest first) on load, so a new
+//   • ORDER     posts are sorted by `date` (newest first) on load, so a new
 //                 article surfaces at the top of "Recently Published" and its
 //                 category list with no manual reordering.
-//   • READ TIME — recomputed from each article's live body text (~200 wpm) on
+//   • READ TIME recomputed from each article's live body text (~200 wpm) on
 //                 every load, so editing or pushing an article updates it.
-//   • DATES     — the formatted `date` is written into every card and the
+//   • DATES     the formatted `date` is written into every card and the
 //                 article header, so the three locations can never disagree.
 //
 // To publish a NEW article (full workflow in BLOG.md):
@@ -8496,7 +8496,7 @@ const BLOG_POSTS = [
     date: '2026-07-04',
     readTime: 6,
     keywords: ['morning swim practice', 'afternoon swim practice', 'circadian rhythm', 'swim training'],
-    // Horizontal Pexels photo (Person Swimming in Pool, ID 260598) — a swimmer
+    // Horizontal Pexels photo (Person Swimming in Pool, ID 260598), a swimmer
     // in a red cap mid-stroke in an indoor pool, matching this practice-timing
     // article. The base URL is resized to a landscape crop at render time by
     // _heroSrc().
@@ -8516,7 +8516,7 @@ const BLOG_POSTS = [
     date: '2026-07-03',
     readTime: 8,
     keywords: ['best swim snorkel', 'swim training snorkel', 'FINIS snorkel', 'center-mount snorkel', 'cardio cap'],
-    // Local repo image (snorkel-training-underwater.jpeg) — a swimmer mid-stroke
+    // Local repo image (snorkel-training-underwater.jpeg), a swimmer mid-stroke
     // with a center-mount snorkel and hand paddles. A distinct feature image for
     // this roundup so its card doesn't duplicate the Snorkel 101 guide's photo.
     // _heroSrc appends sizing params, which S3 ignores for a local asset, so the
@@ -8524,7 +8524,7 @@ const BLOG_POSTS = [
     heroImage: 'snorkel-training-underwater.jpeg',
     heroAlt: 'Swimmer using a center-mount snorkel and hand paddles during an underwater freestyle lap',
     openingText: "Walk into any swim shop and the snorkel wall looks like a rack of plastic elephant trunks, all vaguely similar, none of them explaining why one costs fifteen dollars and another costs fifty. A good swim snorkel disappears on your face and lets you fix your stroke. A bad one leaks, drags, and gets abandoned in a gear bag by week two. Here are the five best swim snorkels for training, ranked, with the honest case for who each one is actually for.",
-    excerpt: 'The five best swim training snorkels ranked — best overall, best for breath control, best build quality, best for head position, and best budget pick.',
+    excerpt: 'The five best swim training snorkels ranked: best overall, best for breath control, best build quality, best for head position, and best budget pick.',
     thumbStyle: 'background:linear-gradient(150deg,var(--deep),#165c84); background-image:var(--pattern-waves);',
     thumbPaths: '<path d="M9 4v11a4 4 0 0 0 8 0"/><rect x="6" y="3" width="4" height="5" rx="1.5"/>',
   },
@@ -8611,7 +8611,7 @@ const BLOG_POSTS = [
     date: '2026-07-01',
     readTime: 7,
     keywords: ['pull buoy', 'swim training', 'freestyle pull', 'swimmer pool training'],
-    // Horizontal Pexels photo (A Swimmer Training on a Pool, ID 5903226) — a
+    // Horizontal Pexels photo (A Swimmer Training on a Pool, ID 5903226), a
     // swimmer working through laps in a pool, matching this pull/technique
     // guide. The base URL is resized to a landscape crop at render time by
     // _heroSrc().
@@ -8632,7 +8632,7 @@ const BLOG_POSTS = [
     readTime: 6,
     keywords: ['swim nutrition', 'pre-workout breakfast', 'morning swim practice', 'oatmeal banana'],
     // Horizontal Pexels photo (Healthy Breakfast Bowl with Oatmeal and Fruits,
-    // ID 4220141) — oatmeal with banana, matching the article's go-to meal. The
+    // ID 4220141), oatmeal with banana, matching the article's go-to meal. The
     // base URL is resized to a landscape crop at render time by _heroSrc().
     heroImage: 'https://images.pexels.com/photos/4220141/pexels-photo-4220141.jpeg',
     heroAlt: 'Bowl of oatmeal topped with banana, berries, and nuts for a pre-swim breakfast',
@@ -8749,7 +8749,7 @@ function syncBlogMeta() {
     document.querySelectorAll(sel).forEach(function(el) {
       const root = el.closest('.blog-card, .blog-side-card, .blog-feature-card, .recent-side-card, .recent-main-card') || el.parentElement;
       if (!root) return;
-      // Date · read time — collapse any split spans into the first one.
+      // Date · read time: collapse any split spans into the first one.
       const slots = root.querySelectorAll('.blog-card-date, .recent-date');
       if (slots.length) {
         const unit = slots[0].classList.contains('recent-date') ? ' min' : ' min read';
@@ -8857,7 +8857,7 @@ function renderCategoryPosts() {
     bySection[p.homeSection].push(p);
   });
   // The Gear sidebar is the permanent home for gear roundups, so it lists
-  // every gear post — including one recent enough to also sit in Recently
+  // every gear post, including one recent enough to also sit in Recently
   // Published. The other sections stay overflow-only to avoid double-listing.
   bySection.gear = BLOG_POSTS.filter(p => p.homeSection === 'gear');
   const cardHtml = p =>
@@ -8935,7 +8935,7 @@ function renderHomeFeatured() {
 }
 
 window.addEventListener('DOMContentLoaded', function() {
-  // Newest first, by publish date — this is what reorganizes the blog around
+  // Newest first, by publish date; this is what reorganizes the blog around
   // a freshly pushed article (drives Recently Published + category ordering).
   BLOG_POSTS.sort(function(a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
   // Read time is derived from the live article body, so it tracks edits/pushes.
