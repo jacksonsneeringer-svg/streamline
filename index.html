@@ -8942,10 +8942,10 @@ function renderCategoryPosts() {
     if (!bySection[p.homeSection]) bySection[p.homeSection] = [];
     bySection[p.homeSection].push(p);
   });
-  // The Gear sidebar is the permanent home for gear roundups, so it lists
-  // every gear post, including one recent enough to also sit in Recently
-  // Published. The other sections stay overflow-only to avoid double-listing.
-  bySection.gear = BLOG_POSTS.filter(p => p.homeSection === 'gear');
+  // Every section (including Gear) is populated from the overflow only, so a
+  // post recent enough to sit in Recently Published is not also listed below.
+  // A gear post reappears in the Gear sidebar once newer posts push it off the
+  // Recently Published block.
   const cardHtml = p =>
     '<div class="blog-card" onclick="navigate(\'' + escHtml(p.id) + '\')" style="cursor:pointer;">' +
       '<div class="blog-card-thumb-pattern" data-hero="' + (p.heroImage ? '1' : '') + '" style="' + (p.heroImage ? _heroBg(p.heroImage, 700, 350) : escHtml(p.thumbStyle)) + '">' + (p.heroImage ? '' : _blogSvg(p.thumbPaths, 36)) + '</div>' +
@@ -8959,9 +8959,8 @@ function renderCategoryPosts() {
       '</div>' +
     '</div>';
   // Only stories beyond the Recently Published block populate the main
-  // category rows, so those posts are never listed twice on the page (the
-  // Gear sidebar above is the one deliberate exception). A section with
-  // nothing to show is hidden rather than left as an empty header.
+  // category rows, so those posts are never listed twice on the page. A
+  // section with nothing to show is hidden rather than left as an empty header.
   let anyShown = false;
   ['technique', 'training', 'nutrition', 'gear', 'guides'].forEach(sec => {
     const grid = document.getElementById('blog-cat-grid-' + sec);
