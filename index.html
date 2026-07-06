@@ -911,6 +911,9 @@ section { padding: 6rem 0; }
   .recent-posts-grid { grid-template-columns: 1fr; }
   .recent-col-divider { width: 100%; height: 1px; margin: 1.5rem 0; }
   .recent-main-card { padding-right: 0; }
+  /* One large story + two smaller ones: keep card, divider, card (drop the
+     3rd/4th side cards and their dividers). */
+  .recent-side-col > :nth-child(n+4) { display: none; }
 }
 
 /* ── Blog category page title ── */
@@ -998,10 +1001,11 @@ section { padding: 6rem 0; }
   .blog-sections-with-gear { grid-template-columns: 1fr; }
   .blog-gear-sidebar { border-left: none; padding-left: 0; }
   .blog-gear-sidebar .blog-section-row { padding-top: 3rem !important; }
-  /* Every category matches the gear column: single stacked list, 3 stories */
+  /* Every category matches the gear column: single stacked list, two stories */
   .blog-sections-main { padding-right: 0; }
   .blog-sections-main .grid-2 { grid-template-columns: 1fr; gap: 1.5rem; }
-  #blog-cat-grid-gear > .blog-card:nth-child(n+4) { display: none; }
+  .blog-sections-main .grid-2 > .blog-card:nth-child(n+3) { display: none; }
+  #blog-cat-grid-gear > .blog-card:nth-child(n+3) { display: none; }
 }
 
 /* ── Homepage blog layout ── */
@@ -2160,11 +2164,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   #about .about-col-right { padding-left: 0 !important; }
 }
 @media (max-width: 768px) {
-  .hero { min-height: 80vh; }
-  .hero-inner { grid-template-columns: 1fr; padding: 2.5rem 2.5rem 2rem; gap: 2rem; }
+  /* Shorter hero on mobile: cover + centered background crops evenly from the
+     top and bottom, so the swimmer stays vertically centered. */
+  .hero { min-height: 62vh; }
+  .hero-inner { grid-template-columns: 1fr; padding: 2rem 2.5rem 1.75rem; gap: 2rem; }
   .hero-tag { display: inline-block; margin-bottom: 1.25rem; }
   .hero-tag-br { display: block; }
-  .hero-cta .btn-lg { padding: 0.7rem 1.6rem; font-size: 0.8rem; }
+  .hero h1 { margin-bottom: 2.5rem; }
+  .hero-cta .btn-lg { padding: 0.58rem 1.3rem; font-size: 0.74rem; }
   .hero-panel { display: none; }
   .resources-grid,
   .blog-grid,
@@ -2173,6 +2180,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .grid-3 { grid-template-columns: 1fr; }
   .nav-inner { padding: 0 1.25rem; }
   #nav-account-btn { display: none; }
+  /* 16px keeps iOS/Android from auto-zooming the viewport when the search
+     input gains focus. */
+  .nav-search-field input { font-size: 16px; }
   .form-row,
   .form-row-3 { grid-template-columns: 1fr; }
   section { padding: 4rem 0; }
@@ -2198,11 +2208,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem !important; }
-  .hero { min-height: 70vh; padding: 0; }
-  .hero-inner { padding: 2rem 1.25rem 2rem; gap: 1.5rem; }
-  .hero-tag { font-size: 0.6rem; margin-top: 2rem; }
-  .hero h1 { font-size: clamp(2.2rem, 8vw, 2.8rem); margin-top: 2.25rem; margin-bottom: 4.25rem; }
+  .hero { min-height: 56vh; padding: 0; }
+  .hero-inner { padding: 1.75rem 1.25rem 1.5rem; gap: 1.25rem; }
+  .hero-tag { font-size: 0.6rem; margin-top: 1.25rem; }
+  .hero h1 { font-size: clamp(2.2rem, 8vw, 2.8rem); margin-top: 1.5rem; margin-bottom: 2.5rem; }
   .hero-cta { flex-direction: column; align-items: flex-start; }
+  .hero-cta .btn-lg { padding: 0.52rem 1.2rem; font-size: 0.72rem; }
   .logo-wordmark { font-size: 1.5rem; }
   .logo-tagline { display: block; font-size: 0.5rem; letter-spacing: 0.55em; word-spacing: 1em; }
   .site-logo { margin-top: 4px; }
@@ -2388,10 +2399,33 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .ex-table tr:hover td { background: var(--off-white, #f0f7f6); }
 .mtag { font-size: 0.82rem; color: var(--gray-500); }
 .contact-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: start; max-width: 1060px; margin: 0 auto; }
+/* "How can we help?" heading. On desktop it's a plain label with the reason
+   cards always shown; on mobile it becomes a collapsible toggle (see below). */
+.reason-toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  width: 100%; background: none; border: none; padding: 0; margin: 0 0 0.85rem;
+  text-align: left; cursor: default; font-family: var(--font-body);
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gray-400);
+}
+.reason-toggle-chevron { display: none; flex-shrink: 0; }
 @media (max-width: 768px) {
-  /* Stack the form first, "How can we help?" cards below it */
+  /* Move "How can we help?" above the form as a collapsible panel. */
   .contact-layout { display: flex; flex-direction: column; }
-  .contact-layout > .contact-aside-sticky { order: 2; margin-top: 2.5rem; }
+  .contact-layout > .contact-aside-sticky {
+    order: -1; margin: 0 0 1.75rem;
+    background: var(--white); border: 1px solid var(--gray-100);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .contact-aside-sticky .reason-toggle {
+    cursor: pointer; padding: 0.95rem 1.1rem; margin: 0; font-size: 0.68rem;
+  }
+  .contact-aside-sticky .reason-toggle-chevron {
+    display: block; color: var(--teal); transition: transform 0.2s ease;
+  }
+  .contact-aside-sticky.reasons-open .reason-toggle-chevron { transform: rotate(180deg); }
+  .contact-aside-sticky .reason-cards { padding: 0 1.1rem 1.1rem; }
+  .contact-aside-sticky:not(.reasons-open) .reason-cards { display: none; }
 }
 .contact-aside-sticky { }
 /* Profile page */
@@ -2466,6 +2500,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .auth-lock-title { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gray-400); font-weight: 700; margin-bottom: 0.5rem; }
 .auth-lock-msg { font-size: 0.92rem; color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.5; }
 .auth-lock-actions { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+/* Favorites (swim sets + dryland) lock card: tighten the empty space between
+   the top of the card and the text. */
+#swim-favorites-list .auth-lock-card,
+#lift-favorites-list .auth-lock-card { padding-top: 1.1rem; }
+#swim-favorites-list .auth-lock-card svg,
+#lift-favorites-list .auth-lock-card svg { margin-bottom: 0.35rem; }
 /* Set detail modal */
 .set-detail-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.6); display: none; z-index: 3000; overflow-y: auto; padding: 3rem 1rem; }
 .set-detail-overlay.open { display: block; }
@@ -2514,6 +2554,19 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     color: var(--gray-400);
     margin-right: 0.85rem;
   }
+}
+/* Swim set + dryland daily header: on mobile, stack the title above the
+   favorite/print buttons (instead of squeezing them into one nowrap row) and
+   tighten the page hero + level tabs. */
+@media (max-width: 768px) {
+  .swim-set-head { flex-direction: column; gap: 0.9rem !important; margin-bottom: 1.5rem !important; }
+  .swim-set-head h2 { font-size: 1.35rem !important; }
+  .swim-set-head .set-action-btns { width: 100%; }
+  .swim-set-head .set-action-btns .btn { flex: 1; justify-content: center; }
+  #page-swim-sets .page-hero-sm,
+  #page-dryland-workouts .page-hero-sm { padding: 3rem 0 2.25rem; }
+  #page-swim-sets .level-tab,
+  #page-dryland-workouts .level-tab { padding: 0.7rem 1rem; font-size: 0.76rem; }
 }
 .reason-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
 .reason-card-header h4 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin: 0; }
@@ -4714,7 +4767,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="container">
     <div class="contact-layout">
       <aside class="contact-aside-sticky">
-        <p style="font-size:0.62rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.85rem;">How can we help?</p>
+        <button type="button" class="reason-toggle" aria-expanded="false" onclick="toggleReasons(this)">
+          <span>How can we help?</span>
+          <svg class="reason-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="reason-cards">
         <div class="reason-card">
           <div class="reason-card-header">
             <svg class="reason-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -4743,6 +4800,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           </div>
           <p>Something broken or behaving oddly? Let us know and we'll fix it.</p>
         </div>
+        </div><!-- end reason-cards -->
       </aside>
       <div>
         <div id="contact-form-wrap" style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.6rem 2rem;">
@@ -7520,7 +7578,7 @@ function renderSwimSet(level, data) {
   const focusCueHtml = buildFocusCueHtml(data.focusCue);
 
   container.innerHTML = `<div class="swim-print-area">
-  <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+  <div class="swim-set-head" style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
     <div style="min-width:0;">
       <span class="eyebrow">${today} · ${levelLabel}</span>
       <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title)}</h2>
@@ -7547,6 +7605,15 @@ function toggleFocusCue(btn) {
   const wrap = btn.closest('.focus-cue');
   if (!wrap) return;
   const open = wrap.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+// Contact page: collapse/expand the "How can we help?" panel (mobile only; on
+// desktop the cards are always shown and the toggle is inert styling).
+function toggleReasons(btn) {
+  const aside = btn.closest('.contact-aside-sticky');
+  if (!aside) return;
+  const open = aside.classList.toggle('reasons-open');
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
@@ -8126,7 +8193,7 @@ function renderDryland(category, data) {
   const focusCueHtml = buildFocusCueHtml(data.focusCue);
 
   container.innerHTML = `<div class="swim-print-area">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+    <div class="swim-set-head" style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
       <div style="min-width:0;">
         <span class="eyebrow">${today} · ${escHtml(label)}${restBadge}</span>
         <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || '')}</h2>
