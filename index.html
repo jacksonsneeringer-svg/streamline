@@ -4976,6 +4976,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <a href="#sign-in" class="btn btn-outline-light btn-sm" onclick="navigate('sign-in')">Sign In</a>
         </div>
       </div>
+      <!-- Personalized weekly plan (filled by renderTrainingPlan when signed in) -->
+      <div id="dash-plan-section" style="display:none; margin-bottom:2rem;"></div>
       <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
       <div class="dash-grid">
         <div class="dash-card">
@@ -5018,11 +5020,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Today's Swim</h2>
         <p style="color:var(--gray-400); font-size:0.9rem;">Your personalized swim workout for today.</p>
       </div>
+      <div id="dash-swim-detail">
       <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg>
-        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Personalized sets coming soon</h3>
-        <p style="color:var(--gray-400); font-size:0.9rem; max-width:400px; margin:0 auto 1.5rem;">We're building your custom swim workouts based on your profile. In the meantime, browse the daily swim sets.</p>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Your personal swim set lives here</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:400px; margin:0 auto 1.5rem;">Sign in and complete your profile, and your coach will build today's swim from your plan. In the meantime, browse the daily swim sets.</p>
         <a href="#swim-sets" class="btn btn-primary" onclick="navigate('swim-sets')">View Today's Swim Sets</a>
+      </div>
       </div>
     </div>
 
@@ -5033,11 +5037,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Today's Lift</h2>
         <p style="color:var(--gray-400); font-size:0.9rem;">Your personalized dryland workout for today.</p>
       </div>
+      <div id="dash-lift-detail">
       <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg>
-        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Personalized lift sessions coming soon</h3>
-        <p style="color:var(--gray-400); font-size:0.9rem; max-width:400px; margin:0 auto 1.5rem;">We're building your dryland program based on your training goals and schedule. Check out today's dryland workout in the meantime.</p>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Your personal lift lives here</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:400px; margin:0 auto 1.5rem;">Sign in and complete your profile, and your coach will build today's dryland from your plan. Check out today's dryland workout in the meantime.</p>
         <a href="#dryland-workouts" class="btn btn-primary" onclick="navigate('dryland-workouts')">View Dryland Workouts</a>
+      </div>
       </div>
     </div>
 
@@ -5048,11 +5054,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Meal Plan</h2>
         <p style="color:var(--gray-400); font-size:0.9rem;">Nutrition recommendations tailored to your training load and dietary preferences.</p>
       </div>
+      <div id="dash-meal-detail">
       <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
-        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Personalized meal plans coming soon</h3>
-        <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto 1.5rem;">Once this feature launches, you'll get daily meal recommendations matched to your body profile, training load, and dietary restrictions you set in your profile.</p>
+        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Your personal meal plan lives here</h3>
+        <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto 1.5rem;">Sign in and complete your profile, and you'll get daily meal recommendations matched to your body profile, training load, and dietary restrictions.</p>
         <button class="btn btn-outline-dark" onclick="editProfile()">Update Dietary Preferences</button>
+      </div>
       </div>
     </div>
 
@@ -5393,7 +5401,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <div class="form-group">
           <label class="form-label">Injuries or Areas of Limited Mobility</label>
           <p class="form-hint" style="margin-bottom:0.6rem;">Select all that apply. We'll adjust exercises and loading accordingly.</p>
-          <div class="chip-grid">
+          <div class="chip-grid" id="gs-injury-chips">
             <div class="chip" onclick="this.classList.toggle('selected')">Shoulder</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Neck / cervical spine</div>
             <div class="chip" onclick="this.classList.toggle('selected')">Lower back</div>
@@ -6430,7 +6438,11 @@ function updateTrainingPage() {
       if (lock) lock.style.display = 'none';
       if (content) content.style.display = '';
     });
+    loadTrainingPlan();
   } else {
+    clearTimeout(_planPollTimer);
+    const planSection = document.getElementById('dash-plan-section');
+    if (planSection) planSection.style.display = 'none';
     if (greeting) { greeting.textContent = 'Welcome to LANE FOUR.'; greeting.style.color = 'white'; }
     if (sub) { sub.textContent = 'Create a free account to unlock your personalized daily plan, meal recommendations, and workout logging.'; sub.style.color = 'rgba(255,255,255,0.75)'; }
     if (banner) { banner.style.background = 'var(--deep)'; banner.style.backgroundImage = 'var(--pattern-waves), linear-gradient(135deg,var(--deep),var(--teal))'; banner.style.border = 'none'; banner.style.padding = '1.5rem 1.75rem'; banner.style.borderRadius = 'var(--r-xl)'; }
@@ -6453,6 +6465,284 @@ function showDashView(view) {
   document.querySelectorAll('.dash-nav-item').forEach((item, i) => {
     item.classList.toggle('active', views[i] === view);
   });
+}
+
+// ── Personalized training plan (My Training) ───────────────────────────────
+// POST /training-plan returns the cached weekly plan, or kicks off an async
+// Bedrock generation (profile change / new week) that we poll until ready.
+
+let _trainingPlan = null;
+let _planPollTimer = null;
+let _planPollAttempts = 0;
+const PLAN_DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function planCap(s) {
+  s = String(s || '');
+  if (s.toLowerCase() === 'im') return 'IM';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function planToday() {
+  if (!_trainingPlan) return null;
+  const name = PLAN_DAY_NAMES[new Date().getDay()];
+  return (_trainingPlan.days || []).find(d => d.day === name) || null;
+}
+
+// Next day after today that has the given content key (swimSet / liftSession).
+function nextPlanDay(key) {
+  if (!_trainingPlan) return null;
+  const days = _trainingPlan.days || [];
+  const start = days.findIndex(d => d.day === PLAN_DAY_NAMES[new Date().getDay()]);
+  if (start === -1) return null;
+  for (let i = 1; i <= 7; i++) {
+    const d = days[(start + i) % days.length];
+    if (d && d[key]) return d;
+  }
+  return null;
+}
+
+function renderPlanMessage(html) {
+  const section = document.getElementById('dash-plan-section');
+  if (!section) return;
+  section.style.display = '';
+  section.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem;">${html}</div>`;
+}
+
+function loadTrainingPlan(force) {
+  const section = document.getElementById('dash-plan-section');
+  if (!section || !getAccount()) return;
+  clearTimeout(_planPollTimer);
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token) {
+    renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem;">The plan generator isn\'t connected in this environment. Sign in on the live site and your personalized week will appear here.</p>');
+    return;
+  }
+  if (_trainingPlan && !force) { renderTrainingPlan(); return; }
+  _planPollAttempts = 0;
+  renderPlanMessage('<p style="color:var(--gray-500); font-size:0.9rem; font-weight:600;">Loading your training plan…</p>');
+  fetchTrainingPlan(!!force);
+}
+
+async function fetchTrainingPlan(force) {
+  const token = localStorage.getItem('streamline_session');
+  let data = {};
+  try {
+    const res = await fetch(apiBase() + '/training-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, force })
+    });
+    if (res.status === 401) {
+      renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem;">Your session has expired. <a href="#sign-in" onclick="navigate(\'sign-in\')">Log in again</a> to see your plan.</p>');
+      return;
+    }
+    data = await res.json();
+  } catch (e) {
+    renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Couldn\'t reach the plan generator. Check your connection and try again.</p><button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan()">Try Again</button>');
+    return;
+  }
+  if (data.status === 'ready' && data.plan) {
+    _trainingPlan = data.plan;
+    renderTrainingPlan();
+  } else if (data.status === 'generating') {
+    _planPollAttempts++;
+    if (_planPollAttempts > 45) {
+      renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your plan is taking longer than expected.</p><button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan()">Check Again</button>');
+      return;
+    }
+    renderPlanMessage('<p style="color:var(--deep); font-size:0.95rem; font-weight:700; margin-bottom:0.35rem;">Your coach is building this week\'s plan.</p><p style="color:var(--gray-400); font-size:0.88rem;">Swim sets, lifts, and meals are being written from your profile. This usually takes a couple of minutes — the page updates automatically.</p>');
+    _planPollTimer = setTimeout(() => fetchTrainingPlan(false), 8000);
+  } else if (data.status === 'no-profile') {
+    renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Complete your athlete profile (at minimum your skill level and swim days) and your coach will build a personalized week of swims, lifts, and meals.</p><button class="btn btn-primary btn-sm" onclick="editProfile()">Complete Profile</button>');
+  } else if (data.status === 'error') {
+    renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Plan generation hit a snag. Give it another shot.</p><button class="btn btn-primary btn-sm" onclick="loadTrainingPlan(true)">Rebuild Plan</button>');
+  } else {
+    renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">' + escHtml(data.error || 'Something went wrong loading your plan.') + '</p><button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan()">Try Again</button>');
+  }
+}
+
+function renderTrainingPlan() {
+  const p = _trainingPlan;
+  const section = document.getElementById('dash-plan-section');
+  if (!section || !p) return;
+  const todayName = PLAN_DAY_NAMES[new Date().getDay()];
+  const rows = (p.days || []).map(d => {
+    const isToday = d.day === todayName;
+    const swimTxt = d.swim ? planCap(d.swim.focus) + (d.swim.secondary ? ' (' + d.swim.secondary + ')' : '') : '—';
+    const liftTxt = d.lift ? (d.lift.focus || 'Lift') + (d.lift.minutes ? ' (' + d.lift.minutes + ' min)' : '') : '—';
+    return `<tr${isToday ? ' style="background:var(--gray-50);"' : ''}>
+      <td><strong>${escHtml(d.day.slice(0, 3))}</strong>${isToday ? '<br/><span style="font-size:0.62rem; font-weight:700; letter-spacing:0.1em; color:var(--teal); text-transform:uppercase;">Today</span>' : ''}</td>
+      <td>${escHtml(d.label || '—')}</td>
+      <td>${escHtml(swimTxt)}</td>
+      <td>${escHtml(liftTxt)}</td>
+      <td>${escHtml(d.timeLabel || '—')}</td>
+    </tr>`;
+  }).join('');
+  const n = p.nutrition || {};
+  const fuel = n.calories ? `~${Number(n.calories).toLocaleString()} kcal · P ${n.proteinG} / C ${n.carbsG} / F ${n.fatG}` : '';
+  section.style.display = '';
+  section.innerHTML = `
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.75rem;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+        <div style="min-width:0;">
+          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Your Week${p.phaseLabel ? ' · ' + escHtml(p.phaseLabel) : ''}</p>
+          ${p.goalLine ? `<h3 style="color:var(--deep); font-size:1.15rem; margin:0 0 0.25rem;">${escHtml(p.goalLine)}</h3>` : ''}
+          ${p.phaseRoadmap ? `<p style="font-size:0.82rem; color:var(--gray-400);">${escHtml(p.phaseRoadmap)}</p>` : ''}
+        </div>
+        <button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan(true)" title="Regenerate this week's plan from your current profile">Rebuild Plan</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="ex-table">
+          <thead><tr><th>Day</th><th>Session(s)</th><th>Swim Focus</th><th>Dryland Focus</th><th>~Time</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      ${fuel ? `<p style="margin-top:1rem; font-size:0.88rem; color:var(--deep);"><strong>Daily fuel:</strong> ${escHtml(fuel)}${n.restDayNote ? ` <span style="color:var(--gray-400);">· ${escHtml(n.restDayNote)}</span>` : ''}</p>` : ''}
+      ${p.rationale ? `<p style="margin-top:0.75rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(p.rationale)}</p>` : ''}
+    </div>`;
+  renderPlanOverviewCards();
+  renderPlanSwimView();
+  renderPlanLiftView();
+  renderPlanMealView();
+}
+
+function renderPlanOverviewCards() {
+  const day = planToday();
+  if (!day) return;
+  const swimEl = document.getElementById('content-swim');
+  const liftEl = document.getElementById('content-lift');
+  const mealEl = document.getElementById('content-meal');
+  if (swimEl) {
+    if (day.swimSet) {
+      swimEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${escHtml(day.swimSet.title || 'Today\'s Swim')}</p>
+        <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">~${escHtml(String(day.swimSet.totalYards || ''))} yards · Est. ${escHtml(String(day.swimSet.estimatedMinutes || ''))} min</p>
+        <button class="btn btn-primary btn-sm" onclick="showDashView('swim')">Open Full Set →</button>`;
+    } else {
+      swimEl.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">${day.label === 'Rest' ? 'Rest day — no swim scheduled.' : 'No swim scheduled today.'}</p>
+        <button class="btn btn-outline-dark btn-sm" onclick="showDashView('swim')">View Details</button>`;
+    }
+  }
+  if (liftEl) {
+    if (day.liftSession) {
+      liftEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${escHtml(day.liftSession.title || 'Today\'s Lift')}</p>
+        <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">~${escHtml(String(day.liftSession.estimatedMinutes || ''))} min · ${escHtml(day.liftSession.trainingFocus || '')}</p>
+        <button class="btn btn-primary btn-sm" onclick="showDashView('lift')">Open Full Session →</button>`;
+    } else {
+      liftEl.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">${day.label === 'Rest' ? 'Rest day — no lift scheduled.' : 'No lift scheduled today.'}</p>
+        <button class="btn btn-outline-dark btn-sm" onclick="showDashView('lift')">View Details</button>`;
+    }
+  }
+  if (mealEl) {
+    const n = (_trainingPlan && _trainingPlan.nutrition) || {};
+    mealEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${n.calories ? '~' + Number(n.calories).toLocaleString() + ' kcal' : 'Today\'s fuel'}</p>
+      <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">${n.proteinG ? 'P ' + escHtml(String(n.proteinG)) + ' / C ' + escHtml(String(n.carbsG)) + ' / F ' + escHtml(String(n.fatG)) + ' g' : 'Meals matched to your training day'}</p>
+      <button class="btn btn-primary btn-sm" onclick="showDashView('meal')">Open Meal Plan →</button>`;
+  }
+}
+
+function planOffDayCard(day, kind) {
+  const nextKey = kind === 'swim' ? 'swimSet' : 'liftSession';
+  const next = nextPlanDay(nextKey);
+  const heading = day.recovery ? 'Active recovery day' : (day.label === 'Rest' ? 'Rest day' : 'No ' + kind + ' scheduled today');
+  const body = day.recovery
+    ? day.recovery
+    : (day.label === 'Rest'
+        ? 'Full rest is part of the program: sleep, hydrate, and let the week\'s work absorb. An easy 20-minute walk is fine.'
+        : 'Today\'s plan is ' + (day.label || 'recovery') + '.');
+  return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
+    ${REST_DAY_SVG}
+    <h3 style="color:var(--deep); margin:0.75rem 0 0.5rem;">${escHtml(heading)}</h3>
+    <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto;">${escHtml(body)}${next ? ' Next ' + kind + ': ' + escHtml(next.day) + '.' : ''}</p>
+  </div>`;
+}
+
+function planErrorCard(kind) {
+  return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
+    <h3 style="color:var(--deep); margin-bottom:0.5rem;">This ${kind} couldn't be generated</h3>
+    <p style="color:var(--gray-400); font-size:0.9rem; max-width:420px; margin:0 auto 1.5rem;">Something went wrong writing this session. Rebuilding the plan usually fixes it.</p>
+    <button class="btn btn-primary btn-sm" onclick="loadTrainingPlan(true)">Rebuild Plan</button>
+  </div>`;
+}
+
+function renderPlanSwimView() {
+  const el = document.getElementById('dash-swim-detail');
+  const day = planToday();
+  if (!el || !day) return;
+  if (day.swimSet) {
+    const s = day.swimSet;
+    el.innerHTML = `
+      <div style="margin-bottom:1.5rem;">
+        <span class="eyebrow">${escHtml(day.day)} · ${escHtml(planCap(_trainingPlan.level || ''))}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
+        <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(s.title || 'Today\'s Swim')}</h3>
+        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(s.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(s.estimatedMinutes || ''))} min</p>
+        ${buildFocusCueHtml(s.focusCue)}
+      </div>
+      <div class="set-block">${buildSetSectionsHtml(s.sections)}</div>`;
+  } else if (day.swim) {
+    el.innerHTML = planErrorCard('swim');
+  } else {
+    el.innerHTML = planOffDayCard(day, 'swim');
+  }
+}
+
+function renderPlanLiftView() {
+  const el = document.getElementById('dash-lift-detail');
+  const day = planToday();
+  if (!el || !day) return;
+  if (day.liftSession) {
+    const w = day.liftSession;
+    const metaBits = [
+      w.estimatedMinutes ? `~${w.estimatedMinutes} min` : '',
+      w.equipment || '',
+      w.trainingFocus ? `Focus: ${w.trainingFocus}` : ''
+    ].filter(Boolean);
+    el.innerHTML = `
+      <div style="margin-bottom:1.5rem;">
+        <span class="eyebrow">${escHtml(day.day)}${_trainingPlan.liftCategory ? ' · ' + escHtml(_trainingPlan.liftCategory) : ''}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
+        <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(w.title || 'Today\'s Lift')}</h3>
+        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}</p>
+        ${buildFocusCueHtml(w.focusCue)}
+      </div>
+      <div class="set-block">${buildDrylandSectionsHtml(w.sections)}</div>
+      ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(w.coachNote)}</p>` : ''}`;
+  } else if (day.lift) {
+    el.innerHTML = planErrorCard('lift');
+  } else {
+    el.innerHTML = planOffDayCard(day, 'lift');
+  }
+}
+
+function renderPlanMealView() {
+  const el = document.getElementById('dash-meal-detail');
+  const day = planToday();
+  if (!el || !_trainingPlan || !day) return;
+  const n = _trainingPlan.nutrition || {};
+  const type = day.mealType === 'rest' ? 'rest' : 'training';
+  const meals = (_trainingPlan.meals || {})[type] || [];
+  if (!meals.length && !n.calories) return; // nothing to show; keep placeholder
+  const tiles = [
+    ['Calories', n.calories ? Number(n.calories).toLocaleString() + ' kcal' : '—'],
+    ['Protein', n.proteinG ? n.proteinG + ' g' : '—'],
+    ['Carbs', n.carbsG ? n.carbsG + ' g' : '—'],
+    ['Fat', n.fatG ? n.fatG + ' g' : '—']
+  ].map(([l, v]) => `
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:0.9rem 1rem;">
+      <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.25rem;">${l}</p>
+      <p style="font-weight:700; color:var(--deep); font-size:1.05rem;">${escHtml(String(v))}</p>
+    </div>`).join('');
+  const rows = meals.map(m => `<tr>
+    <td><strong>${escHtml(m.name || '')}</strong>${m.time ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(m.time)}</span>` : ''}</td>
+    <td>${escHtml(m.menu || '')}${m.note ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(cleanNote(m.note))}</span>` : ''}</td>
+  </tr>`).join('');
+  el.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${tiles}</div>
+    ${meals.length ? `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); overflow:hidden;">
+      <div class="set-block-header" style="background:var(--teal);"><span class="set-label">${type === 'rest' ? 'Rest Day Meals' : 'Training Day Meals'}</span><span class="set-yds">${escHtml(day.day)}</span></div>
+      <div style="padding:0.5rem 1.5rem 1rem;">
+        <table class="ex-table"><thead><tr><th>Meal</th><th>Menu</th></tr></thead><tbody>${rows}</tbody></table>
+      </div>
+    </div>` : ''}
+    ${n.restDayNote && type !== 'rest' ? `<p style="margin-top:0.9rem; font-size:0.84rem; color:var(--gray-400);">${escHtml(n.restDayNote)}</p>` : ''}`;
 }
 
 function editProfile() {
@@ -6511,6 +6801,14 @@ function editProfile() {
         c.classList.toggle('selected', selected.includes(c.textContent.trim()));
       });
       toggleSpeedTimes();
+    }
+
+    // Pre-select injury chips
+    if (profile.injuries) {
+      const selected = profile.injuries.split(', ').map(s => s.trim());
+      document.querySelectorAll('#gs-injury-chips .chip').forEach(c => {
+        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
+      });
     }
 
     // Step 4 simple fields
@@ -6649,7 +6947,11 @@ function syncProfileToServer() {
   if (!apiBase() || !token) return;
   clearTimeout(_profileSyncTimer);
   _profileSyncTimer = setTimeout(() => {
-    authApi('profile', { token, profile: getProfile() }).catch(() => {});
+    // Drop the cached plan only after the server has the new profile, so the
+    // next My Training visit regenerates from the updated data.
+    authApi('profile', { token, profile: getProfile() })
+      .then(() => { _trainingPlan = null; })
+      .catch(() => {});
   }, 800);
 }
 
@@ -6879,6 +7181,8 @@ function signOut() {
   localStorage.removeItem('streamline_session');
   localStorage.removeItem('streamline_account');
   localStorage.removeItem('streamline_profile');
+  _trainingPlan = null;
+  clearTimeout(_planPollTimer);
   updateNavButton();
   navigate('home');
 }
@@ -6900,6 +7204,7 @@ function collectProfileData() {
     trainingFor:  getSelectedChips('gs-training-for-chips'),
     fitnessGoal:  getSelectedChips('gs-fitness-goal-chips'),
     swimGoal:     getSelectedChips('swim-goal-chips'),
+    injuries:     getSelectedChips('gs-injury-chips'),
     injuryNotes:  document.getElementById('gs-injury-notes')?.value || '',
     dietaryStyle: document.getElementById('gs-dietary-style')?.value || '',
     allergies:    document.getElementById('gs-allergies')?.value || '',
@@ -6979,6 +7284,7 @@ const PROFILE_FIELDS = [
   { key: 'trainingFor', label: 'Training For',        type: 'text' },
   { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'text' },
   { key: 'swimGoal',    label: 'Swimming Goal',       type: 'select', options: ['Speed: improve race times','Technique / skill development','Injury rehab / return to water','General improvement','Distance & endurance','Open water / triathlon swim'] },
+  { key: 'injuries',    label: 'Injuries',            type: 'text' },
   { key: 'injuryNotes', label: 'Injury Notes',        type: 'textarea' },
   { key: 'dietaryStyle',label: 'Dietary Style',       type: 'select', options: ['No restrictions / omnivore','Vegetarian','Vegan','Pescatarian','Gluten-free','Dairy-free','Paleo / whole foods','Other'] },
   { key: 'allergies',   label: 'Allergies',           type: 'text' },
