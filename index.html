@@ -57,7 +57,7 @@
 
   /* Layout */
   --max-w:  1600px;
-  --nav-h:  88px;
+  --nav-h:  84px;
 
   /* Radius */
   --r-sm:  4px;
@@ -2411,14 +2411,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .reason-toggle-chevron { display: none; flex-shrink: 0; }
 @media (max-width: 768px) {
   /* Move "How can we help?" above the form as a collapsible panel. */
-  .contact-layout { display: flex; flex-direction: column; }
+  .contact-layout { display: flex; flex-direction: column; align-items: stretch; }
   .contact-layout > .contact-aside-sticky {
-    order: -1; margin: 0 0 1.75rem;
+    order: -1; margin: 0 0 1.75rem; width: 100%;
     background: var(--white); border: 1px solid var(--gray-100);
     border-radius: var(--r-lg); overflow: hidden;
   }
   .contact-aside-sticky .reason-toggle {
-    cursor: pointer; padding: 0.95rem 1.1rem; margin: 0; font-size: 0.68rem;
+    cursor: pointer; padding: 0.6rem 1.1rem; margin: 0; font-size: 0.68rem;
   }
   .contact-aside-sticky .reason-toggle-chevron {
     display: block; color: var(--teal); transition: transform 0.2s ease;
@@ -3791,7 +3791,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <section style="padding:3rem 0 5rem; background:var(--off-white);">
   <div class="container">
     <div class="grid-3">
-      <p style="color:var(--gray-400); font-size:0.95rem; padding:1rem 0;">No posts in this category yet. Check back soon.</p>
+      <div class="blog-card" onclick="navigate('supplements-swimmers')" style="cursor:pointer;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7z"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/></svg></div>
+        <div class="blog-card-body"><h3 class="blog-card-title">Supplements for Swimmers: What Actually Works (And What's a Waste)</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Jul 5, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">The supplement aisle is where swimmers go to spend money on hope. Shiny tubs promising faster recovery, more power, and a leaner body, most of them backed by a photo of someone who has never done a 100 fly in their life. The hard truth about supplements for swimmers is that a handful are genuinely useful, most are marketing, and none of them will fix a training program that's already broken.</p></div>
+      </div>
+      <div class="blog-card" onclick="navigate('pre-swim-breakfast')" style="cursor:pointer;">
+        <div class="blog-card-thumb-pattern" style="background:linear-gradient(150deg,var(--deep),var(--teal)); background-image:var(--pattern-waves);"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(93,219,201,0.5)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <div class="blog-card-body"><h3 class="blog-card-title">What to Eat Before Morning Swim Practice</h3><div class="blog-card-meta"><span class="cat-badge">Nutrition</span><span class="blog-card-date">Jul 1, 2026</span><span class="blog-card-date">6 min read</span></div><p class="blog-card-excerpt">It's 5:12am, your alarm just went off, and the last thing your body wants is food. I get it. For years I rolled into morning practice running on nothing but the half-life of yesterday's chicken alfredo, then wondered why I fell apart on the main set. What you eat before a morning swim practice decides whether you crush the workout or spend the last 800 fantasizing about the parking lot.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -6016,8 +6023,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">12. Contact</h2>
       <p style="margin-bottom:0.25rem;">For privacy-related questions, to exercise your rights, or to submit a data request:</p>
       <p style="margin-bottom:0.1rem;"><strong>LANE FOUR</strong></p>
-      <p style="margin-bottom:0.1rem;">929 W Jefferson Blvd, Ste 1670, Los Angeles, CA 90089</p>
-      <p style="margin-bottom:0.1rem;">Email: <a href="mailto:jackson@snurray.com">jackson@snurray.com</a></p>
+      <p style="margin-bottom:0.1rem;">1875 Mission St Ste 103 #302, San Francisco, CA 94103</p>
+      <p style="margin-bottom:0.1rem;">Email: <a href="mailto:support@winlanefour.com">support@winlanefour.com</a></p>
       <p>Or use our <a href="#contact" onclick="navigate('contact')">contact page</a>.</p>
 
     </div>
@@ -6151,7 +6158,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <li>A statement that you have a good faith belief the use is not authorized by the copyright owner, its agent, or the law</li>
         <li>A statement under penalty of perjury that the information is accurate and you are authorized to act on behalf of the copyright owner</li>
       </ul>
-      <p style="margin-bottom:1.5rem;">Send DMCA notices to our Designated Copyright Agent: LANE FOUR, Attn: Copyright Agent, 929 W Jefferson Blvd, Ste 1670, Los Angeles, CA 90089, jackson@snurray.com. Under 17 U.S.C. § 512(f), you may be liable for damages if you knowingly make material misrepresentations in a DMCA notification.</p>
+      <p style="margin-bottom:1.5rem;">Send DMCA notices to our Designated Copyright Agent: LANE FOUR, Attn: Copyright Agent, 1875 Mission St Ste 103 #302, San Francisco, CA 94103, support@winlanefour.com. Under 17 U.S.C. § 512(f), you may be liable for damages if you knowingly make material misrepresentations in a DMCA notification.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">20. California Users and Residents</h2>
       <p style="margin-bottom:1.5rem;">If you are a California resident and have an unresolved complaint regarding our services, you may contact the Complaint Assistance Unit of the Division of Consumer Services of the California Department of Consumer Affairs in writing at 1625 North Market Blvd., Suite N 112, Sacramento, California 95834, or by telephone at (800) 952-5210 or (916) 445-1254.</p>
@@ -6168,8 +6175,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">24. Contact Us</h2>
       <p style="margin-bottom:0.25rem;">For questions about these Terms:</p>
       <p style="margin-bottom:0.1rem;"><strong>LANE FOUR</strong></p>
-      <p style="margin-bottom:0.1rem;">929 W Jefferson Blvd, Ste 1670, Los Angeles, CA 90089</p>
-      <p style="margin-bottom:0.1rem;">Email: <a href="mailto:jackson@snurray.com">jackson@snurray.com</a></p>
+      <p style="margin-bottom:0.1rem;">1875 Mission St Ste 103 #302, San Francisco, CA 94103</p>
+      <p style="margin-bottom:0.1rem;">Email: <a href="mailto:support@winlanefour.com">support@winlanefour.com</a></p>
       <p>Or use our <a href="#contact" onclick="navigate('contact')">contact page</a>.</p>
 
     </div>
