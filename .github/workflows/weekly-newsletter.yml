@@ -24,10 +24,11 @@ on:
     # daylight saving, so 6am ET is a different UTC hour depending on the
     # season: 10:00 UTC while Eastern Daylight Time is in effect (mid-Mar to
     # early Nov) and 11:00 UTC while Eastern Standard Time is in effect. We
-    # register BOTH; the guard step below reads the real Eastern-time hour and
-    # lets only the firing that is genuinely 6am ET proceed, so the issue goes
-    # out at 6am ET year-round and never twice. Daily sets generate at 12:01am
-    # Pacific (= 3am ET), so today's workout already exists when this fires.
+    # register BOTH; the guard step below matches the triggering cron against
+    # the one that is genuinely 6am ET today and lets only that firing proceed,
+    # so the issue goes out at 6am ET year-round and never twice — even when
+    # GitHub runs the cron hours late. Daily sets generate at 12:01am Pacific
+    # (= 3am ET), so today's workout already exists when this fires.
     - cron: '0 10 * * 1'   # 6am ET during EDT (7am ET during EST — gated out)
     - cron: '0 11 * * 1'   # 6am ET during EST (5am ET during EDT — gated out)
   workflow_dispatch:
@@ -57,9 +58,16 @@ jobs:
 
       # Two gates decide whether this run proceeds:
       #  1. DST gate — the two schedules fire at 10:00 and 11:00 UTC; only the
-      #     one that is actually 6am Eastern right now should run (the other is
-      #     an hour off because Actions cron ignores DST). Manual runs skip
-      #     this gate so a preview works at any hour.
+      #     one that corresponds to 6am Eastern today should proceed (the other
+      #     is an hour off because Actions cron ignores DST). We decide this by
+      #     the cron that TRIGGERED the run (github.event.schedule), NOT by the
+      #     wall-clock hour at execution time: GitHub's scheduler is best-effort
+      #     and routinely fires runs hours late, so a wall-clock check skips the
+      #     issue entirely whenever the run drifts out of the 6am ET hour. The
+      #     triggering cron is fixed no matter how late the run lands, so this
+      #     stays correct under delay. Manual runs skip the gate (preview at any
+      #     hour). 6am ET is 10:00 UTC while EDT is in effect (offset -0400) and
+      #     11:00 UTC while EST is in effect (offset -0500).
       #  2. Re-run protection — a successful run commits issues/<date>.html to
       #     main, so if it's already there this week's issue went out; don't
       #     build and email it twice. Test previews bypass this too.
@@ -72,9 +80,15 @@ jobs:
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
 
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            ET_HOUR=$(TZ=America/New_York date +%H)
-            if [ "$ET_HOUR" != "06" ]; then
-              echo "It's ${ET_HOUR}:00 ET, not 6am — this is the off-DST cron firing. Skipping."
+            # Map "6am ET today" to the UTC cron that should own this run,
+            # based on the live Eastern UTC offset.
+            if [ "$(TZ=America/New_York date +%z)" = "-0400" ]; then
+              WANT_CRON='0 10 * * 1'   # EDT: 6am ET == 10:00 UTC
+            else
+              WANT_CRON='0 11 * * 1'   # EST: 6am ET == 11:00 UTC
+            fi
+            if [ "${{ github.event.schedule }}" != "$WANT_CRON" ]; then
+              echo "Triggered by cron '${{ github.event.schedule }}', but 6am ET today maps to '$WANT_CRON' — this is the off-DST cron firing. Skipping."
               echo "skip=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
