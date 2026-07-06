@@ -932,7 +932,7 @@ section { padding: 6rem 0; }
 #page-blog-gear .blog-nav-bar,
 #page-blog-guides .blog-nav-bar,
 #page-blog-nutrition .blog-nav-bar {
-  top: 88px;
+  top: var(--nav-h);
 }
 
 /* ── Blog nav (no overflow scroll) ── */
@@ -940,7 +940,7 @@ section { padding: 6rem 0; }
   border-bottom: 1px solid var(--gray-200);
   background: var(--white);
   position: sticky;
-  top: 88px;
+  top: var(--nav-h);
   z-index: 90;
 }
 .blog-nav-inner {
@@ -2207,6 +2207,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   #page-blog-guides .page-hero-sm::after { display: none; }
 }
 @media (max-width: 480px) {
+  /* Slim the header on phones so the lighter teal bar hugs the dark logo box
+     (only ~1-2px of teal shows past it). Sticky offsets track --nav-h. */
+  :root { --nav-h: 66px; }
   .container { padding: 0 1.25rem !important; }
   .hero { min-height: 56vh; padding: 0; }
   .hero-inner { padding: 1.75rem 1.25rem 1.5rem; gap: 1.25rem; }
@@ -2216,7 +2219,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .hero-cta .btn-lg { padding: 0.52rem 1.2rem; font-size: 0.72rem; }
   .logo-wordmark { font-size: 1.5rem; }
   .logo-tagline { display: block; font-size: 0.5rem; letter-spacing: 0.55em; word-spacing: 1em; }
-  .site-logo { margin-top: 4px; }
+  .site-logo { margin-top: 0; }
   .logo-mark { width: 76px; height: auto; }
   .logo-top-row { gap: 7px; }
   .nav-actions { gap: 0.5rem; margin-left: 0.5rem; }
@@ -5523,7 +5526,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </div>
 
 <!-- ── Category nav ── -->
-<div style="background:#fff; border-bottom:1px solid var(--gray-200); position:sticky; top:88px; z-index:90;">
+<div style="background:#fff; border-bottom:1px solid var(--gray-200); position:sticky; top:var(--nav-h); z-index:90;">
   <div class="container" style="display:flex; gap:0; overflow-x:auto;">
     <a href="#goggles" style="display:block; padding:0.9rem 1.5rem; font-weight:600; font-size:0.82rem; color:var(--pool); border-bottom:2px solid var(--pool); margin-bottom:-1px; white-space:nowrap;">Goggles</a>
     <a href="#fins" style="display:block; padding:0.9rem 1.5rem; font-weight:500; font-size:0.82rem; color:var(--gray-400); white-space:nowrap;">Fins &amp; Paddles</a>
