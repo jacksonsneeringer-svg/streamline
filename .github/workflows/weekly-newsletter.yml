@@ -201,4 +201,20 @@ jobs:
           # optional gear-ratings.json being absent when its step failed.
           git add -A lane-four-newsletter/
           git commit -m "Weekly newsletter: publish issue ${{ steps.guard.outputs.date }}"
-          git push origin HEAD:main
+          # main can advance while the pipeline runs (an unrelated merge), which
+          # rejects a plain push as non-fast-forward. The send has already gone
+          # out by this point, so a dropped push silently loses this week's
+          # history entry — next week could then repeat this week's athlete,
+          # gear, blog posts or news. Rebase onto the latest main and retry so
+          # the state always lands; fail loudly if it truly can't.
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Pushed on attempt ${attempt}."
+              exit 0
+            fi
+            echo "Push attempt ${attempt} rejected — main moved. Rebasing onto latest main and retrying..."
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo "Failed to push newsletter state to main after 5 attempts." >&2
+          exit 1

@@ -14,10 +14,52 @@
         "https://winlanefour.com/#race-week-taper",
         "https://winlanefour.com/#blog"
       ],
-      "gearItems": ["powerskin-veloce", "cobra-ultra-swipe", "form-smart-swim-2", "themagic5-vector"],
+      "gearItems": [
+        "powerskin-veloce",
+        "cobra-ultra-swipe",
+        "form-smart-swim-2",
+        "themagic5-vector"
+      ],
       "events": [
-        { "name": "USMS Summer National Championship", "date": "2026-08-05" },
-        { "name": "Pan Pacific Championships", "date": "2026-08-12" }
+        {
+          "name": "USMS Summer National Championship",
+          "date": "2026-08-05"
+        },
+        {
+          "name": "Pan Pacific Championships",
+          "date": "2026-08-12"
+        }
+      ]
+    },
+    {
+      "date": "2026-07-06",
+      "athleteOfWeek": "Katie Ledecky",
+      "inTheWaterTopics": [
+        "summer-mcintosh-shatters-200-fly-world-record-in-201-65-ending-oldest-wr-in-womens-swimming",
+        "taylor-ruck-is-back-canadian-swimmer-posts-first-100-back-best-time-since-2019",
+        "steenbergen-corbeau-head-up-dutch-roster-for-2026-european-championships",
+        "should-you-breath-on-one-or-both-sides-in-freestyle"
+      ],
+      "blogPosts": [
+        "https://winlanefour.com/#swim-snorkel",
+        "https://winlanefour.com/#supplements-swimmers",
+        "https://winlanefour.com/#freestyle-errors"
+      ],
+      "gearItems": [
+        "finis-swimmers-snorkel",
+        "finis-cardio-cap",
+        "mp-focus-snorkel",
+        "speedo-center-mount-snorkel"
+      ],
+      "events": [
+        {
+          "name": "USMS Summer National Championship",
+          "date": "2026-08-05"
+        },
+        {
+          "name": "Pan Pacific Championships",
+          "date": "2026-08-12"
+        }
       ]
     }
   ]
