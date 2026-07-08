@@ -2401,6 +2401,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .ex-table tr:last-child td { border-bottom: none; }
 .ex-table tr:hover td { background: var(--off-white, #f0f7f6); }
 .mtag { font-size: 0.82rem; color: var(--gray-500); }
+/* Recipe cards (My Training meal plan): ingredients + steps side by side,
+   stacked on small screens. */
+@media (max-width: 700px) {
+  .recipe-columns { grid-template-columns: 1fr !important; }
+}
 .contact-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: start; max-width: 1060px; margin: 0 auto; }
 /* "How can we help?" heading. On desktop it's a plain label with the reason
    cards always shown; on mobile it becomes a collapsible toggle (see below). */
@@ -4957,6 +4962,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <a href="#" class="dash-nav-item" onclick="showDashView('swim'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</a>
       <a href="#" class="dash-nav-item" onclick="showDashView('lift'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg> Today's Lift</a>
       <a href="#" class="dash-nav-item" onclick="showDashView('meal'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg> Meal Plan</a>
+      <a href="#" class="dash-nav-item" onclick="showDashView('favorites'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg> Favorites</a>
       <a href="#" class="dash-nav-item" onclick="showDashView('progress'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</a>
       <a href="#" class="dash-nav-item" onclick="showDashView('log'); return false;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Log Workout</a>
     </nav>
@@ -4976,8 +4982,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <a href="#sign-in" class="btn btn-outline-light btn-sm" onclick="navigate('sign-in')">Sign In</a>
         </div>
       </div>
-      <!-- Personalized weekly plan (filled by renderTrainingPlan when signed in) -->
-      <div id="dash-plan-section" style="display:none; margin-bottom:2rem;"></div>
       <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
       <div class="dash-grid">
         <div class="dash-card">
@@ -5011,6 +5015,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your progress charts and training log will appear here, coming soon.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
         </div>
       </div>
+      <!-- Personalized weekly plan, collapsed below today's cards
+           (filled by renderTrainingPlan when signed in) -->
+      <div id="dash-plan-section" style="display:none; margin-top:2rem;"></div>
     </div>
 
     <!-- ── Today's Swim view ── -->
@@ -5062,6 +5069,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <button class="btn btn-outline-dark" onclick="editProfile()">Update Dietary Preferences</button>
       </div>
       </div>
+    </div>
+
+    <!-- ── Favorites view ── -->
+    <div id="dash-view-favorites" style="display:none;">
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
+        <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Favorites</h2>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Swim sets, lifts, meals, and recipes you've saved.</p>
+      </div>
+      <div id="dash-favorites-list"></div>
     </div>
 
     <!-- ── Progress view ── -->
@@ -6457,7 +6474,7 @@ function updateTrainingPage() {
 }
 
 function showDashView(view) {
-  const views = ['overview','swim','lift','meal','progress','log'];
+  const views = ['overview','swim','lift','meal','favorites','progress','log'];
   views.forEach(v => {
     const el = document.getElementById('dash-view-' + v);
     if (el) el.style.display = v === view ? '' : 'none';
@@ -6465,6 +6482,7 @@ function showDashView(view) {
   document.querySelectorAll('.dash-nav-item').forEach((item, i) => {
     item.classList.toggle('active', views[i] === view);
   });
+  if (view === 'favorites') renderTrainingFavorites();
 }
 
 // ── Personalized training plan (My Training) ───────────────────────────────
@@ -6561,10 +6579,68 @@ async function fetchTrainingPlan(force) {
   }
 }
 
+// The calendar date (YYYY-MM-DD) of the plan's day at the given index
+// (days run Monday-first from plan.weekStart).
+function planDayDate(idx) {
+  if (!_trainingPlan || !_trainingPlan.weekStart) return '';
+  const d = new Date(_trainingPlan.weekStart + 'T12:00:00');
+  d.setDate(d.getDate() + idx);
+  return d.toISOString().slice(0, 10);
+}
+
+// Register the plan's swim sets, lifts, and meals in the shared _archiveSets
+// registry under deterministic ids so the site-wide favorite buttons work on
+// them. Favorited entries snapshot the full data into streamline_favorites,
+// so they outlive the weekly plan turnover.
+function registerPlanFavorites() {
+  const p = _trainingPlan;
+  if (!p) return;
+  (p.days || []).forEach((d, idx) => {
+    if (d.swimSet) {
+      const id = 'plan-swim-' + p.weekStart + '-' + d.day;
+      d.swimSet.setId = id;
+      _archiveSets[id] = { ...d.swimSet, setId: id, kind: 'swim', level: p.level || '', date: planDayDate(idx) };
+    }
+    if (d.liftSession) {
+      const id = 'plan-lift-' + p.weekStart + '-' + d.day;
+      const w = d.liftSession;
+      const metaBits = [
+        w.estimatedMinutes ? `~${w.estimatedMinutes} min` : '',
+        w.equipment || '',
+        w.trainingFocus ? `Focus: ${w.trainingFocus}` : ''
+      ].filter(Boolean);
+      _archiveSets[id] = {
+        setId: id, kind: 'dryland', level: '', date: planDayDate(idx),
+        title: w.title || 'Lift', meta: metaBits.join('  ·  '), levelLabel: p.liftCategory || '',
+        strokeEmphasis: w.strokeEmphasis || '', trainingFocus: w.trainingFocus || '',
+        intensity: w.intensity || '', isRestDay: false, workoutData: w
+      };
+    }
+  });
+  ['training', 'rest'].forEach(type => {
+    (((p.meals || {})[type]) || []).forEach((m, i) => {
+      const id = 'plan-meal-' + p.weekStart + '-' + type + '-' + i;
+      m.favId = id;
+      _archiveSets[id] = { setId: id, kind: 'meal', mealType: type, ...m };
+    });
+  });
+}
+
+let _planWeekOpen = false;
+
+function togglePlanWeek() {
+  _planWeekOpen = !_planWeekOpen;
+  const body = document.getElementById('dash-plan-week-body');
+  const chev = document.getElementById('dash-plan-week-chevron');
+  if (body) body.style.display = _planWeekOpen ? '' : 'none';
+  if (chev) chev.style.transform = _planWeekOpen ? 'rotate(180deg)' : '';
+}
+
 function renderTrainingPlan() {
   const p = _trainingPlan;
   const section = document.getElementById('dash-plan-section');
   if (!section || !p) return;
+  registerPlanFavorites();
   const todayName = PLAN_DAY_NAMES[new Date().getDay()];
   const rows = (p.days || []).map(d => {
     const isToday = d.day === todayName;
@@ -6582,23 +6658,28 @@ function renderTrainingPlan() {
   const fuel = n.calories ? `~${Number(n.calories).toLocaleString()} kcal · P ${n.proteinG} / C ${n.carbsG} / F ${n.fatG}` : '';
   section.style.display = '';
   section.innerHTML = `
-    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.75rem;">
-      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl);">
+      <button type="button" onclick="togglePlanWeek()" aria-expanded="${_planWeekOpen ? 'true' : 'false'}" style="display:flex; width:100%; align-items:center; justify-content:space-between; gap:1rem; padding:1.25rem 1.75rem; cursor:pointer; background:none; border:none; text-align:left; font:inherit;">
         <div style="min-width:0;">
-          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Your Week${p.phaseLabel ? ' · ' + escHtml(p.phaseLabel) : ''}</p>
-          ${p.goalLine ? `<h3 style="color:var(--deep); font-size:1.15rem; margin:0 0 0.25rem;">${escHtml(p.goalLine)}</h3>` : ''}
-          ${p.phaseRoadmap ? `<p style="font-size:0.82rem; color:var(--gray-400);">${escHtml(p.phaseRoadmap)}</p>` : ''}
+          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">Your Week${p.phaseLabel ? ' · ' + escHtml(p.phaseLabel) : ''}</p>
+          ${p.goalLine ? `<p style="color:var(--deep); font-weight:600; font-size:0.95rem; margin:0;">${escHtml(p.goalLine)}</p>` : ''}
         </div>
-        <button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan(true)" title="Regenerate this week's plan from your current profile">Rebuild Plan</button>
+        <svg id="dash-plan-week-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; transition:transform 0.2s;${_planWeekOpen ? ' transform:rotate(180deg);' : ''}"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div id="dash-plan-week-body" style="display:${_planWeekOpen ? '' : 'none'}; padding:0 1.75rem 1.75rem;">
+        ${p.phaseRoadmap ? `<p style="font-size:0.82rem; color:var(--gray-400); margin-bottom:1rem;">${escHtml(p.phaseRoadmap)}</p>` : ''}
+        <div style="overflow-x:auto;">
+          <table class="ex-table">
+            <thead><tr><th>Day</th><th>Session(s)</th><th>Swim Focus</th><th>Dryland Focus</th><th>~Time</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        ${fuel ? `<p style="margin-top:1rem; font-size:0.88rem; color:var(--deep);"><strong>Daily fuel:</strong> ${escHtml(fuel)}${n.restDayNote ? ` <span style="color:var(--gray-400);">· ${escHtml(n.restDayNote)}</span>` : ''}</p>` : ''}
+        ${p.rationale ? `<p style="margin-top:0.75rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(p.rationale)}</p>` : ''}
+        <div style="margin-top:1.25rem; text-align:right;">
+          <button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan(true)" title="Regenerate this week's plan from your current profile">Rebuild Plan</button>
+        </div>
       </div>
-      <div style="overflow-x:auto;">
-        <table class="ex-table">
-          <thead><tr><th>Day</th><th>Session(s)</th><th>Swim Focus</th><th>Dryland Focus</th><th>~Time</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-      ${fuel ? `<p style="margin-top:1rem; font-size:0.88rem; color:var(--deep);"><strong>Daily fuel:</strong> ${escHtml(fuel)}${n.restDayNote ? ` <span style="color:var(--gray-400);">· ${escHtml(n.restDayNote)}</span>` : ''}</p>` : ''}
-      ${p.rationale ? `<p style="margin-top:0.75rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(p.rationale)}</p>` : ''}
     </div>`;
   renderPlanOverviewCards();
   renderPlanSwimView();
@@ -6671,11 +6752,14 @@ function renderPlanSwimView() {
   if (day.swimSet) {
     const s = day.swimSet;
     el.innerHTML = `
-      <div style="margin-bottom:1.5rem;">
-        <span class="eyebrow">${escHtml(day.day)} · ${escHtml(planCap(_trainingPlan.level || ''))}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
-        <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(s.title || 'Today\'s Swim')}</h3>
-        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(s.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(s.estimatedMinutes || ''))} min</p>
-        ${buildFocusCueHtml(s.focusCue)}
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
+        <div style="min-width:0;">
+          <span class="eyebrow">${escHtml(day.day)} · ${escHtml(planCap(_trainingPlan.level || ''))}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
+          <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(s.title || 'Today\'s Swim')}</h3>
+          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(s.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(s.estimatedMinutes || ''))} min</p>
+          ${buildFocusCueHtml(s.focusCue)}
+        </div>
+        ${s.setId ? `<div style="flex-shrink:0;">${favoriteButtonHtml(s.setId)}</div>` : ''}
       </div>
       <div class="set-block">${buildSetSectionsHtml(s.sections)}</div>`;
   } else if (day.swim) {
@@ -6696,12 +6780,16 @@ function renderPlanLiftView() {
       w.equipment || '',
       w.trainingFocus ? `Focus: ${w.trainingFocus}` : ''
     ].filter(Boolean);
+    const liftId = 'plan-lift-' + _trainingPlan.weekStart + '-' + day.day;
     el.innerHTML = `
-      <div style="margin-bottom:1.5rem;">
-        <span class="eyebrow">${escHtml(day.day)}${_trainingPlan.liftCategory ? ' · ' + escHtml(_trainingPlan.liftCategory) : ''}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
-        <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(w.title || 'Today\'s Lift')}</h3>
-        <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}</p>
-        ${buildFocusCueHtml(w.focusCue)}
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
+        <div style="min-width:0;">
+          <span class="eyebrow">${escHtml(day.day)}${_trainingPlan.liftCategory ? ' · ' + escHtml(_trainingPlan.liftCategory) : ''}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
+          <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(w.title || 'Today\'s Lift')}</h3>
+          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}</p>
+          ${buildFocusCueHtml(w.focusCue)}
+        </div>
+        ${_archiveSets[liftId] ? `<div style="flex-shrink:0;">${favoriteButtonHtml(liftId)}</div>` : ''}
       </div>
       <div class="set-block">${buildDrylandSectionsHtml(w.sections)}</div>
       ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(w.coachNote)}</p>` : ''}`;
@@ -6710,6 +6798,14 @@ function renderPlanLiftView() {
   } else {
     el.innerHTML = planOffDayCard(day, 'lift');
   }
+}
+
+// "~520 kcal · P 35 / C 60 / F 15" for a meal or recipe object, or ''.
+function mealMacroLine(m) {
+  if (!m || !m.calories) return '';
+  const bits = ['~' + Number(m.calories).toLocaleString() + ' kcal'];
+  if (m.proteinG != null) bits.push(`P ${m.proteinG} / C ${m.carbsG} / F ${m.fatG}`);
+  return bits.join(' · ');
 }
 
 function renderPlanMealView() {
@@ -6730,19 +6826,190 @@ function renderPlanMealView() {
       <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.25rem;">${l}</p>
       <p style="font-weight:700; color:var(--deep); font-size:1.05rem;">${escHtml(String(v))}</p>
     </div>`).join('');
-  const rows = meals.map(m => `<tr>
+  const rows = meals.map(m => {
+    const macro = mealMacroLine(m);
+    return `<tr>
     <td><strong>${escHtml(m.name || '')}</strong>${m.time ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(m.time)}</span>` : ''}</td>
     <td>${escHtml(m.menu || '')}${m.note ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(cleanNote(m.note))}</span>` : ''}</td>
-  </tr>`).join('');
+    <td style="white-space:nowrap; font-size:0.82rem; color:var(--gray-500);">${escHtml(macro)}</td>
+    <td style="text-align:right;">${m.favId ? favoriteIconButtonHtml(m.favId) : ''}</td>
+  </tr>`;
+  }).join('');
+  // one quick-suggest chip per distinct meal name today
+  const chips = meals.map(m => m.name).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i)
+    .map(name => `<button type="button" class="btn btn-outline-dark btn-sm" onclick="suggestRecipe('Suggest a recipe for ${escHtml(String(name).replace(/'/g, ''))}')">${escHtml(name)}</button>`).join(' ');
   el.innerHTML = `
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${tiles}</div>
     ${meals.length ? `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); overflow:hidden;">
       <div class="set-block-header" style="background:var(--teal);"><span class="set-label">${type === 'rest' ? 'Rest Day Meals' : 'Training Day Meals'}</span><span class="set-yds">${escHtml(day.day)}</span></div>
       <div style="padding:0.5rem 1.5rem 1rem;">
-        <table class="ex-table"><thead><tr><th>Meal</th><th>Menu</th></tr></thead><tbody>${rows}</tbody></table>
+        <table class="ex-table"><thead><tr><th>Meal</th><th>Menu</th><th>Macros</th><th></th></tr></thead><tbody>${rows}</tbody></table>
       </div>
     </div>` : ''}
-    ${n.restDayNote && type !== 'rest' ? `<p style="margin-top:0.9rem; font-size:0.84rem; color:var(--gray-400);">${escHtml(n.restDayNote)}</p>` : ''}`;
+    ${n.restDayNote && type !== 'rest' ? `<p style="margin-top:0.9rem; font-size:0.84rem; color:var(--gray-400);">${escHtml(n.restDayNote)}</p>` : ''}
+    <div style="margin-top:2rem; background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem;">
+      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Recipe Ideas</p>
+      <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Ask for a recipe and get one that fits the macros for that meal — e.g. "suggest recipes for dinner" or "high-protein breakfast I can make in 10 minutes".</p>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+        <input type="text" class="form-input" id="recipe-request-input" placeholder="suggest recipes for dinner…" style="flex:1; min-width:220px;" onkeydown="if(event.key==='Enter'){suggestRecipe();}" />
+        <button class="btn btn-primary" id="recipe-request-btn" onclick="suggestRecipe()">Suggest Recipe</button>
+      </div>
+      ${chips ? `<div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.75rem; align-items:center;"><span style="font-size:0.78rem; color:var(--gray-400);">Quick ideas:</span>${chips}</div>` : ''}
+    </div>
+    <div id="dash-recipe-result" style="margin-top:1.25rem;"></div>`;
+}
+
+// ── Recipe suggestions (meal plan view) ────────────────────────────────────
+
+let _recipeBusy = false;
+
+async function suggestRecipe(preset) {
+  const out = document.getElementById('dash-recipe-result');
+  const input = document.getElementById('recipe-request-input');
+  const btn = document.getElementById('recipe-request-btn');
+  if (!out || _recipeBusy) return;
+  const req = String(preset || (input ? input.value : '') || '').trim();
+  if (!req) { if (input) input.focus(); return; }
+  if (preset && input) input.value = preset;
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token) {
+    out.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.25rem 1.5rem;"><p style="color:var(--gray-400); font-size:0.88rem;">The recipe generator isn't connected in this environment. Try it on the live site.</p></div>`;
+    return;
+  }
+  _recipeBusy = true;
+  if (btn) { btn.disabled = true; btn.textContent = 'Cooking…'; }
+  out.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.25rem 1.5rem;"><p style="color:var(--gray-500); font-size:0.9rem; font-weight:600;">Writing a recipe that fits your macros…</p></div>`;
+  try {
+    const res = await fetch(apiBase() + '/training-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, action: 'recipe', request: req })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.status === 'ready' && data.recipe) {
+      renderRecipeResult(data.recipe);
+    } else {
+      out.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.25rem 1.5rem;"><p style="color:var(--gray-400); font-size:0.88rem;">${escHtml(data.error || 'Could not generate a recipe. Give it another try.')}</p></div>`;
+    }
+  } catch (e) {
+    out.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.25rem 1.5rem;"><p style="color:var(--gray-400); font-size:0.88rem;">Couldn't reach the recipe generator. Please try again.</p></div>`;
+  }
+  _recipeBusy = false;
+  if (btn) { btn.disabled = false; btn.textContent = 'Suggest Recipe'; }
+}
+
+function renderRecipeResult(recipe) {
+  const out = document.getElementById('dash-recipe-result');
+  if (!out) return;
+  const id = 'recipe-' + Date.now();
+  _archiveSets[id] = { setId: id, kind: 'recipe', savedAt: Date.now(), ...recipe };
+  out.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.75rem;">${recipeMarkup(_archiveSets[id])}</div>`;
+  out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Full recipe layout, used inline in the meal view and in the favorites modal.
+function recipeMarkup(r) {
+  const meta = [
+    r.servings ? `Serves ${r.servings}` : '',
+    (r.prepMinutes || r.cookMinutes) ? `${(Number(r.prepMinutes) || 0) + (Number(r.cookMinutes) || 0)} min total` : '',
+    mealMacroLine(r) ? mealMacroLine(r) + ' per serving' : ''
+  ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  const ingredients = (r.ingredients || []).map(i => `<li style="margin-bottom:0.35rem;">${escHtml(i)}</li>`).join('');
+  const steps = (r.steps || []).map(s => `<li style="margin-bottom:0.5rem;">${escHtml(s)}</li>`).join('');
+  return `
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+      <div style="min-width:0;">
+        <span class="eyebrow">${escHtml(r.meal || 'Recipe')}</span>
+        <h3 style="font-family:var(--font-display); font-size:1.5rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(r.title || 'Recipe')}</h3>
+        ${meta ? `<p style="font-size:0.84rem; color:var(--gray-400); margin-top:0.3rem;">${meta}</p>` : ''}
+        ${r.description ? `<p style="font-size:0.9rem; color:var(--gray-500); margin-top:0.5rem;">${escHtml(r.description)}</p>` : ''}
+      </div>
+      ${r.setId ? `<div style="flex-shrink:0;">${favoriteButtonHtml(r.setId)}</div>` : ''}
+    </div>
+    <div style="display:grid; grid-template-columns:minmax(200px,1fr) 2fr; gap:1.5rem;" class="recipe-columns">
+      <div>
+        <p style="font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--deep); margin-bottom:0.5rem;">Ingredients</p>
+        <ul style="padding-left:1.1rem; font-size:0.88rem; color:var(--text);">${ingredients}</ul>
+      </div>
+      <div>
+        <p style="font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--deep); margin-bottom:0.5rem;">Steps</p>
+        <ol style="padding-left:1.25rem; font-size:0.9rem; color:var(--text);">${steps}</ol>
+      </div>
+    </div>
+    ${r.note ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(cleanNote(r.note))}</p>` : ''}`;
+}
+
+// ── My Training favorites (swim sets + lifts + meals + recipes) ────────────
+
+function mealFavoriteCardHtml(m) {
+  const id = m.setId || '';
+  const sub = [m.time || '', mealMacroLine(m)].filter(Boolean).join('  ·  ');
+  const tags = [m.mealType === 'rest' ? 'Rest day' : 'Training day', 'Meal'];
+  return `<div class="archive-card" data-setid="${escHtml(id)}">
+      <div>
+        <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(m.name || 'Meal')}${m.menu ? ' — ' + escHtml(m.menu) : ''}</div>
+        ${sub ? `<div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(sub)}</div>` : ''}
+        <div class="archive-card-meta">${tags.map(t => `<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
+      </div>
+      <div class="archive-card-actions">${favoriteIconButtonHtml(id)}</div>
+    </div>`;
+}
+
+function recipeFavoriteCardHtml(r) {
+  const id = r.setId || '';
+  const sub = [r.servings ? `Serves ${r.servings}` : '', mealMacroLine(r)].filter(Boolean).join('  ·  ');
+  return `<div class="archive-card" data-setid="${escHtml(id)}">
+      <div>
+        <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(r.title || 'Recipe')}</div>
+        ${sub ? `<div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(sub)}</div>` : ''}
+        <div class="archive-card-meta"><span class="archive-tag">${escHtml(r.meal || 'Recipe')}</span></div>
+      </div>
+      <div class="archive-card-actions">
+        <button class="btn btn-outline-dark btn-sm" onclick="openFavoriteRecipe('${escHtml(id)}')">View Recipe</button>
+        ${favoriteIconButtonHtml(id)}
+      </div>
+    </div>`;
+}
+
+function openFavoriteRecipe(id) {
+  const r = _archiveSets[id];
+  if (!r) return;
+  const body = document.getElementById('set-detail-body');
+  if (body) body.innerHTML = `<div class="swim-print-area">${recipeMarkup(r)}</div>`;
+  const overlay = document.getElementById('set-detail-overlay');
+  if (overlay) { overlay.scrollTop = 0; overlay.classList.add('open'); }
+  document.body.style.overflow = 'hidden';
+}
+
+function renderTrainingFavorites() {
+  const wrap = document.getElementById('dash-favorites-list');
+  if (!wrap) return;
+  if (!getAccount()) {
+    wrap.innerHTML = authLockHtml('Favorites are a free account feature. Create an account or log in to save your favorite sets, lifts, meals, and recipes.');
+    return;
+  }
+  const favs = getFavorites();
+  const swims = favs.filter(s => !s.kind || s.kind === 'swim');
+  const lifts = favs.filter(s => s.kind === 'dryland');
+  const meals = favs.filter(s => s.kind === 'meal');
+  const recipes = favs.filter(s => s.kind === 'recipe');
+  if (!favs.length) {
+    wrap.innerHTML = `<div style="text-align:center; padding:3rem 2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+      <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">No favorites yet</p>
+      <p style="font-size:0.88rem; color:var(--gray-400);">Heart a swim set, lift, meal, or recipe anywhere in your plan to save it here.</p>
+    </div>`;
+    return;
+  }
+  favs.forEach(s => { if (s.setId) _archiveSets[s.setId] = s; });
+  const group = (title, cards) => cards.length
+    ? `<h3 style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--deep); margin:0 0 0.9rem;">${title}</h3>
+       <div style="display:grid; gap:0.75rem; margin-bottom:2rem;">${cards.join('')}</div>`
+    : '';
+  wrap.innerHTML =
+    group('Swim Sets', swims.map(archiveCardHtml)) +
+    group('Lifts &amp; Dryland', lifts.map(liftFavoriteCardHtml)) +
+    group('Meals', meals.map(mealFavoriteCardHtml)) +
+    group('Recipes', recipes.map(recipeFavoriteCardHtml));
 }
 
 function editProfile() {
@@ -8380,6 +8647,8 @@ function onFavoriteClick(btn) {
   if (favPanel && favPanel.style.display !== 'none') renderFavorites();
   const liftFavPanel = document.getElementById('lift-level-favorites');
   if (liftFavPanel && liftFavPanel.style.display !== 'none') renderLiftFavorites();
+  const dashFavs = document.getElementById('dash-view-favorites');
+  if (dashFavs && dashFavs.style.display !== 'none') renderTrainingFavorites();
 }
 function updateFavButtons(id) {
   const fav = isFavorite(id);
@@ -8403,7 +8672,9 @@ function renderFavorites() {
     wrap.innerHTML = authLockHtml('Favorites are a free account feature. Create an account or log in to save your favorite sets and find them here.');
     return;
   }
-  const favs = getFavorites().filter(s => s.kind !== 'dryland');
+  // Swim sets only: dryland has its own tab, and meal/recipe favorites live
+  // on the My Training favorites view.
+  const favs = getFavorites().filter(s => !s.kind || s.kind === 'swim');
   if (!favs.length) {
     wrap.innerHTML = `<div style="text-align:center; padding:3rem 2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
       <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">No favorites yet</p>
