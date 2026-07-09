@@ -5132,9 +5132,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <div id="log-note-overlay" style="display:none; position:fixed; inset:0; background:rgba(9,31,28,0.55); z-index:1200; align-items:center; justify-content:center; padding:1.5rem;" onclick="if(event.target===this)cancelPlanLog()">
   <div style="background:var(--white); border-radius:var(--r-xl); padding:1.75rem 2rem; width:100%; max-width:460px; box-shadow:var(--shadow-xl);">
     <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Log Workout</p>
-    <h3 style="color:var(--deep); margin-bottom:0.35rem;" id="log-note-title">Log this workout</h3>
-    <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Want to add a note first? It's optional, and it'll show next to this workout on your Progress page.</p>
-    <textarea class="form-input form-textarea" id="log-note-text" rows="3" placeholder="How did it feel? Any PRs, struggles, or highlights…"></textarea>
+    <h3 style="color:var(--deep); margin-bottom:1rem;" id="log-note-title">Log this workout</h3>
+    <textarea class="form-input form-textarea" id="log-note-text" rows="3" placeholder="Add a note (optional)"></textarea>
     <div style="display:flex; gap:0.6rem; justify-content:flex-end; margin-top:1rem;">
       <button class="btn btn-outline-dark btn-sm" onclick="cancelPlanLog()">Cancel</button>
       <button class="btn btn-primary btn-sm" onclick="confirmPlanLog()">Log Workout</button>
