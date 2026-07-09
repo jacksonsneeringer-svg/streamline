@@ -2406,9 +2406,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 @media (max-width: 700px) {
   .recipe-columns { grid-template-columns: 1fr !important; }
 }
-/* Progress view: weekly volume chart bars */
-.prog-bar { fill: var(--teal); transition: fill 0.15s; }
-.prog-bar:hover { fill: var(--deep); }
+/* Progress view: weekly volume chart. Swim and lift minutes are paired bars
+   (flush, color-coded); swim yardage rides a line on the right axis. */
+.prog-bar-swim { fill: #279e8e; transition: opacity 0.15s; }
+.prog-bar-lift { fill: #b8842a; transition: opacity 0.15s; }
+.prog-bar-swim:hover, .prog-bar-lift:hover { opacity: 0.8; }
+.prog-legend { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.prog-legend span { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 600; color: var(--gray-500); }
 .log-del-btn { background: none; border: none; color: var(--gray-300); font-size: 1.15rem; line-height: 1; cursor: pointer; padding: 0.15rem 0.3rem; border-radius: var(--r-sm, 6px); flex-shrink: 0; }
 .log-del-btn:hover { color: #c0392b; background: var(--gray-50); }
 .contact-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: start; max-width: 1060px; margin: 0 auto; }
@@ -5091,7 +5095,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Progress</h2>
-        <p style="color:var(--gray-400); font-size:0.9rem;">Every swim and lift you've logged — weekly volume, streaks, and your recent sessions.</p>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Every swim and lift you've logged: weekly volume, streaks, PRs, and your recent sessions.</p>
       </div>
       <div id="dash-progress-body"></div>
     </div>
@@ -5123,6 +5127,19 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </div>
 
   </main>
+</div>
+<!-- Optional pre-log note for the one-tap "Log This Swim / Workout" buttons -->
+<div id="log-note-overlay" style="display:none; position:fixed; inset:0; background:rgba(9,31,28,0.55); z-index:1200; align-items:center; justify-content:center; padding:1.5rem;" onclick="if(event.target===this)cancelPlanLog()">
+  <div style="background:var(--white); border-radius:var(--r-xl); padding:1.75rem 2rem; width:100%; max-width:460px; box-shadow:var(--shadow-xl);">
+    <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Log Workout</p>
+    <h3 style="color:var(--deep); margin-bottom:0.35rem;" id="log-note-title">Log this workout</h3>
+    <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Want to add a note first? It's optional, and it'll show next to this workout on your Progress page.</p>
+    <textarea class="form-input form-textarea" id="log-note-text" rows="3" placeholder="How did it feel? Any PRs, struggles, or highlights…"></textarea>
+    <div style="display:flex; gap:0.6rem; justify-content:flex-end; margin-top:1rem;">
+      <button class="btn btn-outline-dark btn-sm" onclick="cancelPlanLog()">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="confirmPlanLog()">Log Workout</button>
+    </div>
+  </div>
 </div>
 </div><!-- end page-my-training -->
 
@@ -6570,7 +6587,7 @@ async function fetchTrainingPlan(force) {
       renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your plan is taking longer than expected.</p><button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan()">Check Again</button>');
       return;
     }
-    renderPlanMessage('<p style="color:var(--deep); font-size:0.95rem; font-weight:700; margin-bottom:0.35rem;">Your coach is building this week\'s plan.</p><p style="color:var(--gray-400); font-size:0.88rem;">Swim sets, lifts, and meals are being written from your profile. This usually takes a couple of minutes — the page updates automatically.</p>');
+    renderPlanMessage('<p style="color:var(--deep); font-size:0.95rem; font-weight:700; margin-bottom:0.35rem;">Your coach is building this week\'s plan.</p><p style="color:var(--gray-400); font-size:0.88rem;">Swim sets, lifts, and meals are being written from your profile. This usually takes a couple of minutes, and the page updates automatically.</p>');
     _planPollTimer = setTimeout(() => fetchTrainingPlan(false), 8000);
   } else if (data.status === 'no-profile') {
     renderPlanMessage('<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Complete your athlete profile (at minimum your skill level and swim days) and your coach will build a personalized week of swims, lifts, and meals.</p><button class="btn btn-primary btn-sm" onclick="editProfile()">Complete Profile</button>');
@@ -6639,14 +6656,14 @@ function renderTrainingPlan() {
   const todayName = PLAN_DAY_NAMES[new Date().getDay()];
   const rows = (p.days || []).map(d => {
     const isToday = d.day === todayName;
-    const swimTxt = d.swim ? planCap(d.swim.focus) + (d.swim.secondary ? ' (' + d.swim.secondary + ')' : '') : '—';
-    const liftTxt = d.lift ? (d.lift.focus || 'Lift') + (d.lift.minutes ? ' (' + d.lift.minutes + ' min)' : '') : '—';
+    const swimTxt = d.swim ? planCap(d.swim.focus) + (d.swim.secondary ? ' (' + d.swim.secondary + ')' : '') : '-';
+    const liftTxt = d.lift ? (d.lift.focus || 'Lift') + (d.lift.minutes ? ' (' + d.lift.minutes + ' min)' : '') : '-';
     return `<tr${isToday ? ' style="background:var(--gray-50);"' : ''}>
       <td><strong>${escHtml(d.day.slice(0, 3))}</strong>${isToday ? '<br/><span style="font-size:0.62rem; font-weight:700; letter-spacing:0.1em; color:var(--teal); text-transform:uppercase;">Today</span>' : ''}</td>
-      <td>${escHtml(d.label || '—')}</td>
-      <td>${escHtml(swimTxt)}</td>
-      <td>${escHtml(liftTxt)}</td>
-      <td>${escHtml(d.timeLabel || '—')}</td>
+      <td>${escHtml(deDash(d.label || '-'))}</td>
+      <td>${escHtml(deDash(swimTxt))}</td>
+      <td>${escHtml(deDash(liftTxt))}</td>
+      <td>${escHtml(deDash(d.timeLabel || '-'))}</td>
     </tr>`;
   }).join('');
   const n = p.nutrition || {};
@@ -6657,20 +6674,23 @@ function renderTrainingPlan() {
       <button type="button" onclick="togglePlanWeek()" aria-expanded="${_planWeekOpen ? 'true' : 'false'}" style="display:flex; width:100%; align-items:center; justify-content:space-between; gap:1rem; padding:1.25rem 1.75rem; cursor:pointer; background:none; border:none; text-align:left; font:inherit;">
         <div style="min-width:0;">
           <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">Your Week${p.phaseLabel ? ' · ' + escHtml(p.phaseLabel) : ''}</p>
-          ${p.goalLine ? `<p style="color:var(--deep); font-weight:600; font-size:0.95rem; margin:0;">${escHtml(p.goalLine)}</p>` : ''}
+          ${p.goalLine ? `<p style="color:var(--deep); font-weight:600; font-size:0.95rem; margin:0;">${escHtml(deDash(p.goalLine))}</p>` : ''}
         </div>
         <svg id="dash-plan-week-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; transition:transform 0.2s;${_planWeekOpen ? ' transform:rotate(180deg);' : ''}"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div id="dash-plan-week-body" style="display:${_planWeekOpen ? '' : 'none'}; padding:0 1.75rem 1.75rem;">
-        ${p.phaseRoadmap ? `<p style="font-size:0.82rem; color:var(--gray-400); margin-bottom:1rem;">${escHtml(p.phaseRoadmap)}</p>` : ''}
+        ${p.phaseRoadmap ? `<p style="font-size:0.82rem; color:var(--gray-400); margin-bottom:1rem;">${escHtml(deDash(p.phaseRoadmap))}</p>` : ''}
         <div style="overflow-x:auto;">
           <table class="ex-table">
             <thead><tr><th>Day</th><th>Session(s)</th><th>Swim Focus</th><th>Dryland Focus</th><th>~Time</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
         </div>
-        ${fuel ? `<p style="margin-top:1rem; font-size:0.88rem; color:var(--deep);"><strong>Daily fuel:</strong> ${escHtml(fuel)}${n.restDayNote ? ` <span style="color:var(--gray-400);">· ${escHtml(n.restDayNote)}</span>` : ''}</p>` : ''}
-        ${p.rationale ? `<p style="margin-top:0.75rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(p.rationale)}</p>` : ''}
+        ${fuel ? `<p style="margin-top:1rem; font-size:0.88rem; color:var(--deep);"><strong>Daily fuel:</strong> ${escHtml(fuel)}${n.restDayNote ? ` <span style="color:var(--gray-400);">· ${escHtml(deDash(n.restDayNote))}</span>` : ''}</p>` : ''}
+        ${p.rationale ? `<div style="margin-top:1rem; background:var(--lap-pale); border-left:3px solid var(--teal); border-radius:0 var(--r-md) var(--r-md) 0; padding:0.9rem 1.15rem;">
+          <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Coach's Rundown</p>
+          <p style="font-size:0.88rem; color:var(--deep); margin:0; line-height:1.65;">${escHtml(deDash(p.rationale))}</p>
+        </div>` : ''}
         <div style="margin-top:1.25rem; text-align:right;">
           <button class="btn btn-outline-dark btn-sm" onclick="loadTrainingPlan(true)" title="Regenerate this week's plan from your current profile">Rebuild Plan</button>
         </div>
@@ -6690,21 +6710,21 @@ function renderPlanOverviewCards() {
   const mealEl = document.getElementById('content-meal');
   if (swimEl) {
     if (day.swimSet) {
-      swimEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${escHtml(day.swimSet.title || 'Today\'s Swim')}</p>
+      swimEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${escHtml(deDash(day.swimSet.title || 'Today\'s Swim'))}</p>
         <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">~${escHtml(String(day.swimSet.totalYards || ''))} yards · Est. ${escHtml(String(day.swimSet.estimatedMinutes || ''))} min</p>
         <button class="btn btn-primary btn-sm" onclick="showDashView('swim')">Open Full Set →</button>`;
     } else {
-      swimEl.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">${day.label === 'Rest' ? 'Rest day — no swim scheduled.' : 'No swim scheduled today.'}</p>
+      swimEl.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">${day.label === 'Rest' ? 'Rest day: no swim scheduled.' : 'No swim scheduled today.'}</p>
         <button class="btn btn-outline-dark btn-sm" onclick="showDashView('swim')">View Details</button>`;
     }
   }
   if (liftEl) {
     if (day.liftSession) {
-      liftEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${escHtml(day.liftSession.title || 'Today\'s Lift')}</p>
-        <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">~${escHtml(String(day.liftSession.estimatedMinutes || ''))} min · ${escHtml(day.liftSession.trainingFocus || '')}</p>
+      liftEl.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${escHtml(deDash(day.liftSession.title || 'Today\'s Lift'))}</p>
+        <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">~${escHtml(String(day.liftSession.estimatedMinutes || ''))} min · ${escHtml(deDash(day.liftSession.trainingFocus || ''))}</p>
         <button class="btn btn-primary btn-sm" onclick="showDashView('lift')">Open Full Session →</button>`;
     } else {
-      liftEl.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">${day.label === 'Rest' ? 'Rest day — no lift scheduled.' : 'No lift scheduled today.'}</p>
+      liftEl.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">${day.label === 'Rest' ? 'Rest day: no lift scheduled.' : 'No lift scheduled today.'}</p>
         <button class="btn btn-outline-dark btn-sm" onclick="showDashView('lift')">View Details</button>`;
     }
   }
@@ -6727,8 +6747,8 @@ function planOffDayCard(day, kind) {
         : 'Today\'s plan is ' + (day.label || 'recovery') + '.');
   return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
     ${REST_DAY_SVG}
-    <h3 style="color:var(--deep); margin:0.75rem 0 0.5rem;">${escHtml(heading)}</h3>
-    <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto;">${escHtml(body)}${next ? ' Next ' + kind + ': ' + escHtml(next.day) + '.' : ''}</p>
+    <h3 style="color:var(--deep); margin:0.75rem 0 0.5rem;">${escHtml(deDash(heading))}</h3>
+    <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto;">${escHtml(deDash(body))}${next ? ' Next ' + kind + ': ' + escHtml(next.day) + '.' : ''}</p>
   </div>`;
 }
 
@@ -6750,7 +6770,7 @@ function renderPlanSwimView() {
       <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
         <div style="min-width:0;">
           <span class="eyebrow">${escHtml(day.day)} · ${escHtml(planCap(_trainingPlan.level || ''))}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
-          <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(s.title || 'Today\'s Swim')}</h3>
+          <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(deDash(s.title || 'Today\'s Swim'))}</h3>
           <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(s.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(s.estimatedMinutes || ''))} min</p>
           ${buildFocusCueHtml(s.focusCue)}
         </div>
@@ -6783,8 +6803,8 @@ function renderPlanLiftView() {
       <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
         <div style="min-width:0;">
           <span class="eyebrow">${escHtml(day.day)}${_trainingPlan.liftCategory ? ' · ' + escHtml(_trainingPlan.liftCategory) : ''}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
-          <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(w.title || 'Today\'s Lift')}</h3>
-          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}</p>
+          <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(deDash(w.title || 'Today\'s Lift'))}</h3>
+          <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(deDash(metaBits.join('  ·  ')))}</p>
           ${buildFocusCueHtml(w.focusCue)}
         </div>
         <div style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
@@ -6793,7 +6813,7 @@ function renderPlanLiftView() {
         </div>
       </div>
       <div class="set-block">${buildDrylandSectionsHtml(w.sections)}</div>
-      ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(w.coachNote)}</p>` : ''}`;
+      ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(deDash(w.coachNote))}</p>` : ''}`;
   } else if (day.lift) {
     el.innerHTML = planErrorCard('lift');
   } else {
@@ -6818,10 +6838,10 @@ function renderPlanMealView() {
   const meals = (_trainingPlan.meals || {})[type] || [];
   if (!meals.length && !n.calories) return; // nothing to show; keep placeholder
   const tiles = [
-    ['Calories', n.calories ? Number(n.calories).toLocaleString() + ' kcal' : '—'],
-    ['Protein', n.proteinG ? n.proteinG + ' g' : '—'],
-    ['Carbs', n.carbsG ? n.carbsG + ' g' : '—'],
-    ['Fat', n.fatG ? n.fatG + ' g' : '—']
+    ['Calories', n.calories ? Number(n.calories).toLocaleString() + ' kcal' : '-'],
+    ['Protein', n.proteinG ? n.proteinG + ' g' : '-'],
+    ['Carbs', n.carbsG ? n.carbsG + ' g' : '-'],
+    ['Fat', n.fatG ? n.fatG + ' g' : '-']
   ].map(([l, v]) => `
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:0.9rem 1rem;">
       <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.25rem;">${l}</p>
@@ -6850,13 +6870,13 @@ function renderPlanMealView() {
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${tiles}</div>
     ${meals.length ? `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); overflow:hidden;">
       <div class="set-block-header" style="background:var(--teal);"><span class="set-label">${type === 'rest' ? 'Rest Day Meals' : 'Training Day Meals'}</span><span class="set-yds">${escHtml(day.day)}</span></div>
-      <p style="padding:0.9rem 1.5rem 0.9rem; font-size:0.84rem; color:var(--gray-400); margin:0;">Each meal is a time and a macro budget. Tap <strong style="color:var(--gray-500);">Suggest Meal</strong> and your coach writes a recipe to fit it — heart the ones you'd cook again.</p>
+      <p style="padding:0.9rem 1.5rem 0.9rem; font-size:0.84rem; color:var(--gray-400); margin:0;">Each meal is a time and a macro budget. Tap <strong style="color:var(--gray-500);">Suggest Meal</strong> and your coach writes a recipe to fit it. Heart the ones you'd cook again.</p>
       ${slots}
     </div>` : ''}
-    ${n.restDayNote && type !== 'rest' ? `<p style="margin-top:0.9rem; font-size:0.84rem; color:var(--gray-400);">${escHtml(n.restDayNote)}</p>` : ''}
+    ${n.restDayNote && type !== 'rest' ? `<p style="margin-top:0.9rem; font-size:0.84rem; color:var(--gray-400);">${escHtml(deDash(n.restDayNote))}</p>` : ''}
     <div style="margin-top:2rem; background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem;">
       <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Recipe Ideas</p>
-      <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Want something specific? Ask for it — e.g. "high-protein breakfast I can make in 10 minutes" or "a dinner I can meal-prep for two days".</p>
+      <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Want something specific? Ask for it, e.g. "high-protein breakfast I can make in 10 minutes" or "a dinner I can meal-prep for two days".</p>
       <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
         <input type="text" class="form-input" id="recipe-request-input" placeholder="suggest recipes for dinner…" style="flex:1; min-width:220px;" onkeydown="if(event.key==='Enter'){suggestRecipe();}" />
         <button class="btn btn-primary" id="recipe-request-btn" onclick="suggestRecipe()">Suggest Recipe</button>
@@ -6984,9 +7004,9 @@ function recipeMarkup(r) {
     <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
       <div style="min-width:0;">
         <span class="eyebrow">${escHtml(r.meal || 'Recipe')}</span>
-        <h3 style="font-family:var(--font-display); font-size:1.5rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(r.title || 'Recipe')}</h3>
+        <h3 style="font-family:var(--font-display); font-size:1.5rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(deDash(r.title || 'Recipe'))}</h3>
         ${meta ? `<p style="font-size:0.84rem; color:var(--gray-400); margin-top:0.3rem;">${meta}</p>` : ''}
-        ${r.description ? `<p style="font-size:0.9rem; color:var(--gray-500); margin-top:0.5rem;">${escHtml(r.description)}</p>` : ''}
+        ${r.description ? `<p style="font-size:0.9rem; color:var(--gray-500); margin-top:0.5rem;">${escHtml(deDash(r.description))}</p>` : ''}
       </div>
       ${r.setId ? `<div style="flex-shrink:0;">${favoriteButtonHtml(r.setId)}</div>` : ''}
     </div>
@@ -7011,7 +7031,7 @@ function mealFavoriteCardHtml(m) {
   const tags = [m.mealType === 'rest' ? 'Rest day' : 'Training day', 'Meal'];
   return `<div class="archive-card" data-setid="${escHtml(id)}">
       <div>
-        <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(m.name || 'Meal')}${m.menu ? ' — ' + escHtml(m.menu) : ''}</div>
+        <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(m.name || 'Meal')}${m.menu ? ': ' + escHtml(m.menu) : ''}</div>
         ${sub ? `<div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(sub)}</div>` : ''}
         <div class="archive-card-meta">${tags.map(t => `<span class="archive-tag">${escHtml(t)}</span>`).join('')}</div>
       </div>
@@ -7045,6 +7065,41 @@ function openFavoriteRecipe(id) {
   document.body.style.overflow = 'hidden';
 }
 
+// Favorites filter state: one category, plus any number of tags within it.
+// Tags mirror the chips shown on each card, so filtering matches what you see.
+let _favCat = 'all';
+let _favTags = [];
+
+const FAV_CATS = [['all', 'All'], ['swim', 'Swim Sets'], ['dryland', 'Lifts & Dryland'], ['meal', 'Meals'], ['recipe', 'Recipes']];
+
+function favKind(s) { return s.kind || 'swim'; }
+
+function favCardTags(s) {
+  const kind = favKind(s);
+  if (kind === 'swim') {
+    const lvl = s.level || '';
+    return [
+      lvl === 'all' ? 'All Levels' : (lvl ? lvl.charAt(0).toUpperCase() + lvl.slice(1) : ''),
+      ARCH_STROKE_LABEL[s.strokeFocus] || '',
+      ARCH_INTENSITY_LABEL[s.intensity] || '',
+      ARCH_TYPE_LABEL[s.setType] || ''
+    ].filter(Boolean);
+  }
+  if (kind === 'dryland') {
+    return [LIFT_LEVEL_LABEL[s.level] || s.levelLabel || '', deDash(s.trainingFocus || ''), 'Dryland'].filter(Boolean);
+  }
+  if (kind === 'meal') return [s.mealType === 'rest' ? 'Rest day' : 'Training day', 'Meal'];
+  return [s.meal || 'Recipe'];
+}
+
+function setFavCategory(cat) { _favCat = cat; _favTags = []; renderTrainingFavorites(); }
+function toggleFavTag(tag) {
+  const i = _favTags.indexOf(tag);
+  if (i === -1) _favTags.push(tag); else _favTags.splice(i, 1);
+  renderTrainingFavorites();
+}
+function clearFavFilters() { _favCat = 'all'; _favTags = []; renderTrainingFavorites(); }
+
 function renderTrainingFavorites() {
   const wrap = document.getElementById('dash-favorites-list');
   if (!wrap) return;
@@ -7053,10 +7108,6 @@ function renderTrainingFavorites() {
     return;
   }
   const favs = getFavorites();
-  const swims = favs.filter(s => !s.kind || s.kind === 'swim');
-  const lifts = favs.filter(s => s.kind === 'dryland');
-  const meals = favs.filter(s => s.kind === 'meal');
-  const recipes = favs.filter(s => s.kind === 'recipe');
   if (!favs.length) {
     wrap.innerHTML = `<div style="text-align:center; padding:3rem 2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
       <p style="font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.6rem;">No favorites yet</p>
@@ -7065,15 +7116,51 @@ function renderTrainingFavorites() {
     return;
   }
   favs.forEach(s => { if (s.setId) _archiveSets[s.setId] = s; });
+
+  const counts = {};
+  favs.forEach(s => { const k = favKind(s); counts[k] = (counts[k] || 0) + 1; });
+  const catBar = FAV_CATS.filter(([k]) => k === 'all' || counts[k])
+    .map(([k, label]) => `<button type="button" class="chip ${_favCat === k ? 'selected' : ''}" style="font-size:0.76rem; padding:0.35rem 0.8rem;" data-cat="${k}" onclick="setFavCategory(this.dataset.cat)">${label} · ${k === 'all' ? favs.length : counts[k]}</button>`).join('');
+
+  let tagBar = '';
+  if (_favCat !== 'all') {
+    const tags = [];
+    favs.filter(s => favKind(s) === _favCat)
+      .forEach(s => favCardTags(s).forEach(t => { if (!tags.includes(t)) tags.push(t); }));
+    if (tags.length > 1) {
+      tagBar = `<div style="display:flex; flex-wrap:wrap; gap:0.4rem; align-items:center; margin-top:0.6rem;">
+        <span style="font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gray-400); margin-right:0.2rem;">Tags</span>
+        ${tags.map(t => `<button type="button" class="chip ${_favTags.includes(t) ? 'selected' : ''}" style="font-size:0.72rem; padding:0.28rem 0.7rem;" data-tag="${escHtml(t)}" onclick="toggleFavTag(this.dataset.tag)">${escHtml(t)}</button>`).join('')}
+      </div>`;
+    }
+  }
+
+  const visible = favs.filter(s =>
+    (_favCat === 'all' || favKind(s) === _favCat) &&
+    _favTags.every(t => favCardTags(s).includes(t)));
+  const swims = visible.filter(s => favKind(s) === 'swim');
+  const lifts = visible.filter(s => favKind(s) === 'dryland');
+  const meals = visible.filter(s => favKind(s) === 'meal');
+  const recipes = visible.filter(s => favKind(s) === 'recipe');
+
   const group = (title, cards) => cards.length
     ? `<h3 style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--deep); margin:0 0 0.9rem;">${title}</h3>
        <div style="display:grid; gap:0.75rem; margin-bottom:2rem;">${cards.join('')}</div>`
     : '';
-  wrap.innerHTML =
+  const groups =
     group('Swim Sets', swims.map(archiveCardHtml)) +
     group('Lifts &amp; Dryland', lifts.map(liftFavoriteCardHtml)) +
     group('Meals', meals.map(mealFavoriteCardHtml)) +
     group('Recipes', recipes.map(recipeFavoriteCardHtml));
+
+  wrap.innerHTML = `<div style="margin-bottom:1.5rem;">
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">${catBar}</div>
+      ${tagBar}
+    </div>`
+    + (visible.length ? groups : `<div style="text-align:center; padding:2.5rem 2rem; background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl);">
+      <p style="font-size:0.88rem; color:var(--gray-400); margin-bottom:1rem;">No favorites match those filters.</p>
+      <button class="btn btn-outline-dark btn-sm" onclick="clearFavFilters()">Clear Filters</button>
+    </div>`);
 }
 
 function editProfile() {
@@ -7226,7 +7313,41 @@ function planLogButtonHtml(kind, setId) {
   return `<button type="button" class="btn btn-primary btn-sm" onclick="logPlanWorkout('${kind}')" title="Save this session to your training log">Log This ${kind === 'swim' ? 'Swim' : 'Workout'}</button>`;
 }
 
+// One-tap logging first opens a small popup so the athlete can attach an
+// optional note (it shows beside the workout on the Progress page), then logs.
+let _pendingLogKind = null;
+
 function logPlanWorkout(kind) {
+  const day = planToday();
+  if (!day || !_trainingPlan) return;
+  const sess = kind === 'swim' ? day.swimSet : day.liftSession;
+  if (!sess) return;
+  const setId = kind === 'swim'
+    ? (day.swimSet.setId || ('plan-swim-' + _trainingPlan.weekStart + '-' + day.day))
+    : ('plan-lift-' + _trainingPlan.weekStart + '-' + day.day);
+  if (isPlanWorkoutLogged(setId)) return;
+  _pendingLogKind = kind;
+  const overlay = document.getElementById('log-note-overlay');
+  if (!overlay) { confirmPlanLog(); return; }
+  const title = document.getElementById('log-note-title');
+  const text = document.getElementById('log-note-text');
+  if (title) title.textContent = 'Log "' + deDash(sess.title || (kind === 'swim' ? 'Today\'s Swim' : 'Today\'s Lift')) + '"';
+  if (text) text.value = '';
+  overlay.style.display = 'flex';
+  if (text) setTimeout(() => text.focus(), 60);
+}
+
+function cancelPlanLog() {
+  _pendingLogKind = null;
+  const overlay = document.getElementById('log-note-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function confirmPlanLog() {
+  const kind = _pendingLogKind;
+  const note = (document.getElementById('log-note-text')?.value || '').trim();
+  cancelPlanLog();
+  if (!kind) return;
   const day = planToday();
   if (!day || !_trainingPlan) return;
   let entry = null, setId = '';
@@ -7236,7 +7357,8 @@ function logPlanWorkout(kind) {
       type: 'Swim',
       duration: String(day.swimSet.estimatedMinutes || ''),
       distance: day.swimSet.totalYards ? day.swimSet.totalYards + ' yards' : '',
-      notes: day.swimSet.title || 'Swim from my plan'
+      title: deDash(day.swimSet.title || 'Swim from my plan'),
+      notes: note
     };
   } else if (kind === 'lift' && day.liftSession) {
     setId = 'plan-lift-' + _trainingPlan.weekStart + '-' + day.day;
@@ -7244,7 +7366,8 @@ function logPlanWorkout(kind) {
       type: 'Dryland / Lift',
       duration: String(day.liftSession.estimatedMinutes || ''),
       distance: '',
-      notes: day.liftSession.title || 'Lift from my plan'
+      title: deDash(day.liftSession.title || 'Lift from my plan'),
+      notes: note
     };
   }
   if (!entry || isPlanWorkoutLogged(setId)) return;
@@ -7270,15 +7393,22 @@ function workoutLogRowHtml(l) {
   const d = parseLogDate(l);
   const dateTxt = d ? d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : String(l.date || '');
   const bits = [l.duration ? l.duration + ' min' : '', l.distance || ''].filter(Boolean).join(' · ');
-  return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:0.9rem 1.1rem; display:flex; gap:0.75rem; align-items:flex-start;">
-    <div style="flex:1; min-width:0;">
+  // Older plan-logged entries stored the session title in `notes`; newer ones
+  // keep `title` for the session and `notes` for the athlete's own note,
+  // which sits in the open space on the right of the row.
+  const isLegacyPlan = l.source === 'plan' && !l.title;
+  const title = l.title || (isLegacyPlan ? l.notes : '');
+  const note = isLegacyPlan ? '' : (l.notes || '');
+  return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:0.9rem 1.1rem; display:flex; gap:0.5rem 1rem; align-items:flex-start; flex-wrap:wrap;">
+    <div style="flex:1 1 240px; min-width:0;">
       <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
         <span class="archive-tag">${escHtml(l.type || 'Workout')}</span>
         <span style="font-size:0.84rem; font-weight:700; color:var(--deep);">${escHtml(dateTxt)}</span>
         ${bits ? `<span style="font-size:0.82rem; color:var(--gray-500);">${escHtml(bits)}</span>` : ''}
       </div>
-      ${l.notes ? `<p style="font-size:0.84rem; color:var(--gray-400); margin:0.35rem 0 0;">${escHtml(l.notes)}</p>` : ''}
+      ${title ? `<p style="font-size:0.84rem; color:var(--gray-400); margin:0.35rem 0 0;">${escHtml(deDash(title))}</p>` : ''}
     </div>
+    ${note ? `<div style="flex:0 1 300px; min-width:150px; margin-left:auto; align-self:center; text-align:right; font-size:0.82rem; color:var(--gray-500); font-style:italic;">${escHtml(note)}</div>` : ''}
     ${l.savedAt ? `<button type="button" class="log-del-btn" onclick="deleteWorkoutLog(${Number(l.savedAt)})" title="Delete entry" aria-label="Delete entry">×</button>` : ''}
   </div>`;
 }
@@ -7298,6 +7428,17 @@ function renderWorkoutLog() {
 
 // ── Progress view ────────────────────────────────────────────────────────────
 
+// Yardage of one log entry: yards named explicitly, or bare numbers on swim
+// entries. Shared by the stat tiles and the weekly volume chart's line.
+function logYards(l) {
+  const dist = String(l.distance || '').replace(/,/g, '');
+  const num = (dist.match(/(\d+(?:\.\d+)?)/) || [])[1];
+  if (num && (/y(?:ar)?ds?/i.test(dist) || (l.type === 'Swim' && !/m\b|meters?|miles?|km|k\b/i.test(dist)))) {
+    return Number(num);
+  }
+  return 0;
+}
+
 function progressStats(logs) {
   const now = new Date();
   const wkStart = new Date(now); wkStart.setHours(0, 0, 0, 0);
@@ -7312,14 +7453,7 @@ function progressStats(logs) {
     const mins = Number(l.duration) || 0;
     totalMinutes += mins;
     if (d >= wkStart) { weekSessions++; weekMinutes += mins; }
-    if (d >= monthAgo) {
-      const dist = String(l.distance || '').replace(/,/g, '');
-      const num = (dist.match(/(\d+(?:\.\d+)?)/) || [])[1];
-      // count yards explicitly, or bare numbers on swim entries
-      if (num && (/y(?:ar)?ds?/i.test(dist) || (l.type === 'Swim' && !/m\b|meters?|miles?|km|k\b/i.test(dist)))) {
-        yards30 += Number(num);
-      }
-    }
+    if (d >= monthAgo) yards30 += logYards(l);
   });
   let streak = 0;
   const cur = new Date();
@@ -7328,49 +7462,133 @@ function progressStats(logs) {
   return { weekSessions, weekMinutes, totalSessions: logs.length, totalMinutes, yards30, streak };
 }
 
-// Inline SVG bar chart: minutes trained per week, last 8 weeks. Single brand
-// hue, direct label on the peak week, hover tooltips via <title>.
+// Inline SVG chart: swim and lift minutes per week (paired, flush, color-coded
+// bars) for the last 8 weeks, with swim yardage as a line on a right-hand
+// axis. Hover tooltips via <title>.
 function progressChartSvg(logs) {
   const monday = d => { const x = new Date(d); x.setHours(12, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
   const weeks = [];
   const thisMonday = monday(new Date());
   for (let i = 7; i >= 0; i--) {
     const ws = new Date(thisMonday); ws.setDate(ws.getDate() - i * 7);
-    weeks.push({ start: ws, minutes: 0, sessions: 0 });
+    weeks.push({ start: ws, swimMin: 0, liftMin: 0, yards: 0, sessions: 0 });
   }
   logs.forEach(l => {
     const d = parseLogDate(l);
     if (!d) return;
     const t = monday(d).getTime();
     const w = weeks.find(w => w.start.getTime() === t);
-    if (w) { w.minutes += Number(l.duration) || 0; w.sessions++; }
+    if (!w) return;
+    const mins = Number(l.duration) || 0;
+    if (l.type === 'Swim') w.swimMin += mins; else w.liftMin += mins;
+    w.yards += logYards(l);
+    w.sessions++;
   });
-  const max = Math.max(...weeks.map(w => w.minutes));
-  if (!max) return '';
-  const niceMax = Math.max(60, Math.ceil(max / 60) * 60);
-  const W = 640, H = 190, padL = 40, padR = 10, padT = 18, padB = 26;
+  const maxMin = Math.max(...weeks.map(w => Math.max(w.swimMin, w.liftMin)));
+  if (!maxMin) return '';
+  const niceMax = Math.max(60, Math.ceil(maxMin / 60) * 60);
+  const maxYd = Math.max(...weeks.map(w => w.yards));
+  const niceYd = Math.max(1000, Math.ceil(maxYd / 1000) * 1000);
+  const ydLbl = v => v >= 1000 ? (v / 1000) + 'k' : String(v);
+  const W = 640, H = 200, padL = 40, padR = 44, padT = 18, padB = 26;
   const plotW = W - padL - padR, plotH = H - padT - padB;
-  const slot = plotW / weeks.length, barW = Math.min(44, slot * 0.58);
-  const y = v => padT + plotH - (v / niceMax) * plotH;
-  const grid = [0, niceMax / 2, niceMax].map(v => {
+  const slot = plotW / weeks.length;
+  const barW = Math.min(22, slot * 0.3); // each of the flush pair
+  const base = padT + plotH;
+  const y = v => base - (v / niceMax) * plotH;
+  const yYd = v => base - (v / niceYd) * plotH;
+  const grid = [0, niceMax / 2, niceMax].map((v, gi) => {
     const yy = y(v);
+    const ydVal = [0, niceYd / 2, niceYd][gi];
     return `<line x1="${padL}" x2="${W - padR}" y1="${yy}" y2="${yy}" stroke="${v === 0 ? 'var(--gray-200)' : 'var(--gray-100)'}" stroke-width="1"${v === 0 ? '' : ' stroke-dasharray="3 4"'}/>
-      <text x="${padL - 8}" y="${yy + 3}" text-anchor="end" font-size="10" fill="var(--gray-400)">${v}</text>`;
+      <text x="${padL - 8}" y="${yy + 3}" text-anchor="end" font-size="10" fill="var(--gray-400)">${v}</text>
+      <text x="${W - padR + 8}" y="${yy + 3}" text-anchor="start" font-size="10" fill="var(--gray-400)">${ydLbl(ydVal)}</text>`;
   }).join('');
-  const peak = weeks.reduce((a, b) => (b.minutes > a.minutes ? b : a), weeks[0]);
+  const roundedBar = (x, yTop, cls, tip) => {
+    if (yTop >= base) return '';
+    const r = Math.min(3, base - yTop);
+    return `<path class="${cls}" d="M${x} ${base} L${x} ${yTop + r} Q${x} ${yTop} ${x + r} ${yTop} L${x + barW - r} ${yTop} Q${x + barW} ${yTop} ${x + barW} ${yTop + r} L${x + barW} ${base} Z"><title>${tip}</title></path>`;
+  };
   const bars = weeks.map((w, i) => {
     const cx = padL + slot * i + slot / 2;
-    const x = cx - barW / 2, yTop = y(w.minutes), base = padT + plotH;
     const lbl = (w.start.getMonth() + 1) + '/' + w.start.getDate();
-    const r = Math.min(4, base - yTop);
-    const bar = w.minutes > 0
-      ? `<path class="prog-bar" d="M${x} ${base} L${x} ${yTop + r} Q${x} ${yTop} ${x + r} ${yTop} L${x + barW - r} ${yTop} Q${x + barW} ${yTop} ${x + barW} ${yTop + r} L${x + barW} ${base} Z"><title>Week of ${lbl}: ${w.minutes} min · ${w.sessions} workout${w.sessions === 1 ? '' : 's'}</title></path>`
-      : '';
-    const valLbl = (w === peak && w.minutes > 0)
-      ? `<text x="${cx}" y="${yTop - 5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--deep)">${w.minutes}</text>` : '';
-    return bar + valLbl + `<text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--gray-400)">${lbl}</text>`;
+    return roundedBar(cx - barW, y(w.swimMin), 'prog-bar-swim', `Week of ${lbl}: ${w.swimMin} swim min`)
+      + roundedBar(cx, y(w.liftMin), 'prog-bar-lift', `Week of ${lbl}: ${w.liftMin} lift/dryland min`)
+      + `<text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--gray-400)">${lbl}</text>`;
   }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Minutes trained per week over the last 8 weeks" style="width:100%; height:auto; display:block;">${grid}${bars}</svg>`;
+  const pts = weeks.map((w, i) => ({ x: padL + slot * i + slot / 2, y: yYd(w.yards), w }));
+  const linePath = pts.map((p, i) => (i ? 'L' : 'M') + p.x.toFixed(1) + ' ' + p.y.toFixed(1)).join(' ');
+  const line = `<path d="${linePath}" fill="none" stroke="var(--deep)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`
+    + pts.map(p => {
+      const lbl = (p.w.start.getMonth() + 1) + '/' + p.w.start.getDate();
+      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="var(--deep)" stroke="var(--white)" stroke-width="2"><title>Week of ${lbl}: ${p.w.yards.toLocaleString()} yards swum</title></circle>`;
+    }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Swim and lift minutes per week with swim yardage, last 8 weeks" style="width:100%; height:auto; display:block;">${grid}${bars}${line}</svg>`;
+}
+
+// ── Personal records (Progress view) ────────────────────────────────────────
+// Best times the athlete records by hand, stored per device like the workout
+// log. Rendered above Recent Workouts.
+
+function getPRs() {
+  try { return JSON.parse(localStorage.getItem('streamline_prs') || '[]'); } catch (e) { return []; }
+}
+function savePRs(prs) { localStorage.setItem('streamline_prs', JSON.stringify(prs)); }
+
+let _prFormOpen = false;
+function togglePrForm() { _prFormOpen = !_prFormOpen; renderProgress(); }
+
+function addPR() {
+  const event = (document.getElementById('pr-event')?.value || '').trim();
+  const time  = (document.getElementById('pr-time')?.value || '').trim();
+  const date  = document.getElementById('pr-date')?.value || localISODate();
+  if (!event || !time) { alert('Please fill in the event and your time.'); return; }
+  const prs = getPRs();
+  prs.unshift({ event, time, date, savedAt: Date.now() });
+  savePRs(prs);
+  _prFormOpen = false;
+  renderProgress();
+}
+
+function deletePR(savedAt) {
+  if (!confirm('Delete this PR?')) return;
+  savePRs(getPRs().filter(p => Number(p.savedAt) !== Number(savedAt)));
+  renderProgress();
+}
+
+function prSectionHtml() {
+  const prs = getPRs();
+  const cards = prs.map(p => {
+    const d = parseLogDate(p);
+    const dateTxt = d ? d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+    return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.1rem; position:relative;">
+      <button type="button" class="log-del-btn" style="position:absolute; top:0.45rem; right:0.45rem;" onclick="deletePR(${Number(p.savedAt)})" title="Delete PR" aria-label="Delete PR">×</button>
+      <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.3rem; padding-right:1.25rem;">${escHtml(p.event)}</p>
+      <p style="font-weight:700; color:var(--deep); font-size:1.25rem; line-height:1.1;">${escHtml(p.time)}</p>
+      ${dateTxt ? `<p style="font-size:0.78rem; color:var(--gray-400); margin-top:0.25rem;">${escHtml(dateTxt)}</p>` : ''}
+    </div>`;
+  }).join('');
+  const form = _prFormOpen ? `
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1.1rem 1.25rem; margin-bottom:0.9rem;">
+      <div class="form-row" style="gap:1rem;">
+        <div class="form-group"><label class="form-label">Event</label><input type="text" class="form-input" id="pr-event" placeholder="e.g., 100 Free (SCY)" /></div>
+        <div class="form-group"><label class="form-label">Time</label><input type="text" class="form-input" id="pr-time" placeholder="e.g., 58.42 or 1:02.45" onkeydown="if(event.key==='Enter')addPR()" /></div>
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="pr-date" value="${localISODate()}" /></div>
+      </div>
+      <div style="display:flex; gap:0.6rem; margin-top:0.9rem;">
+        <button class="btn btn-primary btn-sm" onclick="addPR()">Save PR</button>
+        <button class="btn btn-outline-dark btn-sm" onclick="togglePrForm()">Cancel</button>
+      </div>
+    </div>` : '';
+  return `
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:0.9rem;">
+      <h3 style="font-size:0.9rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--deep); margin:0;">Personal Records</h3>
+      ${_prFormOpen ? '' : '<button class="btn btn-outline-dark btn-sm" onclick="togglePrForm()">+ Add PR</button>'}
+    </div>
+    ${form}
+    ${prs.length
+      ? `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${cards}</div>`
+      : `<div style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-lg); padding:1.25rem; text-align:center; margin-bottom:1.5rem;"><p style="color:var(--gray-400); font-size:0.86rem; margin:0;">No PRs yet. Add your best times and they'll live here.</p></div>`}`;
 }
 
 function renderProgress() {
@@ -7382,7 +7600,7 @@ function renderProgress() {
   }
   const logs = sortedWorkoutLogs();
   if (!logs.length) {
-    wrap.innerHTML = `<div style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl); padding:3rem 2rem; text-align:center;">
+    wrap.innerHTML = `<div style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl); padding:3rem 2rem; text-align:center; margin-bottom:1.5rem;">
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       <h3 style="color:var(--deep); margin-bottom:0.5rem;">No workouts logged yet</h3>
       <p style="color:var(--gray-400); font-size:0.9rem; max-width:460px; margin:0 auto 1.5rem;">Finish today's swim or lift and tap <strong style="color:var(--gray-500);">Log This Workout</strong> right on the session, or add any workout manually. Your volume, streak, and history build from there.</p>
@@ -7390,7 +7608,7 @@ function renderProgress() {
         <button class="btn btn-primary" onclick="showDashView('swim')">Open Today's Swim</button>
         <button class="btn btn-outline-dark" onclick="showDashView('log')">Log a Workout</button>
       </div>
-    </div>`;
+    </div>${prSectionHtml()}`;
     return;
   }
   const st = progressStats(logs);
@@ -7398,7 +7616,7 @@ function renderProgress() {
   const tiles = [
     ['This Week', st.weekSessions + (st.weekSessions === 1 ? ' workout' : ' workouts'), st.weekMinutes ? st.weekMinutes + ' min total' : 'Log a session to add volume'],
     ['Day Streak', st.streak + (st.streak === 1 ? ' day' : ' days'), st.streak ? 'Keep it rolling' : 'Log today to start one'],
-    ['Swim Volume', st.yards30 ? st.yards30.toLocaleString() + ' yd' : '—', 'Last 30 days'],
+    ['Swim Volume', st.yards30 ? st.yards30.toLocaleString() + ' yd' : '-', 'Last 30 days'],
     ['All Time', st.totalSessions + (st.totalSessions === 1 ? ' workout' : ' workouts'), hours ? hours + (hours === 1 ? ' hour logged' : ' hours logged') : '']
   ].map(([label, val, sub]) => `
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.1rem;">
@@ -7407,22 +7625,24 @@ function renderProgress() {
       ${sub ? `<p style="font-size:0.78rem; color:var(--gray-400); margin-top:0.25rem;">${escHtml(String(sub))}</p>` : ''}
     </div>`).join('');
   const chart = progressChartSvg(logs);
-  const typeCounts = {};
-  logs.forEach(l => { const t = l.type || 'Other'; typeCounts[t] = (typeCounts[t] || 0) + 1; });
-  const typeChips = Object.entries(typeCounts)
-    .map(([t, c]) => `<span class="archive-tag">${escHtml(t)} · ${c}</span>`).join('');
+  const legend = `<div class="prog-legend">
+    <span><span style="width:10px; height:10px; border-radius:2px; background:#279e8e; display:inline-block;"></span>Swim (min)</span>
+    <span><span style="width:10px; height:10px; border-radius:2px; background:#b8842a; display:inline-block;"></span>Lift / Dryland (min)</span>
+    <span><span style="width:16px; height:0; border-top:2px solid var(--deep); display:inline-block;"></span>Yards swum (right axis)</span>
+  </div>`;
   wrap.innerHTML = `
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${tiles}</div>
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem; margin-bottom:1.5rem;">
       <div style="display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
         <div>
           <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">Weekly Volume</p>
-          <p style="font-size:0.84rem; color:var(--gray-400); margin:0;">Minutes trained per week, last 8 weeks</p>
+          <p style="font-size:0.84rem; color:var(--gray-400); margin:0;">Swim and lift minutes per week, last 8 weeks. The line tracks yards swum on the right axis.</p>
         </div>
-        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">${typeChips}</div>
+        ${chart ? legend : ''}
       </div>
       ${chart || '<p style="color:var(--gray-400); font-size:0.88rem; margin:0;">Add durations to your logged workouts to see weekly volume here.</p>'}
     </div>
+    ${prSectionHtml()}
     <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:0.9rem;">
       <h3 style="font-size:0.9rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--deep); margin:0;">Recent Workouts</h3>
       <button class="btn btn-outline-dark btn-sm" onclick="showDashView('log')">+ Log a Workout</button>
@@ -8390,6 +8610,15 @@ async function performSearch(query) {
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+// My Training text never shows an em dash. Free text swaps them for a comma
+// pause; a value that is ONLY dashes (an empty-cell placeholder) becomes a
+// plain hyphen.
+function deDash(s) {
+  s = String(s == null ? '' : s);
+  if (!/[—–]/.test(s)) return s;
+  if (/^[—–\-\s]*$/.test(s)) return '-';
+  return s.replace(/\s*—\s*/g, ', ');
+}
 // Keep generated set/exercise descriptors purely informational: no em dashes,
 // and drop any motivational/coaching tail the model appends after one.
 function cleanNote(note) {
@@ -8403,7 +8632,7 @@ document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-search-wrap')) closeNavSearch();
 });
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeNavSearch(); closeSetDetail(); }
+  if (e.key === 'Escape') { closeNavSearch(); closeSetDetail(); cancelPlanLog(); }
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     toggleNavSearch();
@@ -9194,7 +9423,7 @@ function renderDrylandError(category, msg) {
 
 function liftFavoriteCardHtml(set) {
   const lvl = set.level || '';
-  const tags = [LIFT_LEVEL_LABEL[lvl] || '', 'Dryland'].filter(Boolean);
+  const tags = [LIFT_LEVEL_LABEL[lvl] || set.levelLabel || '', deDash(set.trainingFocus || ''), 'Dryland'].filter(Boolean);
   const id = set.setId || '';
   return `<div class="archive-card" data-setid="${escHtml(id)}">
       <div>
