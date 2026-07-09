@@ -2194,10 +2194,10 @@ Resources:
 
           Design the training week ONLY, no workout content yet, following the framework's Step 1 and Step 2 exactly: honor the athlete's available swim days and dryland days (never schedule a session on a day they don't have), the allocation heuristics for their level, the interference rules, the roughly 60/40 target-to-supporting stroke split, injury adjustments, and youth/masters handling. Site constraint: at most one swim and one lift per day, no double swims. Every week includes at least one full rest day.
 
-          Then compute daily nutrition targets like a sports dietitian: Mifflin-St Jeor BMR from age/height/weight/gender (height is in inches and weight in pounds; convert to metric first), an activity factor from the actual planned training hours this week, a calorie adjustment for the fitness goal (a moderate deficit only for fat-loss goals, a small surplus for muscle or weight gain, otherwise maintenance; NEVER a deficit for athletes under 18), protein 1.6 to 2.2 g per kg bodyweight, fat at least 20 percent of calories, remaining calories from carbs. Build two one-day meal plans (a training-day plan and a rest-day plan) that hit those targets, fully respect the dietary style, allergies and dietary notes, and anchor pre/post-workout eating to the athlete's preferred workout time.
+          Then compute daily nutrition targets like a sports dietitian: Mifflin-St Jeor BMR from age/height/weight/gender (height is in inches and weight in pounds; convert to metric first), an activity factor from the actual planned training hours this week, a calorie adjustment for the fitness goal (a moderate deficit only for fat-loss goals, a small surplus for muscle or weight gain, otherwise maintenance; NEVER a deficit for athletes under 18), protein 1.6 to 2.2 g per kg bodyweight, fat at least 20 percent of calories, remaining calories from carbs. Then split those targets into two one-day meal schedules (a training-day schedule and a rest-day schedule). Each meal is a SLOT, not a menu: give it a name, a realistic time of day anchored to the athlete's preferred workout time, a per-meal macro budget, and optionally one short note tying the slot to training. Do NOT write menus or name specific dishes; the athlete asks for a recipe for any slot on demand.
 
           Return ONLY valid JSON, no preamble, no markdown, matching exactly:
-          {"phase":"Base|Build|Peak|Taper|Deload","phaseLabel":"e.g. Build, Week 2 of 4","goalLine":"one line combining the swimming goal and fitness goal","phaseRoadmap":"one line, e.g. Rolling 4-week blocks: 3 progressive weeks then 1 deload week","rationale":"2-4 sentences of coach's rationale for why the week is shaped this way for this athlete","nutrition":{"calories":N,"proteinG":N,"carbsG":N,"fatG":N,"restDayNote":"one short line, e.g. Rest days: same protein, drop carbs about 40 g"},"days":[{"day":"Monday","label":"Swim + Lift|Swim|Lift|Active Recovery|Rest","swim":{"focus":"freestyle|backstroke|breaststroke|butterfly|im|sprint|choice","secondary":"endurance|technique|speed|threshold|race prep|recovery","yards":N}or null,"lift":{"focus":"Core & Stability|Shoulder, Lat & Upper Back|Lower Body Power|Upper Body Strength|Mobility & Recovery|Full Body","minutes":N}or null,"recovery":"short description only for Active Recovery days, else null","timeLabel":"~1:20 total session time, or a dash for rest days","mealType":"training|rest"}],"meals":{"training":[{"name":"Breakfast","time":"7:00 AM","menu":"meal respecting all dietary restrictions","note":"short note tying it to training, or null","calories":N,"proteinG":N,"carbsG":N,"fatG":N}],"rest":[{"name":"Breakfast","time":"8:00 AM","menu":"...","note":null,"calories":N,"proteinG":N,"carbsG":N,"fatG":N}]}}
+          {"phase":"Base|Build|Peak|Taper|Deload","phaseLabel":"e.g. Build, Week 2 of 4","goalLine":"one line combining the swimming goal and fitness goal","phaseRoadmap":"one line, e.g. Rolling 4-week blocks: 3 progressive weeks then 1 deload week","rationale":"2-4 sentences of coach's rationale for why the week is shaped this way for this athlete","nutrition":{"calories":N,"proteinG":N,"carbsG":N,"fatG":N,"restDayNote":"one short line, e.g. Rest days: same protein, drop carbs about 40 g"},"days":[{"day":"Monday","label":"Swim + Lift|Swim|Lift|Active Recovery|Rest","swim":{"focus":"freestyle|backstroke|breaststroke|butterfly|im|sprint|choice","secondary":"endurance|technique|speed|threshold|race prep|recovery","yards":N}or null,"lift":{"focus":"Core & Stability|Shoulder, Lat & Upper Back|Lower Body Power|Upper Body Strength|Mobility & Recovery|Full Body","minutes":N}or null,"recovery":"short description only for Active Recovery days, else null","timeLabel":"~1:20 total session time, or a dash for rest days","mealType":"training|rest"}],"meals":{"training":[{"name":"Breakfast","time":"7:00 AM","note":"short note tying the slot to training, e.g. eat 90 minutes before practice, or null","calories":N,"proteinG":N,"carbsG":N,"fatG":N}],"rest":[{"name":"Breakfast","time":"8:00 AM","note":null,"calories":N,"proteinG":N,"carbsG":N,"fatG":N}]}}
           "days" must contain all 7 days Monday through Sunday in order. Each meals list has 3 meals plus 1 or 2 snacks. Every meal carries its own calories and macros; a day's meals must sum to within about 5 percent of the daily targets (rest-day meals to the rest-day adjusted targets). Swim yards must sit inside the athlete's level range (beginner 1200-2000, intermediate 2500-3800, advanced 4500-6500, pro 7000-12000). Do not use em dashes anywhere in any text value."""
 
           SWIM_PROMPT = """You are the LANE FOUR personal swim coach writing ONE practice inside an athlete's weekly plan.
@@ -2231,9 +2231,10 @@ Resources:
 
           Athlete's daily nutrition targets: %(targets)s
           Today's planned meals with per-meal macro budgets: %(meals)s
+          %(target)s
           Dietary style: %(diet)s. Allergies and foods to avoid (hard requirements, NEVER include these): %(allergies)s. Other dietary notes: %(notes)s.
 
-          Write ONE fully fleshed, realistic recipe that satisfies the request and fits the macro budget of the meal the request refers to (if the request does not name a meal, assume dinner; if that meal is not in the list, aim for roughly a third of the daily targets). Home-cook friendly: normal grocery ingredients, precise quantities, clear steps.
+          Write ONE fully fleshed, realistic recipe that satisfies the request and fits the macro budget of the meal the request refers to (if the request does not name a meal, assume dinner; if that meal is not in the list, aim for roughly a third of the daily targets). The dish must make sense for that meal and time of day: breakfast food at breakfast, a real lunch or dinner plate at those meals, and snack-sized food for snacks. Home-cook friendly: normal grocery ingredients, precise quantities, clear steps.
 
           Return ONLY valid JSON, no preamble, matching exactly:
           {"title":"recipe name","meal":"Breakfast|Lunch|Dinner|Snack","description":"1-2 appetizing sentences","servings":N,"prepMinutes":N,"cookMinutes":N,"calories":N,"proteinG":N,"carbsG":N,"fatG":N,"ingredients":["quantity plus ingredient, one per entry"],"steps":["one clear instruction per entry"],"note":"one short tip or swap, or null"}
@@ -2245,6 +2246,24 @@ Resources:
             req = str(body.get('request') or '').strip()[:300]
             if not req:
               return resp(400, {'error': 'Tell me what kind of recipe you want.'})
+            # A structured slot rides along when the athlete taps "Suggest Meal"
+            # on a specific meal of their plan; the recipe must hit that slot's
+            # macro budget and suit its time of day.
+            target = body.get('meal') if isinstance(body.get('meal'), dict) else None
+            target_txt = 'No specific meal slot was selected; infer the meal from the request itself.'
+            if target:
+              slot = {}
+              for k in ('name', 'time', 'mealType'):
+                v = target.get(k)
+                if v:
+                  slot[k] = str(v)[:60]
+              for k in ('calories', 'proteinG', 'carbsG', 'fatG'):
+                try:
+                  slot[k] = int(float(target.get(k)))
+                except (TypeError, ValueError):
+                  pass
+              if slot:
+                target_txt = 'The athlete tapped Suggest Meal on this exact slot of their plan. The recipe is FOR this slot: land on its macro budget and fit its time of day: %s' % json.dumps(slot)
             targets, meals = {}, []
             item = plans.get_item(Key={'email': user['email']}).get('Item') or {}
             if item.get('status') == 'ready':
@@ -2260,7 +2279,7 @@ Resources:
             try:
               # single attempt (no gen_json retry) to stay inside the gateway timeout
               raw = invoke_model(RECIPE_PROMPT % {
-                'request': req.replace('"', "'"),
+                'request': req.replace('"', "'"), 'target': target_txt,
                 'targets': json.dumps(targets), 'meals': json.dumps(meals),
                 'diet': profile.get('dietaryStyle') or 'No restrictions',
                 'allergies': profile.get('allergies') or 'None',

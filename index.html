@@ -2406,6 +2406,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 @media (max-width: 700px) {
   .recipe-columns { grid-template-columns: 1fr !important; }
 }
+/* Progress view: weekly volume chart bars */
+.prog-bar { fill: var(--teal); transition: fill 0.15s; }
+.prog-bar:hover { fill: var(--deep); }
+.log-del-btn { background: none; border: none; color: var(--gray-300); font-size: 1.15rem; line-height: 1; cursor: pointer; padding: 0.15rem 0.3rem; border-radius: var(--r-sm, 6px); flex-shrink: 0; }
+.log-del-btn:hover { color: #c0392b; background: var(--gray-50); }
 .contact-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem; align-items: start; max-width: 1060px; margin: 0 auto; }
 /* "How can we help?" heading. On desktop it's a plain label with the reason
    cards always shown; on mobile it becomes a collapsible toggle (see below). */
@@ -5012,7 +5017,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</p>
           <h3 style="color:var(--deep);">Training Log &amp; Trends</h3>
           <div class="lock-overlay" id="lock-progress" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div>
-          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your progress charts and training log will appear here, coming soon.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
+          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Log your swims and lifts to see volume, streaks, and trends here.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
         </div>
       </div>
       <!-- Personalized weekly plan, collapsed below today's cards
@@ -5086,14 +5091,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.35rem;">Progress</h2>
-        <p style="color:var(--gray-400); font-size:0.9rem;">Track your training volume, times, and trends over time.</p>
+        <p style="color:var(--gray-400); font-size:0.9rem;">Every swim and lift you've logged — weekly volume, streaks, and your recent sessions.</p>
       </div>
-      <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2.5rem; text-align:center;">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <h3 style="color:var(--deep); margin-bottom:0.5rem;">Progress tracking coming soon</h3>
-        <p style="color:var(--gray-400); font-size:0.9rem; max-width:440px; margin:0 auto 1.5rem;">Charts, personal records, and training volume summaries will live here. Start logging workouts now so your history is ready when this launches.</p>
-        <button class="btn btn-primary" onclick="showDashView('log')">Log a Workout</button>
-      </div>
+      <div id="dash-progress-body"></div>
     </div>
 
     <!-- ── Log Workout view ── -->
@@ -6455,6 +6455,7 @@ function updateTrainingPage() {
       if (lock) lock.style.display = 'none';
       if (content) content.style.display = '';
     });
+    updateProgressCard();
     loadTrainingPlan();
   } else {
     clearTimeout(_planPollTimer);
@@ -6483,6 +6484,7 @@ function showDashView(view) {
     item.classList.toggle('active', views[i] === view);
   });
   if (view === 'favorites') renderTrainingFavorites();
+  if (view === 'progress') renderProgress();
 }
 
 // ── Personalized training plan (My Training) ───────────────────────────────
@@ -6616,13 +6618,6 @@ function registerPlanFavorites() {
         intensity: w.intensity || '', isRestDay: false, workoutData: w
       };
     }
-  });
-  ['training', 'rest'].forEach(type => {
-    (((p.meals || {})[type]) || []).forEach((m, i) => {
-      const id = 'plan-meal-' + p.weekStart + '-' + type + '-' + i;
-      m.favId = id;
-      _archiveSets[id] = { setId: id, kind: 'meal', mealType: type, ...m };
-    });
   });
 }
 
@@ -6759,7 +6754,10 @@ function renderPlanSwimView() {
           <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(s.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(s.estimatedMinutes || ''))} min</p>
           ${buildFocusCueHtml(s.focusCue)}
         </div>
-        ${s.setId ? `<div style="flex-shrink:0;">${favoriteButtonHtml(s.setId)}</div>` : ''}
+        <div style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
+          ${s.setId ? favoriteButtonHtml(s.setId) : ''}
+          ${planLogButtonHtml('swim', s.setId || ('plan-swim-' + _trainingPlan.weekStart + '-' + day.day))}
+        </div>
       </div>
       <div class="set-block">${buildSetSectionsHtml(s.sections)}</div>`;
   } else if (day.swim) {
@@ -6789,7 +6787,10 @@ function renderPlanLiftView() {
           <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}</p>
           ${buildFocusCueHtml(w.focusCue)}
         </div>
-        ${_archiveSets[liftId] ? `<div style="flex-shrink:0;">${favoriteButtonHtml(liftId)}</div>` : ''}
+        <div style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
+          ${_archiveSets[liftId] ? favoriteButtonHtml(liftId) : ''}
+          ${planLogButtonHtml('lift', liftId)}
+        </div>
       </div>
       <div class="set-block">${buildDrylandSectionsHtml(w.sections)}</div>
       ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(w.coachNote)}</p>` : ''}`;
@@ -6826,35 +6827,40 @@ function renderPlanMealView() {
       <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.25rem;">${l}</p>
       <p style="font-weight:700; color:var(--deep); font-size:1.05rem;">${escHtml(String(v))}</p>
     </div>`).join('');
-  const rows = meals.map(m => {
+  _mealSlots = meals;
+  _mealSlotType = type;
+  const slots = meals.map((m, i) => {
     const macro = mealMacroLine(m);
-    return `<tr>
-    <td><strong>${escHtml(m.name || '')}</strong>${m.time ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(m.time)}</span>` : ''}</td>
-    <td>${escHtml(m.menu || '')}${m.note ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(cleanNote(m.note))}</span>` : ''}</td>
-    <td style="white-space:nowrap; font-size:0.82rem; color:var(--gray-500);">${escHtml(macro)}</td>
-    <td style="text-align:right;">${m.favId ? favoriteIconButtonHtml(m.favId) : ''}</td>
-  </tr>`;
+    return `<div style="border-top:1px solid var(--gray-100);">
+      <div style="display:flex; align-items:center; gap:0.75rem 1.25rem; padding:0.95rem 1.5rem; flex-wrap:wrap;">
+        <div style="min-width:110px;">
+          <p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin:0;">${escHtml(m.name || 'Meal')}</p>
+          ${m.time ? `<p style="font-size:0.78rem; color:var(--gray-400); margin:0.1rem 0 0;">${escHtml(m.time)}</p>` : ''}
+        </div>
+        <div style="flex:1; min-width:140px;">
+          <p style="font-size:0.86rem; color:var(--gray-500); margin:0;">${escHtml(macro || 'Macros coming with your next plan')}</p>
+          ${m.note ? `<p style="font-size:0.78rem; color:var(--gray-400); margin:0.15rem 0 0;">${escHtml(cleanNote(m.note))}</p>` : ''}
+        </div>
+        <button type="button" class="btn btn-outline-dark btn-sm" id="meal-suggest-btn-${i}" style="margin-left:auto; white-space:nowrap;" onclick="suggestMealForSlot(${i})" title="Your coach writes a recipe that fits this meal's macros">Suggest Meal</button>
+      </div>
+      <div id="meal-recipe-slot-${i}" style="display:none; padding:0 1.5rem 1.25rem;"></div>
+    </div>`;
   }).join('');
-  // one quick-suggest chip per distinct meal name today
-  const chips = meals.map(m => m.name).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i)
-    .map(name => `<button type="button" class="btn btn-outline-dark btn-sm" onclick="suggestRecipe('Suggest a recipe for ${escHtml(String(name).replace(/'/g, ''))}')">${escHtml(name)}</button>`).join(' ');
   el.innerHTML = `
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${tiles}</div>
     ${meals.length ? `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); overflow:hidden;">
       <div class="set-block-header" style="background:var(--teal);"><span class="set-label">${type === 'rest' ? 'Rest Day Meals' : 'Training Day Meals'}</span><span class="set-yds">${escHtml(day.day)}</span></div>
-      <div style="padding:0.5rem 1.5rem 1rem;">
-        <table class="ex-table"><thead><tr><th>Meal</th><th>Menu</th><th>Macros</th><th></th></tr></thead><tbody>${rows}</tbody></table>
-      </div>
+      <p style="padding:0.9rem 1.5rem 0.9rem; font-size:0.84rem; color:var(--gray-400); margin:0;">Each meal is a time and a macro budget. Tap <strong style="color:var(--gray-500);">Suggest Meal</strong> and your coach writes a recipe to fit it — heart the ones you'd cook again.</p>
+      ${slots}
     </div>` : ''}
     ${n.restDayNote && type !== 'rest' ? `<p style="margin-top:0.9rem; font-size:0.84rem; color:var(--gray-400);">${escHtml(n.restDayNote)}</p>` : ''}
     <div style="margin-top:2rem; background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem;">
       <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Recipe Ideas</p>
-      <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Ask for a recipe and get one that fits the macros for that meal — e.g. "suggest recipes for dinner" or "high-protein breakfast I can make in 10 minutes".</p>
+      <p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:1rem;">Want something specific? Ask for it — e.g. "high-protein breakfast I can make in 10 minutes" or "a dinner I can meal-prep for two days".</p>
       <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
         <input type="text" class="form-input" id="recipe-request-input" placeholder="suggest recipes for dinner…" style="flex:1; min-width:220px;" onkeydown="if(event.key==='Enter'){suggestRecipe();}" />
         <button class="btn btn-primary" id="recipe-request-btn" onclick="suggestRecipe()">Suggest Recipe</button>
       </div>
-      ${chips ? `<div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.75rem; align-items:center;"><span style="font-size:0.78rem; color:var(--gray-400);">Quick ideas:</span>${chips}</div>` : ''}
     </div>
     <div id="dash-recipe-result" style="margin-top:1.25rem;"></div>`;
 }
@@ -6905,6 +6911,64 @@ function renderRecipeResult(recipe) {
   _archiveSets[id] = { setId: id, kind: 'recipe', savedAt: Date.now(), ...recipe };
   out.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.75rem;">${recipeMarkup(_archiveSets[id])}</div>`;
   out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── Per-meal "Suggest Meal" (meal plan slots) ───────────────────────────────
+// Each meal in the plan is a time + macro budget. The button asks the AI
+// dietitian for one recipe that fits that exact slot (macros, dietary
+// preferences, and food that makes sense for that time of day). Nothing is
+// generated until the athlete asks.
+
+let _mealSlots = [];
+let _mealSlotType = 'training';
+const _mealSlotBusy = {};
+
+function mealSlotMsg(slot, text) {
+  slot.style.display = '';
+  slot.innerHTML = `<div style="background:var(--off-white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.25rem;"><p style="color:var(--gray-500); font-size:0.88rem; margin:0;">${text}</p></div>`;
+}
+
+async function suggestMealForSlot(i) {
+  const m = (_mealSlots || [])[i];
+  const slot = document.getElementById('meal-recipe-slot-' + i);
+  const btn = document.getElementById('meal-suggest-btn-' + i);
+  if (!m || !slot || _mealSlotBusy[i]) return;
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token) {
+    mealSlotMsg(slot, 'The recipe generator isn\'t connected in this environment. Try it on the live site.');
+    return;
+  }
+  _mealSlotBusy[i] = true;
+  if (btn) { btn.disabled = true; btn.textContent = 'Cooking…'; }
+  mealSlotMsg(slot, `<strong>Writing a ${escHtml(m.name || 'meal')} recipe to fit ${escHtml(mealMacroLine(m) || 'your macros')}…</strong>`);
+  try {
+    const res = await fetch(apiBase() + '/training-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token, action: 'recipe',
+        request: 'Suggest a recipe for my ' + (m.name || 'meal') + (m.time ? ' at ' + m.time : ''),
+        meal: { name: m.name || '', time: m.time || '', calories: m.calories, proteinG: m.proteinG, carbsG: m.carbsG, fatG: m.fatG, mealType: _mealSlotType }
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.status === 'ready' && data.recipe) {
+      const id = 'recipe-' + Date.now() + '-' + i;
+      _archiveSets[id] = { setId: id, kind: 'recipe', savedAt: Date.now(), ...data.recipe };
+      slot.style.display = '';
+      slot.innerHTML = `<div style="background:var(--off-white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1.5rem;">${recipeMarkup(_archiveSets[id])}</div>`;
+      if (btn) btn.textContent = 'Suggest Another';
+      slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      mealSlotMsg(slot, escHtml(data.error || 'Could not generate a recipe. Give it another try.'));
+      if (btn) btn.textContent = 'Suggest Meal';
+    }
+  } catch (e) {
+    mealSlotMsg(slot, 'Couldn\'t reach the recipe generator. Please try again.');
+    if (btn) btn.textContent = 'Suggest Meal';
+  }
+  _mealSlotBusy[i] = false;
+  if (btn) btn.disabled = false;
 }
 
 // Full recipe layout, used inline in the meal view and in the favorites modal.
@@ -7101,6 +7165,25 @@ function editProfile() {
   }, 80);
 }
 
+// ── Workout log & progress ──────────────────────────────────────────────────
+// One shared log (localStorage) feeds the Log Workout view, the Progress view,
+// the overview Progress card, and the one-tap "Log This Workout" buttons on
+// Today's Swim / Today's Lift.
+
+function getWorkoutLogs() {
+  try { return JSON.parse(localStorage.getItem('streamline_workout_log') || '[]'); } catch (e) { return []; }
+}
+function saveWorkoutLogs(logs) { localStorage.setItem('streamline_workout_log', JSON.stringify(logs)); }
+
+function localISODate(d) {
+  d = d || new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function parseLogDate(l) {
+  const d = new Date(String(l.date || '') + 'T12:00:00');
+  return isNaN(d.getTime()) ? null : d;
+}
+
 function saveWorkoutLog() {
   const date     = document.getElementById('log-date')?.value     || '';
   const type     = document.getElementById('log-type')?.value     || '';
@@ -7110,32 +7193,257 @@ function saveWorkoutLog() {
 
   if (!date || !type || !duration) { alert('Please fill in date, type, and duration.'); return; }
 
-  const logs = JSON.parse(localStorage.getItem('streamline_workout_log') || '[]');
+  const logs = getWorkoutLogs();
   logs.unshift({ date, type, duration, distance, notes, savedAt: Date.now() });
-  localStorage.setItem('streamline_workout_log', JSON.stringify(logs));
+  saveWorkoutLogs(logs);
 
   const msg = document.getElementById('log-saved-msg');
   if (msg) { msg.style.display = ''; setTimeout(() => msg.style.display = 'none', 2500); }
 
   renderWorkoutLog();
+  renderProgress();
+  updateProgressCard();
   ['log-date','log-type','log-duration','log-distance','log-notes'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
 }
 
+// One-tap logging for the plan's swim set / lift session (Today's Swim and
+// Today's Lift views). Deduped per set per day via setId + date.
+function isPlanWorkoutLogged(setId) {
+  const today = localISODate();
+  return getWorkoutLogs().some(l => l.setId === setId && l.date === today);
+}
+
+function planLogButtonHtml(kind, setId) {
+  if (isPlanWorkoutLogged(setId)) {
+    return `<span style="display:inline-flex; align-items:center; gap:0.6rem;">
+      <span style="font-size:0.82rem; font-weight:700; color:var(--teal); white-space:nowrap;">✓ Logged today</span>
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="showDashView('progress')">View Progress</button>
+    </span>`;
+  }
+  return `<button type="button" class="btn btn-primary btn-sm" onclick="logPlanWorkout('${kind}')" title="Save this session to your training log">Log This ${kind === 'swim' ? 'Swim' : 'Workout'}</button>`;
+}
+
+function logPlanWorkout(kind) {
+  const day = planToday();
+  if (!day || !_trainingPlan) return;
+  let entry = null, setId = '';
+  if (kind === 'swim' && day.swimSet) {
+    setId = day.swimSet.setId || ('plan-swim-' + _trainingPlan.weekStart + '-' + day.day);
+    entry = {
+      type: 'Swim',
+      duration: String(day.swimSet.estimatedMinutes || ''),
+      distance: day.swimSet.totalYards ? day.swimSet.totalYards + ' yards' : '',
+      notes: day.swimSet.title || 'Swim from my plan'
+    };
+  } else if (kind === 'lift' && day.liftSession) {
+    setId = 'plan-lift-' + _trainingPlan.weekStart + '-' + day.day;
+    entry = {
+      type: 'Dryland / Lift',
+      duration: String(day.liftSession.estimatedMinutes || ''),
+      distance: '',
+      notes: day.liftSession.title || 'Lift from my plan'
+    };
+  }
+  if (!entry || isPlanWorkoutLogged(setId)) return;
+  const logs = getWorkoutLogs();
+  logs.unshift({ date: localISODate(), ...entry, setId, source: 'plan', savedAt: Date.now() });
+  saveWorkoutLogs(logs);
+  if (kind === 'swim') renderPlanSwimView(); else renderPlanLiftView();
+  renderWorkoutLog();
+  renderProgress();
+  updateProgressCard();
+}
+
+function deleteWorkoutLog(savedAt) {
+  if (!confirm('Delete this logged workout?')) return;
+  saveWorkoutLogs(getWorkoutLogs().filter(l => Number(l.savedAt) !== Number(savedAt)));
+  renderWorkoutLog();
+  renderProgress();
+  updateProgressCard();
+  if (_trainingPlan) { renderPlanSwimView(); renderPlanLiftView(); }
+}
+
+function workoutLogRowHtml(l) {
+  const d = parseLogDate(l);
+  const dateTxt = d ? d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : String(l.date || '');
+  const bits = [l.duration ? l.duration + ' min' : '', l.distance || ''].filter(Boolean).join(' · ');
+  return `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:0.9rem 1.1rem; display:flex; gap:0.75rem; align-items:flex-start;">
+    <div style="flex:1; min-width:0;">
+      <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+        <span class="archive-tag">${escHtml(l.type || 'Workout')}</span>
+        <span style="font-size:0.84rem; font-weight:700; color:var(--deep);">${escHtml(dateTxt)}</span>
+        ${bits ? `<span style="font-size:0.82rem; color:var(--gray-500);">${escHtml(bits)}</span>` : ''}
+      </div>
+      ${l.notes ? `<p style="font-size:0.84rem; color:var(--gray-400); margin:0.35rem 0 0;">${escHtml(l.notes)}</p>` : ''}
+    </div>
+    ${l.savedAt ? `<button type="button" class="log-del-btn" onclick="deleteWorkoutLog(${Number(l.savedAt)})" title="Delete entry" aria-label="Delete entry">×</button>` : ''}
+  </div>`;
+}
+
+function sortedWorkoutLogs() {
+  return getWorkoutLogs().slice().sort((a, b) =>
+    String(b.date || '').localeCompare(String(a.date || '')) || (Number(b.savedAt) || 0) - (Number(a.savedAt) || 0));
+}
+
 function renderWorkoutLog() {
   const list = document.getElementById('workout-log-list');
   if (!list) return;
-  const logs = JSON.parse(localStorage.getItem('streamline_workout_log') || '[]');
+  const logs = sortedWorkoutLogs();
   if (!logs.length) { list.innerHTML = '<p style="color:var(--gray-400); font-size:0.88rem;">No workouts logged yet.</p>'; return; }
-  list.innerHTML = logs.slice(0, 10).map(l => `
-    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; gap:1rem; align-items:flex-start;">
-      <div style="flex:1;">
-        <p style="font-weight:700; color:var(--deep); font-size:0.88rem; margin-bottom:0.2rem;">${l.type} · ${l.date}</p>
-        <p style="font-size:0.82rem; color:var(--gray-400);">${l.duration} min${l.distance ? ' · ' + l.distance : ''}${l.notes ? ' · ' + l.notes : ''}</p>
+  list.innerHTML = `<div style="display:grid; gap:0.6rem;">${logs.slice(0, 10).map(workoutLogRowHtml).join('')}</div>`;
+}
+
+// ── Progress view ────────────────────────────────────────────────────────────
+
+function progressStats(logs) {
+  const now = new Date();
+  const wkStart = new Date(now); wkStart.setHours(0, 0, 0, 0);
+  wkStart.setDate(wkStart.getDate() - ((wkStart.getDay() + 6) % 7)); // Monday
+  const monthAgo = new Date(now); monthAgo.setDate(monthAgo.getDate() - 30);
+  let weekSessions = 0, weekMinutes = 0, totalMinutes = 0, yards30 = 0;
+  const daySet = new Set();
+  logs.forEach(l => {
+    const d = parseLogDate(l);
+    if (!d) return;
+    daySet.add(l.date);
+    const mins = Number(l.duration) || 0;
+    totalMinutes += mins;
+    if (d >= wkStart) { weekSessions++; weekMinutes += mins; }
+    if (d >= monthAgo) {
+      const dist = String(l.distance || '').replace(/,/g, '');
+      const num = (dist.match(/(\d+(?:\.\d+)?)/) || [])[1];
+      // count yards explicitly, or bare numbers on swim entries
+      if (num && (/y(?:ar)?ds?/i.test(dist) || (l.type === 'Swim' && !/m\b|meters?|miles?|km|k\b/i.test(dist)))) {
+        yards30 += Number(num);
+      }
+    }
+  });
+  let streak = 0;
+  const cur = new Date();
+  if (!daySet.has(localISODate(cur))) cur.setDate(cur.getDate() - 1); // today not logged yet doesn't break it
+  while (daySet.has(localISODate(cur))) { streak++; cur.setDate(cur.getDate() - 1); }
+  return { weekSessions, weekMinutes, totalSessions: logs.length, totalMinutes, yards30, streak };
+}
+
+// Inline SVG bar chart: minutes trained per week, last 8 weeks. Single brand
+// hue, direct label on the peak week, hover tooltips via <title>.
+function progressChartSvg(logs) {
+  const monday = d => { const x = new Date(d); x.setHours(12, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+  const weeks = [];
+  const thisMonday = monday(new Date());
+  for (let i = 7; i >= 0; i--) {
+    const ws = new Date(thisMonday); ws.setDate(ws.getDate() - i * 7);
+    weeks.push({ start: ws, minutes: 0, sessions: 0 });
+  }
+  logs.forEach(l => {
+    const d = parseLogDate(l);
+    if (!d) return;
+    const t = monday(d).getTime();
+    const w = weeks.find(w => w.start.getTime() === t);
+    if (w) { w.minutes += Number(l.duration) || 0; w.sessions++; }
+  });
+  const max = Math.max(...weeks.map(w => w.minutes));
+  if (!max) return '';
+  const niceMax = Math.max(60, Math.ceil(max / 60) * 60);
+  const W = 640, H = 190, padL = 40, padR = 10, padT = 18, padB = 26;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const slot = plotW / weeks.length, barW = Math.min(44, slot * 0.58);
+  const y = v => padT + plotH - (v / niceMax) * plotH;
+  const grid = [0, niceMax / 2, niceMax].map(v => {
+    const yy = y(v);
+    return `<line x1="${padL}" x2="${W - padR}" y1="${yy}" y2="${yy}" stroke="${v === 0 ? 'var(--gray-200)' : 'var(--gray-100)'}" stroke-width="1"${v === 0 ? '' : ' stroke-dasharray="3 4"'}/>
+      <text x="${padL - 8}" y="${yy + 3}" text-anchor="end" font-size="10" fill="var(--gray-400)">${v}</text>`;
+  }).join('');
+  const peak = weeks.reduce((a, b) => (b.minutes > a.minutes ? b : a), weeks[0]);
+  const bars = weeks.map((w, i) => {
+    const cx = padL + slot * i + slot / 2;
+    const x = cx - barW / 2, yTop = y(w.minutes), base = padT + plotH;
+    const lbl = (w.start.getMonth() + 1) + '/' + w.start.getDate();
+    const r = Math.min(4, base - yTop);
+    const bar = w.minutes > 0
+      ? `<path class="prog-bar" d="M${x} ${base} L${x} ${yTop + r} Q${x} ${yTop} ${x + r} ${yTop} L${x + barW - r} ${yTop} Q${x + barW} ${yTop} ${x + barW} ${yTop + r} L${x + barW} ${base} Z"><title>Week of ${lbl}: ${w.minutes} min · ${w.sessions} workout${w.sessions === 1 ? '' : 's'}</title></path>`
+      : '';
+    const valLbl = (w === peak && w.minutes > 0)
+      ? `<text x="${cx}" y="${yTop - 5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--deep)">${w.minutes}</text>` : '';
+    return bar + valLbl + `<text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--gray-400)">${lbl}</text>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Minutes trained per week over the last 8 weeks" style="width:100%; height:auto; display:block;">${grid}${bars}</svg>`;
+}
+
+function renderProgress() {
+  const wrap = document.getElementById('dash-progress-body');
+  if (!wrap) return;
+  if (!getAccount()) {
+    wrap.innerHTML = authLockHtml('Progress tracking is a free account feature. Create an account or log in to log workouts and watch your volume build week over week.');
+    return;
+  }
+  const logs = sortedWorkoutLogs();
+  if (!logs.length) {
+    wrap.innerHTML = `<div style="background:var(--white); border:1px dashed var(--gray-200); border-radius:var(--r-xl); padding:3rem 2rem; text-align:center;">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:1rem; opacity:0.6;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <h3 style="color:var(--deep); margin-bottom:0.5rem;">No workouts logged yet</h3>
+      <p style="color:var(--gray-400); font-size:0.9rem; max-width:460px; margin:0 auto 1.5rem;">Finish today's swim or lift and tap <strong style="color:var(--gray-500);">Log This Workout</strong> right on the session, or add any workout manually. Your volume, streak, and history build from there.</p>
+      <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="showDashView('swim')">Open Today's Swim</button>
+        <button class="btn btn-outline-dark" onclick="showDashView('log')">Log a Workout</button>
       </div>
+    </div>`;
+    return;
+  }
+  const st = progressStats(logs);
+  const hours = Math.round(st.totalMinutes / 6) / 10;
+  const tiles = [
+    ['This Week', st.weekSessions + (st.weekSessions === 1 ? ' workout' : ' workouts'), st.weekMinutes ? st.weekMinutes + ' min total' : 'Log a session to add volume'],
+    ['Day Streak', st.streak + (st.streak === 1 ? ' day' : ' days'), st.streak ? 'Keep it rolling' : 'Log today to start one'],
+    ['Swim Volume', st.yards30 ? st.yards30.toLocaleString() + ' yd' : '—', 'Last 30 days'],
+    ['All Time', st.totalSessions + (st.totalSessions === 1 ? ' workout' : ' workouts'), hours ? hours + (hours === 1 ? ' hour logged' : ' hours logged') : '']
+  ].map(([label, val, sub]) => `
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1rem 1.1rem;">
+      <p style="font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.3rem;">${label}</p>
+      <p style="font-weight:700; color:var(--deep); font-size:1.25rem; line-height:1.1;">${escHtml(String(val))}</p>
+      ${sub ? `<p style="font-size:0.78rem; color:var(--gray-400); margin-top:0.25rem;">${escHtml(String(sub))}</p>` : ''}
     </div>`).join('');
+  const chart = progressChartSvg(logs);
+  const typeCounts = {};
+  logs.forEach(l => { const t = l.type || 'Other'; typeCounts[t] = (typeCounts[t] || 0) + 1; });
+  const typeChips = Object.entries(typeCounts)
+    .map(([t, c]) => `<span class="archive-tag">${escHtml(t)} · ${c}</span>`).join('');
+  wrap.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:0.75rem; margin-bottom:1.5rem;">${tiles}</div>
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem; margin-bottom:1.5rem;">
+      <div style="display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
+        <div>
+          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">Weekly Volume</p>
+          <p style="font-size:0.84rem; color:var(--gray-400); margin:0;">Minutes trained per week, last 8 weeks</p>
+        </div>
+        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">${typeChips}</div>
+      </div>
+      ${chart || '<p style="color:var(--gray-400); font-size:0.88rem; margin:0;">Add durations to your logged workouts to see weekly volume here.</p>'}
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:0.9rem;">
+      <h3 style="font-size:0.9rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--deep); margin:0;">Recent Workouts</h3>
+      <button class="btn btn-outline-dark btn-sm" onclick="showDashView('log')">+ Log a Workout</button>
+    </div>
+    <div style="display:grid; gap:0.6rem;">${logs.slice(0, 12).map(workoutLogRowHtml).join('')}</div>
+    ${logs.length > 12 ? `<p style="font-size:0.82rem; color:var(--gray-400); margin-top:0.75rem;">Showing your latest 12 of ${logs.length} workouts.</p>` : ''}`;
+}
+
+function updateProgressCard() {
+  const el = document.getElementById('content-progress');
+  if (!el) return;
+  const logs = getWorkoutLogs();
+  if (!logs.length) {
+    el.innerHTML = `<p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Log your swims and lifts to see volume, streaks, and trends here.</p>
+      <button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button>`;
+    return;
+  }
+  const st = progressStats(logs);
+  el.innerHTML = `<p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin-bottom:0.2rem;">${st.weekSessions} workout${st.weekSessions === 1 ? '' : 's'} this week${st.weekMinutes ? ' · ' + st.weekMinutes + ' min' : ''}</p>
+    <p style="color:var(--gray-400); font-size:0.85rem; margin-bottom:0.75rem;">${st.streak ? st.streak + '-day streak · ' : ''}${st.totalSessions} logged all time</p>
+    <button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button>`;
 }
 
 function clearArchiveFilters() {
