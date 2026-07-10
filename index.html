@@ -6844,7 +6844,7 @@ function renderPlanSwimView() {
   if (!el || !day) return;
   if (day.swimSet) {
     const s = day.swimSet;
-    el.innerHTML = `
+    el.innerHTML = `<div class="swim-print-area">
       <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
         <div style="min-width:0;">
           <span class="eyebrow">${escHtml(day.day)} · ${escHtml(planCap(_trainingPlan.level || ''))}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
@@ -6852,12 +6852,16 @@ function renderPlanSwimView() {
           <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(s.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(s.estimatedMinutes || ''))} min</p>
           ${buildFocusCueHtml(s.focusCue)}
         </div>
-        <div style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
-          ${s.setId ? favoriteButtonHtml(s.setId) : ''}
+        <div class="set-action-btns no-print" style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
+          <div style="display:flex; gap:0.5rem;">
+            ${s.setId ? favoriteButtonHtml(s.setId) : ''}
+            <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+          </div>
           ${planLogButtonHtml('swim', s.setId || ('plan-swim-' + _trainingPlan.weekStart + '-' + day.day))}
         </div>
       </div>
-      <div class="set-block">${buildSetSectionsHtml(s.sections)}</div>`;
+      <div class="set-block">${buildSetSectionsHtml(s.sections)}</div>
+    </div>`;
   } else if (day.swim) {
     el.innerHTML = planErrorCard('swim');
   } else {
@@ -6877,7 +6881,7 @@ function renderPlanLiftView() {
       w.trainingFocus ? `Focus: ${w.trainingFocus}` : ''
     ].filter(Boolean);
     const liftId = 'plan-lift-' + _trainingPlan.weekStart + '-' + day.day;
-    el.innerHTML = `
+    el.innerHTML = `<div class="swim-print-area">
       <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
         <div style="min-width:0;">
           <span class="eyebrow">${escHtml(day.day)}${_trainingPlan.liftCategory ? ' · ' + escHtml(_trainingPlan.liftCategory) : ''}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
@@ -6885,13 +6889,17 @@ function renderPlanLiftView() {
           <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(deDash(metaBits.join('  ·  ')))}</p>
           ${buildFocusCueHtml(w.focusCue)}
         </div>
-        <div style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
-          ${_archiveSets[liftId] ? favoriteButtonHtml(liftId) : ''}
+        <div class="set-action-btns no-print" style="flex-shrink:0; display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
+          <div style="display:flex; gap:0.5rem;">
+            ${_archiveSets[liftId] ? favoriteButtonHtml(liftId) : ''}
+            <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+          </div>
           ${planLogButtonHtml('lift', liftId)}
         </div>
       </div>
       <div class="set-block">${buildDrylandSectionsHtml(w.sections)}</div>
-      ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(deDash(w.coachNote))}</p>` : ''}`;
+      ${w.coachNote ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(deDash(w.coachNote))}</p>` : ''}
+    </div>`;
   } else if (day.lift) {
     el.innerHTML = planErrorCard('lift');
   } else {
@@ -6981,7 +6989,7 @@ async function suggestMealForSlot(i) {
   }
   _mealSlotBusy[i] = true;
   if (btn) { btn.disabled = true; btn.textContent = 'Cooking…'; }
-  mealSlotMsg(slot, `<strong>Writing a ${escHtml(m.name || 'meal')} recipe to fit ${escHtml(mealMacroLine(m) || 'your macros')}…</strong>`);
+  mealSlotMsg(slot, `<strong>Cooking up something delicious…</strong>`);
   try {
     const res = await fetch(apiBase() + '/training-plan', {
       method: 'POST',
@@ -7346,9 +7354,82 @@ function planLogButtonHtml(kind, setId) {
   return `<button type="button" class="btn btn-primary btn-sm" onclick="logPlanWorkout('${kind}')" title="Save this session to your training log">Log This ${kind === 'swim' ? 'Swim' : 'Workout'}</button>`;
 }
 
+// Signed in with a usable training profile: the gate for showing "Log This …"
+// on the public daily swim-set and dryland pages.
+function trainingReady() {
+  return !!getAccount() && !profileIncomplete();
+}
+
+// "Log This Swim Set" / "Log This Workout" on the daily (non-plan) pages. Only
+// appears for a set-up account; once logged today it flips to the same "logged"
+// state the plan pages use.
+function dailyLogButtonHtml(kind, setId) {
+  if (!trainingReady()) return '';
+  if (isPlanWorkoutLogged(setId)) {
+    return `<span style="display:inline-flex; align-items:center; gap:0.6rem;">
+      <span style="font-size:0.82rem; font-weight:700; color:var(--teal); white-space:nowrap;">✓ Logged today</span>
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="navigate('my-training'); showDashView('progress')">View Progress</button>
+    </span>`;
+  }
+  return `<button type="button" class="btn btn-primary btn-sm" data-log-kind="${escHtml(kind)}" data-log-id="${escHtml(setId)}" onclick="logDailySet(this.dataset.logKind, this.dataset.logId)" title="Save this ${kind === 'swim' ? 'set' : 'workout'} to your training log">Log This ${kind === 'swim' ? 'Swim Set' : 'Workout'}</button>`;
+}
+
+function logDailySet(kind, setId) {
+  if (!trainingReady()) return;
+  const set = _archiveSets[setId];
+  if (!set || isPlanWorkoutLogged(setId)) return;
+  let entry;
+  if (kind === 'swim') {
+    entry = {
+      type: 'Swim',
+      duration: String(set.estimatedMinutes || ''),
+      distance: set.totalYards ? set.totalYards + ' yards' : '',
+      title: deDash(set.title || 'Swim set')
+    };
+  } else {
+    const wd = set.workoutData || {};
+    entry = {
+      type: 'Dryland / Lift',
+      duration: String(wd.estimatedMinutes || set.estimatedMinutes || ''),
+      distance: '',
+      title: deDash(set.title || 'Dryland workout')
+    };
+  }
+  _pendingLogKind = null;
+  _pendingDailyLog = { kind, setId, level: set.level || '', entry };
+  const overlay = document.getElementById('log-note-overlay');
+  if (!overlay) { confirmDailyLog(); return; }
+  const title = document.getElementById('log-note-title');
+  const text = document.getElementById('log-note-text');
+  if (title) title.textContent = 'Log "' + entry.title + '"';
+  if (text) text.value = '';
+  overlay.style.display = 'flex';
+  if (text) setTimeout(() => text.focus(), 60);
+}
+
+function confirmDailyLog() {
+  const pending = _pendingDailyLog;
+  const note = (document.getElementById('log-note-text')?.value || '').trim();
+  cancelPlanLog();
+  if (!pending || isPlanWorkoutLogged(pending.setId)) return;
+  const logs = getWorkoutLogs();
+  logs.unshift({ date: localISODate(), ...pending.entry, notes: note, setId: pending.setId, source: 'daily', savedAt: Date.now() });
+  saveWorkoutLogs(logs);
+  // Re-render the daily view so its Log button flips to "Logged today".
+  if (pending.kind === 'swim' && _swimSetCache[pending.level]) {
+    renderSwimSet(pending.level, _swimSetCache[pending.level]);
+  } else if (pending.kind === 'dryland' && _drylandCache[pending.level]) {
+    renderDryland(pending.level, _drylandCache[pending.level]);
+  }
+  renderWorkoutLog();
+  renderProgress();
+  updateProgressCard();
+}
+
 // One-tap logging first opens a small popup so the athlete can attach an
 // optional note (it shows beside the workout on the Progress page), then logs.
 let _pendingLogKind = null;
+let _pendingDailyLog = null;
 
 function logPlanWorkout(kind) {
   const day = planToday();
@@ -7359,6 +7440,7 @@ function logPlanWorkout(kind) {
     ? (day.swimSet.setId || ('plan-swim-' + _trainingPlan.weekStart + '-' + day.day))
     : ('plan-lift-' + _trainingPlan.weekStart + '-' + day.day);
   if (isPlanWorkoutLogged(setId)) return;
+  _pendingDailyLog = null;
   _pendingLogKind = kind;
   const overlay = document.getElementById('log-note-overlay');
   if (!overlay) { confirmPlanLog(); return; }
@@ -7372,11 +7454,13 @@ function logPlanWorkout(kind) {
 
 function cancelPlanLog() {
   _pendingLogKind = null;
+  _pendingDailyLog = null;
   const overlay = document.getElementById('log-note-overlay');
   if (overlay) overlay.style.display = 'none';
 }
 
 function confirmPlanLog() {
+  if (_pendingDailyLog) return confirmDailyLog();
   const kind = _pendingLogKind;
   const note = (document.getElementById('log-note-text')?.value || '').trim();
   cancelPlanLog();
@@ -8925,7 +9009,8 @@ function renderSwimSet(level, data) {
       <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${data.totalYards} yards &nbsp;·&nbsp; Est. ${data.estimatedMinutes} min</p>
       ${focusCueHtml}
     </div>
-    <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
+    <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end;">
+      ${dailyLogButtonHtml('swim', id)}
       ${favoriteButtonHtml(id)}
       <button onclick="window.print()" class="btn btn-outline-dark btn-sm">
         ${PRINT_SVG}
@@ -9544,7 +9629,8 @@ function renderDryland(category, data) {
         <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}${strokeLine}</p>
         ${focusCueHtml}
       </div>
-      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
+      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end;">
+        ${data.isRestDay ? '' : dailyLogButtonHtml('dryland', id)}
         ${favoriteButtonHtml(id)}
         <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
       </div>
