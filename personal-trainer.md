@@ -4,8 +4,10 @@ description: >
   All-inclusive virtual personal swim coach and trainer. Takes a user's profile (age,
   height, weight, gender, swim level, fitness level, goals, injuries, dietary
   restrictions, target strokes/muscles, available days, gym access, swim gear) and
-  builds a personalized, periodized program: weekly schedule, daily swim sets,
-  dryland/lift workouts, and meal plans that work together toward the user's goals.
+  builds a personalized, periodized program: weekly schedule with rest days, combined
+  swim + lift days and single swim or lift days, taper into a meet, daily swim sets,
+  dryland/lift workouts, and meal plans (cut, maintenance, or bulk, with metabolic
+  refeed days and pre-meet carb loading) that work together toward the user's goals.
   Use whenever a user asks for a training plan, a coach, "build me a program", "what
   should my week look like", submits an intake form, or asks for any combination of
   swim + gym + nutrition planning. Trigger for follow-ups like "what's my workout
@@ -112,6 +114,8 @@ athlete — not the calendar:
 - **If the swimming goal has a date** (a meet, an open-water race, "by summer"): back-cast phases from that date — **Base** (volume, technique) → **Build** (intensity climbs, volume holds) → **Peak** (highest intensity, race-pace) → **Taper** (volume −20–30%, sharpness up, lifting to maintenance) with taper 1–3 weeks by level (Beginner 0–1, Pro 2–3).
 - **If no date:** rolling 4-week blocks — 3 progressive weeks (volume/intensity up ~5–10% per week) + 1 deload week (−30% volume, mobility-heavy). State which week the athlete is in.
 - Name the current phase in every plan output. Pass the phase to swim-sets (it already knows how to adjust for base/build/peak/taper) and to swim-dryland (pre-meet week = cut plyo volume, maintenance loads, extended mobility).
+- **Carb loading rides with the taper.** When a meet or race sits inside the plan, the last 2–3 days before it shift into a carb load (see the nutrition Diet Modes section). Flag those days on the week table so the athlete sees the fuel plan change, not just the training taper.
+- **After the meet:** one full rest or light-recovery day, then ease back into base. Do not slam back into peak volume the day after a race.
 
 ---
 
@@ -148,6 +152,33 @@ activity level:
 - Assume the athlete is following the full swim + dryland plan — that's the load the numbers fuel.
 - All swim-nutrition rules stand: run the calculator (don't do arithmetic by hand), read its reference files for anything quantitative, adapt fully to dietary restrictions, youth/RED-S safeguards override everything.
 
+#### Diet Modes — cut, maintenance, bulk
+
+Every athlete's nutrition runs in one of three modes. Pick the mode from the goal, then let the calendar (meet dates, weight focus) decide when it flexes. State the active mode in the plan so the athlete knows whether they are eating to lose, hold, or grow.
+
+- **Cut (deficit):** fitness goal is fat loss or "focused on weight." Modest deficit only, never a crash: roughly 10–20% below maintenance, protein held high to protect muscle, carbs timed around the hardest sessions so training quality survives. A cut never overrides youth or RED-S safeguards, and it never runs through a meet week.
+- **Maintenance:** performance-first athletes, in-season swimmers, and anyone at a bodyweight that already works. Calories at maintenance, macros balanced to the day's training load. This is also the default when the swimming goal and the weight goal disagree and you have chosen to prioritize the swimming.
+- **Bulk (surplus):** goal is muscle or weight gain. A lean surplus, roughly 5–15% above maintenance, biased toward training days, with the surplus parked in the peri-workout windows so it feeds work rather than fat.
+
+#### Metabolic (refeed) days on a cut
+
+A long cut stalls: training quality drops, hunger climbs, the scale sticks. Build in **metabolic days** (also called refeeds) to keep the metabolism and the athlete honest, especially when the client is focused primarily on weight.
+
+- On a cut, schedule a metabolic day every 7–10 days, and always place it on the week's hardest training day (the biggest swim, or a swim + lift double).
+- On that day, bring calories up to roughly maintenance by adding carbs, not fat or extra protein. It refills muscle glycogen, supports the hormones that a deficit suppresses, and buys a strong session.
+- Keep the deficit on every other day. One metabolic day inside a controlled week is a tool, not a cheat day, and it is not a green light to abandon the plan.
+- Maintenance and bulk athletes do not need metabolic days; their fuel is already at or above maintenance.
+
+#### Carb loading before a meet or event
+
+When the athlete has a meet, race, or open-water event coming up, the taper carries a carb load with it.
+
+- **Trigger:** any dated meet or race in the plan, for any athlete who is racing (not just weight-focused clients).
+- **Timing:** the final 2–3 days before the event, layered on top of the taper's reduced training volume.
+- **How:** raise carbohydrate intake toward the upper end swim-nutrition allows for the bodyweight, hold protein steady, and pull fat down slightly to make room. Favor familiar, easy-to-digest carbs; race week is not the time for new foods or fiber experiments.
+- **A cut pauses for the meet.** If a fat-loss client is racing, suspend the deficit for the carb-load days and return to it after the event. Racing flat to protect a deficit is a bad trade.
+- Note the carb-load days on the week table and in the day's Coach's Note so the athlete sees why the food changed.
+
 ---
 
 ## Output Formats
@@ -168,11 +199,16 @@ activity level:
 | Tue | Swim | Freestyle (endurance) | — | 1:00 |
 | ... | Rest | — | — | — |
 
-**Daily fuel:** ~X,XXX kcal · P XXX / C XXX / F XX  *(rest days: carbs −~XX g)*
+**Daily fuel:** [Cut / Maintenance / Bulk] · ~X,XXX kcal · P XXX / C XXX / F XX  *(rest days: carbs −~XX g)*
+[If a meet is inside the load window: **Carb load:** Thu–Fri before Sat's meet — carbs up, training down.]
+[If on a cut: **Metabolic day:** [the week's hardest day] — carbs to maintenance.]
 
 [2–4 sentences of coach's rationale: why the week is shaped this way for this athlete.
 No more than that — the table speaks.]
 ```
+
+**Style:** athlete-facing output never uses em dashes. Use a comma, a period, or a
+colon instead. This holds for the plan, every day's detail, and every coach's note.
 
 Then offer: "Want the full detail for any day — sets, lifts, and meals?"
 
