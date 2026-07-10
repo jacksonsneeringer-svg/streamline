@@ -6484,6 +6484,12 @@ function updateTrainingPage() {
   if (cta) cta.style.display = signedIn ? 'none' : 'flex';
   if (label) label.style.display = signedIn ? 'none' : '';
 
+  // Signed-out visitors only get the Overview tab; hide the gated views
+  // (showDashView also forces 'overview' for them as a backstop).
+  document.querySelectorAll('.dash-nav-item').forEach((item, i) => {
+    item.style.display = (signedIn || i === 0) ? '' : 'none';
+  });
+
   if (signedIn) {
     if (greeting) { greeting.textContent = 'Good to see you, ' + account.firstName + '.'; greeting.style.color = 'var(--deep)'; }
     if (sub) { sub.textContent = 'Here\'s your training overview for today.'; sub.style.color = 'var(--deep)'; }
@@ -6574,6 +6580,9 @@ function updateProfileNudges() {
 }
 
 function showDashView(view) {
+  // Signed-out visitors get the overview preview only; every other My
+  // Training view requires an account.
+  if (view !== 'overview' && !getAccount()) view = 'overview';
   const views = ['overview','swim','lift','meal','favorites','progress','log'];
   views.forEach(v => {
     const el = document.getElementById('dash-view-' + v);
@@ -10970,29 +10979,45 @@ async function handleNewsletterSubmit(event, source) {
   }
   #shark-bubble {
     position: absolute;
-    bottom: calc(100% - 26px);
+    bottom: calc(100% + 22px); /* fully clear of the shark's head */
     right: 18px;
     width: 296px;
     background: var(--white, #fff);
-    border: 1px solid var(--gray-100, #e8ecef);
-    border-radius: 16px;
+    border: 2.5px solid var(--deep, #0a2540);
+    border-radius: 20px;
     padding: 0.9rem 1.05rem 1rem;
     box-shadow: 0 14px 36px rgba(10, 37, 64, 0.18);
     pointer-events: auto;
-    transform-origin: 82% 100%; /* grow up out of the shark's head */
-    opacity: 0; /* hidden until a .pop render */
+    transform-origin: 68% 100%; /* grow up out of the shark's head */
+    /* Hidden until a render: opacity for the pop animation, and display so an
+       unrendered bubble (signed-out visitor) can't intercept clicks. */
+    opacity: 0;
+    display: none;
   }
-  #shark-bubble::after { /* tail pointing down at the shark */
+  /* Comic-book tail: an outlined triangle coming out of the bottom of the
+     bubble, pointing down at the shark's head. ::before draws the outline
+     triangle, ::after a slightly smaller white one on top of it. */
+  #shark-bubble::before {
     content: '';
     position: absolute;
-    bottom: -8.5px;
-    right: 44px;
-    width: 16px;
-    height: 16px;
-    background: var(--white, #fff);
-    border-right: 1px solid var(--gray-100, #e8ecef);
-    border-bottom: 1px solid var(--gray-100, #e8ecef);
-    transform: rotate(45deg);
+    bottom: -21px;
+    right: 82px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 21px 6px 0 26px;
+    border-color: var(--deep, #0a2540) transparent transparent transparent;
+  }
+  #shark-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    right: 85px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 14px 4px 0 18px;
+    border-color: var(--white, #fff) transparent transparent transparent;
   }
   #shark-bubble.pop {
     animation: shark-bubble-pop 0.5s cubic-bezier(0.22, 1.4, 0.36, 1) both;
@@ -11189,6 +11214,16 @@ async function handleNewsletterSubmit(event, source) {
   function renderSharkBubble() {
     const bubble = document.getElementById('shark-bubble');
     if (!bubble) return;
+    // Coach's notes are for account holders; signed-out visitors get the
+    // shark alone (no .pop class keeps the bubble at opacity 0).
+    if (typeof getAccount !== 'function' || !getAccount()) {
+      bubble.classList.remove('pop');
+      bubble.style.display = 'none';
+      bubble.innerHTML = '';
+      lastRenderedKey = '';
+      return;
+    }
+    bubble.style.display = 'block';
     const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
     const dayKey = sharkDayKey();
     const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
