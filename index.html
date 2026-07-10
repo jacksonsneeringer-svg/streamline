@@ -5150,8 +5150,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
   </main>
 </div>
-<!-- Optional pre-log note for the one-tap "Log This Swim / Workout" buttons -->
-<div id="log-note-overlay" style="display:none; position:fixed; inset:0; background:rgba(9,31,28,0.55); z-index:1200; align-items:center; justify-content:center; padding:1.5rem;" onclick="if(event.target===this)cancelPlanLog()">
+</div><!-- end page-my-training -->
+
+<!-- Optional pre-log note for the one-tap "Log This Swim / Workout" buttons.
+     Lives outside every .page container so it can appear on the public daily
+     swim-set / dryland pages, not just My Training. -->
+<div id="log-note-overlay" style="display:none; position:fixed; inset:0; background:rgba(9,31,28,0.55); z-index:3100; align-items:center; justify-content:center; padding:1.5rem;" onclick="if(event.target===this)cancelPlanLog()">
   <div style="background:var(--white); border-radius:var(--r-xl); padding:1.75rem 2rem; width:100%; max-width:460px; box-shadow:var(--shadow-xl);">
     <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Log Workout</p>
     <h3 style="color:var(--deep); margin-bottom:1rem;" id="log-note-title">Log this workout</h3>
@@ -5162,7 +5166,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </div>
   </div>
 </div>
-</div><!-- end page-my-training -->
 
 <!-- ══ SIGN IN PAGE ══ -->
 <div class="page" id="page-sign-in">
@@ -7368,7 +7371,7 @@ function dailyLogButtonHtml(kind, setId) {
   if (isPlanWorkoutLogged(setId)) {
     return `<span style="display:inline-flex; align-items:center; gap:0.6rem;">
       <span style="font-size:0.82rem; font-weight:700; color:var(--teal); white-space:nowrap;">✓ Logged today</span>
-      <button type="button" class="btn btn-outline-dark btn-sm" onclick="navigate('my-training'); showDashView('progress')">View Progress</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="closeSetDetail(); navigate('my-training'); showDashView('progress')">View Progress</button>
     </span>`;
   }
   return `<button type="button" class="btn btn-primary btn-sm" data-log-kind="${escHtml(kind)}" data-log-id="${escHtml(setId)}" onclick="logDailySet(this.dataset.logKind, this.dataset.logId)" title="Save this ${kind === 'swim' ? 'set' : 'workout'} to your training log">Log This ${kind === 'swim' ? 'Swim Set' : 'Workout'}</button>`;
@@ -7420,6 +7423,16 @@ function confirmDailyLog() {
     renderSwimSet(pending.level, _swimSetCache[pending.level]);
   } else if (pending.kind === 'dryland' && _drylandCache[pending.level]) {
     renderDryland(pending.level, _drylandCache[pending.level]);
+  }
+  // If logged from the archive / favorites set-detail modal, re-render it too so
+  // its Log button flips to "Logged today" without needing to reopen.
+  const setOverlay = document.getElementById('set-detail-overlay');
+  const setBody = document.getElementById('set-detail-body');
+  if (setOverlay && setOverlay.classList.contains('open') && setBody && _archiveSets[pending.setId]) {
+    setBody.innerHTML = pending.kind === 'swim'
+      ? swimSetMarkup(_archiveSets[pending.setId])
+      : drylandWorkoutMarkup(_archiveSets[pending.setId]);
+    updateFavButtons(pending.setId);
   }
   renderWorkoutLog();
   renderProgress();
@@ -9301,9 +9314,12 @@ function swimSetMarkup(data) {
         <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">~${escHtml(String(data.totalYards || ''))} yards &nbsp;·&nbsp; Est. ${escHtml(String(data.estimatedMinutes || ''))} min</p>
         ${focusCueHtml}
       </div>
-      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
-        ${favoriteButtonHtml(id)}
-        <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+      <div class="set-action-btns no-print" style="display:flex; flex-direction:column; gap:0.5rem; flex-shrink:0; align-items:flex-end;">
+        <div style="display:flex; gap:0.5rem;">
+          ${favoriteButtonHtml(id)}
+          <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+        </div>
+        ${dailyLogButtonHtml('swim', id)}
       </div>
     </div>
     <div class="set-block">${sectionsHtml}</div>
@@ -9881,9 +9897,12 @@ function drylandWorkoutMarkup(set) {
         <p style="font-size:0.86rem; color:var(--gray-400); margin-top:0.3rem;">${escHtml(metaBits.join('  ·  '))}${strokeLine}</p>
         ${focusCueHtml}
       </div>
-      <div class="set-action-btns no-print" style="display:flex; gap:0.5rem; flex-shrink:0;">
-        ${favoriteButtonHtml(id)}
-        <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+      <div class="set-action-btns no-print" style="display:flex; flex-direction:column; gap:0.5rem; flex-shrink:0; align-items:flex-end;">
+        <div style="display:flex; gap:0.5rem;">
+          ${favoriteButtonHtml(id)}
+          <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
+        </div>
+        ${data.isRestDay ? '' : dailyLogButtonHtml('dryland', id)}
       </div>
     </div>
     ${sectionsHtml}
@@ -10600,7 +10619,7 @@ async function handleNewsletterSubmit(event, source) {
 <style>
   #shark-mascot {
     position: fixed;
-    right: 6rem;
+    right: 3rem;
     bottom: 0;
     z-index: 50;
     display: none;
