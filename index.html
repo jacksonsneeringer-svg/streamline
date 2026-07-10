@@ -8767,6 +8767,13 @@ function cleanNote(note) {
   if (dash !== -1) t = t.slice(0, dash);
   return t.replace(/[\s,;:.\-]+$/, '').trim();
 }
+// A calorie-set label ("Cal 300", "Cal 500", …) is shown underlined with a
+// trailing colon: "Cal 300:". Run this AFTER escHtml — the label has no HTML
+// specials, so matching the escaped string is safe. An existing colon is
+// consumed so we never double it.
+function formatCalLabel(escaped) {
+  return String(escaped).replace(/\bCal (\d+)\b:?/gi, '<u>Cal $1:</u>');
+}
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-search-wrap')) closeNavSearch();
 });
@@ -8864,7 +8871,7 @@ function buildSetSectionsHtml(sections) {
     // descriptor text for every level; the effort is self-explanatory.
     const suppressSectionNote = /warm|cool/i.test(sec.name || '');
     const items = (sec.items || []).map(item => {
-      let h = `<div class="set-row">${escHtml(item.text)}</div>`;
+      let h = `<div class="set-row">${formatCalLabel(escHtml(item.text))}</div>`;
       const isEasy = /\beasy\b/i.test(item.text || '');
       const note = (suppressSectionNote || isEasy) ? '' : cleanNote(item.note);
       if (note) h += `<div class="set-note">${escHtml(note)}</div>`;
