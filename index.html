@@ -10980,6 +10980,8 @@ async function handleNewsletterSubmit(event, source) {
     display: block;
     width: 100%;
     height: auto;
+    pointer-events: auto;
+    cursor: pointer;
   }
   #shark-bubble {
     position: absolute;
@@ -11042,7 +11044,23 @@ async function handleNewsletterSubmit(event, source) {
     text-transform: uppercase;
     color: var(--teal, #1a7f8e);
     margin: 0 0 0.35rem;
+    padding-right: 1.4rem; /* keep clear of the close button */
   }
+  .shark-bubble-close {
+    position: absolute;
+    top: 7px;
+    right: 9px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: none;
+    font: 700 1.05rem/1 'DM Sans', sans-serif;
+    color: var(--deep, #0a2540);
+    opacity: 0.4;
+    cursor: pointer;
+  }
+  .shark-bubble-close:hover { opacity: 1; }
   .shark-bubble-text {
     font-size: 0.85rem;
     color: var(--deep, #0a2540);
@@ -11188,6 +11206,25 @@ async function handleNewsletterSubmit(event, source) {
     return h;
   }
 
+  // ── Dismissing the bubble ──────────────────────────────────────────────
+  // The X hides the bubble for the rest of the day (it comes back when the
+  // note rolls over at 12:01 AM PT). Clicking the shark brings it back early.
+  const BUBBLE_DISMISS_KEY = 'sharkBubbleDismissedDay';
+
+  function bubbleDismissedToday() {
+    try { return localStorage.getItem(BUBBLE_DISMISS_KEY) === sharkDayKey(); } catch (e) { return false; }
+  }
+
+  function dismissBubble() {
+    try { localStorage.setItem(BUBBLE_DISMISS_KEY, sharkDayKey()); } catch (e) {}
+    renderSharkBubble();
+  }
+
+  function recallBubble() {
+    try { localStorage.removeItem(BUBBLE_DISMISS_KEY); } catch (e) {}
+    renderSharkBubble();
+  }
+
   // On the swim view, point the day's link at an article matching today's
   // planned set (a freestyle set links freestyle tips, a kick set links the
   // kickboard guide, and so on). Falls back to the note's own link.
@@ -11227,9 +11264,18 @@ async function handleNewsletterSubmit(event, source) {
       lastRenderedKey = '';
       return;
     }
+    const dayKey = sharkDayKey();
+    // Dismissed via the X: stay hidden until the note rolls over to the next
+    // day (the minute interval below re-renders then) or the shark is clicked.
+    if (bubbleDismissedToday()) {
+      bubble.classList.remove('pop');
+      bubble.style.display = 'none';
+      bubble.innerHTML = '';
+      lastRenderedKey = currentView + '|' + dayKey;
+      return;
+    }
     bubble.style.display = 'block';
     const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
-    const dayKey = sharkDayKey();
     const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
 
     let article = entry.article || null;
@@ -11237,9 +11283,11 @@ async function handleNewsletterSubmit(event, source) {
     const label = KIND_LABELS[entry.kind] || KIND_LABELS.note;
 
     bubble.innerHTML = `
+      <button class="shark-bubble-close" type="button" aria-label="Hide the coach's note until tomorrow">×</button>
       <p class="shark-bubble-label">${label}</p>
       <p class="shark-bubble-text">${entry.text}</p>
       ${article && SHARK_ARTICLES[article] ? `<a class="shark-bubble-link" href="#${article}" onclick="return navigate('${article}')">${SHARK_ARTICLES[article]} →</a>` : ''}`;
+    bubble.querySelector('.shark-bubble-close').addEventListener('click', dismissBubble);
     lastRenderedKey = currentView + '|' + dayKey;
 
     // Restart the pop animation on every render (each page/view visit).
@@ -11280,6 +11328,10 @@ async function handleNewsletterSubmit(event, source) {
         }
       }).observe(page, { attributes: true, attributeFilter: ['class'] });
     });
+
+    // Clicking the shark brings a dismissed bubble back (and replays the pop).
+    const mascotImg = document.querySelector('#shark-mascot img');
+    if (mascotImg) mascotImg.addEventListener('click', recallBubble);
 
     // Handle initial load
     const active = document.querySelector('.page.active');
