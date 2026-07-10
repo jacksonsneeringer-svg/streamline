@@ -6683,7 +6683,40 @@ function _briefFmtHour(dt) {
 }
 
 // City name or US ZIP -> { lat, lon, name }. ZIP goes through zippopotam.us;
-// anything else through Open-Meteo's geocoder. Returns null if nothing matches.
+// anything else through Open-Meteo's geocoder. A bare city name that exists in
+// several countries resolves to the US one ("Paris" means Paris, Texas), since
+// most athletes here are US-based. Adding a state or country after a comma
+// ("Paris, France" / "Portland, ME") overrides that. Returns null on no match.
+const US_STATE_NAMES = {
+  al:'alabama', ak:'alaska', az:'arizona', ar:'arkansas', ca:'california', co:'colorado',
+  ct:'connecticut', de:'delaware', fl:'florida', ga:'georgia', hi:'hawaii', id:'idaho',
+  il:'illinois', in:'indiana', ia:'iowa', ks:'kansas', ky:'kentucky', la:'louisiana',
+  me:'maine', md:'maryland', ma:'massachusetts', mi:'michigan', mn:'minnesota',
+  ms:'mississippi', mo:'missouri', mt:'montana', ne:'nebraska', nv:'nevada',
+  nh:'new hampshire', nj:'new jersey', nm:'new mexico', ny:'new york',
+  nc:'north carolina', nd:'north dakota', oh:'ohio', ok:'oklahoma', or:'oregon',
+  pa:'pennsylvania', ri:'rhode island', sc:'south carolina', sd:'south dakota',
+  tn:'tennessee', tx:'texas', ut:'utah', vt:'vermont', va:'virginia', wa:'washington',
+  wv:'west virginia', wi:'wisconsin', wy:'wyoming', dc:'district of columbia'
+};
+
+function _geoMatchesQualifier(g, q) {
+  q = String(q || '').toLowerCase().replace(/\./g, '').trim();
+  if (!q) return true;
+  if (q === 'us' || q === 'usa' || q === 'united states' || q === 'america') return g.country_code === 'US';
+  if (q === 'uk' || q === 'great britain') return g.country_code === 'GB';
+  const admin1 = (g.admin1 || '').toLowerCase();
+  if (g.country_code === 'US' && US_STATE_NAMES[q] === admin1) return true;
+  return admin1 === q
+    || (g.country || '').toLowerCase() === q
+    || (g.country_code || '').toLowerCase() === q;
+}
+
+function _geoDisplayName(g) {
+  const region = g.country_code === 'US' ? g.admin1 : (g.country || g.admin1);
+  return g.name + (region ? ', ' + region : '');
+}
+
 async function geocodeLocation(loc) {
   loc = String(loc || '').trim();
   if (!loc) return null;
@@ -6701,12 +6734,22 @@ async function geocodeLocation(loc) {
       }
     } catch (e) { /* fall back to name search */ }
   }
+  // "City" or "City, State/Country". The geocoder only matches on the city
+  // name, so search that part and apply any qualifier to the results ourselves.
+  const parts = loc.split(',').map(s => s.trim()).filter(Boolean);
+  const cityName = parts[0] || loc;
+  const qualifier = parts.slice(1).join(' ');
   try {
-    const r = await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name=' + encodeURIComponent(loc));
+    const r = await fetch('https://geocoding-api.open-meteo.com/v1/search?count=10&language=en&format=json&name=' + encodeURIComponent(cityName));
     if (r.ok) {
       const d = await r.json();
-      const g = d.results && d.results[0];
-      if (g) return { lat: g.latitude, lon: g.longitude, name: g.name + (g.admin1 ? ', ' + g.admin1 : '') };
+      const results = (d && d.results) || [];
+      let g = null;
+      if (qualifier) g = results.find(x => _geoMatchesQualifier(x, qualifier)) || null;
+      // No qualifier (or it matched nothing): assume the US when the name is
+      // shared across countries; otherwise take the geocoder's best match.
+      if (!g) g = results.find(x => x.country_code === 'US') || results[0] || null;
+      if (g) return { lat: g.latitude, lon: g.longitude, name: _geoDisplayName(g) };
     }
   } catch (e) { /* no match */ }
   return null;
@@ -10909,7 +10952,7 @@ async function handleNewsletterSubmit(event, source) {
 }
 </script>
 
-<!-- ── Shark mascot (training pages only) ──────────────────────────────── -->
+<!-- ── Shark coach mascot + daily speech bubble (training pages only) ───── -->
 <style>
   #shark-mascot {
     position: fixed;
@@ -10925,13 +10968,77 @@ async function handleNewsletterSubmit(event, source) {
     width: 100%;
     height: auto;
   }
+  #shark-bubble {
+    position: absolute;
+    bottom: calc(100% - 26px);
+    right: 18px;
+    width: 296px;
+    background: var(--white, #fff);
+    border: 1px solid var(--gray-100, #e8ecef);
+    border-radius: 16px;
+    padding: 0.9rem 1.05rem 1rem;
+    box-shadow: 0 14px 36px rgba(10, 37, 64, 0.18);
+    pointer-events: auto;
+    transform-origin: 82% 100%; /* grow up out of the shark's head */
+    opacity: 0; /* hidden until a .pop render */
+  }
+  #shark-bubble::after { /* tail pointing down at the shark */
+    content: '';
+    position: absolute;
+    bottom: -8.5px;
+    right: 44px;
+    width: 16px;
+    height: 16px;
+    background: var(--white, #fff);
+    border-right: 1px solid var(--gray-100, #e8ecef);
+    border-bottom: 1px solid var(--gray-100, #e8ecef);
+    transform: rotate(45deg);
+  }
+  #shark-bubble.pop {
+    animation: shark-bubble-pop 0.5s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+  }
+  @keyframes shark-bubble-pop {
+    0%   { opacity: 0; transform: scale(0.15) translateY(14px); }
+    65%  { opacity: 1; transform: scale(1.05) translateY(-3px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shark-bubble.pop { animation-duration: 0.01s; }
+  }
+  .shark-bubble-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal, #1a7f8e);
+    margin: 0 0 0.35rem;
+  }
+  .shark-bubble-text {
+    font-size: 0.85rem;
+    color: var(--deep, #0a2540);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .shark-bubble-link {
+    display: inline-block;
+    margin-top: 0.55rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--teal, #1a7f8e);
+    text-decoration: none;
+    border-bottom: 1.5px solid currentColor;
+    padding-bottom: 1px;
+  }
+  .shark-bubble-link:hover { opacity: 0.75; }
   @media (max-width: 900px) {
     #shark-mascot { display: none !important; }
   }
 </style>
 
-<div id="shark-mascot" aria-hidden="true">
-  <img src="shark-coach.png" alt="LANE FOUR coach shark mascot">
+<div id="shark-mascot">
+  <div id="shark-bubble" role="status"></div>
+  <img src="shark-coach.png" alt="" aria-hidden="true">
 </div>
 
 <script>
@@ -10939,6 +11046,168 @@ async function handleNewsletterSubmit(event, source) {
   const SHARK_PAGES = new Set([
     'my-training'
   ]);
+
+  // ── Coach's daily notes ────────────────────────────────────────────────
+  // One note per My Training view per day, picked deterministically from the
+  // pools below, so revisiting a view shows the same note all day (no reshuffle
+  // on every load) while the bubble's pop animation still replays. Notes roll
+  // over at 12:01 AM Pacific. Copy stays free of em dashes like the rest of
+  // the athlete-facing text.
+
+  const KIND_LABELS = {
+    tip:   "Coach's Tip",
+    note:  "Coach's Note",
+    boost: 'From Your Coach',
+    read:  'Recommended Read'
+  };
+
+  // Internal blog page ids -> link text shown in the bubble.
+  const SHARK_ARTICLES = {
+    'freestyle-errors': 'Fix the 7 common freestyle mistakes',
+    'pull-buoy-basics': 'Pull buoy basics',
+    'kickboard-training': 'Kickboard training done right',
+    'swim-fins': 'How to train with fins properly',
+    'swim-snorkel': 'Swim Snorkel 101',
+    'swim-paddles': 'Use paddles without wrecking your shoulders',
+    'race-week-taper': 'Taper without losing speed',
+    'pre-swim-breakfast': 'What to eat before a morning swim',
+    'supplements-swimmers': 'Supplements: what actually works',
+    'live-like-katie-ledecky': 'Live like Katie Ledecky for a day',
+    'morning-vs-afternoon-practice': 'Morning vs. afternoon practice'
+  };
+
+  const SHARK_LINES = {
+    overview: [
+      { kind: 'tip',   text: 'Before you open today\'s plan, drink a glass of water. Most swimmers start the day already behind on hydration.' },
+      { kind: 'note',  text: 'Skim the whole day first: swim, dryland, meals. Knowing the full picture keeps you honest with your effort in each piece.' },
+      { kind: 'boost', text: 'Show up on the tired days. Anyone can train when they feel great; the season is won on the days you almost skipped.' },
+      { kind: 'read',  text: 'Ever wonder if the time of day you train actually matters? The science says more than you\'d think.', article: 'morning-vs-afternoon-practice' },
+      { kind: 'tip',   text: 'Pack your swim bag the night before. Removing one excuse at 5 AM is worth more than any pep talk.' },
+      { kind: 'boost', text: 'Small daily deposits beat heroic Saturdays. Do today\'s work, log it, and stack the days.' },
+      { kind: 'read',  text: 'Greatness up close looks boring: sleep, food, laps, repeat. Here\'s what a Ledecky day really takes.', article: 'live-like-katie-ledecky' }
+    ],
+    swim: [
+      { kind: 'tip',   text: 'Count your strokes per length on the first 100. If the count creeps up late in the main set, your catch is slipping.' },
+      { kind: 'note',  text: 'Warm-up pace should feel almost embarrassingly easy. If you\'re breathing hard before the main set, back it off.' },
+      { kind: 'tip',   text: 'Exhale fully underwater so the breath is just a quick inhale. Holding air is what makes you feel gassed early.', article: 'freestyle-errors' },
+      { kind: 'note',  text: 'Six streamlined kicks off every wall, every rep. Walls are free speed, and today\'s set has a lot of them.' },
+      { kind: 'boost', text: 'Technique you hold when you\'re tired is the only technique you really own. Fight for your form on the last rep.' },
+      { kind: 'read',  text: 'If your stroke falls apart when you breathe, a center-mount snorkel is the cheapest fix in swimming.', article: 'swim-snorkel' },
+      { kind: 'tip',   text: 'Read the whole set before you push off. Knowing where the hard rounds land lets you spend your energy on purpose.' }
+    ],
+    lift: [
+      { kind: 'tip',   text: 'Leave a rep in the tank on every set. Dryland is here to support your swimming, not to wreck tomorrow\'s practice.' },
+      { kind: 'note',  text: 'Warm your shoulders up before you touch a weight: band work and arm circles first, load second.' },
+      { kind: 'boost', text: 'Strong on land shows up as smooth in the water. This session is buying you your last 15 meters of the race.' },
+      { kind: 'tip',   text: 'Brace your core on every lift like you\'re holding a tight streamline off the wall. Same muscles, same payoff.' },
+      { kind: 'note',  text: 'Move with control. A slow, clean rep builds more swim-speed than a heavy, ugly one.' },
+      { kind: 'read',  text: 'Your shoulders carry the load in the pool too. Here\'s how to add resistance without hurting them.', article: 'swim-paddles' },
+      { kind: 'boost', text: 'Nobody claps for dryland. Do it anyway; it\'s the quietest work with the loudest results.' }
+    ],
+    meal: [
+      { kind: 'read',  text: 'Training early? What you eat before a morning swim can make or break the session.', article: 'pre-swim-breakfast' },
+      { kind: 'tip',   text: 'Get protein in within an hour of finishing practice. That window is when today\'s work turns into recovery.' },
+      { kind: 'note',  text: 'Sip water all day instead of chugging before practice. Your urine should run pale yellow, not apple juice.' },
+      { kind: 'read',  text: 'Before you buy another shiny tub of powder, see which supplements actually earn their price.', article: 'supplements-swimmers' },
+      { kind: 'tip',   text: 'Front-load carbs before your hardest session of the day. Fuel the work, don\'t just reward it after.' },
+      { kind: 'note',  text: 'Eat properly on rest days too. Recovery is when your body rebuilds, and rebuilding runs on food.' },
+      { kind: 'boost', text: 'Food is training you do with a fork. Hit today\'s plan like it\'s a main set.' }
+    ],
+    favorites: [
+      { kind: 'note',  text: 'Favorite the sets that beat you up a little. Repeating one in a month is the simplest fitness test there is.' },
+      { kind: 'tip',   text: 'Re-swim a favorited set every four to six weeks and compare times. Progress hides in the repeats.' },
+      { kind: 'boost', text: 'A good favorites list is a training diary of what worked. Curate it like it matters, because it does.' },
+      { kind: 'tip',   text: 'Save at least one easy recovery set here too. Future tired-you will thank present-you.' },
+      { kind: 'note',  text: 'If a meal here worked before a big session, that\'s not luck. Keep it in the rotation.' }
+    ],
+    progress: [
+      { kind: 'boost', text: 'Don\'t compare today to yesterday. Compare this month to last month; that\'s where the real trend lives.' },
+      { kind: 'note',  text: 'Streaks are great, but consistency per week beats perfection per day. Three solid sessions every week wins the year.' },
+      { kind: 'tip',   text: 'Log the bad sessions too. A chart with only the good days is a story, not data.' },
+      { kind: 'read',  text: 'Want to see what a lifetime of logged consistency looks like? Study how Ledecky builds a day.', article: 'live-like-katie-ledecky' },
+      { kind: 'boost', text: 'The black line doesn\'t care about motivation, only attendance. Your numbers here are proof you kept showing up.' },
+      { kind: 'note',  text: 'Watch your weekly yardage trend, not any single day. Fitness is built on the average, not the outlier.' },
+      { kind: 'read',  text: 'If your numbers dip at dawn practices, it might not be you. Practice timing changes performance.', article: 'morning-vs-afternoon-practice' }
+    ],
+    log: [
+      { kind: 'tip',   text: 'Log your workout right after practice while the details are fresh. Tonight, that 6x100 set will be a blur.' },
+      { kind: 'note',  text: 'Honest yardage only. The log is for you, and rounding up only cheats the person reading it next month.' },
+      { kind: 'tip',   text: 'Add a quick note about how the session felt. Six weeks from now, "felt smooth" vs "shoulders heavy" is gold.' },
+      { kind: 'boost', text: 'Every entry here is a brick in the wall. Unremarkable days, stacked, are what remarkable seasons are made of.' },
+      { kind: 'note',  text: 'Missed a day? Log the gap and move on. The record matters more than the streak.' }
+    ]
+  };
+
+  let currentView = 'overview';
+  let lastRenderedKey = ''; // view|day of what's on screen now
+
+  // Day key in Pacific time, shifted back one minute so the note rolls over at
+  // 12:01 AM PT rather than midnight.
+  function sharkDayKey() {
+    try {
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit'
+      }).format(new Date(Date.now() - 60 * 1000));
+    } catch (e) {
+      return new Date(Date.now() - 60 * 1000).toDateString();
+    }
+  }
+
+  function sharkHash(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return h;
+  }
+
+  // On the swim view, point the day's link at an article matching today's
+  // planned set (a freestyle set links freestyle tips, a kick set links the
+  // kickboard guide, and so on). Falls back to the note's own link.
+  function swimFocusArticle() {
+    try {
+      const day = (typeof planToday === 'function') ? planToday() : null;
+      if (!day || !day.swimSet) return null;
+      const txt = [
+        day.swim && day.swim.focus, day.swim && day.swim.secondary,
+        day.swimSet.title, day.swimSet.focusCue,
+        // _trainingPlan is a top-level `let` in an earlier script, so it's a
+        // global lexical binding rather than a window property.
+        (typeof _trainingPlan !== 'undefined' && _trainingPlan) ? _trainingPlan.phaseLabel : ''
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (/taper|race week|meet/.test(txt)) return 'race-week-taper';
+      if (/kick/.test(txt)) return 'kickboard-training';
+      if (/pull|buoy/.test(txt)) return 'pull-buoy-basics';
+      if (/paddle/.test(txt)) return 'swim-paddles';
+      if (/fin(s|\b)/.test(txt)) return 'swim-fins';
+      if (/snorkel/.test(txt)) return 'swim-snorkel';
+      if (/free/.test(txt)) return 'freestyle-errors';
+      if (/technique|drill|form/.test(txt)) return 'swim-snorkel';
+      if (/distance|endurance|aerobic/.test(txt)) return 'live-like-katie-ledecky';
+      return null;
+    } catch (e) { return null; }
+  }
+
+  function renderSharkBubble() {
+    const bubble = document.getElementById('shark-bubble');
+    if (!bubble) return;
+    const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
+    const dayKey = sharkDayKey();
+    const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
+
+    let article = entry.article || null;
+    if (currentView === 'swim') article = swimFocusArticle() || article;
+    const label = KIND_LABELS[entry.kind] || KIND_LABELS.note;
+
+    bubble.innerHTML = `
+      <p class="shark-bubble-label">${label}</p>
+      <p class="shark-bubble-text">${entry.text}</p>
+      ${article && SHARK_ARTICLES[article] ? `<a class="shark-bubble-link" href="#${article}" onclick="return navigate('${article}')">${SHARK_ARTICLES[article]} →</a>` : ''}`;
+    lastRenderedKey = currentView + '|' + dayKey;
+
+    // Restart the pop animation on every render (each page/view visit).
+    bubble.classList.remove('pop');
+    void bubble.offsetWidth;
+    bubble.classList.add('pop');
+  }
 
   function setVisible(on) {
     const el = document.getElementById('shark-mascot');
@@ -10948,6 +11217,19 @@ async function handleNewsletterSubmit(event, source) {
 
   function onPageChange(pageId) {
     setVisible(SHARK_PAGES.has(pageId));
+  }
+
+  // Re-render (and pop) whenever the user moves between My Training views.
+  // showPage('my-training') calls showDashView('overview') on every visit, so
+  // this also covers arriving at the page itself.
+  const _origShowDashView = window.showDashView;
+  if (typeof _origShowDashView === 'function') {
+    window.showDashView = function (view) {
+      const out = _origShowDashView.apply(this, arguments);
+      if (SHARK_LINES[view]) currentView = view;
+      renderSharkBubble();
+      return out;
+    };
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -10963,6 +11245,12 @@ async function handleNewsletterSubmit(event, source) {
     // Handle initial load
     const active = document.querySelector('.page.active');
     if (active) onPageChange(active.id.replace('page-', ''));
+    if (active && SHARK_PAGES.has(active.id.replace('page-', ''))) renderSharkBubble();
+
+    // If the page is left open across 12:01 AM PT, swap in the new day's note.
+    setInterval(() => {
+      if (lastRenderedKey && lastRenderedKey !== currentView + '|' + sharkDayKey()) renderSharkBubble();
+    }, 60 * 1000);
   });
 }());
 </script>
