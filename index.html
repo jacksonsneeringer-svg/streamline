@@ -1628,6 +1628,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   transition: all 0.15s;
 }
 .dash-nav-item:hover { color: var(--white); background: rgba(93,219,201,0.06); }
+/* Signed-out visitors see every view in the sidebar but can't click into the
+   gated ones (showDashView also refuses them as a backstop). */
+.dash-nav-item.locked { opacity: 0.45; cursor: not-allowed; }
+.dash-nav-item.locked:hover { color: rgba(255,255,255,0.42); background: none; }
 .dash-nav-item.active {
   color: var(--white);
   background: rgba(93,219,201,0.1);
@@ -6484,10 +6488,10 @@ function updateTrainingPage() {
   if (cta) cta.style.display = signedIn ? 'none' : 'flex';
   if (label) label.style.display = signedIn ? 'none' : '';
 
-  // Signed-out visitors only get the Overview tab; hide the gated views
-  // (showDashView also forces 'overview' for them as a backstop).
+  // Signed-out visitors see all the views in the sidebar, but everything
+  // beyond Overview is locked (showDashView forces 'overview' for them too).
   document.querySelectorAll('.dash-nav-item').forEach((item, i) => {
-    item.style.display = (signedIn || i === 0) ? '' : 'none';
+    item.classList.toggle('locked', !signedIn && i !== 0);
   });
 
   if (signedIn) {
