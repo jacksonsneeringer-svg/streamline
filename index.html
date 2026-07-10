@@ -5018,7 +5018,35 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
       </div>
       <div id="profile-nudge-overview"></div>
-      <!-- Personalized weekly plan
+      <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
+      <div class="dash-grid">
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Daily Briefing</p>
+          <div class="lock-overlay" id="lock-briefing"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily briefing: open pools near you and today's workout preview.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Unlock</a></div>
+          <div class="dash-card-content" id="content-briefing" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem;">Your personalized daily briefing will appear here, coming soon.</p></div>
+        </div>
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</p>
+          <div class="lock-overlay" id="lock-swim"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your swim set for today, customized to your skill level and training focus.</p><a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View Generic Set</a></div>
+          <div class="dash-card-content" id="content-swim" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized swim set is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('swim')">Open Full Set →</button></div>
+        </div>
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg> Today's Lift</p>
+          <div class="lock-overlay" id="lock-lift"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your dryland session matched to today's swim focus and your schedule.</p><a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View Generic Lift</a></div>
+          <div class="dash-card-content" id="content-lift" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized lift is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('lift')">Open Full Session →</button></div>
+        </div>
+        <div class="dash-card">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg> Meal Plan</p>
+          <div class="lock-overlay" id="lock-meal"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Meal recommendations based on your body profile, training load, and dietary preferences.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Set Up Profile</a></div>
+          <div class="dash-card-content" id="content-meal" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized meal plan is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('meal')">Open Meal Plan →</button></div>
+        </div>
+        <div class="dash-card span-2">
+          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</p>
+          <div class="lock-overlay" id="lock-progress" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div>
+          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Log your swims and lifts to see volume, streaks, and trends here.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
+        </div>
+      </div>
+      <!-- Personalized weekly plan, collapsed below today's cards
            (filled by renderTrainingPlan when signed in) -->
       <div id="dash-plan-section" style="display:none; margin-top:2rem;"></div>
     </div>
