@@ -2426,6 +2426,17 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .prog-bar-swim { fill: #279e8e; transition: opacity 0.15s; }
 .prog-bar-lift { fill: #b8842a; transition: opacity 0.15s; }
 .prog-bar-swim:hover, .prog-bar-lift:hover { opacity: 0.8; }
+.prog-week-tab { cursor: pointer; }
+.prog-week-tab text { fill: var(--teal); font-weight: 600; text-decoration: underline; }
+.prog-week-tab:hover text, .prog-week-tab:focus-visible text { fill: var(--deep); }
+.prog-week-tab:focus { outline: none; }
+.prog-chart-wrap { position: relative; }
+.prog-tip {
+  display: none; position: absolute; pointer-events: none; z-index: 5;
+  background: var(--deep); color: var(--white); white-space: nowrap;
+  font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.55rem;
+  border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
 .prog-legend { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
 .prog-legend span { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 600; color: var(--gray-500); }
 .log-del-btn { background: none; border: none; color: var(--gray-300); font-size: 1.15rem; line-height: 1; cursor: pointer; padding: 0.15rem 0.3rem; border-radius: var(--r-sm, 6px); flex-shrink: 0; }
@@ -5007,40 +5018,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
       </div>
       <div id="profile-nudge-overview"></div>
-      <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
-      <div class="dash-grid">
-        <div class="dash-card">
-          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Daily Briefing</p>
-          <h3 style="color:var(--deep);">Your Morning Plan</h3>
-          <div class="lock-overlay" id="lock-briefing"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Sign in to see your daily briefing: open pools near you and today's workout preview.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Unlock</a></div>
-          <div class="dash-card-content" id="content-briefing" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem;">Your personalized daily briefing will appear here, coming soon.</p></div>
-        </div>
-        <div class="dash-card">
-          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M2 12a5 5 0 005 5 8 8 0 015-5 8 8 0 015 5 5 5 0 005-5"/></svg> Today's Swim</p>
-          <h3 style="color:var(--deep);">Personal Swim Workout</h3>
-          <div class="lock-overlay" id="lock-swim"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your swim set for today, customized to your skill level and training focus.</p><a href="#swim-sets" class="btn btn-outline-dark btn-sm" onclick="navigate('swim-sets')">View Generic Set</a></div>
-          <div class="dash-card-content" id="content-swim" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized swim set is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('swim')">Open Full Set →</button></div>
-        </div>
-        <div class="dash-card">
-          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg> Today's Lift</p>
-          <h3 style="color:var(--deep);">Dryland Workout</h3>
-          <div class="lock-overlay" id="lock-lift"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Your dryland session matched to today's swim focus and your schedule.</p><a href="#dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View Generic Lift</a></div>
-          <div class="dash-card-content" id="content-lift" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized lift is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('lift')">Open Full Session →</button></div>
-        </div>
-        <div class="dash-card">
-          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg> Meal Plan</p>
-          <h3 style="color:var(--deep);">Today's Nutrition</h3>
-          <div class="lock-overlay" id="lock-meal"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><p>Meal recommendations based on your body profile, training load, and dietary preferences.</p><a href="#get-started" class="btn btn-primary btn-sm" onclick="navigate('get-started')">Set Up Profile</a></div>
-          <div class="dash-card-content" id="content-meal" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Your personalized meal plan is being built.</p><button class="btn btn-primary btn-sm" onclick="showDashView('meal')">Open Meal Plan →</button></div>
-        </div>
-        <div class="dash-card span-2">
-          <p class="dash-card-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px; margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Progress</p>
-          <h3 style="color:var(--deep);">Training Log &amp; Trends</h3>
-          <div class="lock-overlay" id="lock-progress" style="flex-direction:row; text-align:left; gap:1.5rem; flex-wrap:wrap;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><p style="font-weight:600; color:var(--gray-500); font-size:0.9rem; margin-bottom:0.25rem;">Log workouts, track your volume over time, and see your progress toward your goals.</p><p>Create an account to start logging.</p><a href="#get-started" class="btn btn-primary btn-sm" style="margin-top:0.75rem;" onclick="navigate('get-started')">Create Free Account</a></div></div>
-          <div class="dash-card-content" id="content-progress" style="display:none;"><p style="color:var(--gray-400); font-size:0.88rem; margin-bottom:0.75rem;">Log your swims and lifts to see volume, streaks, and trends here.</p><button class="btn btn-primary btn-sm" onclick="showDashView('progress')">Open Progress →</button></div>
-        </div>
-      </div>
-      <!-- Personalized weekly plan, collapsed below today's cards
+      <!-- Personalized weekly plan
            (filled by renderTrainingPlan when signed in) -->
       <div id="dash-plan-section" style="display:none; margin-top:2rem;"></div>
     </div>
@@ -6573,7 +6551,7 @@ function showDashView(view) {
     item.classList.toggle('active', views[i] === view);
   });
   if (view === 'favorites') renderTrainingFavorites();
-  if (view === 'progress') renderProgress();
+  if (view === 'progress') { _progWeek = null; renderProgress(); }
 }
 
 // ── Personalized training plan (My Training) ───────────────────────────────
@@ -7489,37 +7467,31 @@ function progressStats(logs) {
   return { weekSessions, weekMinutes, totalSessions: logs.length, totalMinutes, yards30, streak };
 }
 
-// Inline SVG chart: swim and lift minutes per week (paired, flush, color-coded
-// bars) for the last 8 weeks, with swim yardage as a line on a right-hand
-// axis. Hover tooltips via <title>.
-function progressChartSvg(logs) {
-  const monday = d => { const x = new Date(d); x.setHours(12, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
-  const weeks = [];
-  const thisMonday = monday(new Date());
-  for (let i = 7; i >= 0; i--) {
-    const ws = new Date(thisMonday); ws.setDate(ws.getDate() - i * 7);
-    weeks.push({ start: ws, swimMin: 0, liftMin: 0, yards: 0, sessions: 0 });
-  }
-  logs.forEach(l => {
-    const d = parseLogDate(l);
-    if (!d) return;
-    const t = monday(d).getTime();
-    const w = weeks.find(w => w.start.getTime() === t);
-    if (!w) return;
-    const mins = Number(l.duration) || 0;
-    if (l.type === 'Swim') w.swimMin += mins; else w.liftMin += mins;
-    w.yards += logYards(l);
-    w.sessions++;
-  });
-  const maxMin = Math.max(...weeks.map(w => Math.max(w.swimMin, w.liftMin)));
+// When set to a week's Monday timestamp, the Progress chart drills into that
+// single week's day-by-day breakdown instead of the 8-week overview.
+let _progWeek = null;
+function drillProgWeek(t) { _progWeek = Number(t); renderProgress(); }
+function progWeekBack() { _progWeek = null; renderProgress(); }
+
+const progMonday = d => { const x = new Date(d); x.setHours(12, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+
+// Shared inline-SVG renderer: swim and lift minutes as paired, flush,
+// color-coded bars, with a yardage line on a right-hand axis. `cols` is an
+// array of { label, swimMin, liftMin, yards }; `opts.tip(col)` builds the
+// tooltip prefix, and `opts.labelClick(col)` (optional) makes each x-axis
+// label a clickable drill-in target. Returns '' when there's no minute
+// volume to plot. Hover tooltips via initProgChartTip (bars/points carry
+// data-tip); native <title> is the no-JS fallback.
+function progBarLineChart(cols, opts) {
+  const maxMin = Math.max(...cols.map(c => Math.max(c.swimMin, c.liftMin)));
   if (!maxMin) return '';
   const niceMax = Math.max(60, Math.ceil(maxMin / 60) * 60);
-  const maxYd = Math.max(...weeks.map(w => w.yards));
+  const maxYd = Math.max(...cols.map(c => c.yards));
   const niceYd = Math.max(1000, Math.ceil(maxYd / 1000) * 1000);
   const ydLbl = v => v >= 1000 ? (v / 1000) + 'k' : String(v);
   const W = 640, H = 200, padL = 40, padR = 44, padT = 18, padB = 26;
   const plotW = W - padL - padR, plotH = H - padT - padB;
-  const slot = plotW / weeks.length;
+  const slot = plotW / cols.length;
   const barW = Math.min(22, slot * 0.3); // each of the flush pair
   const base = padT + plotH;
   const y = v => base - (v / niceMax) * plotH;
@@ -7534,23 +7506,117 @@ function progressChartSvg(logs) {
   const roundedBar = (x, yTop, cls, tip) => {
     if (yTop >= base) return '';
     const r = Math.min(3, base - yTop);
-    return `<path class="${cls}" d="M${x} ${base} L${x} ${yTop + r} Q${x} ${yTop} ${x + r} ${yTop} L${x + barW - r} ${yTop} Q${x + barW} ${yTop} ${x + barW} ${yTop + r} L${x + barW} ${base} Z"><title>${tip}</title></path>`;
+    return `<path class="${cls}" data-tip="${tip}" d="M${x} ${base} L${x} ${yTop + r} Q${x} ${yTop} ${x + r} ${yTop} L${x + barW - r} ${yTop} Q${x + barW} ${yTop} ${x + barW} ${yTop + r} L${x + barW} ${base} Z"><title>${tip}</title></path>`;
   };
-  const bars = weeks.map((w, i) => {
+  const bars = cols.map((c, i) => {
     const cx = padL + slot * i + slot / 2;
-    const lbl = (w.start.getMonth() + 1) + '/' + w.start.getDate();
-    return roundedBar(cx - barW, y(w.swimMin), 'prog-bar-swim', `Week of ${lbl}: ${w.swimMin} swim min`)
-      + roundedBar(cx, y(w.liftMin), 'prog-bar-lift', `Week of ${lbl}: ${w.liftMin} lift/dryland min`)
-      + `<text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--gray-400)">${lbl}</text>`;
+    const label = opts.labelClick
+      ? `<g class="prog-week-tab" onclick="${opts.labelClick(c)}" role="button" tabindex="0"><rect x="${cx - slot / 2}" y="${base + 4}" width="${slot}" height="${H - base - 4}" fill="transparent"/><text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10">${c.label}</text></g>`
+      : `<text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--gray-400)">${c.label}</text>`;
+    return roundedBar(cx - barW, y(c.swimMin), 'prog-bar-swim', `${opts.tip(c)}: ${c.swimMin} swim min`)
+      + roundedBar(cx, y(c.liftMin), 'prog-bar-lift', `${opts.tip(c)}: ${c.liftMin} lift/dryland min`)
+      + label;
   }).join('');
-  const pts = weeks.map((w, i) => ({ x: padL + slot * i + slot / 2, y: yYd(w.yards), w }));
+  const pts = cols.map((c, i) => ({ x: padL + slot * i + slot / 2, y: yYd(c.yards), c }));
   const linePath = pts.map((p, i) => (i ? 'L' : 'M') + p.x.toFixed(1) + ' ' + p.y.toFixed(1)).join(' ');
   const line = `<path d="${linePath}" fill="none" stroke="var(--deep)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`
     + pts.map(p => {
-      const lbl = (p.w.start.getMonth() + 1) + '/' + p.w.start.getDate();
-      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="var(--deep)" stroke="var(--white)" stroke-width="2"><title>Week of ${lbl}: ${p.w.yards.toLocaleString()} yards swum</title></circle>`;
+      const tip = `${opts.tip(p.c)}: ${p.c.yards.toLocaleString()} yards swum`;
+      // A transparent circle over each point gives a hover target bigger
+      // than the 3.5px dot itself.
+      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="var(--deep)" stroke="var(--white)" stroke-width="2"><title>${tip}</title></circle>
+        <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="10" fill="transparent" data-tip="${tip}"/>`;
     }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Swim and lift minutes per week with swim yardage, last 8 weeks" style="width:100%; height:auto; display:block;">${grid}${bars}${line}</svg>`;
+  return `<div class="prog-chart-wrap"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.aria}" style="width:100%; height:auto; display:block;">${grid}${bars}${line}</svg><div class="prog-tip"></div></div>`;
+}
+
+// Swim and lift minutes per week for the last 8 weeks. Each x-axis label is
+// clickable and drills into that week's day-by-day breakdown.
+function progressChartSvg(logs) {
+  const weeks = [];
+  const thisMonday = progMonday(new Date());
+  for (let i = 7; i >= 0; i--) {
+    const ws = new Date(thisMonday); ws.setDate(ws.getDate() - i * 7);
+    weeks.push({ start: ws, swimMin: 0, liftMin: 0, yards: 0, sessions: 0 });
+  }
+  logs.forEach(l => {
+    const d = parseLogDate(l);
+    if (!d) return;
+    const t = progMonday(d).getTime();
+    const w = weeks.find(w => w.start.getTime() === t);
+    if (!w) return;
+    const mins = Number(l.duration) || 0;
+    if (l.type === 'Swim') w.swimMin += mins; else w.liftMin += mins;
+    w.yards += logYards(l);
+    w.sessions++;
+  });
+  const cols = weeks.map(w => ({
+    label: (w.start.getMonth() + 1) + '/' + w.start.getDate(),
+    swimMin: w.swimMin, liftMin: w.liftMin, yards: w.yards, start: w.start
+  }));
+  return progBarLineChart(cols, {
+    tip: c => 'Week of ' + c.label,
+    aria: 'Swim and lift minutes per week with swim yardage, last 8 weeks',
+    labelClick: c => 'drillProgWeek(' + c.start.getTime() + ')'
+  });
+}
+
+// Swim and lift minutes per day for a single week (Mon–Sun), drilled into
+// from the weekly chart's x-axis labels.
+function progressWeekChartSvg(logs, mondayTime) {
+  const start = new Date(mondayTime); start.setHours(12, 0, 0, 0);
+  const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const days = names.map((name, i) => {
+    const d = new Date(start); d.setDate(d.getDate() + i);
+    return { name, date: d, swimMin: 0, liftMin: 0, yards: 0, sessions: 0 };
+  });
+  logs.forEach(l => {
+    const d = parseLogDate(l);
+    if (!d) return;
+    const day = days.find(x => x.date.getFullYear() === d.getFullYear() && x.date.getMonth() === d.getMonth() && x.date.getDate() === d.getDate());
+    if (!day) return;
+    const mins = Number(l.duration) || 0;
+    if (l.type === 'Swim') day.swimMin += mins; else day.liftMin += mins;
+    day.yards += logYards(l);
+    day.sessions++;
+  });
+  const cols = days.map(day => ({
+    label: day.name, swimMin: day.swimMin, liftMin: day.liftMin, yards: day.yards,
+    full: day.name + ' ' + (day.date.getMonth() + 1) + '/' + day.date.getDate()
+  }));
+  return progBarLineChart(cols, {
+    tip: c => c.full,
+    aria: 'Swim and lift minutes per day for the selected week'
+  });
+}
+
+// Instant hover tooltip for the weekly volume chart. Native SVG <title>
+// tooltips only show after a browser hover delay, so bars and points also
+// carry data-tip and this floats a label next to the pointer immediately.
+function initProgChartTip(scope) {
+  const box = scope.querySelector('.prog-chart-wrap');
+  if (!box) return;
+  const tip = box.querySelector('.prog-tip');
+  box.addEventListener('mousemove', e => {
+    const t = e.target.closest('[data-tip]');
+    if (!t) { tip.style.display = 'none'; return; }
+    tip.textContent = t.getAttribute('data-tip');
+    tip.style.display = 'block';
+    const r = box.getBoundingClientRect();
+    let x = e.clientX - r.left + 12;
+    if (x + tip.offsetWidth > r.width - 4) x = e.clientX - r.left - tip.offsetWidth - 12;
+    tip.style.left = x + 'px';
+    tip.style.top = (e.clientY - r.top - 32) + 'px';
+  });
+  box.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  // Enter/Space activates a focused week label (SVG groups don't do this natively).
+  box.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const tab = e.target.closest('.prog-week-tab');
+    if (!tab) return;
+    e.preventDefault();
+    tab.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  });
 }
 
 // ── Personal records (Progress view) ────────────────────────────────────────
@@ -7599,7 +7665,7 @@ function prSectionHtml() {
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1.1rem 1.25rem; margin-bottom:0.9rem;">
       <div class="form-row" style="gap:1rem;">
         <div class="form-group"><label class="form-label">Event</label><input type="text" class="form-input" id="pr-event" placeholder="e.g., 100 Free (SCY)" /></div>
-        <div class="form-group"><label class="form-label">Time</label><input type="text" class="form-input" id="pr-time" placeholder="e.g., 58.42 or 1:02.45" onkeydown="if(event.key==='Enter')addPR()" /></div>
+        <div class="form-group"><label class="form-label">Time</label><input type="text" class="form-input" id="pr-time" placeholder="e.g., 58.42 or 1:02.45" oninput="this.value=this.value.replace(/[^0-9:.]/g,'')" onkeydown="if(event.key==='Enter')addPR()" /></div>
         <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="pr-date" value="${localISODate()}" /></div>
       </div>
       <div style="display:flex; gap:0.6rem; margin-top:0.9rem;">
@@ -7651,7 +7717,23 @@ function renderProgress() {
       <p style="font-weight:700; color:var(--deep); font-size:1.25rem; line-height:1.1;">${escHtml(String(val))}</p>
       ${sub ? `<p style="font-size:0.78rem; color:var(--gray-400); margin-top:0.25rem;">${escHtml(String(sub))}</p>` : ''}
     </div>`).join('');
-  const chart = progressChartSvg(logs);
+  const drilled = _progWeek != null;
+  let chart, chartLabel, chartSub, emptyMsg, backBtn = '';
+  if (drilled) {
+    const ws = new Date(_progWeek);
+    const we = new Date(_progWeek); we.setDate(we.getDate() + 6);
+    const range = ws.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' – ' + we.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    chart = progressWeekChartSvg(logs, _progWeek);
+    chartLabel = 'Week of ' + ws.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    chartSub = 'Swim and lift minutes per day (' + range + '). The line tracks yards swum on the right axis.';
+    emptyMsg = 'No workouts logged this week.';
+    backBtn = '<button class="btn btn-outline-dark btn-sm" style="margin-bottom:0.6rem;" onclick="progWeekBack()">← Back to 8 weeks</button>';
+  } else {
+    chart = progressChartSvg(logs);
+    chartLabel = 'Weekly Volume';
+    chartSub = 'Swim and lift minutes per week, last 8 weeks. The line tracks yards swum on the right axis. Tap a week to see its days.';
+    emptyMsg = 'Add durations to your logged workouts to see weekly volume here.';
+  }
   const legend = `<div class="prog-legend">
     <span><span style="width:10px; height:10px; border-radius:2px; background:#279e8e; display:inline-block;"></span>Swim (min)</span>
     <span><span style="width:10px; height:10px; border-radius:2px; background:#b8842a; display:inline-block;"></span>Lift / Dryland (min)</span>
@@ -7662,12 +7744,13 @@ function renderProgress() {
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem; margin-bottom:1.5rem;">
       <div style="display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
         <div>
-          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">Weekly Volume</p>
-          <p style="font-size:0.84rem; color:var(--gray-400); margin:0;">Swim and lift minutes per week, last 8 weeks. The line tracks yards swum on the right axis.</p>
+          ${backBtn}
+          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">${escHtml(chartLabel)}</p>
+          <p style="font-size:0.84rem; color:var(--gray-400); margin:0;">${escHtml(chartSub)}</p>
         </div>
         ${chart ? legend : ''}
       </div>
-      ${chart || '<p style="color:var(--gray-400); font-size:0.88rem; margin:0;">Add durations to your logged workouts to see weekly volume here.</p>'}
+      ${chart || `<p style="color:var(--gray-400); font-size:0.88rem; margin:0;">${escHtml(emptyMsg)}</p>`}
     </div>
     ${prSectionHtml()}
     <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:0.9rem;">
@@ -7676,6 +7759,7 @@ function renderProgress() {
     </div>
     <div style="display:grid; gap:0.6rem;">${logs.slice(0, 12).map(workoutLogRowHtml).join('')}</div>
     ${logs.length > 12 ? `<p style="font-size:0.82rem; color:var(--gray-400); margin-top:0.75rem;">Showing your latest 12 of ${logs.length} workouts.</p>` : ''}`;
+  initProgChartTip(wrap);
 }
 
 function updateProgressCard() {
@@ -10400,7 +10484,7 @@ async function handleNewsletterSubmit(event, source) {
     z-index: 50;
     display: none;
     pointer-events: none;
-    width: 150px;
+    width: 230px;
   }
   #shark-mascot img {
     display: block;
