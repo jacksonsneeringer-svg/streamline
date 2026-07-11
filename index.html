@@ -1182,8 +1182,6 @@ section { padding: 6rem 0; }
   padding: 3rem 0 0;
   border-top: 1px solid rgba(93,219,201,0.07);
 }
-/* Hidden on app-like pages on desktop; mobile override keeps it on every page */
-.site-footer.footer-hidden { display: none; }
 .footer-inner {
   width: 70%;
   margin: 0 auto;
@@ -2212,8 +2210,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   section { padding: 4rem 0; }
   .newsletter-input-row { flex-direction: column; }
   .ex-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
-  /* Footer shows on every page on mobile, including app-like pages */
-  .site-footer.footer-hidden { display: block; }
   /* Blog posts: divider between the date line and the article body */
   .post-header { border-bottom: 1px solid var(--gray-100); }
   /* Blog heroes: drop the notebook margin line + hole punches on mobile */
@@ -6382,7 +6378,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 </div><!-- end page-terms-of-use -->
 
-<!-- ── Shared Footer (hidden on account-created on desktop; always shown on mobile) ── -->
+<!-- ── Shared Footer (shown on every page) ── -->
 <footer class="site-footer" id="site-footer">
   <div class="footer-inner">
     <div class="footer-col">
@@ -6452,8 +6448,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
-const NO_FOOTER_PAGES = new Set(['account-created']);
-
 const PAGE_TITLES = {
   'home': 'LANE FOUR',
   'swim-sets': 'LANE FOUR | Swim Sets',
@@ -6520,11 +6514,6 @@ function showPage(pageId, allowSetup) {
     const href = a.getAttribute('href');
     if (href === '#' + pageId) a.classList.add('active');
   });
-  // Footer visibility (class-based so CSS can keep it visible on mobile)
-  const footer = document.getElementById('site-footer');
-  if (footer) {
-    footer.classList.toggle('footer-hidden', NO_FOOTER_PAGES.has(pageId));
-  }
   // Update browser tab title
   document.title = PAGE_TITLES[pageId] || 'LANE FOUR';
 
