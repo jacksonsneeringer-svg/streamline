@@ -1410,6 +1410,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 }
 .form-input,
 .form-select,
+/* Live character count shown under every multi-line text box */
+.char-counter {
+  font-family: var(--font-body); font-size: 0.7rem; color: var(--gray-400);
+  text-align: right; margin-top: 0.3rem;
+}
 .form-textarea {
   background: var(--white);
   border: 1.5px solid var(--gray-200);
@@ -2388,6 +2393,22 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   white-space: nowrap; cursor: pointer; transition: all 0.15s;
 }
 .level-tab.active { color: var(--lap); border-bottom-color: var(--lap); font-weight: 700; }
+/* Yellow marker on the level tab matching the signed-in swimmer's profile */
+.profile-level-dot {
+  display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+  background: #ffc93c; box-shadow: 0 0 0 3px rgba(255,201,60,0.22);
+  margin-right: 0.55rem; vertical-align: 1px; cursor: help;
+}
+/* Tooltip is fixed-position (appended to <body>) so the tab row's
+   overflow clipping can't cut it off. */
+.profile-level-tip {
+  position: fixed; z-index: 4000; max-width: 300px;
+  background: var(--deep); color: var(--white);
+  font-family: var(--font-body); font-size: 0.78rem; font-weight: 400;
+  letter-spacing: 0; text-transform: none; line-height: 1.55;
+  padding: 0.65rem 0.85rem; border-radius: var(--r-md);
+  box-shadow: var(--shadow-xl); pointer-events: none;
+}
 .set-block { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-lg); overflow: hidden; }
 .set-block-header { padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
 .set-label { font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pool-100, #e6faf7); font-size: 0.78rem; }
@@ -2536,6 +2557,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .archive-collapse.collapsed .archive-collapse-body { display: none; }
 /* Archive card actions + favorite controls */
 .archive-card-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+/* Clickable set/workout titles: open the same detail view as View Set/Workout */
+.archive-card-title {
+  font-family: var(--font-body); font-weight: 600; color: var(--deep); font-size: 0.95rem;
+  background: none; border: none; padding: 0; margin: 0; text-align: left; cursor: pointer;
+}
+.archive-card-title:hover { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
 .archive-safe-badge { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 3px; background: rgba(93,219,201,0.12); color: var(--teal); border: 1px solid rgba(93,219,201,0.3); }
 .fav-icon-btn { background: none; border: 1px solid var(--gray-200); border-radius: var(--r-sm); width: 34px; height: 34px; font-size: 1.05rem; line-height: 1; color: var(--gray-400); cursor: pointer; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; padding: 0; }
 .fav-icon-btn:hover { border-color: #d9a441; color: #d9a441; }
@@ -2556,6 +2583,30 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 /* Set detail modal */
 .set-detail-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.6); display: none; z-index: 3000; overflow-y: auto; padding: 3rem 1rem; }
 .set-detail-overlay.open { display: block; }
+/* First-visit welcome modal (account + newsletter prompt) */
+.welcome-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.62); display: none; z-index: 3500; overflow-y: auto; padding: 2.5rem 1rem; }
+.welcome-overlay.open { display: block; }
+.welcome-modal { background: var(--white); border-radius: 24px; max-width: 640px; margin: 0 auto; padding: 2.75rem 2.75rem 2.25rem; position: relative; box-shadow: var(--shadow-xl); }
+.welcome-close { position: absolute; top: 1.4rem; right: 1.4rem; background: none; border: none; color: var(--text); cursor: pointer; padding: 0.35rem; line-height: 0; }
+.welcome-close:hover { color: var(--teal); }
+.welcome-badge { display: inline-block; background: var(--teal); color: var(--white); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.45rem 1.1rem; border-radius: 999px; margin-bottom: 1.25rem; font-family: var(--font-body); }
+.welcome-modal h2 { font-family: var(--font-display); font-size: 2.3rem; color: var(--deep); margin: 0 0 0.75rem; }
+.welcome-sub { color: var(--text-muted); font-size: 1rem; line-height: 1.65; margin-bottom: 1.4rem; }
+.welcome-features { list-style: none; padding: 0; margin: 0 0 1.6rem; display: flex; flex-direction: column; gap: 0.85rem; }
+.welcome-features li { display: flex; gap: 0.85rem; align-items: flex-start; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+.welcome-features strong { color: var(--text); }
+.welcome-star { color: #ffc93c; font-size: 1.05rem; line-height: 1.5; flex-shrink: 0; }
+.welcome-note { background: var(--lap-pale); border-radius: var(--r-lg); padding: 1.1rem 1.3rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+.welcome-note a { color: var(--teal); font-weight: 600; text-decoration: underline; }
+.welcome-cta { display: block; width: 100%; text-align: center; font-size: 1rem; padding: 1rem 1.5rem; }
+.welcome-alt { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.9rem; }
+.welcome-alt a { color: var(--teal); font-weight: 600; }
+.welcome-dontshow { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; color: var(--text); margin-top: 1.4rem; cursor: pointer; font-weight: 600; font-family: var(--font-body); }
+.welcome-dontshow input { width: 18px; height: 18px; accent-color: var(--teal); cursor: pointer; }
+@media (max-width: 600px) {
+  .welcome-modal { padding: 2rem 1.4rem 1.75rem; }
+  .welcome-modal h2 { font-size: 1.8rem; }
+}
 .set-detail-modal { background: var(--off-white); border-radius: var(--r-xl); max-width: 780px; width: 100%; margin: 0 auto; padding: 2rem 2rem 2.5rem; position: relative; box-shadow: var(--shadow-xl); }
 .set-detail-close { position: absolute; top: 1rem; right: 1rem; width: 34px; height: 34px; border: none; background: var(--gray-100); border-radius: 50%; font-size: 1rem; cursor: pointer; color: var(--gray-400); display: flex; align-items: center; justify-content: center; }
 .set-detail-close:hover { background: var(--gray-200); color: var(--deep); }
@@ -2786,7 +2837,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 <!-- NAV -->
 <nav class="site-nav" id="site-nav">
   <div class="nav-inner">
-    <a href="#home" class="site-logo" onclick="navigate('home')">
+    <a href="#home" class="site-logo" onclick="return navigate('home')">
       <div class="logo-top-row">
         <svg class="logo-mark" width="110" height="25" viewBox="-14 0 148 33" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>
@@ -2835,7 +2886,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </button>
         <div class="nav-search-dropdown">
           <div class="nav-search-field" id="nav-search-field">
-            <input type="text" id="nav-search-input" placeholder="Search workouts, articles…" oninput="onSearchInput(this.value)" />
+            <input type="text" id="nav-search-input" maxlength="80" placeholder="Search workouts, articles…" oninput="onSearchInput(this.value)" />
             <button class="nav-search-close" onclick="closeNavSearch()">×</button>
           </div>
           <div class="nav-search-results" id="nav-search-results"></div>
@@ -4935,10 +4986,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <form id="contact-form" onsubmit="handleContactSubmit(event)">
             <p style="font-size:0.73rem; color:var(--gray-400); margin-bottom:1.1rem;">All fields are required.</p>
             <div class="form-row">
-              <div class="form-group"><label class="form-label" for="fname">First Name <span style="color:var(--teal);">*</span></label><input type="text" id="fname" class="form-input" placeholder="Alex" required /></div>
-              <div class="form-group"><label class="form-label" for="lname">Last Name <span style="color:var(--teal);">*</span></label><input type="text" id="lname" class="form-input" placeholder="Chen" required /></div>
+              <div class="form-group"><label class="form-label" for="fname">First Name <span style="color:var(--teal);">*</span></label><input type="text" id="fname" class="form-input" placeholder="Alex" maxlength="60" required /></div>
+              <div class="form-group"><label class="form-label" for="lname">Last Name <span style="color:var(--teal);">*</span></label><input type="text" id="lname" class="form-input" placeholder="Chen" maxlength="60" required /></div>
             </div>
-            <div class="form-group"><label class="form-label" for="cemail">Email Address <span style="color:var(--teal);">*</span></label><input type="email" id="cemail" class="form-input" placeholder="you@example.com" required /></div>
+            <div class="form-group"><label class="form-label" for="cemail">Email Address <span style="color:var(--teal);">*</span></label><input type="email" id="cemail" class="form-input" placeholder="you@example.com" maxlength="254" required /></div>
             <div class="form-group">
               <label class="form-label" for="csubject">Subject <span style="color:var(--teal);">*</span></label>
               <select id="csubject" class="form-input form-select" required>
@@ -4952,7 +5003,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
                 <option>Other</option>
               </select>
             </div>
-            <div class="form-group"><label class="form-label" for="cmessage">Message <span style="color:var(--teal);">*</span></label><textarea id="cmessage" class="form-input form-textarea" placeholder="Write your message here…" required></textarea></div>
+            <div class="form-group"><label class="form-label" for="cmessage">Message <span style="color:var(--teal);">*</span></label><textarea id="cmessage" class="form-input form-textarea" placeholder="Write your message here…" maxlength="1000" required></textarea></div>
             <div style="display:flex; align-items:center; gap:0.55rem; margin-bottom:1rem;">
               <input type="checkbox" id="newsletter-opt" style="width:auto; flex-shrink:0;" />
               <label for="newsletter-opt" style="letter-spacing:0; text-transform:none; font-size:0.82rem; color:var(--gray-400); font-family:var(--font-body); font-weight:400; margin:0; cursor:pointer;">Also sign me up for the LANE FOUR weekly newsletter.</label>
@@ -4982,7 +5033,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <div class="success-text-group">
             <h3 style="font-size:1.4rem; color:var(--deep); margin-bottom:0.5rem;">Message sent.</h3>
             <p style="font-size:0.88rem; color:var(--gray-400); max-width:360px; margin:0 auto 1.5rem;">Thanks for reaching out. We'll get back to you within 2 business days.</p>
-            <a href="#home" class="btn btn-outline-dark btn-sm" onclick="navigate('home')">Back to Home</a>
+            <a href="#home" class="btn btn-outline-dark btn-sm" onclick="return navigate('home')">Back to Home</a>
           </div>
         </div>
       </div>
@@ -5140,9 +5191,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
         <div class="form-row" style="gap:1.25rem; margin-bottom:1.25rem;">
           <div class="form-group"><label class="form-label">Duration (minutes)</label><input type="number" class="form-input" id="log-duration" placeholder="60" min="1" /></div>
-          <div class="form-group"><label class="form-label">Distance / Volume <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="text" class="form-input" id="log-distance" placeholder="e.g., 3500 yards" /></div>
+          <div class="form-group"><label class="form-label">Distance / Volume <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><input type="text" class="form-input" id="log-distance" placeholder="e.g., 3500 yards" maxlength="60" /></div>
         </div>
-        <div class="form-group" style="margin-bottom:1.25rem;"><label class="form-label">Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea class="form-input form-textarea" id="log-notes" rows="3" placeholder="How did it feel? Any PRs, struggles, or highlights…"></textarea></div>
+        <div class="form-group" style="margin-bottom:1.25rem;"><label class="form-label">Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea class="form-input form-textarea" id="log-notes" rows="3" maxlength="500" placeholder="How did it feel? Any PRs, struggles, or highlights…"></textarea></div>
         <button class="btn btn-primary" onclick="saveWorkoutLog()">Save Workout</button>
         <p id="log-saved-msg" style="display:none; margin-top:0.75rem; font-size:0.85rem; color:var(--teal); font-weight:600;">Workout saved!</p>
       </div>
@@ -5163,7 +5214,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div style="background:var(--white); border-radius:var(--r-xl); padding:1.75rem 2rem; width:100%; max-width:460px; box-shadow:var(--shadow-xl);">
     <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">Log Workout</p>
     <h3 style="color:var(--deep); margin-bottom:1rem;" id="log-note-title">Log this workout</h3>
-    <textarea class="form-input form-textarea" id="log-note-text" rows="3" placeholder="Add a note (optional)"></textarea>
+    <textarea class="form-input form-textarea" id="log-note-text" rows="3" maxlength="500" placeholder="Add a note (optional)"></textarea>
     <div style="display:flex; gap:0.6rem; justify-content:flex-end; margin-top:1rem;">
       <button class="btn btn-outline-dark btn-sm" onclick="cancelPlanLog()">Cancel</button>
       <button class="btn btn-primary btn-sm" onclick="confirmPlanLog()">Log Workout</button>
@@ -5182,12 +5233,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
         <div class="form-group">
           <label class="form-label">Email <span style="color:var(--lap);">*</span></label>
-          <input type="email" id="signin-email" class="form-input" placeholder="you@example.com" required onkeydown="if(event.key==='Enter')signIn()" />
+          <input type="email" id="signin-email" class="form-input" placeholder="you@example.com" maxlength="254" required onkeydown="if(event.key==='Enter')signIn()" />
         </div>
         <div class="form-group">
           <label class="form-label">Password <span style="color:var(--lap);">*</span></label>
           <div class="pw-field">
-            <input type="password" id="signin-password" class="form-input" placeholder="Your password" required onkeydown="if(event.key==='Enter')signIn()" />
+            <input type="password" id="signin-password" class="form-input" placeholder="Your password" maxlength="128" required onkeydown="if(event.key==='Enter')signIn()" />
             <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
           </div>
         </div>
@@ -5200,11 +5251,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <div id="forgot-local-mode" style="display:none; flex-direction:column; gap:0.85rem;">
             <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">Enter your account email above, then choose a new password.</p>
             <div class="pw-field">
-              <input type="password" id="forgot-new-password" class="form-input" placeholder="New password (8+ characters)" />
+              <input type="password" id="forgot-new-password" class="form-input" placeholder="New password (8+ characters)" maxlength="128" />
               <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
             </div>
             <div class="pw-field">
-              <input type="password" id="forgot-confirm-password" class="form-input" placeholder="Confirm new password" />
+              <input type="password" id="forgot-confirm-password" class="form-input" placeholder="Confirm new password" maxlength="128" />
               <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
             </div>
             <button type="button" class="btn btn-primary btn-sm" style="justify-content:center;" onclick="resetPassword()">Reset Password</button>
@@ -5227,14 +5278,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <div class="form-group">
           <label class="form-label">New Password</label>
           <div class="pw-field">
-            <input type="password" id="reset-new-password" class="form-input" placeholder="8+ characters" onkeydown="if(event.key==='Enter')submitPasswordReset()" />
+            <input type="password" id="reset-new-password" class="form-input" placeholder="8+ characters" maxlength="128" onkeydown="if(event.key==='Enter')submitPasswordReset()" />
             <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">Confirm New Password</label>
           <div class="pw-field">
-            <input type="password" id="reset-confirm-password" class="form-input" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')submitPasswordReset()" />
+            <input type="password" id="reset-confirm-password" class="form-input" placeholder="Repeat new password" maxlength="128" onkeydown="if(event.key==='Enter')submitPasswordReset()" />
             <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
           </div>
         </div>
@@ -5280,12 +5331,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       </div>
       <div class="setup-fields">
         <div class="form-row">
-          <div class="form-group"><label class="form-label required-dot">First Name</label><input type="text" id="gs-first-name" class="form-input" placeholder="Alex" /></div>
-          <div class="form-group"><label class="form-label required-dot">Last Name</label><input type="text" id="gs-last-name" class="form-input" placeholder="Johnson" /></div>
+          <div class="form-group"><label class="form-label required-dot">First Name</label><input type="text" id="gs-first-name" class="form-input" placeholder="Alex" maxlength="60" /></div>
+          <div class="form-group"><label class="form-label required-dot">Last Name</label><input type="text" id="gs-last-name" class="form-input" placeholder="Johnson" maxlength="60" /></div>
         </div>
-        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" id="gs-email" class="form-input" placeholder="you@example.com" /><p class="form-hint">We do not share or sell your personal information.</p></div>
-        <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" id="gs-password" class="form-input" placeholder="8+ characters" /></div>
-        <div class="form-group"><label class="form-label required-dot">Confirm Password</label><input type="password" id="gs-confirm-password" class="form-input" placeholder="Repeat password" /></div>
+        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" id="gs-email" class="form-input" placeholder="you@example.com" maxlength="254" /><p class="form-hint">We do not share or sell your personal information.</p></div>
+        <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" id="gs-password" class="form-input" placeholder="8+ characters" maxlength="128" /></div>
+        <div class="form-group"><label class="form-label required-dot">Confirm Password</label><input type="password" id="gs-confirm-password" class="form-input" placeholder="Repeat password" maxlength="128" /></div>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
           <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;"><input type="checkbox" id="gs-terms" style="margin-top:0.2rem; flex-shrink:0;" /><span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. I understand this platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span></label>
         </div>
@@ -5368,88 +5419,88 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <div id="speed-times-rows">
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">50 Free</span>
-                <input type="text" class="form-input" placeholder="e.g., 0:28.5" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="e.g., 0:26.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 0:28.5" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 0:26.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">100 Free</span>
-                <input type="text" class="form-input" placeholder="e.g., 1:02.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="e.g., 0:58.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 1:02.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 0:58.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">200 Free</span>
-                <input type="text" class="form-input" placeholder="e.g., 2:20.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="e.g., 2:10.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 2:20.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 2:10.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">500 Free</span>
-                <input type="text" class="form-input" placeholder="e.g., 6:10.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="e.g., 5:50.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 6:10.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="e.g., 5:50.0" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">100 Back</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">100 Breast</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">100 Fly</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">200 IM</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">400 IM</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">50 Back</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">200 Back</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">50 Breast</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">200 Breast</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">50 Fly</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">200 Fly</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; margin-bottom:0.5rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">1000 Free</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem 1rem; align-items:center;">
                 <span style="font-size:0.84rem; color:var(--deep);">1650 Free</span>
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
-                <input type="text" class="form-input" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
+                <input type="text" class="form-input" maxlength="12" placeholder="mm:ss.s" style="padding:0.45rem 0.65rem; font-size:0.84rem;" />
               </div>
             </div>
           </div>
@@ -5475,12 +5526,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <div class="chip" onclick="this.classList.toggle('selected')">None</div>
           </div>
         </div>
-        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-injury-notes" class="form-input form-textarea" rows="2" placeholder="Any details we should know: chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
+        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-injury-notes" class="form-input form-textarea" rows="2" maxlength="500" placeholder="Any details we should know: chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Allergies &amp; Dietary Restrictions</p>
           <div class="form-group"><label class="form-label">Dietary Style</label><select id="gs-dietary-style" class="form-input form-select"><option value="" disabled selected>Select…</option><option>No restrictions / omnivore</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Gluten-free</option><option>Dairy-free</option><option>Paleo / whole foods</option><option>Other (specify below)</option></select></div>
-          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Allergies &amp; Foods to Avoid</label><input type="text" id="gs-allergies" class="form-input" placeholder="e.g., peanuts, shellfish, tree nuts, soy" /><p class="form-hint">We will not include these in your meal recommendations.</p></div>
-          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Additional Dietary Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-dietary-notes" class="form-input form-textarea" rows="2" placeholder="Any other preferences or restrictions we should know about…" style="resize:vertical;"></textarea></div>
+          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Allergies &amp; Foods to Avoid</label><input type="text" id="gs-allergies" class="form-input" placeholder="e.g., peanuts, shellfish, tree nuts, soy" maxlength="200" /><p class="form-hint">We will not include these in your meal recommendations.</p></div>
+          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Additional Dietary Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-dietary-notes" class="form-input form-textarea" rows="2" maxlength="500" placeholder="Any other preferences or restrictions we should know about…" style="resize:vertical;"></textarea></div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Focus Areas</p>
@@ -5590,7 +5641,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location <span style="font-weight:400; letter-spacing:normal; text-transform:none; color:var(--text-muted); font-size:0.8rem;">helps us recommend outdoor or indoor training based on weather conditions</span></p>
           <div class="form-row">
-            <div class="form-group"><label class="form-label required-dot">City or ZIP</label><input type="text" id="gs-city" class="form-input" placeholder="Chicago or 60601" /></div>
+            <div class="form-group"><label class="form-label required-dot">City or ZIP</label><input type="text" id="gs-city" class="form-input" placeholder="Chicago or 60601" maxlength="80" /></div>
           </div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
@@ -6169,7 +6220,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">12. Contact</h2>
       <p style="margin-bottom:0.25rem;">For privacy-related questions, to exercise your rights, or to submit a data request:</p>
-      <p style="margin-bottom:0.1rem;"><strong>LANE FOUR</strong></p>
+      <p style="margin-bottom:0.1rem;"><strong>ronaldricomedia</strong></p>
       <p style="margin-bottom:0.1rem;">1875 Mission St Ste 103 #302, San Francisco, CA 94103</p>
       <p style="margin-bottom:0.1rem;">Email: <a href="mailto:support@winlanefour.com">support@winlanefour.com</a></p>
       <p>Or use our <a href="#contact" onclick="navigate('contact')">contact page</a>.</p>
@@ -6305,7 +6356,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <li>A statement that you have a good faith belief the use is not authorized by the copyright owner, its agent, or the law</li>
         <li>A statement under penalty of perjury that the information is accurate and you are authorized to act on behalf of the copyright owner</li>
       </ul>
-      <p style="margin-bottom:1.5rem;">Send DMCA notices to our Designated Copyright Agent: LANE FOUR, Attn: Copyright Agent, 1875 Mission St Ste 103 #302, San Francisco, CA 94103, support@winlanefour.com. Under 17 U.S.C. § 512(f), you may be liable for damages if you knowingly make material misrepresentations in a DMCA notification.</p>
+      <p style="margin-bottom:1.5rem;">Send DMCA notices to our Designated Copyright Agent: ronaldricomedia, Attn: Copyright Agent, 1875 Mission St Ste 103 #302, San Francisco, CA 94103, support@winlanefour.com. Under 17 U.S.C. § 512(f), you may be liable for damages if you knowingly make material misrepresentations in a DMCA notification.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">20. California Users and Residents</h2>
       <p style="margin-bottom:1.5rem;">If you are a California resident and have an unresolved complaint regarding our services, you may contact the Complaint Assistance Unit of the Division of Consumer Services of the California Department of Consumer Affairs in writing at 1625 North Market Blvd., Suite N 112, Sacramento, California 95834, or by telephone at (800) 952-5210 or (916) 445-1254.</p>
@@ -6321,7 +6372,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">24. Contact Us</h2>
       <p style="margin-bottom:0.25rem;">For questions about these Terms:</p>
-      <p style="margin-bottom:0.1rem;"><strong>LANE FOUR</strong></p>
+      <p style="margin-bottom:0.1rem;"><strong>ronaldricomedia</strong></p>
       <p style="margin-bottom:0.1rem;">1875 Mission St Ste 103 #302, San Francisco, CA 94103</p>
       <p style="margin-bottom:0.1rem;">Email: <a href="mailto:support@winlanefour.com">support@winlanefour.com</a></p>
       <p>Or use our <a href="#contact" onclick="navigate('contact')">contact page</a>.</p>
@@ -6331,7 +6382,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 </div><!-- end page-terms-of-use -->
 
-<!-- ── Shared Footer (hidden on my-training/account-created on desktop; always shown on mobile) ── -->
+<!-- ── Shared Footer (hidden on account-created on desktop; always shown on mobile) ── -->
 <footer class="site-footer" id="site-footer">
   <div class="footer-inner">
     <div class="footer-col">
@@ -6355,7 +6406,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div class="footer-newsletter-title">Newsletter</div>
       <p>Weekly swimming news, gear, and words of wisdom.</p>
       <form id="newsletter-footer-form" onsubmit="handleNewsletterSubmit(event,'footer')">
-        <input type="email" id="newsletter-footer-email" placeholder="Email address" class="newsletter-input footer-email-input" required />
+        <input type="email" id="newsletter-footer-email" placeholder="Email address" maxlength="254" class="newsletter-input footer-email-input" required />
         <button class="btn btn-gold btn-sm" type="submit" id="newsletter-footer-btn">Subscribe to the fast lane</button>
       </form>
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem; max-width:26rem; margin-left:auto; margin-right:auto;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of LANE FOUR, and to LANE FOUR's <a href="#terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="#privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
@@ -6368,6 +6419,29 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </div>
 </footer>
 
+<!-- ── First-visit welcome modal: prompts new visitors to create a free
+     account and join the newsletter. Never shown to signed-in users. ── -->
+<div class="welcome-overlay" id="welcome-overlay" onclick="if(event.target===this)closeWelcomeModal()">
+  <div class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <button type="button" class="welcome-close" onclick="closeWelcomeModal()" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="welcome-badge">Welcome</span>
+    <h2 id="welcome-title">More with an account</h2>
+    <p class="welcome-sub">You're browsing today's free training. Create a free account to unlock the features built around your swimming:</p>
+    <ul class="welcome-features">
+      <li><span class="welcome-star">★</span><span><strong>Personalized daily training</strong> tuned to your skill level, goals, and schedule</span></li>
+      <li><span class="welcome-star">★</span><span><strong>Favorites</strong> that save the sets and workouts you want to come back to</span></li>
+      <li><span class="welcome-star">★</span><span><strong>The Fast Lane newsletter</strong> with weekly swimming news, gear, and words of wisdom</span></li>
+      <li><span class="welcome-star">★</span><span><strong>Full set and workout archives</strong> you can filter by stroke, distance, and intensity</span></li>
+    </ul>
+    <div class="welcome-note">LANE FOUR is <strong>completely free</strong>. No subscription, no fees. We retain only the minimum user info needed to personalize your experience. See our <a href="#privacy-policy" onclick="return welcomeLinkClick('privacy-policy')">Privacy Policy</a> for details.</div>
+    <a href="#get-started" class="btn btn-gold welcome-cta" onclick="return welcomeCtaClick('get-started')">Create your free account</a>
+    <p class="welcome-alt">Already have an account? <a href="#sign-in" onclick="return welcomeCtaClick('sign-in')">Log in</a> &nbsp;·&nbsp; Just want the emails? <a href="#" onclick="return welcomeNewsletterClick()">Sign up for the newsletter</a></p>
+    <label class="welcome-dontshow"><input type="checkbox" id="welcome-dont-show" /> Don't show me this page again</label>
+  </div>
+</div>
+
 <div class="blog-editor-bar" id="blog-editor-bar">
   <span class="be-status">Edit mode</span>
   <span>Click any article text to edit.</span>
@@ -6378,7 +6452,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
 <script src="/api-config.js" onerror="window.STREAMLINE_API_URL=window.STREAMLINE_API_URL||''"></script>
 <script>
-const NO_FOOTER_PAGES = new Set(['my-training','account-created']);
+const NO_FOOTER_PAGES = new Set(['account-created']);
 
 const PAGE_TITLES = {
   'home': 'LANE FOUR',
@@ -6460,7 +6534,7 @@ function showPage(pageId, allowSetup) {
   // Trigger dynamic content loading when relevant pages are shown
   if (pageId === 'set-archives') { if (applyArchiveAuthGate()) { loadArchives(); refreshAllFavButtons(); } }
   if (pageId === 'dryland-archives') { if (applyDrylandArchiveAuthGate()) { loadDrylandArchives(); refreshAllFavButtons(); } }
-  if (pageId === 'swim-sets') { loadSwimSet('beginner'); refreshAllFavButtons(); }
+  if (pageId === 'swim-sets') { updateProfileLevelDot(); showSwimLevel(profileSwimLevelId() || 'beginner'); refreshAllFavButtons(); }
   if (pageId === 'dryland-workouts') initLiftPage();
   if (pageId === 'profile') renderProfilePage();
   if (pageId === 'my-training') { updateTrainingPage(); showDashView('overview'); renderWorkoutLog(); }
@@ -6471,7 +6545,12 @@ function navigate(pageId, allowSetup) {
   // Keep the pushed URL hash in sync with the redirect applied in showPage.
   if (pageId === 'get-started' && getAccount() && !allowSetup) pageId = 'my-training';
   showPage(pageId, allowSetup);
-  history.pushState(null, '', '#' + pageId);
+  // Home keeps the bare URL (winlanefour.com) with no '#home' hash.
+  if (pageId === 'home') {
+    history.pushState(null, '', location.pathname + location.search);
+  } else {
+    history.pushState(null, '', '#' + pageId);
+  }
   return false;
 }
 
@@ -8139,8 +8218,8 @@ function prSectionHtml() {
   const form = _prFormOpen ? `
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-lg); padding:1.1rem 1.25rem; margin-bottom:0.9rem;">
       <div class="form-row" style="gap:1rem;">
-        <div class="form-group"><label class="form-label">Event</label><input type="text" class="form-input" id="pr-event" placeholder="e.g., 100 Free (SCY)" /></div>
-        <div class="form-group"><label class="form-label">Time</label><input type="text" class="form-input" id="pr-time" placeholder="e.g., 58.42 or 1:02.45" oninput="this.value=this.value.replace(/[^0-9:.]/g,'')" onkeydown="if(event.key==='Enter')addPR()" /></div>
+        <div class="form-group"><label class="form-label">Event</label><input type="text" class="form-input" id="pr-event" placeholder="e.g., 100 Free (SCY)" maxlength="60" /></div>
+        <div class="form-group"><label class="form-label">Time</label><input type="text" class="form-input" id="pr-time" placeholder="e.g., 58.42 or 1:02.45" maxlength="12" oninput="this.value=this.value.replace(/[^0-9:.]/g,'')" onkeydown="if(event.key==='Enter')addPR()" /></div>
         <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="pr-date" value="${localISODate()}" /></div>
       </div>
       <div style="display:flex; gap:0.6rem; margin-top:0.9rem;">
@@ -8270,7 +8349,147 @@ function routeFromHash() {
 }
 
 window.addEventListener('popstate', routeFromHash);
-window.addEventListener('DOMContentLoaded', () => { routeFromHash(); updateNavButton(); initPasswordToggles(); });
+window.addEventListener('DOMContentLoaded', () => { routeFromHash(); updateNavButton(); initPasswordToggles(); maybeShowWelcomeModal(); });
+
+// ── First-visit welcome modal ───────────────────────────────────────────────
+// Signed-out visitors get a prompt to create a free account and join the
+// newsletter. Checking "Don't show me this page again" (or using any CTA)
+// silences it permanently; otherwise it stays quiet for the rest of the
+// session and may reappear on a later visit.
+const WELCOME_DISMISS_KEY = 'streamline_welcome_dismissed';
+
+function maybeShowWelcomeModal() {
+  if (getAccount()) return;
+  try {
+    if (localStorage.getItem(WELCOME_DISMISS_KEY)) return;
+    if (sessionStorage.getItem('streamline_welcome_shown')) return;
+  } catch (e) { return; }
+  // Don't interrupt someone already headed into the account/auth flow.
+  const page = (location.hash.replace('#', '').split('?')[0]) || 'home';
+  if (['sign-in', 'get-started', 'reset-password', 'account-created'].includes(page)) return;
+  setTimeout(() => {
+    if (getAccount()) return;
+    const overlay = document.getElementById('welcome-overlay');
+    if (!overlay) return;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    try { sessionStorage.setItem('streamline_welcome_shown', '1'); } catch (e) {}
+  }, 900);
+}
+
+function closeWelcomeModal() {
+  const overlay = document.getElementById('welcome-overlay');
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  const cb = document.getElementById('welcome-dont-show');
+  if (cb && cb.checked) {
+    try { localStorage.setItem(WELCOME_DISMISS_KEY, '1'); } catch (e) {}
+  }
+}
+
+// CTA clicks count as "I've seen this": never show the modal again.
+function welcomeCtaClick(page) {
+  try { localStorage.setItem(WELCOME_DISMISS_KEY, '1'); } catch (e) {}
+  closeWelcomeModal();
+  navigate(page);
+  return false;
+}
+
+// Reading the privacy policy is not a dismissal; the modal may return later.
+function welcomeLinkClick(page) {
+  closeWelcomeModal();
+  navigate(page);
+  return false;
+}
+
+function welcomeNewsletterClick() {
+  try { localStorage.setItem(WELCOME_DISMISS_KEY, '1'); } catch (e) {}
+  closeWelcomeModal();
+  const input = document.getElementById('newsletter-footer-email');
+  if (input) {
+    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => input.focus({ preventScroll: true }), 450);
+  }
+  return false;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('welcome-overlay');
+    if (overlay && overlay.classList.contains('open')) closeWelcomeModal();
+  }
+});
+
+// ── Text input hardening ────────────────────────────────────────────────────
+// Every text box gets a fixed character cap and accepts plain text only:
+// anything tag-like (<script>, <img …>, event handlers, etc.) and control
+// characters are stripped as the user types or pastes. Values are also
+// HTML-escaped at render time (escHtml), so nothing typed in a field can ever
+// execute as markup.
+
+const TEXT_MAXLEN_BY_TYPE = { text: 120, search: 120, email: 254, password: 128, tel: 30, url: 200 };
+const TEXTAREA_MAXLEN = 1000;
+
+function sanitizePlainText(value) {
+  return String(value)
+    .replace(/<[^>]*>/g, '')
+    .replace(/[<>]/g, '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+}
+
+function textFieldMax(el) {
+  if (el.maxLength && el.maxLength > 0) return el.maxLength;
+  if (el.tagName === 'TEXTAREA') return TEXTAREA_MAXLEN;
+  return TEXT_MAXLEN_BY_TYPE[(el.type || 'text').toLowerCase()] || 0;
+}
+
+// Stamp a maxlength onto every text field present at load. Fields injected
+// later are still capped by the delegated input listener below.
+function applyTextFieldGuards() {
+  document.querySelectorAll('input, textarea').forEach(el => {
+    if (el.maxLength && el.maxLength > 0) return;
+    const max = textFieldMax(el);
+    if (max) el.maxLength = max;
+  });
+}
+
+// Live "used / max" character count shown under every multi-line text box.
+function updateCharCounter(el) {
+  if (el.tagName !== 'TEXTAREA') return;
+  let counter = el._charCounter;
+  if (!counter || !counter.isConnected) {
+    counter = document.createElement('div');
+    counter.className = 'char-counter';
+    el.insertAdjacentElement('afterend', counter);
+    el._charCounter = counter;
+  }
+  counter.textContent = el.value.length + ' / ' + (textFieldMax(el) || TEXTAREA_MAXLEN);
+}
+
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (!el || (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA')) return;
+  const type = el.tagName === 'TEXTAREA' ? 'textarea' : (el.type || 'text').toLowerCase();
+  if (type !== 'textarea' && !(type in TEXT_MAXLEN_BY_TYPE)) return;
+  const max = textFieldMax(el);
+  // Passwords keep their exact characters (they are hashed, never rendered);
+  // everything else is reduced to plain text.
+  let clean = type === 'password' ? String(el.value) : sanitizePlainText(el.value);
+  if (max && clean.length > max) clean = clean.slice(0, max);
+  if (clean !== el.value) {
+    const removed = el.value.length - clean.length;
+    let pos = clean.length;
+    try { pos = Math.max(0, (el.selectionStart ?? clean.length) - removed); } catch (err) {}
+    el.value = clean;
+    try { el.setSelectionRange(pos, pos); } catch (err) {}
+  }
+  updateCharCounter(el);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  applyTextFieldGuards();
+  document.querySelectorAll('textarea').forEach(updateCharCounter);
+});
 
 // ── Account & Profile ──────────────────────────────────────────────────────
 
@@ -9256,6 +9475,68 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// ── Profile skill level on the daily swim sets page ────────────────────────
+// Signed-in swimmers with a completed profile land on their own level's tab,
+// which carries a yellow dot; hovering (or focusing) the dot explains that the
+// level comes from their profile settings.
+
+function profileSwimLevelId() {
+  if (!getAccount() || profileIncomplete()) return null;
+  const skill = String(getProfile().skillLevel || '').toLowerCase();
+  return ['beginner', 'intermediate', 'advanced', 'pro'].find(l => skill.startsWith(l)) || null;
+}
+
+function updateProfileLevelDot() {
+  hideProfileLevelTip();
+  document.querySelectorAll('.profile-level-dot').forEach(d => d.remove());
+  const level = profileSwimLevelId();
+  const tab = level && document.getElementById('swim-tab-' + level);
+  if (!tab) return;
+  const article = (level === 'intermediate' || level === 'advanced') ? 'an' : 'a';
+  const dot = document.createElement('span');
+  dot.className = 'profile-level-dot';
+  dot.setAttribute('tabindex', '0');
+  dot.setAttribute('role', 'img');
+  dot.setAttribute('aria-label', 'This is the skill level from your profile');
+  dot.dataset.tip = 'Your profile indicates you are ' + article + ' ' + level +
+    '-level swimmer. You can change this in your profile settings if you believe this is inaccurate.';
+  tab.insertBefore(dot, tab.firstChild);
+}
+
+let _profileLevelTip = null;
+
+function showProfileLevelTip(dot) {
+  hideProfileLevelTip();
+  const tip = document.createElement('div');
+  tip.className = 'profile-level-tip';
+  tip.textContent = dot.dataset.tip || '';
+  document.body.appendChild(tip);
+  const r = dot.getBoundingClientRect();
+  tip.style.top = (r.bottom + 10) + 'px';
+  tip.style.left = Math.max(12, Math.min(r.left + r.width / 2 - tip.offsetWidth / 2,
+    window.innerWidth - tip.offsetWidth - 12)) + 'px';
+  _profileLevelTip = tip;
+}
+
+function hideProfileLevelTip() {
+  if (_profileLevelTip) { _profileLevelTip.remove(); _profileLevelTip = null; }
+}
+
+document.addEventListener('mouseover', e => {
+  const dot = e.target.closest && e.target.closest('.profile-level-dot');
+  if (dot) showProfileLevelTip(dot);
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest && e.target.closest('.profile-level-dot')) hideProfileLevelTip();
+});
+document.addEventListener('focusin', e => {
+  const dot = e.target.closest && e.target.closest('.profile-level-dot');
+  if (dot) showProfileLevelTip(dot);
+});
+document.addEventListener('focusout', e => {
+  if (e.target.closest && e.target.closest('.profile-level-dot')) hideProfileLevelTip();
+});
+
 function showSwimLevel(level) {
   ['beginner', 'intermediate', 'advanced', 'pro', 'favorites'].forEach(l => {
     const panel = document.getElementById('swim-level-' + l);
@@ -9607,7 +9888,7 @@ function archiveCardHtml(set) {
   return `<div class="archive-card" data-level="${escHtml(lvl)}" data-distance="${escHtml(dist)}" data-stroke="${escHtml(stroke)}" data-intensity="${escHtml(intensity)}" data-type="${escHtml(type)}" data-setid="${escHtml(id)}">
       <div>
         <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(set.title || '')}</div>
+          <button type="button" class="archive-card-title" onclick="openArchivedSet('${escHtml(id)}')">${escHtml(set.title || '')}</button>
           ${badge}
         </div>
         <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(meta)}</div>
@@ -10181,7 +10462,7 @@ function drylandArchiveCardHtml(set) {
   return `<div class="archive-card" data-category="${escHtml(cat)}" data-focus="${escHtml(focus)}" data-stroke="${escHtml(strokeRaw.toLowerCase())}" data-intensity="${escHtml(intensity)}" data-workoutid="${escHtml(id)}">
       <div>
         <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-          <div style="font-weight:600; color:var(--deep); font-size:0.95rem;">${escHtml(set.title || '')}</div>
+          <button type="button" class="archive-card-title" onclick="openArchivedDryland('${escHtml(id)}')">${escHtml(set.title || '')}</button>
           ${restBadge}
         </div>
         <div style="font-size:0.82rem; color:var(--gray-400); margin-top:0.2rem;">${escHtml(meta)}</div>
