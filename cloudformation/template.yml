@@ -305,7 +305,7 @@ Resources:
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
-          import json, os, boto3, uuid, urllib.request
+          import json, os, re, boto3, uuid, urllib.request
           from datetime import datetime, timezone
 
           dynamo = boto3.resource('dynamodb')
@@ -344,19 +344,28 @@ Resources:
           NOTIFY_TO = 'jackson@snurray.com'
           NOTIFY_FROM = 'Streamline Contact <noreply@winlanefour.com>'
 
+          # Mirror of the client-side text hardening: plain text only (no
+          # tag-like content, no control characters) and fixed length caps,
+          # enforced server-side so a crafted request can't bypass the form.
+          def clean_text(value, cap):
+            v = re.sub(r'<[^>]*>', '', str(value or ''))
+            v = v.replace('<', '').replace('>', '')
+            v = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', v)
+            return v.strip()[:cap]
+
           def handler(event, context):
             if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
               return {'statusCode': 200, 'headers': CORS, 'body': ''}
             try:
               body = json.loads(event.get('body') or '{}')
-              email = (body.get('email') or '').strip().lower()
+              email = clean_text(body.get('email'), 254).lower()
               if not email or '@' not in email:
                 return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Valid email required'})}
               now = datetime.now(timezone.utc).isoformat()
-              first = (body.get('firstName') or '').strip()
-              last = (body.get('lastName') or '').strip()
-              subject = (body.get('subject') or '').strip()
-              message = (body.get('message') or '').strip()
+              first = clean_text(body.get('firstName'), 60)
+              last = clean_text(body.get('lastName'), 60)
+              subject = clean_text(body.get('subject'), 120)
+              message = clean_text(body.get('message'), 1000)
               newsletter = bool(body.get('newsletterOptIn'))
               item = {
                 'id': str(uuid.uuid4()),
@@ -512,9 +521,17 @@ Resources:
               'profile': user_profile(user)
             }
 
+          # Names are echoed into page greetings and welcome-email HTML, so they
+          # are kept to capped plain text (no tag-like content, no control chars).
+          def clean_name(value):
+            v = re.sub(r'<[^>]*>', '', str(value or ''))
+            v = v.replace('<', '').replace('>', '')
+            v = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', v)
+            return v.strip()[:60]
+
           def signup(body):
-            first = (body.get('firstName') or '').strip()
-            last = (body.get('lastName') or '').strip()
+            first = clean_name(body.get('firstName'))
+            last = clean_name(body.get('lastName'))
             email = (body.get('email') or '').strip().lower()
             password = body.get('password') or ''
             if not first or not last:
@@ -568,10 +585,10 @@ Resources:
               return resp(401, {'error': 'Session expired. Please log in again.'})
             if isinstance(body.get('profile'), dict):
               user['profile'] = json.dumps(body['profile'])
-            if (body.get('firstName') or '').strip():
-              user['firstName'] = body['firstName'].strip()
-            if (body.get('lastName') or '').strip():
-              user['lastName'] = body['lastName'].strip()
+            if clean_name(body.get('firstName')):
+              user['firstName'] = clean_name(body.get('firstName'))
+            if clean_name(body.get('lastName')):
+              user['lastName'] = clean_name(body.get('lastName'))
             users.put_item(Item=user)
             return resp(200, {'success': True, 'account': public_account(user)})
 
@@ -774,7 +791,7 @@ Resources:
                 '&copy; ' + str(time.gmtime().tm_year) + ' LANE FOUR. All rights reserved.')
               + div(F + 'font-size:12px;padding-top:6px;', '<a href="' + SITE + '" style="color:#5ddbc9;text-decoration:none;">Train for the Fast Lane</a>')
               + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', 'You are receiving this because an account was created on LANE FOUR with this email address.')
-              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', '1875 Mission St Ste 103 #302, San Francisco, CA 94103')
+              + div(F + 'font-size:11px;color:rgba(255,255,255,0.4);padding-top:10px;', 'ronaldricomedia, 1875 Mission St Ste 103 #302, San Francisco, CA 94103')
               + '</td></tr></table></td></tr></table></body></html>')
 
           def build_text(first):
@@ -783,7 +800,7 @@ Resources:
             lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#get-started?setup=1', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
             lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'LANE FOUR']
-            lines += ['', '1875 Mission St Ste 103 #302, San Francisco, CA 94103']
+            lines += ['', 'ronaldricomedia, 1875 Mission St Ste 103 #302, San Francisco, CA 94103']
             return '\n'.join(lines)
 
           def send_welcome(user):
