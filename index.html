@@ -1406,13 +1406,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   text-transform: uppercase;
   color: var(--gray-700);
 }
-.form-input,
-.form-select,
 /* Live character count shown under every multi-line text box */
 .char-counter {
   font-family: var(--font-body); font-size: 0.7rem; color: var(--gray-400);
   text-align: right; margin-top: 0.3rem;
 }
+.form-input,
+.form-select,
 .form-textarea {
   background: var(--white);
   border: 1.5px solid var(--gray-200);
@@ -2580,28 +2580,28 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .set-detail-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.6); display: none; z-index: 3000; overflow-y: auto; padding: 3rem 1rem; }
 .set-detail-overlay.open { display: block; }
 /* First-visit welcome modal (account + newsletter prompt) */
-.welcome-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.62); display: none; z-index: 3500; overflow-y: auto; padding: 2.5rem 1rem; }
-.welcome-overlay.open { display: block; }
-.welcome-modal { background: var(--white); border-radius: 24px; max-width: 640px; margin: 0 auto; padding: 2.75rem 2.75rem 2.25rem; position: relative; box-shadow: var(--shadow-xl); }
-.welcome-close { position: absolute; top: 1.4rem; right: 1.4rem; background: none; border: none; color: var(--text); cursor: pointer; padding: 0.35rem; line-height: 0; }
+.welcome-overlay { position: fixed; inset: 0; background: rgba(9,31,28,0.62); display: none; z-index: 3500; overflow-y: auto; padding: 1.25rem 1rem; }
+.welcome-overlay.open { display: flex; align-items: center; justify-content: center; }
+.welcome-modal { background: var(--white); border-radius: 20px; max-width: 540px; margin: auto; padding: 1.75rem 2rem 1.5rem; position: relative; box-shadow: var(--shadow-xl); }
+.welcome-close { position: absolute; top: 1.1rem; right: 1.1rem; background: none; border: none; color: var(--text); cursor: pointer; padding: 0.35rem; line-height: 0; }
 .welcome-close:hover { color: var(--teal); }
-.welcome-badge { display: inline-block; background: var(--teal); color: var(--white); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.45rem 1.1rem; border-radius: 999px; margin-bottom: 1.25rem; font-family: var(--font-body); }
-.welcome-modal h2 { font-family: var(--font-display); font-size: 2.3rem; color: var(--deep); margin: 0 0 0.75rem; }
-.welcome-sub { color: var(--text-muted); font-size: 1rem; line-height: 1.65; margin-bottom: 1.4rem; }
-.welcome-features { list-style: none; padding: 0; margin: 0 0 1.6rem; display: flex; flex-direction: column; gap: 0.85rem; }
-.welcome-features li { display: flex; gap: 0.85rem; align-items: flex-start; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+.welcome-badge { display: inline-block; background: var(--teal); color: var(--white); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 999px; margin-bottom: 0.75rem; font-family: var(--font-body); }
+.welcome-modal h2 { font-family: var(--font-display); font-size: 1.7rem; color: var(--deep); margin: 0 0 0.4rem; }
+.welcome-sub { color: var(--text-muted); font-size: 0.88rem; line-height: 1.55; margin-bottom: 0.9rem; }
+.welcome-features { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.welcome-features li { display: flex; gap: 0.7rem; align-items: flex-start; font-size: 0.86rem; color: var(--text-muted); line-height: 1.5; }
 .welcome-features strong { color: var(--text); }
-.welcome-star { color: #ffc93c; font-size: 1.05rem; line-height: 1.5; flex-shrink: 0; }
-.welcome-note { background: var(--lap-pale); border-radius: var(--r-lg); padding: 1.1rem 1.3rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+.welcome-star { color: #d9a441; font-size: 0.95rem; line-height: 1.45; flex-shrink: 0; }
+.welcome-note { background: var(--lap-pale); border-radius: var(--r-lg); padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 1rem; }
 .welcome-note a { color: var(--teal); font-weight: 600; text-decoration: underline; }
-.welcome-cta { display: block; width: 100%; text-align: center; font-size: 1rem; padding: 1rem 1.5rem; }
-.welcome-alt { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.9rem; }
+.welcome-cta { display: block; width: 100%; text-align: center; font-size: 0.95rem; padding: 0.8rem 1.5rem; }
+.welcome-alt { text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-top: 0.7rem; }
 .welcome-alt a { color: var(--teal); font-weight: 600; }
-.welcome-dontshow { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; color: var(--text); margin-top: 1.4rem; cursor: pointer; font-weight: 600; font-family: var(--font-body); }
-.welcome-dontshow input { width: 18px; height: 18px; accent-color: var(--teal); cursor: pointer; }
+.welcome-dontshow { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--text); margin-top: 0.9rem; cursor: pointer; font-weight: 600; font-family: var(--font-body); }
+.welcome-dontshow input { width: 16px; height: 16px; accent-color: var(--teal); cursor: pointer; }
 @media (max-width: 600px) {
-  .welcome-modal { padding: 2rem 1.4rem 1.75rem; }
-  .welcome-modal h2 { font-size: 1.8rem; }
+  .welcome-modal { padding: 1.5rem 1.25rem 1.25rem; }
+  .welcome-modal h2 { font-size: 1.45rem; }
 }
 .set-detail-modal { background: var(--off-white); border-radius: var(--r-xl); max-width: 780px; width: 100%; margin: 0 auto; padding: 2rem 2rem 2.5rem; position: relative; box-shadow: var(--shadow-xl); }
 .set-detail-close { position: absolute; top: 1rem; right: 1rem; width: 34px; height: 34px; border: none; background: var(--gray-100); border-radius: 50%; font-size: 1rem; cursor: pointer; color: var(--gray-400); display: flex; align-items: center; justify-content: center; }
@@ -5522,12 +5522,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
             <div class="chip" onclick="this.classList.toggle('selected')">None</div>
           </div>
         </div>
-        <div class="form-group" style="margin-top:0.25rem;"><label class="form-label">Injury Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-injury-notes" class="form-input form-textarea" rows="2" maxlength="500" placeholder="Any details we should know: chronic conditions, recent surgeries, movement limitations…" style="resize:vertical;"></textarea></div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Allergies &amp; Dietary Restrictions</p>
-          <div class="form-group"><label class="form-label">Dietary Style</label><select id="gs-dietary-style" class="form-input form-select"><option value="" disabled selected>Select…</option><option>No restrictions / omnivore</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Gluten-free</option><option>Dairy-free</option><option>Paleo / whole foods</option><option>Other (specify below)</option></select></div>
+          <div class="form-group"><label class="form-label">Dietary Style</label><select id="gs-dietary-style" class="form-input form-select"><option value="" disabled selected>Select…</option><option>No restrictions / omnivore</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Gluten-free</option><option>Dairy-free</option><option>Paleo / whole foods</option><option>Other</option></select></div>
           <div class="form-group" style="margin-top:1rem;"><label class="form-label">Allergies &amp; Foods to Avoid</label><input type="text" id="gs-allergies" class="form-input" placeholder="e.g., peanuts, shellfish, tree nuts, soy" maxlength="200" /><p class="form-hint">We will not include these in your meal recommendations.</p></div>
-          <div class="form-group" style="margin-top:1rem;"><label class="form-label">Additional Dietary Notes <span style="font-weight:400; color:var(--text-muted); font-size:0.82rem;">(optional)</span></label><textarea id="gs-dietary-notes" class="form-input form-textarea" rows="2" maxlength="500" placeholder="Any other preferences or restrictions we should know about…" style="resize:vertical;"></textarea></div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Focus Areas</p>
@@ -5636,8 +5634,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
           <p style="font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); margin-bottom:1.25rem;">Location <span style="font-weight:400; letter-spacing:normal; text-transform:none; color:var(--text-muted); font-size:0.8rem;">helps us recommend outdoor or indoor training based on weather conditions</span></p>
-          <div class="form-row">
-            <div class="form-group"><label class="form-label required-dot">City or ZIP</label><input type="text" id="gs-city" class="form-input" placeholder="Chicago or 60601" maxlength="80" /></div>
+          <div class="form-group">
+            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline-dark" id="gs-location-btn" onclick="requestSetupLocation()">Allow Location Access</button>
+              <span id="gs-location-status" style="font-size:0.85rem; color:var(--text-muted);">Location is off</span>
+            </div>
+            <p class="form-hint" style="margin-top:0.5rem;">Your browser will ask for permission. We only use your approximate location to show local weather in your daily briefing, and you can turn it off in your browser settings at any time.</p>
           </div>
         </div>
         <div style="border-top:1px solid var(--gray-100); padding-top:1.5rem;">
@@ -6120,13 +6122,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, and race or distance goals, used to tailor your daily workouts.</li>
         <li><strong>Contact Form Submissions:</strong> Name, email address, subject, message, and optional newsletter opt-in when you contact us.</li>
         <li><strong>Newsletter Subscription:</strong> Email address when you subscribe to The Fast Lane newsletter.</li>
+        <li><strong>Location (optional):</strong> If you grant your browser's location permission, we collect your approximate latitude and longitude, used solely to show local weather and outdoor training conditions in your daily briefing. You can decline or revoke this permission at any time in your browser settings.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">B. Information Collected Automatically</h3>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li><strong>Log Data:</strong> IP address, browser type, device type, operating system, and pages visited, collected automatically by our servers when you use the Site.</li>
-        <li><strong>Session Tokens:</strong> A unique identifier stored in your browser for up to 30 days to keep you signed in to your account.</li>
-        <li><strong>Cookies:</strong> Small files placed on your device to maintain your login session and site preferences. We do not use cookies for advertising or cross-site tracking.</li>
+        <li><strong>Session Tokens:</strong> A unique identifier saved in your browser's local storage for up to 30 days to keep you signed in to your account.</li>
+        <li><strong>Browser Local Storage:</strong> Site preferences and your training data (such as workout logs and favorites) saved in your browser's local storage on your own device. We do not use this data for advertising or cross-site tracking.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">C. Information Processed by AI Systems</h3>
@@ -6141,7 +6144,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <li><strong>Internet / Network Activity:</strong> Pages visited, session data, server logs; collected: Yes</li>
         <li><strong>Inferences:</strong> Fitness level, training preferences, workout personalization profile; collected: Yes (if profile completed)</li>
         <li><strong>Sensitive Personal Information:</strong> Account login credentials (email + password hash); health-related body characteristics (height, weight, age) if voluntarily provided; collected: Yes (for account holders)</li>
-        <li><strong>Commercial information, geolocation data, biometric data, audio/visual data:</strong> Not collected</li>
+        <li><strong>Geolocation Data:</strong> Approximate location (latitude/longitude) for local weather in your daily briefing; collected: Only if you grant your browser's location permission</li>
+        <li><strong>Commercial information, biometric data, audio/visual data:</strong> Not collected</li>
       </ul>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">3. How We Use Your Information</h2>
@@ -6166,7 +6170,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       </ul>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">5. Cookies and Tracking Technologies</h2>
-      <p style="margin-bottom:1.5rem;">We use session cookies solely to keep you signed in to your account. We do not use cookies for advertising, remarketing, analytics tracking, or any cross-site activity. You may disable cookies in your browser settings; however, you will be unable to stay signed in to your LANE FOUR account without them.</p>
+      <p style="margin-bottom:1.5rem;"><strong>LANE FOUR does not use cookies.</strong> We use your browser's local storage solely to keep you signed in to your account and to save your site preferences and training data on your own device. We do not use any advertising, remarketing, analytics tracking, or cross-site tracking technologies. Clearing your browser's site data will sign you out and remove locally saved preferences.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">6. Data Retention</h2>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
@@ -6836,6 +6840,70 @@ async function geocodeLocation(loc) {
   return null;
 }
 
+// ── Browser geolocation ─────────────────────────────────────────────────────
+// Location goes through the browser's permission prompt instead of a typed
+// city/ZIP. Coordinates are rounded to ~1 km so we never store a precise fix;
+// they only feed the weather briefing.
+function getBrowserLocation() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) { reject(new Error('unsupported')); return; }
+    navigator.geolocation.getCurrentPosition(
+      pos => resolve({ lat: +pos.coords.latitude.toFixed(2), lon: +pos.coords.longitude.toFixed(2) }),
+      err => reject(err),
+      { timeout: 12000, maximumAge: 10 * 60 * 1000 }
+    );
+  });
+}
+
+// Coordinates -> "City, Region" for display. Best effort; '' when the lookup
+// fails (the briefing then says "your area").
+async function reverseGeocodeName(lat, lon) {
+  try {
+    const r = await fetch('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=en');
+    if (!r.ok) return '';
+    const d = await r.json();
+    const city = d.city || d.locality || '';
+    const region = d.principalSubdivisionCode ? d.principalSubdivisionCode.split('-').pop() : (d.principalSubdivision || d.countryName || '');
+    if (city) return region ? city + ', ' + region : city;
+    return d.principalSubdivision || '';
+  } catch (e) { return ''; }
+}
+
+function geolocationErrorMessage(e) {
+  if (e && e.code === 1) return 'Location permission was denied. You can allow it for this site in your browser settings and try again.';
+  if (e && e.message === 'unsupported') return 'This browser does not support location access.';
+  return 'We could not get your location just now. Try again in a moment.';
+}
+
+// "Allow Location Access" inside the daily briefing card: ask the browser,
+// save the result to the profile, and refresh the briefing.
+async function briefingEnableLocation(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Requesting…'; }
+  try {
+    const { lat, lon } = await getBrowserLocation();
+    const name = await reverseGeocodeName(lat, lon);
+    const profile = getProfile();
+    profile.locLat = lat; profile.locLon = lon; profile.locName = name;
+    if (name) profile.city = name; // keep the plan generator's city field in sync
+    localStorage.setItem('streamline_profile', JSON.stringify(profile));
+    syncProfileToServer();
+    renderDailyBriefing();
+  } catch (e) {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Allow Location Access';
+      let msg = document.getElementById('briefing-loc-error');
+      if (!msg) {
+        msg = document.createElement('p');
+        msg.id = 'briefing-loc-error';
+        msg.style.cssText = 'font-size:0.8rem; color:var(--gray-400); margin:0.6rem 0 0; line-height:1.5;';
+        btn.insertAdjacentElement('afterend', msg);
+      }
+      msg.textContent = geolocationErrorMessage(e);
+    }
+  }
+}
+
 async function fetchWeather(lat, lon) {
   const url = 'https://api.open-meteo.com/v1/forecast'
     + '?latitude=' + lat + '&longitude=' + lon
@@ -6961,18 +7029,20 @@ let _briefingCache = null; // { key, ts, geo, wx }
 async function renderDailyBriefing() {
   const el = document.getElementById('content-briefing');
   if (!el || !getAccount()) return;
-  const loc = (getProfile().city || '').trim();
+  const profile = getProfile();
+  const hasCoords = profile.locLat != null && profile.locLat !== '' && profile.locLon != null && profile.locLon !== '';
+  const loc = (profile.city || '').trim(); // legacy typed city/ZIP profiles
   const motiv = briefingMotivation();
 
-  if (!loc) {
+  if (!hasCoords && !loc) {
     el.innerHTML = briefingCompose(
-      `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.75rem;">Add your city or ZIP to your profile and this briefing will show today's weather, your best outdoor swim window, and a safety check.</p>
-       <button class="btn btn-outline-dark btn-sm" onclick="editProfile()">Add Location</button>`, motiv);
+      `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.75rem;">Allow location access and this briefing will show today's weather, your best outdoor swim window, and a safety check. Your browser will ask for permission first.</p>
+       <button class="btn btn-outline-dark btn-sm" onclick="briefingEnableLocation(this)">Allow Location Access</button>`, motiv);
     return;
   }
 
   const today = localISODate();
-  const key = loc.toLowerCase() + '|' + today;
+  const key = (hasCoords ? profile.locLat + ',' + profile.locLon : loc.toLowerCase()) + '|' + today;
 
   const useCache = (c) => c && c.key === key && (Date.now() - c.ts) < 30 * 60 * 1000 && c.geo && c.wx;
   if (useCache(_briefingCache)) { el.innerHTML = briefingCompose(briefingWeatherBlock(_briefingCache.geo, _briefingCache.wx), motiv); return; }
@@ -6982,14 +7052,16 @@ async function renderDailyBriefing() {
   } catch (e) { /* ignore */ }
 
   el.innerHTML = briefingCompose(
-    `<p style="font-size:0.85rem; color:var(--gray-400); margin:0;">Checking today's weather in ${escHtml(loc)}…</p>`, motiv);
+    `<p style="font-size:0.85rem; color:var(--gray-400); margin:0;">Checking today's weather in ${escHtml(hasCoords ? (profile.locName || 'your area') : loc)}…</p>`, motiv);
 
   try {
-    const geo = await geocodeLocation(loc);
+    const geo = hasCoords
+      ? { lat: Number(profile.locLat), lon: Number(profile.locLon), name: profile.locName || 'your area' }
+      : await geocodeLocation(loc);
     if (!geo) {
       el.innerHTML = briefingCompose(
-        `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.6rem;">We could not find "${escHtml(loc)}" on the map. Try a nearby city name or a 5 digit ZIP in your profile.</p>
-         <button class="btn btn-outline-dark btn-sm" onclick="editProfile()">Update Location</button>`, motiv);
+        `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.6rem;">We could not place your saved location on the map. Allow location access to update it.</p>
+         <button class="btn btn-outline-dark btn-sm" onclick="briefingEnableLocation(this)">Allow Location Access</button>`, motiv);
       return;
     }
     const wx = await fetchWeather(geo.lat, geo.lon);
@@ -7658,56 +7730,48 @@ function editProfile() {
       });
     }
 
-    // Pre-select training-for chips
-    if (profile.trainingFor) {
-      const selected = profile.trainingFor.split(', ').map(s => s.trim());
-      document.querySelectorAll('#gs-training-for-chips .chip').forEach(c => {
+    // Pre-select every chip group saved as a comma-joined list (steps 3-5)
+    const preselectChips = (containerId, val) => {
+      if (!val) return;
+      const selected = val.split(', ').map(s => s.trim());
+      document.querySelectorAll('#' + containerId + ' .chip').forEach(c => {
         c.classList.toggle('selected', selected.includes(c.textContent.trim()));
       });
-    }
-
-    // Pre-select fitness goal chips
-    if (profile.fitnessGoal) {
-      const selected = profile.fitnessGoal.split(', ').map(s => s.trim());
-      document.querySelectorAll('#gs-fitness-goal-chips .chip').forEach(c => {
-        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
-      });
-    }
-
-    // Pre-select swim goal chips
-    if (profile.swimGoal) {
-      const selected = profile.swimGoal.split(', ').map(s => s.trim());
-      document.querySelectorAll('#swim-goal-chips .chip').forEach(c => {
-        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
-      });
-      toggleSpeedTimes();
-    }
-
-    // Pre-select injury chips
-    if (profile.injuries) {
-      const selected = profile.injuries.split(', ').map(s => s.trim());
-      document.querySelectorAll('#gs-injury-chips .chip').forEach(c => {
-        c.classList.toggle('selected', selected.includes(c.textContent.trim()));
-      });
-    }
+    };
+    preselectChips('gs-training-for-chips', profile.trainingFor);
+    preselectChips('gs-fitness-goal-chips', profile.fitnessGoal);
+    preselectChips('swim-goal-chips',       profile.swimGoal);
+    if (profile.swimGoal) toggleSpeedTimes();
+    preselectChips('gs-injury-chips',       profile.injuries);
+    preselectChips('gs-strokes-chips',      profile.strokeFocus);
+    preselectChips('gs-muscle-chips',       profile.muscleFocus);
+    preselectChips('gs-swim-days-chips',    profile.swimDays);
+    preselectChips('gs-dryland-days-chips', profile.drylandDays);
+    preselectChips('gs-workout-time-chips', profile.workoutTime);
+    preselectChips('gs-gear-chips',         profile.gear);
 
     // Step 4 simple fields
-    const injNotes = document.getElementById('gs-injury-notes');
     const dietStyle = document.getElementById('gs-dietary-style');
     const allergies = document.getElementById('gs-allergies');
-    const dietNotes = document.getElementById('gs-dietary-notes');
-    if (injNotes)  injNotes.value  = profile.injuryNotes  || '';
     if (dietStyle) dietStyle.value = profile.dietaryStyle || '';
     if (allergies) allergies.value = profile.allergies    || '';
-    if (dietNotes) dietNotes.value = profile.dietaryNotes || '';
 
     // Step 5 simple fields
     const poolAccess = document.getElementById('gs-pool-access');
     const gymAccess  = document.getElementById('gs-gym-access');
-    const city       = document.getElementById('gs-city');
     if (poolAccess) poolAccess.value = profile.poolAccess || '';
     if (gymAccess)  gymAccess.value  = profile.gymAccess  || '';
-    if (city)       city.value       = profile.city       || '';
+    _setupLocation = (profile.locLat != null && profile.locLat !== '' && profile.locLon != null && profile.locLon !== '')
+      ? { lat: Number(profile.locLat), lon: Number(profile.locLon), name: profile.locName || profile.city || '' }
+      : null;
+    setupLocationUI();
+    // Migrate a legacy typed city/ZIP to coordinates so saving the edit
+    // doesn't lose the location.
+    if (!_setupLocation && (profile.city || '').trim()) {
+      geocodeLocation(profile.city).then(g => {
+        if (g && !_setupLocation) { _setupLocation = { lat: g.lat, lon: g.lon, name: g.name }; setupLocationUI(); }
+      }).catch(() => {});
+    }
 
     // Skip account step, go straight to body profile
     goToStep(2);
@@ -8794,10 +8858,8 @@ function collectProfileData() {
     fitnessGoal:  getSelectedChips('gs-fitness-goal-chips'),
     swimGoal:     getSelectedChips('swim-goal-chips'),
     injuries:     getSelectedChips('gs-injury-chips'),
-    injuryNotes:  document.getElementById('gs-injury-notes')?.value || '',
     dietaryStyle: document.getElementById('gs-dietary-style')?.value || '',
     allergies:    document.getElementById('gs-allergies')?.value || '',
-    dietaryNotes: document.getElementById('gs-dietary-notes')?.value || '',
     strokeFocus:  getSelectedChips('gs-strokes-chips'),
     muscleFocus:  getSelectedChips('gs-muscle-chips'),
     swimDays:     getSelectedChips('gs-swim-days-chips'),
@@ -8805,9 +8867,47 @@ function collectProfileData() {
     workoutTime:  getSelectedChips('gs-workout-time-chips'),
     poolAccess:   document.getElementById('gs-pool-access')?.value || '',
     gymAccess:    document.getElementById('gs-gym-access')?.value || '',
-    city:         document.getElementById('gs-city')?.value || '',
+    locLat:       _setupLocation ? _setupLocation.lat : '',
+    locLon:       _setupLocation ? _setupLocation.lon : '',
+    locName:      _setupLocation ? _setupLocation.name : '',
+    city:         _setupLocation ? _setupLocation.name : '', // plan generator compatibility
     gear:         getSelectedChips('gs-gear-chips'),
   };
+}
+
+// ── Setup-form location (browser permission) ────────────────────────────────
+// Holds the location granted (or loaded from the saved profile) while the
+// setup form is open; collectProfileData reads it on save.
+let _setupLocation = null; // { lat, lon, name }
+
+function setupLocationUI() {
+  const btn = document.getElementById('gs-location-btn');
+  const status = document.getElementById('gs-location-status');
+  if (!btn || !status) return;
+  btn.disabled = false;
+  if (_setupLocation) {
+    btn.textContent = 'Update Location';
+    status.innerHTML = '<span style="color:var(--teal); font-weight:600;">✓ Location on' + (_setupLocation.name ? ': ' + escHtml(_setupLocation.name) : '') + '</span>';
+  } else {
+    btn.textContent = 'Allow Location Access';
+    status.textContent = 'Location is off';
+  }
+}
+
+async function requestSetupLocation() {
+  const btn = document.getElementById('gs-location-btn');
+  const status = document.getElementById('gs-location-status');
+  if (btn) btn.disabled = true;
+  if (status) status.textContent = 'Requesting…';
+  try {
+    const { lat, lon } = await getBrowserLocation();
+    const name = await reverseGeocodeName(lat, lon);
+    _setupLocation = { lat, lon, name };
+    setupLocationUI();
+  } catch (e) {
+    if (btn) btn.disabled = false;
+    if (status) status.textContent = geolocationErrorMessage(e);
+  }
 }
 
 async function saveFullProfile() {
@@ -8874,10 +8974,8 @@ const PROFILE_FIELDS = [
   { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'text' },
   { key: 'swimGoal',    label: 'Swimming Goal',       type: 'select', options: ['Speed: improve race times','Technique / skill development','Injury rehab / return to water','General improvement','Distance & endurance','Open water / triathlon swim'] },
   { key: 'injuries',    label: 'Injuries',            type: 'text' },
-  { key: 'injuryNotes', label: 'Injury Notes',        type: 'textarea' },
   { key: 'dietaryStyle',label: 'Dietary Style',       type: 'select', options: ['No restrictions / omnivore','Vegetarian','Vegan','Pescatarian','Gluten-free','Dairy-free','Paleo / whole foods','Other'] },
   { key: 'allergies',   label: 'Allergies',           type: 'text' },
-  { key: 'dietaryNotes',label: 'Dietary Notes',       type: 'textarea' },
   { key: 'strokeFocus', label: 'Stroke Focus',        type: 'text' },
   { key: 'muscleFocus', label: 'Muscle Focus',        type: 'text' },
   { key: 'swimDays',    label: 'Swim Days',           type: 'text' },
@@ -8885,7 +8983,7 @@ const PROFILE_FIELDS = [
   { key: 'workoutTime', label: 'Workout Time',        type: 'text' },
   { key: 'poolAccess',  label: 'Pool Access',         type: 'select', options: ['Year-round access','Seasonal (outdoor, summer only)','Limited / occasional access','No pool access currently'] },
   { key: 'gymAccess',   label: 'Gym Access',          type: 'select', options: ['Year-round access','Seasonal access','Home gym','Limited / occasional access','No gym access'] },
-  { key: 'city',        label: 'City or ZIP',         type: 'text' },
+  { key: 'locName',     label: 'Location',            type: 'text' },
   { key: 'gear',        label: 'Gear Owned',          type: 'text' },
 ];
 
@@ -11355,7 +11453,7 @@ async function handleNewsletterSubmit(event, source) {
 
 <div id="shark-mascot">
   <div id="shark-bubble" role="status"></div>
-  <img src="shark-coach.png" alt="" aria-hidden="true">
+  <img src="shark-coach.png?v=2" alt="" aria-hidden="true">
 </div>
 
 <script>
@@ -11570,7 +11668,22 @@ async function handleNewsletterSubmit(event, source) {
     const el = document.getElementById('shark-mascot');
     if (!el) return;
     el.style.display = on ? 'block' : 'none';
+    if (on) clampSharkToFooter();
   }
+
+  // Keep the shark riding on top of the footer instead of overlapping it:
+  // once the footer scrolls into view, push the shark up by however much of
+  // the footer is visible.
+  function clampSharkToFooter() {
+    const el = document.getElementById('shark-mascot');
+    if (!el || el.style.display === 'none') return;
+    const footer = document.getElementById('site-footer');
+    if (!footer) return;
+    const overlap = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
+    el.style.bottom = overlap + 'px';
+  }
+  window.addEventListener('scroll', clampSharkToFooter, { passive: true });
+  window.addEventListener('resize', clampSharkToFooter);
 
   function onPageChange(pageId) {
     setVisible(SHARK_PAGES.has(pageId));
