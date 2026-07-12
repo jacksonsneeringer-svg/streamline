@@ -82,6 +82,13 @@ jobs:
         run: |
           echo "window.STREAMLINE_API_URL = '${{ steps.stack.outputs.api_url }}';" > api-config.js
 
+      # Writes one <route>/index.html per page and blog post (with per-route
+      # title/description/canonical/social/JSON-LD head tags) plus sitemap.xml,
+      # so Google indexes every page as its own URL. New posts added to
+      # BLOG_POSTS in index.html are picked up automatically on each deploy.
+      - name: Generate per-page SEO documents and sitemap
+        run: node scripts/prerender.mjs
+
       # The newsletter pipeline (lane-four-newsletter/) is build tooling, not
       # website content, so it's excluded from the site sync. Its two public
       # outputs are published separately below under /newsletter-images and
@@ -93,6 +100,7 @@ jobs:
             --exclude ".git/*" \
             --exclude ".github/*" \
             --exclude "cloudformation/*" \
+            --exclude "scripts/*" \
             --exclude "lane-four-newsletter/*" \
             --exclude "newsletter-images/*" \
             --exclude "issues/*" \

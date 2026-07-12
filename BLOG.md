@@ -70,6 +70,12 @@ saving, so read time updates immediately when an article is edited live.
 That's it — commit and push. The new article appears at the top of the blog with
 a consistent date everywhere, an accurate read time, and its Pexels hero image.
 
+SEO is automatic too: on deploy, `scripts/prerender.mjs` gives the post its own
+indexable URL (`https://winlanefour.com/<my-post-id>`) with title, meta
+description (from `excerpt`), social-card image (from `heroImage`),
+`BlogPosting` structured data, and a `sitemap.xml` entry — no extra steps. See
+SEO.md for details.
+
 > Note: this repo has no build step (GitHub Actions just syncs files to S3 on
 > push to `main`) and no Pexels API key, so the hero photo is chosen by hand per
 > the steps above. If you later add a `PEXELS_API_KEY` secret, this step could be
