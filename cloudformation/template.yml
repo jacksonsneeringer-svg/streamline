@@ -36,6 +36,36 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
+  # Maps clean page URLs to the prerendered objects the deploy uploads:
+  # /swim-sets -> swim-sets/index.html (scripts/prerender.mjs writes one such
+  # object per page/blog post). This is what lets Google index every page as
+  # its own URL on an S3 origin, where only the root path gets index.html
+  # resolution (DefaultRootObject). Extensionless paths with or without a
+  # trailing slash serve the same object; each page's canonical tag names the
+  # no-slash form so search engines index a single URL per page.
+  UrlRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: streamline-url-rewrite
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Rewrite extensionless page paths to their prerendered index.html
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          while (uri.length > 1 && uri[uri.length - 1] === '/') {
+            uri = uri.slice(0, -1);
+          }
+          var last = uri.split('/').pop();
+          if (uri !== '/' && last && last.indexOf('.') === -1) {
+            uri = uri + '/index.html';
+          }
+          request.uri = uri;
+          return request;
+        }
+
   OAC:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
@@ -86,6 +116,9 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # CachingOptimized
           Compress: true
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt UrlRewriteFunction.FunctionMetadata.FunctionARN
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 404
@@ -600,7 +633,7 @@ Resources:
             if not user:
               return done
             token = issue_token(email, 'reset', RESET_TTL)
-            link = SITE_URL + '/#reset-password?token=' + token
+            link = SITE_URL + '/reset-password?token=' + token
             first = user.get('firstName') or 'there'
             text = (
               'Hi ' + first + ',\n\n'
@@ -775,12 +808,12 @@ Resources:
               '<div style="background:#e6faf7;border-radius:8px;padding:22px 24px;">'
               + div(G + 'font-size:19px;color:#0d4f47;padding-bottom:6px;', 'Make it yours: complete your profile')
               + div(F + 'font-size:14px;line-height:1.7;color:#3a6560;padding-bottom:16px;', NUDGE % ('<b>' + first + '</b>'))
-              + '<a href="' + SITE + '/#get-started?setup=1" style="display:inline-block;background:#5ddbc9;color:#0d4f47;' + F
+              + '<a href="' + SITE + '/get-started?setup=1" style="display:inline-block;background:#5ddbc9;color:#0d4f47;' + F
               + 'font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:13px 30px;border-radius:4px;">Complete Your Profile &rarr;</a>'
               '</div></td></tr>'
               '<tr><td style="padding:26px 40px 36px;">' + div(eyebrow, 'Good to know') + know
               + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;padding-top:10px;',
-                '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
+                '<a href="' + SITE + '/my-training" style="color:#1a7a6e;">Open My Training</a> &middot; <a href="' + SITE + '/contact" style="color:#1a7a6e;">Contact us</a>')
               + '</td></tr>'
               '<tr><td style="padding:4px 40px 38px;">'
               + div(F + 'font-size:15px;line-height:1.6;color:#3a6560;', 'Happy swimming,')
@@ -797,9 +830,9 @@ Resources:
           def build_text(first):
             lines = ['You just dove in. Congrats!', 'Welcome to LANE FOUR, ' + first + '!', '', INTRO, '', 'WHAT YOUR ACCOUNT UNLOCKS']
             lines += ['* %s: %s' % ft for ft in FEATURES]
-            lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/#get-started?setup=1', '', 'GOOD TO KNOW']
+            lines += ['', 'COMPLETE YOUR PROFILE', NUDGE % first, SITE + '/get-started?setup=1', '', 'GOOD TO KNOW']
             lines += ['* ' + k for k in KNOW]
-            lines += ['', 'My Training: ' + SITE + '/#my-training', 'Contact: ' + SITE + '/#contact', '', 'Happy swimming,', 'LANE FOUR']
+            lines += ['', 'My Training: ' + SITE + '/my-training', 'Contact: ' + SITE + '/contact', '', 'Happy swimming,', 'LANE FOUR']
             lines += ['', 'ronaldricomedia, 1875 Mission St Ste 103 #302, San Francisco, CA 94103']
             return '\n'.join(lines)
 
@@ -1075,8 +1108,8 @@ Resources:
               '<tr><td style="padding:36px 40px 8px;">' + lead + body_html + cta + '</td></tr>'
               '<tr><td style="padding:22px 40px 34px;">'
               + div(F + 'font-size:14px;line-height:1.8;color:#3a6560;',
-                '<a href="' + SITE + '/#my-training" style="color:#1a7a6e;">Open My Training</a> &middot; '
-                '<a href="' + SITE + '/#contact" style="color:#1a7a6e;">Contact us</a>')
+                '<a href="' + SITE + '/my-training" style="color:#1a7a6e;">Open My Training</a> &middot; '
+                '<a href="' + SITE + '/contact" style="color:#1a7a6e;">Contact us</a>')
               + '</td></tr>'
               '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
               + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
