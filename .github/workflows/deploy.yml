@@ -27,6 +27,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # reCAPTCHA is configured by a PAIR of secrets that must be set together:
+      # RECAPTCHA_SITE_KEY (public, rendered into the client so the "I'm not a
+      # robot" checkbox appears) and RECAPTCHA_SECRET_KEY (private, verified by
+      # the contact Lambda). Only two states are valid — both set (production)
+      # or both empty (verification off, e.g. dev). An asymmetric config ships a
+      # broken form; the worst case is a secret with no site key: the server
+      # demands a token but no checkbox ever renders, so every submission bounces
+      # with "CAPTCHA not completed. Please check the 'I'm not a robot' box".
+      # Fail fast here instead of deploying that dead form.
+      - name: Validate reCAPTCHA key pair
+        env:
+          RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+        run: |
+          if [ -n "$RECAPTCHA_SITE_KEY" ] && [ -z "$RECAPTCHA_SECRET_KEY" ]; then
+            echo "::error::RECAPTCHA_SITE_KEY is set but RECAPTCHA_SECRET_KEY is empty. The checkbox would render but the server would never verify the token. Set both secrets or clear both."
+            exit 1
+          fi
+          if [ -z "$RECAPTCHA_SITE_KEY" ] && [ -n "$RECAPTCHA_SECRET_KEY" ]; then
+            echo "::error::RECAPTCHA_SECRET_KEY is set but RECAPTCHA_SITE_KEY is empty. The contact form would demand a CAPTCHA token while rendering no 'I'm not a robot' checkbox, so every submission fails with 'CAPTCHA not completed'. Set RECAPTCHA_SITE_KEY to the public reCAPTCHA v2 site key that pairs with the secret, or clear RECAPTCHA_SECRET_KEY."
+            exit 1
+          fi
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
