@@ -48,12 +48,11 @@
 
   "athlete": {
     "name": "Full Name",
-    "photoUrl": "https://example.com/official-press-photo.jpg",
+    "photoUrl": "https://example.com/licensed-or-cc-photo.jpg",
+    "photoCredit": "Photo: Photographer Name, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": ["Stat badge 1", "Stat badge 2", "Stat badge 3", "Stat badge 4"],
-    "bio": "1-2 short paragraphs, no more than ~90 words total to keep the card scannable."
+    "bio": "1-2 short paragraphs, no more than ~90 words total to keep the card scannable. Career facts only; never imply the athlete uses or endorses the gear featured elsewhere in the issue."
   },
-
-  "gearHeadline": "What Swimmers Like Her Are Using",
 
   "events": [
     {

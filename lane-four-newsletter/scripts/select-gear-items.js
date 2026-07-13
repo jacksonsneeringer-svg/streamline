@@ -12,8 +12,16 @@
  * real products (with real affiliate links and a real description) to
  * data/gear-catalog.json before running this again.
  *
- * Each catalog entry needs: slug, name, url, imageUrl, description, and a
- * starting rating (used until fetch-gear-ratings.js provides a live one).
+ * Each catalog entry needs: slug, name, url, imageUrl, and description.
+ * No ratings: we have no lawful source for third-party star ratings, and an
+ * invented one is a fabricated consumer rating under the FTC's reviews rule.
+ *
+ * Catalog URL rules (legal, not stylistic):
+ *   - NEVER an Amazon Associates "Special Link" (amzn.to or any ?tag= URL):
+ *     the newsletter is email, and the Associates Operating Agreement
+ *     prohibits affiliate links in email. Untagged amazon.com links are fine.
+ *   - Image URLs must point at assets we host or are licensed to use — no
+ *     hotlinking manufacturer CDNs.
  *
  * Run:
  *   node scripts/select-gear-items.js
@@ -65,8 +73,19 @@ function main() {
     url: item.url,
     imageUrl: item.imageUrl,
     description: item.description,
-    rating: item.rating ?? 4.5,
   }));
+
+  // Hard stop if an Amazon affiliate link sneaks back into the catalog: the
+  // Associates Operating Agreement prohibits Special Links in email.
+  const affiliate = selected.filter((i) => /amzn\.to|[?&]tag=/i.test(i.url));
+  if (affiliate.length) {
+    console.error(
+      `Refusing to select Amazon affiliate link(s) for an email:\n` +
+      affiliate.map((i) => `  - ${i.slug}: ${i.url}`).join('\n') +
+      `\nUse an untagged product/brand URL in data/gear-catalog.json instead.`
+    );
+    process.exit(1);
+  }
 
   fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(selected, null, 2));

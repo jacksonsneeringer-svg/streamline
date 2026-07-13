@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LANE FOUR Weekly Digest</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- No remote font links: email clients ignore them, and the copy published
+     to the winlanefour.com/issues archive must not send visitor IPs to Google
+     Fonts. Every font-family below falls back to Georgia/Arial. -->
 </head>
 <body style="margin:0; padding:0; background-color:#EDF3EE; font-family:'Inter', Arial, sans-serif;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#EDF3EE; background-image:radial-gradient(#16383214 1px, transparent 1px); background-size:14px 14px; padding:28px 0;">
@@ -91,6 +92,9 @@
 </table>
 
 <p style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#C7DAD3; line-height:1.65; margin:0;">{{ATHLETE_BIO}}</p>
+<!-- Wikimedia photo attribution (author + license); rendered empty when the
+     issue has no photo. Required by the photo's Creative Commons license. -->
+{{ATHLETE_PHOTO_CREDIT}}
 </td>
 </tr>
 </table>
@@ -195,8 +199,8 @@
 <p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#CFE9E2; line-height:1.6; margin:0 0 8px 0; max-width:520px; margin-left:auto; margin-right:auto;">LANE FOUR is a free training platform with daily swim sets, dryland workouts, and technique guidance built around what your training actually demands. <strong>Affiliate disclosure:</strong> some links in this newsletter are affiliate links, if you purchase through one, we may earn a small commission at no additional cost to you. <strong>Health disclaimer:</strong> the workouts and nutrition content in this newsletter are for general informational purposes only, consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
 <p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#CFE9E2; margin:0 0 6px 0;">&copy; {{COPYRIGHT_YEAR}} LANE FOUR. All rights reserved.</p>
 <p style="font-family:'Inter',Arial,sans-serif; font-size:10px; margin:0 0 8px 0;">
-<a href="https://winlanefour.com/#privacy-policy" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Privacy Policy</a>
-<a href="https://winlanefour.com/#terms-of-service" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Terms of Service</a>
+<a href="https://winlanefour.com/privacy-policy" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Privacy Policy</a>
+<a href="https://winlanefour.com/terms-of-use" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Terms of Use</a>
 <!-- {{UNSUBSCRIBE_URL}} is intentionally NOT replaced at render time: the
      newsletter-send Lambda swaps in each recipient's one-click unsubscribe
      link at send time, and the workflow substitutes a site link in the copy

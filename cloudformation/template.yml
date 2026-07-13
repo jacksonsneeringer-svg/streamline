@@ -338,7 +338,7 @@ Resources:
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
-          import json, os, re, boto3, uuid, urllib.request
+          import json, os, re, secrets, boto3, uuid, urllib.request
           from datetime import datetime, timezone
 
           dynamo = boto3.resource('dynamodb')
@@ -412,10 +412,17 @@ Resources:
               }
               contacts.put_item(Item=item)
               if newsletter:
+                # Same rules as the newsletter subscribe endpoint: keep the
+                # existing unsubToken so unsubscribe links in newsletters we
+                # already sent stay valid (CAN-SPAM requires working opt-out
+                # links after send), and let the explicit checkbox act as a
+                # fresh opt-in (put_item clears any prior unsubscribedAt).
+                existing = subscribers.get_item(Key={'email': email}).get('Item') or {}
                 subscribers.put_item(Item={
                   'email': email,
                   'source': 'contact-form',
-                  'timestamp': now
+                  'timestamp': now,
+                  'unsubToken': existing.get('unsubToken') or secrets.token_urlsafe(24)
                 })
               try:
                 email_body = (
@@ -540,9 +547,20 @@ Resources:
               'createdAt': int(user.get('createdAt', 0))
             }
 
+          # Health data the site no longer collects. Scrubbed from every
+          # profile read and write so legacy values drain out of storage
+          # instead of lingering.
+          RETIRED_PROFILE_KEYS = ('injuries', 'injuryNotes', 'dietaryStyle', 'allergies', 'dietaryNotes')
+
+          def scrub_profile(profile):
+            if isinstance(profile, dict):
+              for k in RETIRED_PROFILE_KEYS:
+                profile.pop(k, None)
+            return profile if isinstance(profile, dict) else {}
+
           def user_profile(user):
             try:
-              return json.loads(user.get('profile') or '{}')
+              return scrub_profile(json.loads(user.get('profile') or '{}'))
             except Exception:
               return {}
 
@@ -579,7 +597,7 @@ Resources:
               'email': email, 'firstName': first, 'lastName': last,
               'passwordHash': hash_password(password),
               'createdAt': int(time.time() * 1000),
-              'profile': json.dumps(body.get('profile') or {})
+              'profile': json.dumps(scrub_profile(body.get('profile') or {}))
             }
             users.put_item(Item=user)
             try:
@@ -617,7 +635,7 @@ Resources:
             if not user:
               return resp(401, {'error': 'Session expired. Please log in again.'})
             if isinstance(body.get('profile'), dict):
-              user['profile'] = json.dumps(body['profile'])
+              user['profile'] = json.dumps(scrub_profile(body['profile']))
             if clean_name(body.get('firstName')):
               user['firstName'] = clean_name(body.get('firstName'))
             if clean_name(body.get('lastName')):
@@ -751,7 +769,7 @@ Resources:
 
           FEATURES = [
             ('Personalized training, every day', "Today's swim set and dryland lift in My Training, matched to your level, focus, and schedule."),
-            ('Nutrition built around your training', 'Daily meal plans matched to your body, training load, and dietary preferences.'),
+            ('Nutrition built around your training', 'Daily meal plans matched to your body and training load.'),
             ('Progress tracker & workout log', 'A workout log plus charts of your volume, times, and trends over time.'),
             ('Set & workout archives', 'Every past swim set and dryland workout, filterable by level, stroke, intensity, and distance. Save your favorites and find them again in one place.'),
             ('Featured blog posts', 'Featured posts and technique deep-dives for swimmers, from stroke mechanics to training science.')
@@ -760,7 +778,7 @@ Resources:
           NUDGE = 'Take two minutes to tell us your level, strokes, and goals so your daily plans truly fit. Update them any time from the Hi %s! button in the menu.'
           KNOW = [
             'A fresh plan (swim, dryland, and meals) drops at midnight Pacific, ready in My Training each morning.',
-            'Update your level, strokes, goals, or dietary preferences at any time, and your plan adjusts to match.',
+            'Update your level, strokes, or goals at any time, and your plan adjusts to match.',
             'Read the Focus Cue at the top of each set; that is where the coaching lives, not just in the yardage.',
             'Questions, ideas, or article requests? Send them through the contact page; we read everything.'
           ]
@@ -1308,15 +1326,44 @@ Resources:
 
           def wiki_photo(name):
             # A real press-quality photo, and a cheap existence check that the
-            # proposed athlete is a real, notable person.
+            # proposed athlete is a real, notable person. Returns (url, credit);
+            # the credit is the author/license attribution the photo's free
+            # license (usually Creative Commons) requires us to print wherever
+            # we reuse it.
             try:
               url = 'https://en.wikipedia.org/api/rest_v1/page/summary/' + urllib.parse.quote(name.replace(' ', '_'))
               data = json.loads(http_get(url, timeout=10))
               if data.get('type') == 'standard':
-                return ((data.get('thumbnail') or {}).get('source')) or ''
+                photo = ((data.get('thumbnail') or {}).get('source')) or ''
+                if photo:
+                  return photo, wiki_photo_credit(name)
             except Exception as ex:
               print('wikipedia lookup failed for %s: %s' % (name, ex))
-            return ''
+            return '', ''
+
+          def wiki_photo_credit(name):
+            # Author + license of the page's lead image, via the extmetadata of
+            # the file behind the summary thumbnail.
+            try:
+              api = ('https://en.wikipedia.org/w/api.php?format=json&action=query&redirects=1'
+                     '&prop=pageimages&piprop=name&titles=' + urllib.parse.quote(name))
+              pages = json.loads(http_get(api, timeout=10)).get('query', {}).get('pages', {})
+              file_name = next((p.get('pageimage') for p in pages.values() if p.get('pageimage')), '')
+              if not file_name:
+                return ''
+              api = ('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=imageinfo'
+                     '&iiprop=extmetadata&iiextmetadatafilter=Artist%7CLicenseShortName'
+                     '&titles=' + urllib.parse.quote('File:' + file_name))
+              pages = json.loads(http_get(api, timeout=10)).get('query', {}).get('pages', {})
+              info = next(iter(pages.values()), {}).get('imageinfo') or [{}]
+              meta = info[0].get('extmetadata') or {}
+              artist = strip_tags((meta.get('Artist') or {}).get('value') or '')[:80]
+              license_name = strip_tags((meta.get('LicenseShortName') or {}).get('value') or '')
+              parts = [p for p in (artist, license_name) if p]
+              return ('Photo: ' + ', '.join(parts) + ', via Wikimedia Commons') if parts else ''
+            except Exception as ex:
+              print('wikipedia credit lookup failed for %s: %s' % (name, ex))
+              return ''
 
           PROMPT = """You write LANE FOUR's weekly swim training newsletter (winlanefour.com). Tone: warm, direct, a coach who loves the sport — never corporate, never hype.
 
@@ -1338,8 +1385,7 @@ Resources:
           "outroLine":"That's the week in the water. Happy swimming,",
           "workout":{{"dateLabel":"e.g. Mon, Jul 6 &middot; <swim focus> in the pool, <dryland focus> on land","swimSet":{{"title":"Today's Swim Set","description":"one sentence describing today's swim set from the data above"}},"lift":{{"title":"Today's Lift","description":"one sentence describing today's dryland from the data above (if it is a rest day, say so and tease tomorrow)"}}}},
           "newsItems":[{{"topicSlug":"MUST be the exact slug of one provided story","icon":"doc|trend|medal|globe","title":"short headline, punchier than the source's","body":"1-3 sentences summarizing that story. <strong>Bold</strong> athlete and organization names."}}],
-          "athleteCandidates":[{{"name":"Full Name","badges":["4 short stat chips e.g. '7x Olympic Gold'"],"bio":"1-2 short paragraphs, max 90 words, accurate career facts only"}}],
-          "gearHeadline":"section headline tying the gear to the athlete, e.g. What Swimmers Like Her Are Using"}}
+          "athleteCandidates":[{{"name":"Full Name","badges":["4 short stat chips e.g. '7x Olympic Gold'"],"bio":"1-2 short paragraphs, max 90 words, accurate career facts only"}}]}}
 
           Rules:
           - newsItems: exactly 4, each from a DIFFERENT provided story. Use only facts present in the provided title/summary — do not add details you are not given. Vary the icons.
@@ -1397,15 +1443,15 @@ Resources:
             candidates = [c for c in (data.get('athleteCandidates') or [])
                           if (c.get('name') or '').strip() and (c.get('name') or '').strip().lower() not in used_athletes]
             for cand in candidates:
-              photo = wiki_photo(cand['name'].strip())
+              photo, credit = wiki_photo(cand['name'].strip())
               if photo:
-                athlete = {'name': cand['name'].strip(), 'photoUrl': photo,
+                athlete = {'name': cand['name'].strip(), 'photoUrl': photo, 'photoCredit': credit,
                            'badges': [str(b) for b in (cand.get('badges') or [])][:4],
                            'bio': cand.get('bio') or ''}
                 break
             if athlete is None and candidates:
               cand = candidates[0]
-              athlete = {'name': cand['name'].strip(), 'photoUrl': '',
+              athlete = {'name': cand['name'].strip(), 'photoUrl': '', 'photoCredit': '',
                          'badges': [str(b) for b in (cand.get('badges') or [])][:4],
                          'bio': cand.get('bio') or ''}
             if athlete is None:
@@ -1422,7 +1468,10 @@ Resources:
               'workout': data.get('workout') or {},
               'newsItems': items[:4],
               'athlete': athlete,
-              'gearHeadline': data.get('gearHeadline') or 'Gear of the Week',
+              # The gear section deliberately carries a fixed, athlete-neutral
+              # headline (set by the renderer). Tying featured gear to the
+              # named athlete implied an endorsement they never gave — a
+              # right-of-publicity / false-endorsement claim waiting to happen.
               'events': event.get('events') or [],
             }
             return {'statusCode': 200, 'draft': draft}
@@ -2182,9 +2231,11 @@ Resources:
             return _skills[name]
 
           DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+          # Deliberately excludes health data (injuries, dietary restrictions,
+          # allergies): the site no longer collects it anywhere, and it must
+          # not flow into prompts or the profile hash.
           PROFILE_KEYS = ['age','height','weight','gender','skillLevel','trainingFor','fitnessGoal',
-                          'swimGoal','injuries','injuryNotes','dietaryStyle','allergies','dietaryNotes',
-                          'strokeFocus','muscleFocus','swimDays','drylandDays','workoutTime',
+                          'swimGoal','strokeFocus','muscleFocus','swimDays','drylandDays','workoutTime',
                           'poolAccess','gymAccess','gear']
 
           def resp(code, data):
@@ -2242,7 +2293,7 @@ Resources:
 
           Today is %(today)s. The plan covers the 7 days Monday through Sunday of the week starting Monday %(week_start)s. Treat this as week %(week_number)s of a rolling 4-week block (weeks 1-3 progress, week 4 is a deload) unless the athlete's goals name a specific event or date, in which case back-cast Base/Build/Peak/Taper phases from that date as the framework describes.
 
-          Design the training week ONLY, no workout content yet, following the framework's Step 1 and Step 2 exactly: honor the athlete's available swim days and dryland days (never schedule a session on a day they don't have), the allocation heuristics for their level, the interference rules, the roughly 60/40 target-to-supporting stroke split, injury adjustments, and youth/masters handling. Site constraint: at most one swim and one lift per day, no double swims. Every week includes at least one full rest day.
+          Design the training week ONLY, no workout content yet, following the framework's Step 1 and Step 2 exactly: honor the athlete's available swim days and dryland days (never schedule a session on a day they don't have), the allocation heuristics for their level, the interference rules, the roughly 60/40 target-to-supporting stroke split, and youth/masters handling. Site constraint: at most one swim and one lift per day, no double swims. Every week includes at least one full rest day.
 
           Then compute daily nutrition targets like a sports dietitian: Mifflin-St Jeor BMR from age/height/weight/gender (height is in inches and weight in pounds; convert to metric first), an activity factor from the actual planned training hours this week, a calorie adjustment for the fitness goal (a moderate deficit only for fat-loss goals, a small surplus for muscle or weight gain, otherwise maintenance; NEVER a deficit for athletes under 18), protein 1.6 to 2.2 g per kg bodyweight, fat at least 20 percent of calories, remaining calories from carbs. Then split those targets into two one-day meal schedules (a training-day schedule and a rest-day schedule). Each meal is a SLOT, not a menu: give it a name, a realistic time of day anchored to the athlete's preferred workout time, a per-meal macro budget, and optionally one short note tying the slot to training. Do NOT write menus or name specific dishes; the athlete asks for a recipe for any slot on demand.
 
@@ -2256,7 +2307,6 @@ Resources:
 
           Athlete level: %(level)s. Training phase: %(phase)s. This is %(day)s's swim. Stroke focus: %(focus)s. Secondary focus: %(secondary)s. Target volume: about %(yards)s yards.
           Gear the athlete owns (prescribe ONLY this gear; substitute drills that need anything else): %(gear)s.
-          Injuries and limitations to program around, never through: %(injuries)s.
 
           Use the swim-sets framework above as your single source of truth: apply the %(level)s level's volume range, intervals, technique emphasis and coaching tone; honor the stroke focus and secondary focus, the single-swim distance caps, the warm-up / cool-down standards, and the stroke-specific drill library (use the Pre-Main for focus-stroke drills), all adjusted for the %(phase)s phase. Main sets must have internal structure (descending, build, pyramid, broken, neg split, odds/evens), not flat repeats.
 
@@ -2269,7 +2319,6 @@ Resources:
           %(framework)s
 
           Equipment category: %(cat)s (%(equipment)s). Training phase: %(phase)s. This is %(day)s's lift. Training focus: %(focus)s. Stroke emphasis: %(stroke)s. Session length: about %(minutes)s minutes.
-          Injuries and limitations to program around, never through: %(injuries)s.
 
           Use the dryland framework above as your single source of truth: follow the Workout Duration & Structure split for a %(minutes)s-minute session (warm-up / main work / cool-down), apply the framework's movement rules for the "%(focus)s" theme, include a shoulder-health movement, and pull stroke-specific movements from the library for the %(stroke)s emphasis. Select exercises that fit the %(cat)s equipment ONLY; never prescribe equipment this category does not have. Adjust loading for the %(phase)s phase (deload or taper weeks run lighter with more mobility).
 
@@ -2282,7 +2331,7 @@ Resources:
           Athlete's daily nutrition targets: %(targets)s
           Today's planned meals with per-meal macro budgets: %(meals)s
           %(target)s
-          Dietary style: %(diet)s. Allergies and foods to avoid (hard requirements, NEVER include these): %(allergies)s. Other dietary notes: %(notes)s.
+          The site does not collect dietary restrictions or allergies, so write for a general audience with common ingredients. If the request itself names a restriction, allergy, or food to avoid (e.g. vegetarian, no peanuts), honor it strictly and never include that food.
 
           Write ONE fully fleshed, realistic recipe that satisfies the request and fits the macro budget of the meal the request refers to (if the request does not name a meal, assume dinner; if that meal is not in the list, aim for roughly a third of the daily targets). The dish must make sense for that meal and time of day: breakfast food at breakfast, a real lunch or dinner plate at those meals, and snack-sized food for snacks. Home-cook friendly: normal grocery ingredients, precise quantities, clear steps.
 
@@ -2330,10 +2379,7 @@ Resources:
               # single attempt (no gen_json retry) to stay inside the gateway timeout
               raw = invoke_model(RECIPE_PROMPT % {
                 'request': req.replace('"', "'"), 'target': target_txt,
-                'targets': json.dumps(targets), 'meals': json.dumps(meals),
-                'diet': profile.get('dietaryStyle') or 'No restrictions',
-                'allergies': profile.get('allergies') or 'None',
-                'notes': profile.get('dietaryNotes') or 'None'}, 3000)
+                'targets': json.dumps(targets), 'meals': json.dumps(meals)}, 3000)
               recipe = json.loads(raw[raw.find('{'):raw.rfind('}') + 1])
               return resp(200, {'status': 'ready', 'recipe': recipe})
             except Exception as ex:
@@ -2364,7 +2410,6 @@ Resources:
               d['day'] = name
               days.append(d)
             phase = skeleton.get('phase') or 'Base'
-            injuries = ' '.join(t for t in [profile.get('injuries'), profile.get('injuryNotes')] if t) or 'None reported'
             gear = profile.get('gear') or 'No special gear, standard pool equipment only'
             swim_fw = ('=== SWIM-SETS SKILL (programming framework) ===\n' + swim + '\n=== END SKILL ===') if swim else 'Swim framework unavailable: use standard competitive swim programming for the level.'
             dry_fw = ('=== SWIM-DRYLAND SKILL (programming framework) ===\n' + dryland + '\n=== END SKILL ===') if dryland else 'Dryland framework unavailable: use standard swim-specific strength programming.'
@@ -2379,7 +2424,7 @@ Resources:
                     'framework': swim_fw, 'level': level, 'phase': phase, 'day': d['day'],
                     'focus': sw.get('focus') or 'freestyle',
                     'secondary': sw.get('secondary') or 'endurance',
-                    'yards': sw.get('yards') or 2000, 'gear': gear, 'injuries': injuries}, 8000)
+                    'yards': sw.get('yards') or 2000, 'gear': gear}, 8000)
                 except Exception as ex:
                   print('swim generation failed for %s: %s' % (d['day'], ex))
                   d['swimError'] = True
@@ -2390,7 +2435,7 @@ Resources:
                     'framework': dry_fw, 'cat': cat, 'equipment': equipment, 'phase': phase,
                     'day': d['day'], 'focus': lf.get('focus') or 'Full Body',
                     'stroke': (sw or {}).get('focus') or profile.get('strokeFocus') or 'Freestyle',
-                    'minutes': lf.get('minutes') or 30, 'injuries': injuries}, 8000)
+                    'minutes': lf.get('minutes') or 30}, 8000)
                 except Exception as ex:
                   print('lift generation failed for %s: %s' % (d['day'], ex))
                   d['liftError'] = True

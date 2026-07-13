@@ -137,10 +137,10 @@ jobs:
         if: steps.guard.outputs.skip != 'true'
         run: npm run select:gear
 
-      - name: Fetch live gear ratings (best effort)
-        if: steps.guard.outputs.skip != 'true'
-        run: npm run fetch:gear-ratings
-        continue-on-error: true
+      # There is deliberately NO gear-ratings step here: scraping retailer
+      # pages for star ratings violated their terms of use, and falling back
+      # to the catalog's made-up placeholder numbers was a fabricated consumer
+      # rating under the FTC's reviews rule. Gear cards carry no ratings.
 
       - name: Enforce no-repeat rules and lock in history
         if: steps.guard.outputs.skip != 'true'
@@ -197,8 +197,7 @@ jobs:
           git config user.name "lane-four-newsletter[bot]"
           git config user.email "newsletter@winlanefour.com"
           # -A over the whole folder: picks up the issue, the history, the
-          # generated data files and downloaded images, and tolerates the
-          # optional gear-ratings.json being absent when its step failed.
+          # generated data files and downloaded images.
           git add -A lane-four-newsletter/
           git commit -m "Weekly newsletter: publish issue ${{ steps.guard.outputs.date }}"
           # main can advance while the pipeline runs (an unrelated merge), which

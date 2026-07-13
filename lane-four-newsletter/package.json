@@ -6,12 +6,11 @@
   "scripts": {
     "compose": "node scripts/compose-draft.js",
     "fetch:blog": "node scripts/fetch-blog-posts.js",
-    "fetch:gear-ratings": "node scripts/fetch-gear-ratings.js",
     "select:gear": "node scripts/select-gear-items.js",
     "check:no-repeats": "node scripts/check-no-repeats.js",
     "build": "node scripts/render-newsletter.js",
     "send": "node scripts/send-issue.js",
-    "weekly": "npm run compose && npm run fetch:blog && npm run select:gear && npm run fetch:gear-ratings && npm run check:no-repeats && npm run build"
+    "weekly": "npm run compose && npm run fetch:blog && npm run select:gear && npm run check:no-repeats && npm run build"
   },
   "dependencies": {
     "playwright": "^1.47.0"
