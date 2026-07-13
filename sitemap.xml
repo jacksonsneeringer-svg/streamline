@@ -64,6 +64,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://winlanefour.com/products</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://winlanefour.com/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
