@@ -14,10 +14,12 @@
  *                                       then locked in by check-no-repeats.js.
  *   data/selected-gear.json          - written by select-gear-items.js
  *   data/newsletter-blog-picks.json  - written by fetch-blog-posts.js
- *   data/gear-ratings.json           - (optional) written by
- *                                       fetch-gear-ratings.js; overrides the
- *                                       rating in selected-gear.json when
- *                                       present
+ *
+ * Gear cards intentionally carry NO star ratings: we have no lawful source
+ * for third-party ratings (scraping retailer pages violates their terms, and
+ * showing an invented number is a fabricated review under the FTC's rule on
+ * consumer reviews), so the cards describe the product and let the retailer
+ * page speak for its own reviews.
  *
  * Run:
  *   node scripts/render-newsletter.js [outputPath]
@@ -33,7 +35,6 @@ const ROOT = path.join(__dirname, '..');
 const TEMPLATE_PATH = path.join(ROOT, 'templates', 'newsletter-template.html');
 const DRAFT_PATH = path.join(ROOT, 'data', 'draft-issue.json');
 const GEAR_PATH = path.join(ROOT, 'data', 'selected-gear.json');
-const GEAR_RATINGS_PATH = path.join(ROOT, 'data', 'gear-ratings.json');
 const BLOG_PATH = path.join(ROOT, 'data', 'newsletter-blog-picks.json');
 
 const NEWS_ICONS = {
@@ -128,14 +129,13 @@ function renderAthleteBadges(badges) {
   return rows.join('\n');
 }
 
-// ---- Gear ----
-function starRatingHtml(rating, size /* 'lg' | 'sm' */) {
-  const pct = Math.max(0, Math.min(100, Math.round((rating / 5) * 100)));
-  const fontSize = size === 'lg' ? '14px' : '12px';
-  const numberFontSize = size === 'lg' ? '11.5px' : '11px';
-  return `<span style="position:relative; display:inline-block; font-size:${fontSize}; line-height:1; letter-spacing:1px; color:#D9E2DC; vertical-align:middle;">&#9733;&#9733;&#9733;&#9733;&#9733;<span style="position:absolute; top:0; left:0; width:${pct}%; overflow:hidden; white-space:nowrap; color:#F5B400;">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span> <span style="font-family:'Inter',Arial,sans-serif; font-size:${numberFontSize}; color:#4B6259; vertical-align:middle;">${rating.toFixed(1)}</span>`;
+// ---- Athlete photo credit (license attribution, empty when unknown) ----
+function renderAthletePhotoCredit(credit) {
+  if (!credit) return '';
+  return `<p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#7FA398; line-height:1.5; margin:10px 0 0 0;">${escapeHtml(credit)}</p>`;
 }
 
+// ---- Gear ----
 function renderGearHeroCard(item) {
   return `<tr>
 <td style="padding:12px 32px 12px 32px;">
@@ -147,10 +147,7 @@ function renderGearHeroCard(item) {
 </td>
 <td style="padding:18px 20px 18px 14px;">
 <span style="display:inline-block; background-color:#5FE0CC; color:#0E2E28; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:10px; letter-spacing:1px; padding:4px 10px; border-radius:14px; text-transform:uppercase;">Gear of the Week</span>
-<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:17px; color:#0E2E28; margin:10px 0 4px 0;">${escapeHtml(item.name)}</div>
-<div style="margin:0 0 8px 0;" data-gear-rating-slug="${escapeHtml(item.slug)}">
-${starRatingHtml(item.rating, 'lg')}
-</div>
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:17px; color:#0E2E28; margin:10px 0 8px 0;">${escapeHtml(item.name)}</div>
 <div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.6;">${item.description}</div>
 </td>
 </tr>
@@ -168,7 +165,6 @@ function renderGearRow(item, isLast) {
 </td>
 <td style="padding:10px 0;${border}">
 <div><span style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#0E2E28; line-height:1.55;"><a href="${item.url}" target="_blank" rel="sponsored noopener" style="color:#0E2E28; text-decoration:underline;"><strong>${escapeHtml(item.name)}</strong></a>: <span style="color:#4B6259;">${item.description}</span></span></div>
-<div style="margin-top:4px;" data-gear-rating-slug="${escapeHtml(item.slug)}">${starRatingHtml(item.rating, 'sm')}</div>
 </td>
 </tr>`;
 }
@@ -257,24 +253,12 @@ function renderEventRows(events) {
   return events.map((e, i) => renderEventRow(e, i === events.length - 1)).join('\n\n');
 }
 
-// ---- Gear ratings override (optional) ----
-function applyGearRatingsOverride(gearItems) {
-  if (!fs.existsSync(GEAR_RATINGS_PATH)) return gearItems;
-  const ratings = JSON.parse(fs.readFileSync(GEAR_RATINGS_PATH, 'utf8'));
-  const bySlug = new Map(ratings.map((r) => [r.slug, r.rating]));
-  return gearItems.map((item) => {
-    const scraped = bySlug.get(item.slug);
-    if (scraped == null) return item;
-    return { ...item, rating: scraped };
-  });
-}
-
 function main() {
   const draft = requireJson(
     DRAFT_PATH,
     'Create it with this week\'s editorial content (see data/draft-issue.example.json) before rendering.'
   );
-  let gearItems = requireJson(
+  const gearItems = requireJson(
     GEAR_PATH,
     'Run `npm run select:gear` first to pick this week\'s gear.'
   );
@@ -282,8 +266,6 @@ function main() {
     BLOG_PATH,
     'Run `npm run fetch:blog` first to pick this week\'s blog posts.'
   );
-
-  gearItems = applyGearRatingsOverride(gearItems);
 
   if (!gearItems.length) {
     console.error('data/selected-gear.json is empty, nothing to render for gear.');
@@ -305,7 +287,10 @@ function main() {
     '{{ATHLETE_NAME}}': escapeHtml(draft.athlete.name),
     '{{ATHLETE_BADGES}}': renderAthleteBadges(draft.athlete.badges),
     '{{ATHLETE_BIO}}': draft.athlete.bio,
-    '{{GEAR_HEADLINE}}': escapeHtml(draft.gearHeadline || 'Gear Drops & Swim Tech'),
+    '{{ATHLETE_PHOTO_CREDIT}}': renderAthletePhotoCredit(draft.athlete.photoCredit),
+    // Fixed, athlete-neutral headline: naming the athlete here ("What
+    // Swimmers Like Her Are Using") implied an endorsement they never gave.
+    '{{GEAR_HEADLINE}}': 'Gear Drops &amp; Swim Tech',
     '{{GEAR_HERO_CARD}}': renderGearHeroCard(gearItems[0]),
     '{{GEAR_ROWS}}': gearItems
       .slice(1)

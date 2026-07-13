@@ -102,11 +102,6 @@ npm run weekly
   │                      fewer than 4 unused items are left in the catalog
   │                      → data/selected-gear.json
   │
-  ├─ fetch:gear-ratings  scripts/fetch-gear-ratings.js
-  │                      (best effort) scrapes a live star rating for each
-  │                      selected item off Amazon/Arena
-  │                      → data/gear-ratings.json
-  │
   ├─ check:no-repeats    scripts/check-no-repeats.js
   │                      the hard gate: fails if the athlete, any news
   │                      topic, blog post, or gear item in this week's draft
@@ -118,8 +113,8 @@ npm run weekly
   └─ build               scripts/render-newsletter.js
                          renders templates/newsletter-template.html using
                          data/draft-issue.json + selected-gear.json +
-                         newsletter-blog-picks.json (+ gear-ratings.json if
-                         present); leaves {{UNSUBSCRIBE_URL}} for send time
+                         newsletter-blog-picks.json; leaves
+                         {{UNSUBSCRIBE_URL}} for send time
                          → issues/<date>.html
 
 npm run send             scripts/send-issue.js
@@ -157,7 +152,6 @@ data/
   newsletter-history.json    permanent record of everything ever featured
   selected-gear.json         generated each run
   newsletter-blog-picks.json generated each run
-  gear-ratings.json          generated each run (optional)
 templates/
   newsletter-template.html   structure only, no content — every dynamic
                              section is a {{PLACEHOLDER}}
@@ -174,10 +168,22 @@ public/newsletter-images/    downloaded blog hero images
 `select-gear-items.js` refuses to reuse a product that's already been
 featured. Whenever the catalog runs low on unused items (check the script's
 error message — it tells you exactly how many more you need), add more
-products to `data/gear-catalog.json` with a real affiliate link, a real
-product image, a short description, and a starting rating.
+products to `data/gear-catalog.json` with a product link, an image we host
+or are licensed to use, and a short description.
 
-## Adjusting the blog/gear scrapers
+Two hard rules for catalog entries, enforced/documented in
+`select-gear-items.js` because they are legal constraints, not style:
+
+- **No Amazon Associates links** (`amzn.to` or any `?tag=` URL). This
+  newsletter is email, and Amazon's Associates Operating Agreement prohibits
+  affiliate Special Links in email. Untagged product or brand-site URLs only.
+- **No star ratings.** There is no lawful source for third-party ratings
+  (scraping retailer pages violates their terms), and publishing an invented
+  number is a fabricated consumer rating under the FTC's rule on consumer
+  reviews. The cards describe the product; the retailer page speaks for its
+  own reviews.
+
+## Adjusting the blog scraper
 
 The blog scraper's selectors in `scripts/fetch-blog-posts.js` are verified
 against the real blog card markup in this repo's `index.html` (`.blog-card`,
@@ -185,9 +191,3 @@ against the real blog card markup in this repo's `index.html` (`.blog-card`,
 `onclick="navigate('<post-id>')"` routing). If the blog card component in
 `index.html` ever changes shape, update `scrapeBlogPosts()` to match.
 
-The gear-ratings scraper (`scripts/fetch-gear-ratings.js`) targets external
-product pages (Amazon/Arena) whose markup changes periodically, so its
-selectors remain best-effort — the spots marked `ADJUST ME` are worth a
-check in your browser's dev tools if a scrape starts coming back null. A
-null rating is harmless: the newsletter falls back to the catalog's
-placeholder rating.
