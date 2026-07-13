@@ -394,33 +394,46 @@ Resources:
 
           def verify_recaptcha(token, ip):
             # Server-side check of the reCAPTCHA v2 token the contact form
-            # sends. No secret configured = verification disabled, so local
-            # and dev stacks keep a working form without Google keys.
+            # sends. Returns None on success, or a human-readable failure
+            # reason that goes back to the browser: Google's error-codes are
+            # not sensitive, and surfacing them turns an opaque "verification
+            # failed" into an instant diagnosis (e.g. invalid-input-secret
+            # means the server key doesn't pair with the site key, which only
+            # the reCAPTCHA admin console / GitHub secrets can fix).
+            # No secret configured = verification disabled, so local and dev
+            # stacks keep a working form without Google keys.
             # The length cap is a sanity bound only: real v2 response tokens
             # regularly exceed 2,000 characters, so it must stay far above
             # that (a tighter cap corrupts the token and siteverify rejects
             # every legitimate submission).
             if not RECAPTCHA_SECRET:
-              return True
+              return None
             if not token:
-              return False
+              return 'not completed. Please check the "I\'m not a robot" box and try again.'
             data = urllib.parse.urlencode({'secret': RECAPTCHA_SECRET,
                                            'response': str(token)[:8000],
                                            'remoteip': ip or ''}).encode()
             req = urllib.request.Request(
               'https://www.google.com/recaptcha/api/siteverify', data=data,
-              headers={'Content-Type': 'application/x-www-form-urlencoded'}, method='POST')
+              headers={'Content-Type': 'application/x-www-form-urlencoded',
+                       'User-Agent': 'lane-four-contact/1.0 (+https://winlanefour.com)'},
+              method='POST')
             try:
               with urllib.request.urlopen(req, timeout=10) as r:
                 result = json.loads(r.read())
-              if not result.get('success'):
-                # error-codes distinguish an expired/duplicated token from a
-                # key misconfiguration (invalid-input-secret etc.) in CloudWatch.
-                print('recaptcha rejected:', result.get('error-codes'))
-              return bool(result.get('success'))
             except Exception as ex:
               print('recaptcha verify failed:', ex)
-              return False
+              return 'could not be verified right now. Please try again in a moment.'
+            if result.get('success'):
+              return None
+            codes = result.get('error-codes') or []
+            print('recaptcha rejected:', codes)
+            if 'timeout-or-duplicate' in codes:
+              return 'expired. Please check the box again and resubmit.'
+            if 'invalid-input-secret' in codes or 'missing-input-secret' in codes:
+              return ('verification is misconfigured on the server (invalid-input-secret: '
+                      'the secret key does not match the site key). Please report this to the site owner.')
+            return 'failed (' + (', '.join(str(c) for c in codes) or 'no error code') + '). Please try again.'
 
           # Mirror of the client-side text hardening: plain text only (no
           # tag-like content, no control characters) and fixed length caps,
@@ -437,8 +450,9 @@ Resources:
             try:
               body = json.loads(event.get('body') or '{}')
               ip = ((event.get('requestContext') or {}).get('http') or {}).get('sourceIp', '')
-              if not verify_recaptcha(body.get('recaptchaToken'), ip):
-                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'CAPTCHA verification failed. Please try again.'})}
+              captcha_problem = verify_recaptcha(body.get('recaptchaToken'), ip)
+              if captcha_problem:
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'CAPTCHA ' + captcha_problem})}
               email = clean_text(body.get('email'), 254).lower()
               if not email or '@' not in email:
                 return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Valid email required'})}
