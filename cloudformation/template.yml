@@ -22,6 +22,12 @@ Parameters:
     NoEcho: true
     Default: ""
 
+  RecaptchaSecretKey:
+    Type: String
+    Description: Google reCAPTCHA v2 secret key used to verify contact-form submissions server-side. Empty disables verification (local/dev stacks).
+    NoEcho: true
+    Default: ""
+
 Resources:
 
   # ─── S3 / CLOUDFRONT ───────────────────────────────────────────────────────
@@ -336,9 +342,10 @@ Resources:
       Environment:
         Variables:
           RESEND_API_KEY: !Ref ResendApiKey
+          RECAPTCHA_SECRET: !Ref RecaptchaSecretKey
       Code:
         ZipFile: |
-          import json, os, re, secrets, boto3, uuid, urllib.request
+          import json, os, re, secrets, boto3, uuid, urllib.parse, urllib.request
           from datetime import datetime, timezone
 
           dynamo = boto3.resource('dynamodb')
@@ -377,6 +384,29 @@ Resources:
           NOTIFY_TO = 'jackson@snurray.com'
           NOTIFY_FROM = 'Streamline Contact <noreply@winlanefour.com>'
 
+          RECAPTCHA_SECRET = os.environ.get('RECAPTCHA_SECRET', '')
+
+          def verify_recaptcha(token, ip):
+            # Server-side check of the reCAPTCHA v2 token the contact form
+            # sends. No secret configured = verification disabled, so local
+            # and dev stacks keep a working form without Google keys.
+            if not RECAPTCHA_SECRET:
+              return True
+            if not token:
+              return False
+            data = urllib.parse.urlencode({'secret': RECAPTCHA_SECRET,
+                                           'response': str(token)[:2000],
+                                           'remoteip': ip or ''}).encode()
+            req = urllib.request.Request(
+              'https://www.google.com/recaptcha/api/siteverify', data=data,
+              headers={'Content-Type': 'application/x-www-form-urlencoded'}, method='POST')
+            try:
+              with urllib.request.urlopen(req, timeout=10) as r:
+                return bool(json.loads(r.read()).get('success'))
+            except Exception as ex:
+              print('recaptcha verify failed:', ex)
+              return False
+
           # Mirror of the client-side text hardening: plain text only (no
           # tag-like content, no control characters) and fixed length caps,
           # enforced server-side so a crafted request can't bypass the form.
@@ -391,6 +421,9 @@ Resources:
               return {'statusCode': 200, 'headers': CORS, 'body': ''}
             try:
               body = json.loads(event.get('body') or '{}')
+              ip = ((event.get('requestContext') or {}).get('http') or {}).get('sourceIp', '')
+              if not verify_recaptcha(body.get('recaptchaToken'), ip):
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'CAPTCHA verification failed. Please try again.'})}
               email = clean_text(body.get('email'), 254).lower()
               if not email or '@' not in email:
                 return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Valid email required'})}
@@ -461,10 +494,14 @@ Resources:
         ZipFile: |
           import json, os, re, time, hmac, hashlib, secrets, boto3, urllib.request
           from datetime import datetime, timezone
+          from boto3.dynamodb.conditions import Attr
 
           dynamo = boto3.resource('dynamodb')
           users = dynamo.Table('streamline-users')
           tokens = dynamo.Table('streamline-auth-tokens')
+          plans = dynamo.Table('streamline-training-plans')
+          subscribers = dynamo.Table('streamline-subscribers')
+          contacts = dynamo.Table('streamline-contacts')
           lam = boto3.client('lambda')
 
           CORS = {
@@ -558,6 +595,18 @@ Resources:
                 profile.pop(k, None)
             return profile if isinstance(profile, dict) else {}
 
+          # COPPA: the Terms require users to be 13+. A profile reporting an
+          # age under 13 is actual knowledge of an under-age user, so the
+          # write is refused and nothing is stored.
+          UNDER_13_ERROR = 'LANE FOUR is for swimmers 13 and older, so we can\'t save this profile. If this age was a typo, correct it and try again.'
+
+          def reports_under_13(profile):
+            try:
+              age = float(str((profile or {}).get('age') or '').strip())
+              return 0 < age < 13
+            except (TypeError, ValueError):
+              return False
+
           def user_profile(user):
             try:
               return scrub_profile(json.loads(user.get('profile') or '{}'))
@@ -593,6 +642,8 @@ Resources:
               return resp(400, {'error': 'Password must be at least 8 characters.'})
             if get_user(email):
               return resp(409, {'error': 'An account with that email already exists. Try logging in instead.'})
+            if reports_under_13(body.get('profile') or {}):
+              return resp(400, {'error': UNDER_13_ERROR})
             user = {
               'email': email, 'firstName': first, 'lastName': last,
               'passwordHash': hash_password(password),
@@ -635,6 +686,8 @@ Resources:
             if not user:
               return resp(401, {'error': 'Session expired. Please log in again.'})
             if isinstance(body.get('profile'), dict):
+              if reports_under_13(body['profile']):
+                return resp(400, {'error': UNDER_13_ERROR})
               user['profile'] = json.dumps(scrub_profile(body['profile']))
             if clean_name(body.get('firstName')):
               user['firstName'] = clean_name(body.get('firstName'))
@@ -642,6 +695,54 @@ Resources:
               user['lastName'] = clean_name(body.get('lastName'))
             users.put_item(Item=user)
             return resp(200, {'success': True, 'account': public_account(user)})
+
+          # CCPA/CPRA right to delete, self-service: removes the account and
+          # every row keyed to it (user, training plan, sessions/tokens,
+          # newsletter subscription, contact messages). Password re-entry
+          # required so a stolen session token alone can't destroy an account.
+          def delete_account(body):
+            session = get_valid_token(body.get('token') or '', 'session')
+            user = get_user(session['email']) if session else None
+            if not user:
+              return resp(401, {'error': 'Session expired. Please log in again.'})
+            if not verify_password(body.get('password') or '', user.get('passwordHash', '')):
+              return resp(401, {'error': 'That password is not correct.'})
+            email = user['email']
+            errors = []
+            for tbl, key in ((plans, {'email': email}), (subscribers, {'email': email})):
+              try:
+                tbl.delete_item(Key=key)
+              except Exception as ex:
+                errors.append('%s: %s' % (tbl.name, ex))
+            # Tokens and contacts are keyed by their own ids, so filter-scan
+            # for this email's rows. Both tables are small.
+            try:
+              kw = {'FilterExpression': Attr('email').eq(email), 'ProjectionExpression': '#t', 'ExpressionAttributeNames': {'#t': 'token'}}
+              while True:
+                r = tokens.scan(**kw)
+                for it in r.get('Items', []):
+                  tokens.delete_item(Key={'token': it['token']})
+                if 'LastEvaluatedKey' not in r:
+                  break
+                kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
+            except Exception as ex:
+              errors.append('tokens: %s' % ex)
+            try:
+              kw = {'FilterExpression': Attr('email').eq(email), 'ProjectionExpression': 'id'}
+              while True:
+                r = contacts.scan(**kw)
+                for it in r.get('Items', []):
+                  contacts.delete_item(Key={'id': it['id']})
+                if 'LastEvaluatedKey' not in r:
+                  break
+                kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
+            except Exception as ex:
+              errors.append('contacts: %s' % ex)
+            users.delete_item(Key={'email': email})
+            if errors:
+              # The account itself is gone; log the stragglers for manual cleanup.
+              print('delete_account partial cleanup errors for %s: %s' % (email, errors))
+            return resp(200, {'success': True})
 
           def forgot(body):
             email = (body.get('email') or '').strip().lower()
@@ -688,7 +789,7 @@ Resources:
             tokens.delete_item(Key={'token': token_item['token']})  # single use
             return resp(200, {'success': True})
 
-          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile}
+          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'delete': delete_account}
 
           def handler(event, context):
             if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
@@ -878,26 +979,15 @@ Resources:
                 return {'statusCode': 200, 'body': json.dumps({'sent': 0, 'alreadySent': 1})}
               send_welcome(user)
               return {'statusCode': 200, 'body': json.dumps({'sent': 1})}
-            # All-users send: every account, no createdAt window.
-            # {"all": true}              - only those not yet sent
-            # {"all": true, "force": true} - resend to every account including already-sent
+            # There is deliberately NO all-users broadcast mode here. The
+            # welcome email is transactional only (sent once, at signup, plus
+            # the recent-signup backfill below). It carries no unsubscribe
+            # link, so re-sending it to the whole user base would be a
+            # commercial email without an opt-out — a CAN-SPAM violation.
+            # Deliberate marketing sends go through streamline-newsletter-send,
+            # which does per-recipient one-click unsubscribe correctly.
             if event.get('all'):
-              force = bool(event.get('force'))
-              kw = {} if force else {'FilterExpression': Attr('welcomeEmailSentAt').not_exists()}
-              sent, errors = 0, []
-              while True:
-                r = users.scan(**kw)
-                for u in r.get('Items', []):
-                  try:
-                    send_welcome(u)
-                    sent += 1
-                  except Exception as ex:
-                    errors.append('%s: %s' % (u.get('email'), ex))
-                if 'LastEvaluatedKey' not in r:
-                  break
-                kw['ExclusiveStartKey'] = r['LastEvaluatedKey']
-              print('welcome all-send: force=%s sent=%d errors=%s' % (force, sent, errors))
-              return {'statusCode': 200, 'body': json.dumps({'sent': sent, 'errors': errors})}
+              return {'statusCode': 400, 'body': json.dumps({'error': 'The all-users send mode was removed: the welcome email has no unsubscribe link, so mass sends must use streamline-newsletter-send instead.'})}
             # Backfill: welcome accounts created in the look-back window (default
             # 24h) that never got the email. Safe to re-run - sent users are marked.
             hours = float(event.get('hours') or 24)

@@ -55,6 +55,7 @@ jobs:
               CertificateArn=${{ secrets.ACM_CERTIFICATE_ARN }} \
               ResendApiKey=${{ secrets.RESEND_API_KEY }} \
               EditorPassword=${{ secrets.EDITOR_PASSWORD }} \
+              RecaptchaSecretKey=${{ secrets.RECAPTCHA_SECRET_KEY }} \
             --capabilities CAPABILITY_NAMED_IAM \
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset
@@ -81,6 +82,9 @@ jobs:
       - name: Generate API config
         run: |
           echo "window.STREAMLINE_API_URL = '${{ steps.stack.outputs.api_url }}';" > api-config.js
+          # reCAPTCHA v2 SITE key (public, safe in client JS). The matching
+          # SECRET key is passed to the stack as RecaptchaSecretKey above.
+          echo "window.STREAMLINE_RECAPTCHA_SITE_KEY = '${{ secrets.RECAPTCHA_SITE_KEY }}';" >> api-config.js
 
       # Writes one <route>/index.html per page and blog post (with per-route
       # title/description/canonical/social/JSON-LD head tags) plus sitemap.xml,

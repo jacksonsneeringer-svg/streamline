@@ -2778,16 +2778,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 #page-terms-of-use > section { background-color: var(--off-white); background-image: var(--pattern-waves); }
 .contact-hero-divider { width: 40px; height: 2.5px; background: var(--lap); border-radius: 2px; margin-top: 1.5rem; }
 /* Captcha */
-.captcha-wrap { border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; margin-bottom: 1.25rem; }
-.captcha-left { display: flex; align-items: center; gap: 0.65rem; cursor: pointer; }
-.captcha-box { width: 22px; height: 22px; border: 2px solid #c1c1c1; border-radius: 3px; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s, background 0.15s; }
-.captcha-box.checked { border-color: #4a9e8a; background: #4a9e8a; }
-.captcha-box svg { display: none; }
-.captcha-box.checked svg { display: block; }
-.captcha-text { font-size: 0.86rem; color: var(--text); user-select: none; }
-.captcha-branding { text-align: center; line-height: 1.35; }
-.captcha-branding-logo { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.03em; color: #555; }
-.captcha-branding-sub { font-size: 0.55rem; color: #aaa; }
+/* Contact form uses the real Google reCAPTCHA v2 widget (#contact-recaptcha),
+   which ships its own styling. */
 .success-state { display: none; flex-direction: column; align-items: center; text-align: center; padding: 3.5rem 2rem; background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--r-xl); }
 .success-anim-wrap { width: 80px; height: 80px; margin: 0 auto 1.5rem; }
 .success-svg { width: 80px; height: 80px; overflow: visible; }
@@ -5091,18 +5083,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
               <input type="checkbox" id="newsletter-opt" style="width:auto; flex-shrink:0;" />
               <label for="newsletter-opt" style="letter-spacing:0; text-transform:none; font-size:0.82rem; color:var(--gray-400); font-family:var(--font-body); font-weight:400; margin:0; cursor:pointer;">Also sign me up for the LANE FOUR weekly newsletter.</label>
             </div>
-            <div class="captcha-wrap" id="captcha-wrap">
-              <div class="captcha-left" onclick="toggleCaptcha()">
-                <div class="captcha-box" id="captcha-box">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <span class="captcha-text">I'm not a robot</span>
-              </div>
-              <div class="captcha-branding">
-                <div class="captcha-branding-logo">reCAPTCHA</div>
-                <div class="captcha-branding-sub">Privacy · Terms</div>
-              </div>
-            </div>
+            <!-- Real Google reCAPTCHA v2 checkbox. The script loads lazily,
+                 only when this page is opened and a site key is configured
+                 (window.STREAMLINE_RECAPTCHA_SITE_KEY, set at deploy time),
+                 and the streamline-contact Lambda verifies the token
+                 server-side. Never fake this widget: imitating the reCAPTCHA
+                 branding misuses Google's trademark and misrepresents the
+                 form's bot protection. -->
+            <div id="contact-recaptcha" style="margin-bottom:1.25rem;"></div>
             <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
           </form>
         </div>
@@ -5772,6 +5760,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div style="margin-top:2rem;">
       <button class="btn btn-outline-light btn-sm" onclick="signOut()" style="background:#0d3330; color:rgba(255,255,255,0.7); border-color:rgba(93,219,201,0.25); font-size:0.8rem;">Sign Out</button>
     </div>
+    <!-- Self-service data deletion (CCPA/CPRA right to delete): removes the
+         account and every record tied to it, immediately. -->
+    <div style="margin-top:2.5rem; max-width:640px; width:100%; text-align:center;">
+      <button class="btn btn-outline-light btn-sm" onclick="deleteMyAccount()" style="background:transparent; color:rgba(255,120,120,0.75); border-color:rgba(255,120,120,0.35); font-size:0.78rem;">Delete Account &amp; Data</button>
+      <p style="font-size:0.72rem; color:rgba(255,255,255,0.35); margin-top:0.6rem; line-height:1.6;">Permanently deletes your account, profile, training plans, saved sessions, newsletter subscription, and contact messages. This cannot be undone.</p>
+    </div>
   </div>
 </div><!-- end page-profile -->
 
@@ -6235,13 +6229,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:0.75rem;"><strong>We do not sell, rent, or trade your personal information to any third party. We do not share personal information for cross-context behavioral advertising.</strong></p>
       <p style="margin-bottom:0.75rem;">We may share information in limited circumstances:</p>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Infrastructure Service Providers:</strong> Amazon Web Services (AWS) provides our hosting, database storage (DynamoDB), and AI processing (Bedrock) infrastructure. Resend, Inc. delivers our email (welcome messages, password resets, contact-form notifications, and the newsletter) and processes the name and email address needed to send each message. Both process data on our behalf under contractual data protection obligations and their own privacy policies.</li>
+        <li><strong>Infrastructure Service Providers:</strong> Amazon Web Services (AWS) provides our hosting, database storage (DynamoDB), and AI processing (Bedrock) infrastructure. Resend, Inc. delivers our email (welcome messages, password resets, contact-form notifications, and the newsletter) and processes the name and email address needed to send each message. Google provides the reCAPTCHA spam-prevention service on our contact page (see Section 5). Each processes data on our behalf under contractual data protection obligations and their own privacy policies.</li>
         <li><strong>Legal Compliance:</strong> When required by law, court order, subpoena, or government request, or when we believe disclosure is necessary to protect our rights, your safety, or the safety of others.</li>
         <li><strong>Business Transfer:</strong> In the event of a merger, acquisition, or sale of assets, your information may transfer to the acquiring entity, subject to the same protections described in this policy.</li>
       </ul>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">5. Cookies and Tracking Technologies</h2>
-      <p style="margin-bottom:1.5rem;"><strong>LANE FOUR does not use cookies.</strong> We use your browser's local storage solely to keep you signed in to your account and to save your site preferences and training data on your own device. We do not use any advertising, remarketing, analytics tracking, or cross-site tracking technologies. Clearing your browser's site data will sign you out and remove locally saved preferences.</p>
+      <p style="margin-bottom:1.5rem;"><strong>LANE FOUR does not set cookies of its own.</strong> We use your browser's local storage solely to keep you signed in to your account and to save your site preferences and training data on your own device. We do not use any advertising, remarketing, analytics tracking, or cross-site tracking technologies. Clearing your browser's site data will sign you out and remove locally saved preferences. <strong>One exception:</strong> the contact page uses Google reCAPTCHA to prevent spam. reCAPTCHA loads only on that page and may set Google cookies and collect device and usage information to distinguish humans from bots, under the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a>. No other page loads any Google resource.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">6. Data Retention</h2>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
@@ -6263,7 +6257,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1rem;">You may request information about the categories and specific pieces of personal information we have collected about you, the categories of sources from which it was collected, the purposes for collecting it, and the categories of third parties with whom it has been shared.</p>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Right to Delete</h3>
-      <p style="margin-bottom:1rem;">You may request that we delete personal information we have collected about you, subject to certain exceptions permitted by law (such as information needed to complete a transaction or comply with legal obligations).</p>
+      <p style="margin-bottom:1rem;">You may request that we delete personal information we have collected about you, subject to certain exceptions permitted by law (such as information needed to complete a transaction or comply with legal obligations). Account holders can delete their account and all associated data instantly and without contacting us, using the "Delete Account &amp; Data" button on their profile page.</p>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Right to Correct</h3>
       <p style="margin-bottom:1rem;">You may request that we correct inaccurate personal information we hold about you.</p>
@@ -6648,9 +6642,7 @@ function showPage(pageId, allowSetup) {
   if (currentPage && currentPage.id === 'page-contact' && pageId !== 'contact') {
     const form = document.getElementById('contact-form');
     if (form) form.reset();
-    captchaVerified = false;
-    const box = document.getElementById('captcha-box');
-    if (box) box.classList.remove('checked');
+    resetContactRecaptcha();
     const wrap = document.getElementById('contact-form-wrap');
     const success = document.getElementById('contact-success-state');
     if (wrap) wrap.style.display = '';
@@ -6684,7 +6676,7 @@ function showPage(pageId, allowSetup) {
   if (pageId === 'dryland-workouts') initLiftPage();
   if (pageId === 'profile') renderProfilePage();
   if (pageId === 'my-training') { updateTrainingPage(); showDashView('overview'); renderWorkoutLog(); }
-  if (pageId === 'contact') prefillContactForm();
+  if (pageId === 'contact') { prefillContactForm(); ensureContactRecaptcha(); }
 }
 
 function navigate(pageId, allowSetup) {
@@ -9021,6 +9013,37 @@ function signOut() {
   navigate('home');
 }
 
+// Self-service account deletion (CCPA/CPRA right to delete). Password
+// re-entry is required server-side, so a stolen session token alone can't
+// destroy an account.
+async function deleteMyAccount() {
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token) {
+    alert('Account deletion needs a connection to the server. Please try again on the live site while signed in.');
+    return;
+  }
+  if (!confirm('Permanently delete your LANE FOUR account and all data tied to it (profile, training plans, sessions, newsletter subscription, contact messages)? This cannot be undone.')) return;
+  const password = prompt('To confirm, enter your account password:');
+  if (!password) return;
+  try {
+    const { ok, data } = await authApi('delete', { token, password });
+    if (!ok) {
+      alert(data.error || 'Could not delete the account. Please try again.');
+      return;
+    }
+    localStorage.removeItem('streamline_session');
+    localStorage.removeItem('streamline_account');
+    localStorage.removeItem('streamline_profile');
+    _trainingPlan = null;
+    clearTimeout(_planPollTimer);
+    updateNavButton();
+    navigate('home');
+    alert('Your account and data have been deleted. Thanks for swimming with us.');
+  } catch (e) {
+    alert('Could not reach the server. Please try again.');
+  }
+}
+
 function getSelectedChips(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return '';
@@ -9088,6 +9111,15 @@ async function requestSetupLocation() {
   }
 }
 
+// COPPA: the Terms require users to be 13 or older, and a profile reporting
+// an age under 13 is actual knowledge of an under-age user. The server
+// refuses these too; this is the friendly early check.
+function ageBlockedUnder13(age) {
+  const a = parseFloat(age);
+  return a > 0 && a < 13;
+}
+const UNDER_13_MSG = 'LANE FOUR is for swimmers 13 and older, so we can\'t save this profile. If the age was a typo, please correct it and try again.';
+
 async function saveFullProfile() {
   const existingAccount = getAccount();
   const firstName = (document.getElementById('gs-first-name')?.value || '').trim();
@@ -9096,6 +9128,8 @@ async function saveFullProfile() {
   const password  = (document.getElementById('gs-password')?.value   || '');
   const confirm   = (document.getElementById('gs-confirm-password')?.value || '');
   const terms     = document.getElementById('gs-terms')?.checked;
+
+  if (ageBlockedUnder13(document.getElementById('gs-dob')?.value)) { alert(UNDER_13_MSG); return; }
 
   if (existingAccount) {
     // Editing existing profile: keep account credentials, just update name/email + profile data
@@ -9212,6 +9246,7 @@ function closeProfileEdit(key) {
 }
 
 function saveProfileField(key, value) {
+  if (key === 'age' && ageBlockedUnder13(value)) { alert(UNDER_13_MSG); return; }
   const profile = getProfile();
   profile[key] = value;
   localStorage.setItem('streamline_profile', JSON.stringify(profile));
@@ -10881,18 +10916,51 @@ function toggleChip(el, group) {
   }
 }
 
-let captchaVerified = false;
-function toggleCaptcha() {
-  captchaVerified = !captchaVerified;
-  const box = document.getElementById('captcha-box');
-  if (box) box.classList.toggle('checked', captchaVerified);
+// ── Contact form: real reCAPTCHA v2 + our own /contact API ─────────────────
+// The Google script is injected only when the contact page is opened AND a
+// site key is configured, so ordinary browsing sends nothing to Google. With
+// no site key (local dev), the widget is skipped and the Lambda skips
+// verification too (its secret is empty on dev stacks).
+let _recaptchaWidgetId = null;
+let _recaptchaLoading = false;
+
+function ensureContactRecaptcha() {
+  const siteKey = window.STREAMLINE_RECAPTCHA_SITE_KEY || '';
+  const slot = document.getElementById('contact-recaptcha');
+  if (!siteKey || !slot || _recaptchaWidgetId !== null) return;
+  const render = () => {
+    if (_recaptchaWidgetId === null && window.grecaptcha && grecaptcha.render) {
+      _recaptchaWidgetId = grecaptcha.render('contact-recaptcha', { sitekey: siteKey });
+    }
+  };
+  if (window.grecaptcha && grecaptcha.render) { render(); return; }
+  if (_recaptchaLoading) return;
+  _recaptchaLoading = true;
+  window.__onRecaptchaLoad = render;
+  const s = document.createElement('script');
+  s.src = 'https://www.google.com/recaptcha/api.js?onload=__onRecaptchaLoad&render=explicit';
+  s.async = true;
+  s.defer = true;
+  document.head.appendChild(s);
+}
+
+function contactRecaptchaToken() {
+  if (_recaptchaWidgetId === null) return '';
+  try { return grecaptcha.getResponse(_recaptchaWidgetId) || ''; } catch (e) { return ''; }
+}
+
+function resetContactRecaptcha() {
+  if (_recaptchaWidgetId === null) return;
+  try { grecaptcha.reset(_recaptchaWidgetId); } catch (e) {}
 }
 
 async function handleContactSubmit(event) {
   event.preventDefault();
-  if (!captchaVerified) {
-    const wrap = document.getElementById('captcha-wrap');
-    if (wrap) { wrap.style.outline = '2px solid var(--lap)'; setTimeout(() => { wrap.style.outline = ''; }, 1800); }
+  const recaptchaActive = !!(window.STREAMLINE_RECAPTCHA_SITE_KEY && _recaptchaWidgetId !== null);
+  const recaptchaToken = contactRecaptchaToken();
+  if (recaptchaActive && !recaptchaToken) {
+    const slot = document.getElementById('contact-recaptcha');
+    if (slot) { slot.style.outline = '2px solid var(--lap)'; setTimeout(() => { slot.style.outline = ''; }, 1800); }
     return;
   }
   const form = event.target;
@@ -10907,25 +10975,22 @@ async function handleContactSubmit(event) {
     email: document.getElementById('cemail').value.trim(),
     subject: document.getElementById('csubject').value,
     message: document.getElementById('cmessage').value.trim(),
-    newsletterOptIn: document.getElementById('newsletter-opt').checked
+    newsletterOptIn: document.getElementById('newsletter-opt').checked,
+    recaptchaToken: recaptchaToken
   };
 
   try {
-    const res = await fetch('https://formspree.io/f/xqeoaqpp', {
+    if (!apiBase()) throw new Error('No API configured');
+    // Our own contact Lambda stores the message, sends the notification, and
+    // handles the newsletter opt-in — no third-party form service involved.
+    const res = await fetch(apiBase() + '/contact', {
       method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    if (!res.ok) throw new Error('Server error');
-    if (payload.newsletterOptIn) {
-      const apiUrl = (window.STREAMLINE_API_URL || '');
-      if (apiUrl) {
-        fetch(`${apiUrl}/newsletter`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: payload.email, source: 'contact' })
-        }).catch(() => {});
-      }
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || 'Server error');
     }
     const wrap = document.getElementById('contact-form-wrap');
     const success = document.getElementById('contact-success-state');
@@ -10937,7 +11002,10 @@ async function handleContactSubmit(event) {
   } catch (err) {
     btn.textContent = originalText;
     btn.disabled = false;
-    alert('Something went wrong. Please try again.');
+    resetContactRecaptcha();
+    alert((err && err.message && err.message !== 'Server error' && err.message !== 'No API configured')
+      ? err.message
+      : 'Something went wrong. Please try again.');
   }
 }
 

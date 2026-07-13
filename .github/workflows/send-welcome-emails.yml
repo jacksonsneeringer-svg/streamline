@@ -1,18 +1,23 @@
 name: Send Welcome Emails
 
+# Transactional only. The welcome email carries no unsubscribe link, so it may
+# never be broadcast to the whole user base (that would be a commercial email
+# without an opt-out — a CAN-SPAM violation). This workflow supports exactly
+# two uses: a single test send, and a backfill that welcomes accounts created
+# in a recent window that never got the email (e.g. after a send outage).
+# Deliberate marketing sends go through the newsletter pipeline, which does
+# per-recipient one-click unsubscribe correctly.
+
 on:
   workflow_dispatch:
     inputs:
-      mode:
-        description: 'Who to send to'
-        required: true
-        default: 'all-unsent'
-        type: choice
-        options:
-          - all-unsent   # every account that has never received the welcome email
-          - all-force    # every account, including those already sent (resend)
+      backfill_hours:
+        description: 'Backfill window: welcome accounts created in the past N hours that never got the email.'
+        required: false
+        default: '24'
+        type: string
       test_email:
-        description: 'Optional: send a single test email to this address (resends even if already welcomed). Overrides "mode" when set.'
+        description: 'Optional: send a single test email to this address (resends even if already welcomed). Overrides the backfill when set.'
         required: false
         default: ''
         type: string
@@ -39,13 +44,12 @@ jobs:
         id: payload
         env:
           TEST_EMAIL: ${{ inputs.test_email }}
+          HOURS: ${{ inputs.backfill_hours }}
         run: |
           if [ -n "$TEST_EMAIL" ]; then
             echo "payload={\"email\":\"$TEST_EMAIL\",\"force\":true}" >> "$GITHUB_OUTPUT"
-          elif [ "${{ inputs.mode }}" = "all-force" ]; then
-            echo 'payload={"all":true,"force":true}' >> "$GITHUB_OUTPUT"
           else
-            echo 'payload={"all":true}' >> "$GITHUB_OUTPUT"
+            echo "payload={\"hours\":${HOURS:-24}}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Invoke welcome-email Lambda
