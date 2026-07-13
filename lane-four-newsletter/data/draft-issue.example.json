@@ -24,7 +24,8 @@
       "topicSlug": "unique-slug-for-this-topic-1",
       "icon": "doc",
       "title": "Short headline",
-      "body": "1-3 sentences. <strong>Bold</strong> athlete/organization names the way the template already does."
+      "body": "1-3 sentences. <strong>Bold</strong> athlete/organization names the way the template already does.",
+      "url": "https://swimswam.com/the-original-story-this-item-summarizes/ (required: the renderer links the headline and prints a 'Read the full story at SwimSwam' credit from this)"
     },
     {
       "topicSlug": "unique-slug-for-this-topic-2",

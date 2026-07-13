@@ -79,6 +79,23 @@ jobs:
           echo "distribution_id=$DIST_ID" >> "$GITHUB_OUTPUT"
           echo "api_url=$API_URL" >> "$GITHUB_OUTPUT"
 
+      # The privacy policy promises server log data (which includes IPs and
+      # emails printed by the Lambdas) is retained for at most 90 days.
+      # Lambda auto-creates its log groups with no expiry, so retention is set
+      # here on every deploy. Idempotent: create-log-group is a no-op-with-error
+      # for groups that already exist, and put-retention-policy simply
+      # re-applies the same policy.
+      - name: Enforce 90-day CloudWatch log retention
+        run: |
+          for fn in streamline-contact streamline-auth streamline-welcome-email \
+                    streamline-newsletter streamline-newsletter-send streamline-newsletter-compose \
+                    streamline-search streamline-generate-sets streamline-get-daily-sets \
+                    streamline-get-archives streamline-generate-dryland streamline-get-daily-dryland \
+                    streamline-get-dryland-archives streamline-blog-edits streamline-training-plan; do
+            aws logs create-log-group --log-group-name "/aws/lambda/$fn" 2>/dev/null || true
+            aws logs put-retention-policy --log-group-name "/aws/lambda/$fn" --retention-in-days 90
+          done
+
       - name: Generate API config
         run: |
           echo "window.STREAMLINE_API_URL = '${{ steps.stack.outputs.api_url }}';" > api-config.js

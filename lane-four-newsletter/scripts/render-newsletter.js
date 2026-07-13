@@ -90,6 +90,10 @@ function formatDate(dateText) {
 }
 
 // ---- In the Water This Week ----
+// Every item is a summary of someone else's original reporting, so each one
+// must link back to and credit the source story (item.url, carried through
+// from the SwimSwam feed by the compose Lambda). Never render an uncredited
+// summary — that's republishing another outlet's work as our own.
 function renderNewsItems(items) {
   return items
     .map((item, i) => {
@@ -98,6 +102,13 @@ function renderNewsItems(items) {
       const iconCellPadding = isLast ? '14px 0 0 0' : '14px 0 14px 0';
       const textCellPadding = isLast ? '14px 0 0 12px' : '14px 0 14px 12px';
       const border = isLast ? '' : ' border-bottom:1px solid #E3EEE7;';
+      const url = item.url ? escapeHtml(item.url) : '';
+      const title = url
+        ? `<a href="${url}" target="_blank" rel="noopener" style="color:#0E2E28; text-decoration:none;">${escapeHtml(item.title)}</a>`
+        : escapeHtml(item.title);
+      const sourceLine = url
+        ? `\n<div style="font-family:'Inter',Arial,sans-serif; font-size:11.5px; margin-top:5px;"><a href="${url}" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">Read the full story at SwimSwam &rarr;</a></div>`
+        : '';
       return `<tr>
 <td width="56" valign="top" style="padding:${iconCellPadding};${border}">
 <table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:9px; width:40px; height:40px; text-align:center; vertical-align:middle;">
@@ -105,8 +116,8 @@ ${iconSvg}
 </td></tr></table>
 </td>
 <td valign="top" style="padding:${textCellPadding};${border}">
-<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;">${escapeHtml(item.title)}</div>
-<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;">${item.body}</div>
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;">${title}</div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;">${item.body}</div>${sourceLine}
 </td>
 </tr>`;
     })
