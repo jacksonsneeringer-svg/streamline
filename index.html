@@ -10940,13 +10940,44 @@ function toggleChip(el, group) {
 let _recaptchaWidgetId = null;
 let _recaptchaLoading = false;
 
+// Writes a visible note under the CAPTCHA slot (or clears it with no
+// message). Failures used to be silent — the widget just never appeared and
+// submits bounced off the server with a generic error — so every load or
+// render problem now says what went wrong right in the form.
+function contactRecaptchaNote(msg) {
+  const slot = document.getElementById('contact-recaptcha');
+  if (!slot) return;
+  let note = document.getElementById('contact-recaptcha-note');
+  if (!msg) { if (note) note.remove(); return; }
+  if (!note) {
+    note = document.createElement('div');
+    note.id = 'contact-recaptcha-note';
+    note.style.cssText = 'color:#b3261e; font-size:0.8rem; margin:-0.75rem 0 1.25rem;';
+    slot.insertAdjacentElement('afterend', note);
+  }
+  note.textContent = msg;
+}
+
 function ensureContactRecaptcha() {
   const siteKey = window.STREAMLINE_RECAPTCHA_SITE_KEY || '';
   const slot = document.getElementById('contact-recaptcha');
   if (!siteKey || !slot || _recaptchaWidgetId !== null) return;
   const render = () => {
     if (_recaptchaWidgetId === null && window.grecaptcha && grecaptcha.render) {
-      _recaptchaWidgetId = grecaptcha.render('contact-recaptcha', { sitekey: siteKey });
+      try {
+        _recaptchaWidgetId = grecaptcha.render('contact-recaptcha', {
+          sitekey: siteKey,
+          // Fires when the widget hits a network error or the token expires;
+          // without it a stale checkmark submits a dead token.
+          'expired-callback': () => contactRecaptchaNote('The CAPTCHA expired — please check the box again.'),
+          'error-callback': () => contactRecaptchaNote('The CAPTCHA hit a network error — please reload and try again.')
+        });
+        contactRecaptchaNote('');
+      } catch (e) {
+        // grecaptcha.render throws on an unusable site key (wrong type,
+        // malformed); anything else shows as an error inside the widget.
+        contactRecaptchaNote('The CAPTCHA could not be set up (' + (e && e.message ? e.message : 'invalid site key') + ').');
+      }
     }
   };
   if (window.grecaptcha && grecaptcha.render) { render(); return; }
@@ -10957,6 +10988,10 @@ function ensureContactRecaptcha() {
   s.src = 'https://www.google.com/recaptcha/api.js?onload=__onRecaptchaLoad&render=explicit';
   s.async = true;
   s.defer = true;
+  s.onerror = () => {
+    _recaptchaLoading = false;
+    contactRecaptchaNote('The CAPTCHA script failed to load — an ad blocker may be blocking google.com, or the network dropped. Disable blockers for this page or reload.');
+  };
   document.head.appendChild(s);
 }
 
@@ -10966,19 +11001,31 @@ function contactRecaptchaToken() {
 }
 
 function resetContactRecaptcha() {
+  contactRecaptchaNote('');
   if (_recaptchaWidgetId === null) return;
   try { grecaptcha.reset(_recaptchaWidgetId); } catch (e) {}
 }
 
 async function handleContactSubmit(event) {
   event.preventDefault();
-  const recaptchaActive = !!(window.STREAMLINE_RECAPTCHA_SITE_KEY && _recaptchaWidgetId !== null);
+  // A configured site key means the server demands a token, full stop. The
+  // old check also required a rendered widget, so a widget that failed to
+  // load submitted an empty token and bounced off the server with a cryptic
+  // error — now that case blocks the submit with an explanation instead.
+  const siteKeyConfigured = !!window.STREAMLINE_RECAPTCHA_SITE_KEY;
   const recaptchaToken = contactRecaptchaToken();
-  if (recaptchaActive && !recaptchaToken) {
-    const slot = document.getElementById('contact-recaptcha');
-    if (slot) { slot.style.outline = '2px solid var(--lap)'; setTimeout(() => { slot.style.outline = ''; }, 1800); }
+  if (siteKeyConfigured && _recaptchaWidgetId === null) {
+    ensureContactRecaptcha();
+    contactRecaptchaNote('The CAPTCHA hasn’t loaded — wait a moment for the checkbox to appear, then try again.');
     return;
   }
+  if (siteKeyConfigured && !recaptchaToken) {
+    const slot = document.getElementById('contact-recaptcha');
+    if (slot) { slot.style.outline = '2px solid var(--lap)'; setTimeout(() => { slot.style.outline = ''; }, 1800); }
+    contactRecaptchaNote('Please check the “I’m not a robot” box before sending.');
+    return;
+  }
+  contactRecaptchaNote('');
   const form = event.target;
   const btn = form.querySelector('[type="submit"]');
   const originalText = btn.textContent;
