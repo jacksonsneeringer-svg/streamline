@@ -1902,6 +1902,64 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   border-radius: 50%;
   background: rgba(6,20,30,0.2);
 }
+/* Share bar between the article body and "Continue reading", injected on load
+   by _injectShareBar() as a sibling of .post-body (so the in-page editor and
+   the live read-time word count never see it). */
+.post-share {
+  max-width: 860px;
+  margin: -2.5rem auto 0;
+  padding: 0 2rem 4rem;
+}
+.post-share-inner {
+  border-top: 1px solid var(--gray-100);
+  padding-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+}
+.post-share-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+.post-share-btns {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.post-share-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--teal);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
+}
+.post-share-btn:hover {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.post-share-btn svg { width: 17px; height: 17px; display: block; }
+.post-share-btn.copied,
+.post-share-btn.copied:hover {
+  background: var(--lap-pale);
+  border-color: var(--lap-hover);
+  color: var(--deep);
+  transform: none;
+}
 .post-body {
   max-width: 860px;
   margin: 0 auto;
@@ -6566,6 +6624,13 @@ function updateSeoTags(pageId) {
   set('meta[name="twitter:title"]', 'content', title);
   set('meta[name="twitter:description"]', 'content', desc);
   set('meta[property="og:type"]', 'content', post ? 'article' : 'website');
+  // Social-card image: the post's hero photo (matching what prerender.mjs
+  // bakes into the post's own page for X/Facebook scrapers), else the default.
+  const image = post && post.heroImage
+    ? (post.heroImage.startsWith('/') ? SITE_ORIGIN + post.heroImage : _heroSrc(post.heroImage, 1200, 630))
+    : SITE_ORIGIN + '/swimmer2-bg.jpg';
+  set('meta[property="og:image"]', 'content', image);
+  set('meta[name="twitter:image"]', 'content', image);
   let robots = document.querySelector('meta[name="robots"]');
   if (NOINDEX_PAGES.includes(pageId)) {
     if (!robots) {
@@ -11202,6 +11267,115 @@ function _injectArticleHero(p) {
   header.parentNode.insertBefore(band, header);
 }
 
+// ── Article share bar ───────────────────────────────────────────────────────
+// Every post gets a share row below its body: X, Facebook, LinkedIn, email,
+// copy-link, and (where the browser supports it) the device's native share
+// sheet. What gets shared is the post's canonical URL — the prerendered page
+// for that URL (scripts/prerender.mjs) already carries the post's hero image
+// as og:image / twitter:image, so X, Facebook, etc. render the feature photo
+// on the shared card automatically.
+
+function _postShareUrl(p) { return SITE_ORIGIN + pagePath(p.id); }
+
+const _SHARE_ICONS = {
+  x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.505 17.523 2 12 2S2 6.505 2 12.06c0 5.022 3.657 9.184 8.438 9.94v-7.03H7.898v-2.91h2.54V9.845c0-2.522 1.492-3.915 3.777-3.915 1.094 0 2.238.196 2.238.196v2.476h-1.26c-1.243 0-1.63.775-1.63 1.57v1.888h2.773l-.443 2.91h-2.33V22C18.343 21.244 22 17.082 22 12.06z"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.266 2.37 4.266 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>',
+  email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+  native: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+};
+
+function _sharePostTo(network, p) {
+  const url = _postShareUrl(p);
+  if (network === 'email') {
+    window.location.href = 'mailto:?subject=' + encodeURIComponent(p.title) +
+      '&body=' + encodeURIComponent((p.excerpt ? p.excerpt + '\n\n' : '') + url);
+    return;
+  }
+  const targets = {
+    x: 'https://x.com/intent/post?text=' + encodeURIComponent(p.title) + '&url=' + encodeURIComponent(url),
+    facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url),
+    linkedin: 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url),
+  };
+  if (targets[network]) window.open(targets[network], '_blank', 'noopener,noreferrer,width=600,height=560');
+}
+
+function _copyPostLink(p, btn) {
+  const url = _postShareUrl(p);
+  const confirm = function() {
+    btn.classList.add('copied');
+    btn.innerHTML = _SHARE_ICONS.check;
+    btn.title = 'Link copied!';
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.innerHTML = _SHARE_ICONS.copy;
+      btn.title = 'Copy link';
+    }, 1800);
+  };
+  const fallback = function() {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.cssText = 'position:fixed; opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    try { if (document.execCommand('copy')) confirm(); } catch (e) {}
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(confirm, fallback);
+  } else {
+    fallback();
+  }
+}
+
+// Add the share row right after the article body. A sibling (not a child) of
+// .post-body so it stays out of the editor's editable region and out of the
+// read-time word count. Idempotent, like _injectArticleHero.
+function _injectShareBar(p) {
+  const page = document.getElementById('page-' + p.id);
+  if (!page || page.querySelector('.post-share')) return;
+  const body = page.querySelector('.post-body');
+  if (!body) return;
+
+  const btns = document.createElement('div');
+  btns.className = 'post-share-btns';
+  const addBtn = function(icon, label, onClick) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'post-share-btn';
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    b.innerHTML = _SHARE_ICONS[icon];
+    b.addEventListener('click', onClick);
+    btns.appendChild(b);
+    return b;
+  };
+  addBtn('x', 'Share on X', function() { _sharePostTo('x', p); });
+  addBtn('facebook', 'Share on Facebook', function() { _sharePostTo('facebook', p); });
+  addBtn('linkedin', 'Share on LinkedIn', function() { _sharePostTo('linkedin', p); });
+  addBtn('email', 'Share by email', function() { _sharePostTo('email', p); });
+  addBtn('copy', 'Copy link', function() { _copyPostLink(p, this); });
+  if (navigator.share) {
+    addBtn('native', 'Share…', function() {
+      navigator.share({ title: p.title, text: p.excerpt || p.title, url: _postShareUrl(p) }).catch(function() {});
+    });
+  }
+
+  const label = document.createElement('span');
+  label.className = 'post-share-label';
+  label.textContent = 'Share this article';
+  const inner = document.createElement('div');
+  inner.className = 'post-share-inner';
+  inner.appendChild(label);
+  inner.appendChild(btns);
+  const bar = document.createElement('div');
+  bar.className = 'post-share';
+  bar.appendChild(inner);
+  body.parentNode.insertBefore(bar, body.nextSibling);
+}
+
 // Write each post's formatted date + read time (and hero image, where a card
 // has a thumb) into every hardcoded card and article header that links to it,
 // keeping the home page, blog pages and article pages perfectly in sync.
@@ -11232,6 +11406,7 @@ function syncBlogMeta() {
       }
     });
     _injectArticleHero(p);
+    _injectShareBar(p);
     // Article header meta line: <date> · <dot> · <read time>.
     const page = document.getElementById('page-' + p.id);
     const meta = page && page.querySelector('.post-meta');
