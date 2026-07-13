@@ -22,6 +22,14 @@ Once a post is in `BLOG_POSTS`, the pipeline in the `DOMContentLoaded` handler
    "continue reading") and into the article header, so all locations match.
 4. **Hero image** — if the post has a `heroImage`, it is shown on the post's
    cards and as a banner at the top of the article, above the headline.
+5. **Share bar** — every article gets a "Share this article" row below the
+   body: X, Facebook, LinkedIn, email, copy-link, and (on devices that support
+   it) the native share sheet. Buttons share the post's canonical URL
+   (`https://winlanefour.com/<post-id>`), whose prerendered head carries the
+   post's `heroImage` as the `og:image`/`twitter:image` — so a share to X (or
+   any social network) renders the feature photo as a large card. No per-post
+   markup needed; the bar is injected outside `.post-body`, so it never shows
+   up in the editor or the read-time word count.
 
 The password-gated in-page editor also calls `window.__refreshBlogMeta()` after
 saving, so read time updates immediately when an article is edited live.
