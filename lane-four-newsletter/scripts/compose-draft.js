@@ -103,6 +103,10 @@ function validateDraft(draft) {
   if (items.length < 3) problems.push(`only ${items.length} news items`);
   for (const item of items) {
     if (!item.topicSlug || !item.title || !item.body) problems.push('news item missing fields');
+    // Every news item summarizes someone else's reporting; the source URL is
+    // what lets the renderer credit and link the original story. An item
+    // without one would ship an uncredited summary, so it hard-fails here.
+    if (!item.url || !/^https?:\/\//.test(item.url)) problems.push(`news item [${item.topicSlug}] missing source url`);
   }
   if (!draft.athlete || !draft.athlete.name || !draft.athlete.bio) problems.push('missing athlete');
   if (problems.length) {

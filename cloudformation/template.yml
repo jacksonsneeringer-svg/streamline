@@ -148,6 +148,12 @@ Resources:
       KeySchema:
         - AttributeName: id
           KeyType: HASH
+      # The privacy policy promises contact-form submissions are kept for at
+      # most 1 year; the contact Lambda stamps each row with a matching
+      # expiresAt so DynamoDB enforces that promise automatically.
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
 
   SubscribersTable:
     Type: AWS::DynamoDB::Table
@@ -345,7 +351,7 @@ Resources:
           RECAPTCHA_SECRET: !Ref RecaptchaSecretKey
       Code:
         ZipFile: |
-          import json, os, re, secrets, boto3, uuid, urllib.parse, urllib.request
+          import json, os, re, time, secrets, boto3, uuid, urllib.parse, urllib.request
           from datetime import datetime, timezone
 
           dynamo = boto3.resource('dynamodb')
@@ -382,7 +388,7 @@ Resources:
           }
 
           NOTIFY_TO = 'jackson@snurray.com'
-          NOTIFY_FROM = 'Streamline Contact <noreply@winlanefour.com>'
+          NOTIFY_FROM = 'LANE FOUR Contact <noreply@winlanefour.com>'
 
           RECAPTCHA_SECRET = os.environ.get('RECAPTCHA_SECRET', '')
 
@@ -390,19 +396,28 @@ Resources:
             # Server-side check of the reCAPTCHA v2 token the contact form
             # sends. No secret configured = verification disabled, so local
             # and dev stacks keep a working form without Google keys.
+            # The length cap is a sanity bound only: real v2 response tokens
+            # regularly exceed 2,000 characters, so it must stay far above
+            # that (a tighter cap corrupts the token and siteverify rejects
+            # every legitimate submission).
             if not RECAPTCHA_SECRET:
               return True
             if not token:
               return False
             data = urllib.parse.urlencode({'secret': RECAPTCHA_SECRET,
-                                           'response': str(token)[:2000],
+                                           'response': str(token)[:8000],
                                            'remoteip': ip or ''}).encode()
             req = urllib.request.Request(
               'https://www.google.com/recaptcha/api/siteverify', data=data,
               headers={'Content-Type': 'application/x-www-form-urlencoded'}, method='POST')
             try:
               with urllib.request.urlopen(req, timeout=10) as r:
-                return bool(json.loads(r.read()).get('success'))
+                result = json.loads(r.read())
+              if not result.get('success'):
+                # error-codes distinguish an expired/duplicated token from a
+                # key misconfiguration (invalid-input-secret etc.) in CloudWatch.
+                print('recaptcha rejected:', result.get('error-codes'))
+              return bool(result.get('success'))
             except Exception as ex:
               print('recaptcha verify failed:', ex)
               return False
@@ -441,7 +456,10 @@ Resources:
                 'email': email,
                 'subject': subject,
                 'message': message,
-                'newsletterOptIn': newsletter
+                'newsletterOptIn': newsletter,
+                # DynamoDB TTL: enforces the privacy policy's "contact form
+                # submissions retained for up to 1 year" promise.
+                'expiresAt': int(time.time()) + 365 * 24 * 3600
               }
               contacts.put_item(Item=item)
               if newsletter:
@@ -468,7 +486,7 @@ Resources:
                 )
                 send_email(
                   NOTIFY_FROM, [NOTIFY_TO],
-                  f'[Streamline] {subject or "New contact message"}',
+                  f'[LANE FOUR] {subject or "New contact message"}',
                   text=email_body, reply_to=email
                 )
               except Exception:
@@ -1049,11 +1067,11 @@ Resources:
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:60px 16px;">'
               '<table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
               '<tr><td style="background:#0d4f47;text-align:center;padding:26px;">'
-              '<div style="font-size:20px;letter-spacing:5px;color:#ffffff;font-weight:bold;">STREAMLINE</div></td></tr>'
+              '<div style="font-size:20px;letter-spacing:5px;color:#ffffff;font-weight:bold;">LANE FOUR</div></td></tr>'
               '<tr><td style="padding:36px 40px;text-align:center;">'
               '<div style="font-family:Georgia,serif;font-size:24px;color:#0d4f47;padding-bottom:12px;">' + escape(title) + '</div>'
               '<div style="font-size:15px;line-height:1.7;color:#3a6560;">' + message + '</div>'
-              '<div style="padding-top:24px;"><a href="' + SITE + '" style="color:#1a7a6e;">Return to STREAMLINE &rarr;</a></div>'
+              '<div style="padding-top:24px;"><a href="' + SITE + '" style="color:#1a7a6e;">Return to LANE FOUR &rarr;</a></div>'
               '</td></tr></table></td></tr></table></body></html>'
             )
             return {'statusCode': 200, 'headers': {'Content-Type': 'text/html; charset=utf-8'}, 'body': html}
@@ -1088,7 +1106,7 @@ Resources:
               Key={'email': email},
               UpdateExpression='SET unsubscribedAt = :t',
               ExpressionAttributeValues={':t': datetime.now(timezone.utc).isoformat()})
-            return page('You are unsubscribed', 'You will no longer receive the STREAMLINE newsletter at <b>' + escape(email) + '</b>. Changed your mind? You can sign up again any time from our site.')
+            return page('You are unsubscribed', 'You will no longer receive the LANE FOUR newsletter at <b>' + escape(email) + '</b>. Changed your mind? You can sign up again any time from our site.')
 
           def handler(event, context):
             method = (event.get('requestContext') or {}).get('http', {}).get('method', '')
@@ -1133,7 +1151,7 @@ Resources:
           # Unsubscribe links must hit the API (streamline-newsletter), not the
           # static site, so they point at the raw API Gateway endpoint.
           API_URL: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
-          EMAIL_FROM: "Streamline <newsletter@winlanefour.com>"
+          EMAIL_FROM: "LANE FOUR <newsletter@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
       Code:
         ZipFile: |
@@ -1146,7 +1164,7 @@ Resources:
 
           SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
           API = os.environ.get('API_URL', SITE)
-          FROM = os.environ.get('EMAIL_FROM', 'Streamline <newsletter@winlanefour.com>')
+          FROM = os.environ.get('EMAIL_FROM', 'LANE FOUR <newsletter@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 
           def send_email(source, to, subject, html=None, text=None, headers=None):
@@ -1173,8 +1191,8 @@ Resources:
           # Brand palette + email-safe fonts, matched to the welcome email.
           F = 'font-family:Arial,Helvetica,sans-serif;'  # ~ DM Sans
           G = 'font-family:Georgia,serif;'               # ~ DM Serif Display
-          LOGO_IMG = SITE + '/email/streamline-logo.png'
-          WORDMARK_IMG = SITE + '/email/streamline-wordmark.png'
+          LOGO_IMG = SITE + '/email/lane-four-logo.png'
+          WORDMARK_IMG = SITE + '/email/lane-four-wordmark.png'
 
           def div(css, t): return '<div style="' + css + '">' + t + '</div>'
 
@@ -1209,7 +1227,7 @@ Resources:
               '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">'
               '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">'
               '<tr><td style="background:#0d4f47;text-align:center;padding:38px 40px 40px;">'
-              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;max-width:100%;">'
+              + '<img src="' + LOGO_IMG + '" width="490" height="44" alt="LANE FOUR" style="display:inline-block;border:0;outline:none;max-width:100%;">'
               + div(F + 'font-size:11px;letter-spacing:11px;word-spacing:14px;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:14px 0 30px 16px;', 'Train for the Fast Lane')
               + head
               + '</td></tr>'
@@ -1220,11 +1238,11 @@ Resources:
                 '<a href="' + SITE + '/contact" style="color:#1a7a6e;">Contact us</a>')
               + '</td></tr>'
               '<tr><td style="background:#0d4f47;text-align:center;padding:28px 40px;">'
-              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="STREAMLINE" style="display:inline-block;border:0;outline:none;">'
+              + '<img src="' + WORDMARK_IMG + '" width="147" height="20" alt="LANE FOUR" style="display:inline-block;border:0;outline:none;">'
               + div(F + 'font-size:12px;color:rgba(255,255,255,0.55);padding-top:10px;',
-                '&copy; ' + str(time.gmtime().tm_year) + ' STREAMLINE. All rights reserved.')
+                '&copy; ' + str(time.gmtime().tm_year) + ' LANE FOUR. All rights reserved.')
               + div(F + 'font-size:11px;color:rgba(255,255,255,0.45);padding-top:12px;line-height:1.6;',
-                'You are receiving this because you subscribed to the STREAMLINE newsletter.<br>'
+                'You are receiving this because you subscribed to the LANE FOUR newsletter.<br>'
                 '<a href="' + unsub + '" style="color:#a8ede5;text-decoration:underline;">Unsubscribe</a>')
               + '</td></tr></table></td></tr></table></body></html>')
 
@@ -1235,7 +1253,7 @@ Resources:
             lines += [body.strip(), '']
             if cta_text and cta_url:
               lines += [cta_text + ': ' + cta_url, '']
-            lines += ['-- ', 'You are receiving this because you subscribed to the STREAMLINE newsletter.',
+            lines += ['-- ', 'You are receiving this because you subscribed to the LANE FOUR newsletter.',
                       'Unsubscribe: ' + unsub]
             return '\n'.join(lines)
 
@@ -1391,7 +1409,9 @@ Resources:
                 pass
               slug = re.sub(r'[^a-z0-9]+', '-', link.rstrip('/').rsplit('/', 1)[-1].lower()).strip('-')
               if slug:
-                items.append({'slug': slug, 'title': title, 'summary': summary})
+                # The link rides along so the rendered item can attribute and
+                # point readers to the original SwimSwam story.
+                items.append({'slug': slug, 'title': title, 'summary': summary, 'url': link})
               if len(items) >= 12:
                 break
             return items
@@ -1518,12 +1538,16 @@ Resources:
             # Hard-validate the news against the feed: every item must reference
             # a real provided story and a slug never used before.
             valid_slugs = {n['slug'] for n in news}
+            # Source attribution comes from the feed itself (never the model),
+            # so every rendered item links back to the real SwimSwam story.
+            url_by_slug = {n['slug']: n.get('url', '') for n in news}
             items, seen = [], set()
             for it in data.get('newsItems') or []:
               slug = (it.get('topicSlug') or '').strip()
               if slug in valid_slugs and slug.lower() not in used_topics and slug not in seen and it.get('title') and it.get('body'):
                 icon = it.get('icon') if it.get('icon') in ICONS else ICONS[len(items) % 4]
-                items.append({'topicSlug': slug, 'icon': icon, 'title': it['title'], 'body': it['body']})
+                items.append({'topicSlug': slug, 'icon': icon, 'title': it['title'], 'body': it['body'],
+                              'url': url_by_slug.get(slug, '')})
                 seen.add(slug)
             if len(items) < 3:
               raise RuntimeError('Compose returned too few valid news items (%d).' % len(items))
@@ -2385,7 +2409,7 @@ Resources:
 
           Design the training week ONLY, no workout content yet, following the framework's Step 1 and Step 2 exactly: honor the athlete's available swim days and dryland days (never schedule a session on a day they don't have), the allocation heuristics for their level, the interference rules, the roughly 60/40 target-to-supporting stroke split, and youth/masters handling. Site constraint: at most one swim and one lift per day, no double swims. Every week includes at least one full rest day.
 
-          Then compute daily nutrition targets like a sports dietitian: Mifflin-St Jeor BMR from age/height/weight/gender (height is in inches and weight in pounds; convert to metric first), an activity factor from the actual planned training hours this week, a calorie adjustment for the fitness goal (a moderate deficit only for fat-loss goals, a small surplus for muscle or weight gain, otherwise maintenance; NEVER a deficit for athletes under 18), protein 1.6 to 2.2 g per kg bodyweight, fat at least 20 percent of calories, remaining calories from carbs. Then split those targets into two one-day meal schedules (a training-day schedule and a rest-day schedule). Each meal is a SLOT, not a menu: give it a name, a realistic time of day anchored to the athlete's preferred workout time, a per-meal macro budget, and optionally one short note tying the slot to training. Do NOT write menus or name specific dishes; the athlete asks for a recipe for any slot on demand.
+          Then compute daily nutrition targets using standard sports-nutrition methodology: Mifflin-St Jeor BMR from age/height/weight/gender (height is in inches and weight in pounds; convert to metric first), an activity factor from the actual planned training hours this week, a calorie adjustment for the fitness goal (a moderate deficit only for fat-loss goals, a small surplus for muscle or weight gain, otherwise maintenance; NEVER a deficit for athletes under 18), protein 1.6 to 2.2 g per kg bodyweight, fat at least 20 percent of calories, remaining calories from carbs. Then split those targets into two one-day meal schedules (a training-day schedule and a rest-day schedule). Each meal is a SLOT, not a menu: give it a name, a realistic time of day anchored to the athlete's preferred workout time, a per-meal macro budget, and optionally one short note tying the slot to training. Do NOT write menus or name specific dishes; the athlete asks for a recipe for any slot on demand.
 
           Return ONLY valid JSON, no preamble, no markdown, matching exactly:
           {"phase":"Base|Build|Peak|Taper|Deload","phaseLabel":"e.g. Build, Week 2 of 4","goalLine":"one line combining the swimming goal and fitness goal","phaseRoadmap":"one line, e.g. Rolling 4-week blocks: 3 progressive weeks then 1 deload week","rationale":"3-5 sentences spoken directly TO the athlete in second person, like a coach on deck giving their swimmer the rundown of the week before Monday practice: name the phase and what it means for them right now, walk through how their swims, lifts, and rest fit around each other, and tell them what you want them to focus on. Warm, direct coach voice; address the athlete as you and never describe them in third person (never their age, gender, or level as facts about them). No em dashes","nutrition":{"calories":N,"proteinG":N,"carbsG":N,"fatG":N,"restDayNote":"one short line, e.g. Rest days: same protein, drop carbs about 40 g"},"days":[{"day":"Monday","label":"Swim + Lift|Swim|Lift|Active Recovery|Rest","swim":{"focus":"freestyle|backstroke|breaststroke|butterfly|im|sprint|choice","secondary":"endurance|technique|speed|threshold|race prep|recovery","yards":N}or null,"lift":{"focus":"Core & Stability|Shoulder, Lat & Upper Back|Lower Body Power|Upper Body Strength|Mobility & Recovery|Full Body","minutes":N}or null,"recovery":"short description only for Active Recovery days, else null","timeLabel":"~1:20 total session time, or a dash for rest days","mealType":"training|rest"}],"meals":{"training":[{"name":"Breakfast","time":"7:00 AM","note":"short note tying the slot to training, e.g. eat 90 minutes before practice, or null","calories":N,"proteinG":N,"carbsG":N,"fatG":N}],"rest":[{"name":"Breakfast","time":"8:00 AM","note":null,"calories":N,"proteinG":N,"carbsG":N,"fatG":N}]}}
@@ -2416,7 +2440,7 @@ Resources:
           {"title":"short descriptive title built from the focus only. No day of the week or date.","trainingFocus":"%(focus)s","strokeEmphasis":"%(stroke)s","estimatedMinutes":%(minutes)s,"equipment":"one short phrase naming the gear this session actually uses","intensity":"stability|strength|power|mobility|recovery","focusCue":"2-3 sentence coach's cue connecting this dryland to swim performance","coachNote":"one tight closing sentence","sections":[{"name":"Warm-Up | Main Work Block 1 <theme> | Cool-Down & Mobility","duration":"~N min","items":[{"exercise":"movement name","prescription":"sets x reps or a timed hold, e.g. 3 x 12","note":"short informational note OR null. State only HOW to perform the movement (form, tempo, range of motion, setup). No coaching or motivational language. Terse factual phrase.","muscles":["target muscle tag"]}]}]}
           Sections in order: Warm-Up, one or more Main Work blocks, Cool-Down & Mobility. NEVER use em dashes or en dashes in any text value."""
 
-          RECIPE_PROMPT = """You are the LANE FOUR sports dietitian. An athlete you cook for asked: "%(request)s"
+          RECIPE_PROMPT = """You write LANE FOUR's nutrition guidance (general sports-nutrition information, never presented as advice from a licensed professional). An athlete asked: "%(request)s"
 
           Athlete's daily nutrition targets: %(targets)s
           Today's planned meals with per-meal macro budgets: %(meals)s
