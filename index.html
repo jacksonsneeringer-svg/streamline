@@ -467,7 +467,12 @@ section { padding: 6rem 0; }
 
 /* ── Hero ── */
 .hero {
-  min-height: calc(100vh - var(--nav-h));
+  /* Condensed hero: the section ends above the bottom of the window on desktop
+     (nav-h + this min-height = 82vh, leaving ~18vh of the next section peeking).
+     background-size:100% auto + background-position:center center means the
+     photo crops evenly from the top and bottom as the box shrinks, so the
+     swimmer stays vertically centered. */
+  min-height: calc(82vh - var(--nav-h));
   background-color: var(--deep);
   background-image: url('/swimmer2-bg.jpg');
   background-size: 100% auto;
@@ -515,7 +520,7 @@ section { padding: 6rem 0; }
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 4rem 5.5rem 2.5rem;
+  padding: 2.5rem 5.5rem 2rem;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
@@ -535,20 +540,25 @@ section { padding: 6rem 0; }
   background: none;
   border: none;
   padding: 0;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
   opacity: 0.85;
 }
-.hero h1 { margin-bottom: 3.5rem; }
+/* Condensed hero copy: heading dialed down from the global h1 clamp so the
+   shorter hero box stays balanced. */
+.hero h1 { margin-bottom: 3.5rem; font-size: clamp(2.4rem, 4.6vw, 3.9rem); }
 .hero-tag-br { display: none; }
 .hero-sub {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 300;
   color: rgba(255,255,255,0.48);
-  line-height: 1.85;
-  margin-bottom: 2.5rem;
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
   max-width: 460px;
 }
 .hero-cta { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+/* Slightly smaller CTAs than the global .btn-lg so buttons shrink in step with
+   the condensed hero copy. */
+.hero-cta .btn-lg { padding: 0.85rem 2rem; font-size: 0.84rem; }
 .hero-scroll-hint {
   display: flex;
   align-items: center;
@@ -558,7 +568,7 @@ section { padding: 6rem 0; }
   font-family: var(--font-body);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   font-weight: 400;
 }
 .hero-scroll-line {
@@ -3118,7 +3128,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div class="hero-tag">
         Swim Sets • Dryland Workouts<br class="hero-tag-br"> • Nutrition Advice
       </div>
-      <h1 style="margin-bottom:1.75rem;">Train smarter.<br/><span style="white-space:nowrap;">Recover stronger.</span><br/>Race faster.</h1>
+      <h1 style="margin-bottom:1.4rem;">Train smarter.<br/><span style="white-space:nowrap;">Recover stronger.</span><br/>Race faster.</h1>
       <p class="hero-sub">All the best workouts, guidance, and gear to train smarter, swim faster while feeling and looking your best.</p>
       <div class="hero-cta">
         <a href="/get-started" class="btn btn-gold btn-lg" onclick="navigate('get-started')">Dive In</a>
