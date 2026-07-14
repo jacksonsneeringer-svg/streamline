@@ -2370,6 +2370,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .dash-grid,
   .for-who-grid,
   .grid-3 { grid-template-columns: 1fr; }
+  .coaching-cta { max-width: none !important; }
   .nav-inner { padding: 0 1.25rem; }
   #nav-account-btn { display: none; }
   /* 16px keeps iOS/Android from auto-zooming the viewport when the search
@@ -3142,7 +3143,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </div>
 </section>
 
-<section id="about" style="background:var(--white); position:relative; padding-bottom:2.5rem;">
+<section id="about" style="background:var(--white); position:relative; padding-top:3rem; padding-bottom:2.5rem;">
   <div class="container" style="padding:0 7rem;">
     <div class="about-grid" style="position:relative; grid-template-columns:1fr 1fr; gap:0;">
       <div class="about-divider" style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, transparent, var(--lap) 15%, var(--lap) 85%, transparent); opacity:0.45; transform:translateX(-50%); pointer-events:none;"></div>
@@ -3216,23 +3217,26 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <a href="/dryland-workouts" class="btn btn-outline-dark btn-sm" onclick="navigate('dryland-workouts')">View today's lift</a>
         </div>
       </div>
-      <div class="resource-card">
-        <div class="resource-card-header">
-          <div class="resource-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.8" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-          <div><span class="resource-card-label">Technique · Training</span><div class="resource-card-title">Blog &amp; Guides</div></div>
-        </div>
-        <div class="resource-card-body">
-          <p>Racing breakdowns, training methodology, gear reviews, and swimmer insights from one pro athlete to another. <strong>No filler or vague advice</strong>, written to give you <strong>something tangible to act on</strong>.</p>
-          <div class="resource-previews">
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Technique &amp; training</div>
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Nutrition &amp; fitness</div>
-            <div class="resource-preview-item"><span class="resource-preview-dot"></span>Injury prevention &amp; rehab</div>
+      <div style="display:flex; flex-direction:column; gap:1.5rem;">
+        <div class="resource-card">
+          <div class="resource-card-header">
+            <div class="resource-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--lap)" stroke-width="1.8" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+            <div><span class="resource-card-label">Technique · Training</span><div class="resource-card-title">Blog &amp; Guides</div></div>
           </div>
-          <a href="/blog" class="btn btn-outline-dark btn-sm" onclick="navigate('blog')">Read the blog</a>
+          <div class="resource-card-body">
+            <p>Racing breakdowns, training methodology, gear reviews, and swimmer insights from one pro athlete to another. <strong>No filler or vague advice</strong>, written to give you <strong>something tangible to act on</strong>.</p>
+            <div class="resource-previews">
+              <div class="resource-preview-item"><span class="resource-preview-dot"></span>Technique &amp; training</div>
+              <div class="resource-preview-item"><span class="resource-preview-dot"></span>Nutrition &amp; fitness</div>
+              <div class="resource-preview-item"><span class="resource-preview-dot"></span>Injury prevention &amp; rehab</div>
+            </div>
+            <a href="/blog" class="btn btn-outline-dark btn-sm" onclick="navigate('blog')">Read the blog</a>
+          </div>
         </div>
+        <img src="/shark-coach.png?v=2" alt="LANE FOUR shark coach mascot" style="display:block; width:100%; max-width:220px; height:auto; margin:0 auto;" />
       </div>
     </div>
-    <div style="margin-top:2.5rem; background:rgba(93,219,201,0.06); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-xl); padding:2rem 2.5rem; display:flex; flex-direction:column; gap:1.25rem;">
+    <div class="coaching-cta" style="margin-top:2.5rem; max-width:66.6667%; background:rgba(93,219,201,0.06); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-xl); padding:2rem 2.5rem; display:flex; flex-direction:column; gap:1.25rem;">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
         <div>
           <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal-2); margin-bottom:0.4rem; opacity:0.85;">Specialized coaching</p>
@@ -11535,6 +11539,35 @@ function _injectArticleHero(p) {
 
 function _postShareUrl(p) { return SITE_ORIGIN + pagePath(p.id); }
 
+// Fully-qualified URL of the post's hero image, sized for a share preview.
+function _postShareImg(p) {
+  if (!p.heroImage) return SITE_ORIGIN + '/swimmer2-bg.jpg';
+  return p.heroImage.startsWith('/')
+    ? SITE_ORIGIN + p.heroImage
+    : _heroSrc(p.heroImage, 1200, 630);
+}
+
+// Native share sheet. On platforms that support sharing files, we fetch the
+// hero image and attach it so the photo rides along with the link (many share
+// targets don't fetch og:image, so a bare url/text share shows no picture).
+// Falls back to a link-only share if the image can't be fetched or files
+// aren't shareable here.
+function _nativeSharePost(p) {
+  const base = { title: p.title, text: p.excerpt || p.title, url: _postShareUrl(p) };
+  const linkOnly = function() { navigator.share(base).catch(function() {}); };
+  if (!navigator.canShare) { linkOnly(); return; }
+  fetch(_postShareImg(p), { mode: 'cors' })
+    .then(function(r) { if (!r.ok) throw 0; return r.blob(); })
+    .then(function(blob) {
+      const ext = (blob.type.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
+      const file = new File([blob], p.id + '.' + ext, { type: blob.type || 'image/jpeg' });
+      const withFile = { title: base.title, text: base.text, url: base.url, files: [file] };
+      if (navigator.canShare(withFile)) return navigator.share(withFile);
+      linkOnly();
+    })
+    .catch(linkOnly);
+}
+
 const _SHARE_ICONS = {
   x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>',
   facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.505 17.523 2 12 2S2 6.505 2 12.06c0 5.022 3.657 9.184 8.438 9.94v-7.03H7.898v-2.91h2.54V9.845c0-2.522 1.492-3.915 3.777-3.915 1.094 0 2.238.196 2.238.196v2.476h-1.26c-1.243 0-1.63.775-1.63 1.57v1.888h2.773l-.443 2.91h-2.33V22C18.343 21.244 22 17.082 22 12.06z"/></svg>',
@@ -11616,9 +11649,7 @@ function _injectShareBar(p) {
   addBtn('email', 'Share by email', function() { _sharePostTo('email', p); });
   addBtn('copy', 'Copy link', function() { _copyPostLink(p, this); });
   if (navigator.share) {
-    addBtn('native', 'Share…', function() {
-      navigator.share({ title: p.title, text: p.excerpt || p.title, url: _postShareUrl(p) }).catch(function() {});
-    });
+    addBtn('native', 'Share…', function() { _nativeSharePost(p); });
   }
 
   const label = document.createElement('span');
