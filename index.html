@@ -378,6 +378,55 @@ section { padding: 6rem 0; }
   color: var(--white);
   background: rgba(255,255,255,0.05);
 }
+/* Daily Programming dropdown (Swim Sets + Dryland) */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; white-space: nowrap; }
+.nav-dropdown-toggle .nav-dropdown-caret {
+  transition: transform 0.15s;
+  opacity: 0.7;
+}
+.nav-dropdown:hover .nav-dropdown-toggle .nav-dropdown-caret,
+.nav-dropdown:focus-within .nav-dropdown-toggle .nav-dropdown-caret {
+  transform: rotate(180deg);
+}
+.nav-dropdown:hover > .nav-dropdown-toggle,
+.nav-dropdown:focus-within > .nav-dropdown-toggle {
+  color: var(--white);
+  background: rgba(255,255,255,0.05);
+}
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 190px;
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
+  background: var(--deep);
+  border: 1px solid rgba(93,219,201,0.14);
+  border-radius: var(--r-md);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  z-index: 250;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.nav-dropdown-menu a {
+  display: block;
+  white-space: nowrap;
+  margin-left: 0;
+  margin-right: 0;
+}
 .nav-actions {
   display: flex;
   align-items: center;
@@ -1276,6 +1325,19 @@ section { padding: 6rem 0; }
 .footer-bottom a { color: rgba(255,255,255,0.45); }
 .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
 .footer-sep { color: rgba(255,255,255,0.4); margin: 0 0.4rem; }
+.footer-disclaimer {
+  width: 70%;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1.1rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.32);
+  text-align: center;
+}
+.footer-disclaimer strong { font-weight: 500; color: rgba(255,255,255,0.5); }
 
 /* ── Blog inline editor ── */
 body.blog-edit-mode .post-body[contenteditable="true"],
@@ -1670,6 +1732,26 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 }
 .dash-date { font-size: 0.8rem; font-weight: 300; color: var(--gray-400); margin-top: 0.2rem; }
 .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem; }
+#dash-coach-tip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.4rem;
+  margin-bottom: 1rem;
+}
+#dash-coach-tip .coach-tip-text {
+  font-size: 0.72rem;
+  color: var(--teal);
+  font-weight: 600;
+}
+#dash-coach-tip .coach-tip-disclaimer {
+  flex: 1 1 18rem;
+  font-size: 0.68rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--gray-400);
+}
+#dash-coach-tip .coach-tip-disclaimer strong { font-weight: 500; }
 .dash-card {
   background: var(--white);
   border: 1px solid var(--gray-100);
@@ -2877,6 +2959,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .mobile-nav-drawer a:hover,
 .mobile-nav-drawer a.active { color: var(--white); background: rgba(255,255,255,0.06); }
 .mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 0.5rem 0; }
+.mobile-nav-group-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+  padding: 0.85rem 1rem 0.3rem;
+}
+.mobile-nav-drawer a.mobile-nav-sub { padding-left: 1.85rem; }
 .mobile-nav-cta { margin-top: 0.25rem; }
 /* The drawer link rule above dims anchors to 55% white and out-specifies
    .btn-gold, so the account button needs its own color for contrast. */
@@ -2948,8 +3040,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <span class="logo-tagline">Train for the Fast Lane</span>
     </a>
     <ul class="nav-links" id="nav-links-main">
-      <li><a href="/swim-sets" id="nav-swim-sets">Swim Sets</a></li>
-      <li><a href="/dryland-workouts" id="nav-dryland-workouts">Dryland</a></li>
+      <li class="nav-dropdown">
+        <a href="#" class="nav-dropdown-toggle" aria-haspopup="true" onclick="return false;">Daily Programming<svg class="nav-dropdown-caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="/swim-sets" id="nav-swim-sets">Swim Sets</a></li>
+          <li><a href="/dryland-workouts" id="nav-dryland-workouts">Dryland</a></li>
+        </ul>
+      </li>
       <li><a href="/blog" id="nav-blog">Blog</a></li>
       <li><a href="/my-training" id="nav-my-training">My Training</a></li>
       <li><a href="/contact" id="nav-contact">Contact</a></li>
@@ -2978,8 +3075,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </nav>
 <div class="mobile-nav-overlay" id="mobile-nav-overlay" onclick="closeMobileNav()"></div>
 <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile navigation">
-  <a href="/swim-sets" onclick="closeMobileNav(); navigate('swim-sets'); return false;">Swim Sets</a>
-  <a href="/dryland-workouts" onclick="closeMobileNav(); navigate('dryland-workouts'); return false;">Dryland</a>
+  <div class="mobile-nav-group-label">Daily Programming</div>
+  <a href="/swim-sets" class="mobile-nav-sub" onclick="closeMobileNav(); navigate('swim-sets'); return false;">Swim Sets</a>
+  <a href="/dryland-workouts" class="mobile-nav-sub" onclick="closeMobileNav(); navigate('dryland-workouts'); return false;">Dryland</a>
   <a href="/blog" onclick="closeMobileNav(); navigate('blog'); return false;">Blog</a>
   <a href="/my-training" onclick="closeMobileNav(); navigate('my-training'); return false;">My Training</a>
   <a href="/contact" onclick="closeMobileNav(); navigate('contact'); return false;">Contact</a>
@@ -3040,6 +3138,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h2 style="color:var(--deep);">Features &amp; Resources</h2>
       <div class="accent-bar center"></div>
       <p class="sub" style="color:var(--gray-500); margin-top:1.25rem; text-align:center;">All the best workouts, guidance, and gear to train smarter, swim faster while feeling and looking your best.</p>
+      <p style="color:var(--gray-400); font-size:0.72rem; font-weight:300; line-height:1.7; margin-top:0.9rem; max-width:44rem; margin-left:auto; margin-right:auto; text-align:center;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
     </div>
     <div class="resources-grid">
       <div class="resource-card">
@@ -3095,7 +3194,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <h3 style="color:var(--deep); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Daily training &amp; nutrition. Built for your current abilities, progressing toward your future goals.</h3>
         <p style="color:var(--gray-500); font-size:0.88rem; margin:0; font-weight:300;">Daily swim sets, lift workouts, meal plans, and bodyweight dryland you can do in your bedroom. All <strong>calibrated to what you can do</strong>, building up to what you want to do. <strong>No subscription, no fees.</strong></p>
       </div>
-      <a href="/get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Try it out!</a>
+      <div style="flex-shrink:0; display:flex; flex-direction:column; align-items:flex-start; gap:0.7rem; max-width:22rem;">
+        <p style="color:var(--gray-400); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
+        <a href="/get-started" class="btn btn-gold" onclick="navigate('get-started')">Try it out!</a>
+      </div>
     </div>
   </div>
 </section>
@@ -5146,7 +5248,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div id="profile-nudge-overview"></div>
       <!-- Coach's tip + personalized weekly plan, surfaced above today's cards
            (plan filled by renderTrainingPlan when signed in) -->
-      <p id="dash-coach-tip" style="display:none; font-size:0.85rem; color:var(--teal); font-weight:600; margin-bottom:1rem; padding:0.65rem 0.9rem; background:var(--pool-100); border-radius:var(--r-md);"><strong>Coach's tip:</strong> bookmark this page for easy return to your personal programming.</p>
+      <div id="dash-coach-tip" style="display:none;"><span class="coach-tip-text"><strong>Coach's tip:</strong> bookmark this page for easy return to your personal programming.</span><span class="coach-tip-disclaimer"><strong>Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</span></div>
       <div id="dash-plan-section" style="display:none; margin-bottom:2rem;"></div>
       <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
       <div class="dash-grid">
@@ -6493,6 +6595,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem; max-width:26rem; margin-left:auto; margin-right:auto;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of LANE FOUR, and to LANE FOUR's <a href="/terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="/privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
   </div>
+  <p class="footer-disclaimer"><strong>Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
   <div class="footer-bottom">
     <span>© 2026 LANE FOUR. All rights reserved.</span>
     <span class="footer-sep"> · </span>
@@ -7425,12 +7528,12 @@ function renderTrainingPlan() {
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl);">
       <button type="button" onclick="togglePlanWeek()" aria-expanded="${_planWeekOpen ? 'true' : 'false'}" style="display:flex; width:100%; align-items:center; justify-content:space-between; gap:1rem; padding:1.25rem 1.75rem; cursor:pointer; background:none; border:none; text-align:left; font:inherit;">
         <div style="min-width:0;">
-          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.25rem;">Your Week${p.phaseLabel ? ' · ' + escHtml(p.phaseLabel) : ''}</p>
-          ${p.goalLine ? `<p style="color:var(--deep); font-weight:600; font-size:0.95rem; margin:0;">${escHtml(deDash(p.goalLine))}</p>` : ''}
+          <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin:0;">Your Week${p.phaseLabel ? ' · ' + escHtml(p.phaseLabel) : ''}</p>
         </div>
         <svg id="dash-plan-week-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; transition:transform 0.2s;${_planWeekOpen ? ' transform:rotate(180deg);' : ''}"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div id="dash-plan-week-body" style="display:${_planWeekOpen ? '' : 'none'}; padding:0 1.75rem 1.75rem;">
+        ${p.goalLine ? `<p style="color:var(--deep); font-weight:600; font-size:0.95rem; margin:0 0 1rem;">${escHtml(deDash(p.goalLine))}</p>` : ''}
         ${p.phaseRoadmap ? `<p style="font-size:0.82rem; color:var(--gray-400); margin-bottom:1rem;">${escHtml(deDash(p.phaseRoadmap))}</p>` : ''}
         <div style="overflow-x:auto;">
           <table class="ex-table">
