@@ -271,6 +271,14 @@ strong { font-weight: 500; }
 #page-race-week-taper .container {
   padding: 0 5.5rem;
 }
+/* Home page: line every section's content up with the hero. The hero uses
+   .hero-inner with 5.5rem side gutters and no max-width, so mirror that on
+   every section container here — content starts and ends at the same x down
+   the whole page. Responsive gutters below track .hero-inner at each breakpoint. */
+#page-home > section > .container {
+  max-width: none;
+  padding: 0 5.5rem;
+}
 section { padding: 6rem 0; }
 
 /* ── Buttons ── */
@@ -2373,8 +2381,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .dashboard-main { padding: 2rem 1.25rem 3rem; }
   /* Hero photo: fill the whole section on portrait screens */
   .hero { background-size: cover; background-position: center; }
-  /* About + Who it's for: stack full-width (inline styles set 2 columns) */
-  #about .container { padding: 0 2rem !important; }
+  /* About + Who it's for: stack full-width (inline styles set 2 columns).
+     Horizontal padding is handled by the unified #page-home container rule. */
   #about .about-grid { grid-template-columns: 1fr !important; gap: 3.5rem !important; }
   #about .about-divider { display: none; }
   #about .about-col-left { padding-right: 0 !important; }
@@ -2385,6 +2393,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
      top and bottom, so the swimmer stays vertically centered. */
   .hero { min-height: 62vh; }
   .hero-inner { grid-template-columns: 1fr; padding: 2rem 2.5rem 1.75rem; gap: 2rem; }
+  /* Keep home sections aligned with the hero's 2.5rem gutters at this width. */
+  #page-home > section > .container { padding: 0 2.5rem; }
   .hero-tag { display: inline-block; margin-bottom: 1.25rem; }
   .hero-tag-br { display: block; }
   .hero h1 { margin-bottom: 2.5rem; }
@@ -2444,7 +2454,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .footer-bottom { width: 92%; }
   section { padding: 3.5rem 0; }
   .section-header { margin-bottom: 2.5rem; }
-  #about .container { padding: 0 1.25rem !important; }
   /* Sign-in header: keep "Log in" on one line; condense the create-account button.
      !important needed to beat the card/title inline styles. */
   .signin-card { padding: 2rem 1.25rem !important; }
@@ -3169,7 +3178,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 
 <section id="about" style="background:var(--white); position:relative; padding-top:1.5rem; padding-bottom:2.5rem;">
-  <div class="container" style="padding:0 7rem;">
+  <div class="container">
     <div class="about-grid" style="position:relative; grid-template-columns:1fr 1fr; gap:0;">
       <div class="about-divider" style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, transparent, var(--lap) 15%, var(--lap) 85%, transparent); opacity:0.45; transform:translateX(-50%); pointer-events:none;"></div>
       <div class="about-col-left" style="padding-right:3rem;">
@@ -3204,7 +3213,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div style="position:absolute; top:3rem; right:2rem; opacity:0.05; pointer-events:none;">
     <svg width="320" height="180" viewBox="0 0 320 180" fill="none" stroke="var(--deep)" stroke-linecap="round" stroke-width="1.5"><path d="M260 80 Q220 72 185 80 Q150 88 120 82 Q90 76 70 83 Q55 88 45 92"/><path d="M260 80 Q240 62 215 56 Q185 50 160 54 Q135 58 115 64 Q95 70 80 75"/><path d="M240 80 Q225 55 205 46 Q182 37 158 43 Q135 49 115 60"/><ellipse cx="275" cy="77" rx="14" ry="11"/><path d="M45 92 Q30 96 18 102 Q8 108 3 110"/><path d="M48 87 Q34 84 22 80 Q12 77 6 76"/></svg>
   </div>
-  <div class="container" style="position:relative; max-width:1120px;">
+  <div class="container" style="position:relative;">
     <div class="section-header center">
       <h2 style="color:var(--deep);">Features &amp; Resources</h2>
       <div class="accent-bar center"></div>
@@ -3277,7 +3286,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
 <!-- ══ SNEAK PEEK: today's workouts (populated by renderHomeSneakPeek) ══ -->
 <section id="sneak-peek-section" style="background:var(--deep); background-image:var(--pattern-waves), var(--pattern-hatch); padding-top:4rem; padding-bottom:4rem; display:none;">
-  <div class="container" style="max-width:1120px;">
+  <div class="container">
     <div class="section-header center">
       <span class="eyebrow on-dark">Fresh today</span>
       <h2 style="color:var(--white);">Sneak peek at today's <em class="serif-italic" style="color:var(--lap);">workouts.</em></h2>
@@ -3289,25 +3298,25 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Beginner</span>
         <div class="sneak-title" style="color:var(--white); font-size:1.05rem; line-height:1.3; margin-top:0.55rem;"></div>
         <div class="sneak-meta" style="color:rgba(255,255,255,0.65); font-size:0.82rem; margin-top:0.45rem;"></div>
-        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('beginner')">View this swim →</a>
+        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('beginner')">View this set →</a>
       </div>
       <div class="sneak-card" id="sneak-swim-intermediate" style="display:none; flex-direction:column; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:var(--r-lg); padding:1.5rem;">
         <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Intermediate</span>
         <div class="sneak-title" style="color:var(--white); font-size:1.05rem; line-height:1.3; margin-top:0.55rem;"></div>
         <div class="sneak-meta" style="color:rgba(255,255,255,0.65); font-size:0.82rem; margin-top:0.45rem;"></div>
-        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('intermediate')">View this swim →</a>
+        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('intermediate')">View this set →</a>
       </div>
       <div class="sneak-card" id="sneak-swim-advanced" style="display:none; flex-direction:column; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:var(--r-lg); padding:1.5rem;">
         <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Advanced</span>
         <div class="sneak-title" style="color:var(--white); font-size:1.05rem; line-height:1.3; margin-top:0.55rem;"></div>
         <div class="sneak-meta" style="color:rgba(255,255,255,0.65); font-size:0.82rem; margin-top:0.45rem;"></div>
-        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('advanced')">View this swim →</a>
+        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('advanced')">View this set →</a>
       </div>
       <div class="sneak-card" id="sneak-swim-pro" style="display:none; flex-direction:column; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:var(--r-lg); padding:1.5rem;">
         <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Pro</span>
         <div class="sneak-title" style="color:var(--white); font-size:1.05rem; line-height:1.3; margin-top:0.55rem;"></div>
         <div class="sneak-meta" style="color:rgba(255,255,255,0.65); font-size:0.82rem; margin-top:0.45rem;"></div>
-        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('pro')">View this swim →</a>
+        <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('pro')">View this set →</a>
       </div>
     </div>
     <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin:2rem 0 1rem; opacity:0.85;">On land</p>
@@ -3337,7 +3346,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 
 <section class="resources-section" style="padding-top:3.5rem; padding-bottom:3.5rem;">
-  <div class="container" style="position:relative; max-width:1120px;">
+  <div class="container" style="position:relative;">
     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3rem; flex-wrap:wrap; gap:1rem;">
       <div>
         <span class="eyebrow">From the blog</span>
