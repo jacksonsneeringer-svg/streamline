@@ -666,8 +666,8 @@ Resources:
             last = clean_name(body.get('lastName'))
             email = (body.get('email') or '').strip().lower()
             password = body.get('password') or ''
-            if not first or not last:
-              return resp(400, {'error': 'First and last name are required.'})
+            if not first:
+              return resp(400, {'error': 'A username is required.'})
             if not re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', email):
               return resp(400, {'error': 'A valid email is required.'})
             if len(password) < 8:
