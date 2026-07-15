@@ -2412,6 +2412,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   /* On mobile the About-section disclaimers are dropped; the health and
      affiliate disclosures live in the footer instead. */
   .about-disclaimers { display: none; }
+  /* The disclaimers anchor the bottom of the footer on mobile. Pull them up so
+     they sit vertically centered in the space beneath the newsletter block
+     rather than floating far below it. */
+  .footer-inner { padding-bottom: 0.75rem; }
+  .footer-disclaimer { padding-top: 0.6rem; }
   /* Allow the blog home heading to wrap on narrow screens. */
   .blog-home-title { white-space: normal; }
   .coaching-cta { max-width: none !important; }
@@ -8026,7 +8031,7 @@ function recipeMarkup(r) {
       </div>
     </div>
     ${r.note ? `<p style="margin-top:1rem; font-size:0.85rem; color:var(--gray-500); font-style:italic;">${escHtml(cleanNote(r.note))}</p>` : ''}
-    <p style="margin-top:1rem; font-size:0.78rem; color:var(--gray-400);">AI-generated recipe. We don't collect dietary restrictions or allergies, so always check every ingredient against your own allergies, intolerances, and dietary needs before cooking.</p>`;
+    <p style="margin-top:1rem; font-size:0.78rem; color:var(--gray-400);">We don't collect dietary restrictions or allergies, so always check every ingredient against your own allergies, intolerances, and dietary needs before cooking.</p>`;
 }
 
 // ── My Training favorites (swim sets + lifts + meals + recipes) ────────────
