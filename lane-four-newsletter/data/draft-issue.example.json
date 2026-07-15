@@ -25,7 +25,8 @@
       "icon": "doc",
       "title": "Short headline",
       "body": "1-3 sentences. <strong>Bold</strong> athlete/organization names the way the template already does.",
-      "url": "https://swimswam.com/the-original-story-this-item-summarizes/ (required: the renderer links the headline and prints a 'Read the full story at SwimSwam' credit from this)"
+      "url": "https://swimswam.com/the-original-story-this-item-summarizes/ (required: the renderer links the headline and the '(via Source)' credit from this)",
+      "source": "SwimSwam (or Swimming World): the outlet whose feed this came from; injected by the compose Lambda, printed as '(via Source)' at the end of the synopsis"
     },
     {
       "topicSlug": "unique-slug-for-this-topic-2",
@@ -52,7 +53,7 @@
     "photoUrl": "https://example.com/licensed-or-cc-photo.jpg",
     "photoCredit": "Photo: Photographer Name, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": ["Stat badge 1", "Stat badge 2", "Stat badge 3", "Stat badge 4"],
-    "bio": "1-2 short paragraphs, no more than ~90 words total to keep the card scannable. Career facts only; never imply the athlete uses or endorses the gear featured elsewhere in the issue."
+    "bio": "Two paragraphs separated by a blank line, summarized from the athlete's Wikipedia page (~90 words total): paragraph one is who they are as a person, paragraph two is their competitive achievements. Career facts only; never imply the athlete uses or endorses the gear featured elsewhere in the issue.\n\nrenderAthleteBio() splits on the blank line and wraps each paragraph in its own styled <p>."
   },
 
   "events": [

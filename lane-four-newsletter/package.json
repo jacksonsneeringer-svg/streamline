@@ -12,9 +12,8 @@
     "send": "node scripts/send-issue.js",
     "weekly": "npm run compose && npm run fetch:blog && npm run select:gear && npm run check:no-repeats && npm run build"
   },
-  "dependencies": {
-    "playwright": "^1.47.0"
-  },
+  "comment": "No runtime npm dependencies: blog and gear come from the site's HTML via scripts/site-source.js (no headless browser); compose/send shell out to the AWS CLI.",
+  "dependencies": {},
   "engines": {
     "node": ">=18"
   }

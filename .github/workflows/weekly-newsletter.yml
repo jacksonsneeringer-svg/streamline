@@ -121,10 +121,6 @@ jobs:
         if: steps.guard.outputs.skip != 'true'
         run: npm ci
 
-      - name: Install Playwright browser
-        if: steps.guard.outputs.skip != 'true'
-        run: npx playwright install --with-deps chromium
-
       - name: Compose this week's editorial content
         if: steps.guard.outputs.skip != 'true'
         run: node scripts/compose-draft.js "${{ steps.guard.outputs.date }}"
