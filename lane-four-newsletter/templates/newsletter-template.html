@@ -36,7 +36,7 @@
 <!-- HERO -->
 <tr>
 <td style="padding:36px 32px 24px 32px; text-align:center;">
-<h1 style="font-family:'Playfair Display',Georgia,serif; font-weight:800; font-size:28px; color:#0E2E28; margin:0; line-height:1.25;">{{HERO_HEADING}}</h1>
+<h1 style="font-family:'Playfair Display',Georgia,serif; font-weight:800; font-size:24px; color:#0E2E28; margin:0; line-height:1.25; white-space:nowrap;">{{HERO_HEADING}}</h1>
 <div style="border-top:2px solid #BFE6DC; width:56px; margin:14px auto;"></div>
 <p style="font-family:'Inter',Arial,sans-serif; font-size:14.5px; color:#4B6259; line-height:1.6; margin:0 auto; max-width:460px;">{{HERO_TEASER}}</p>
 </td>
@@ -91,7 +91,9 @@
 {{ATHLETE_BADGES}}
 </table>
 
-<p style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#C7DAD3; line-height:1.65; margin:0;">{{ATHLETE_BIO}}</p>
+<!-- Two paragraphs (who they are; their competitive achievements), each wrapped
+     in its own styled <p> by renderAthleteBio(). -->
+{{ATHLETE_BIO}}
 <!-- Wikimedia photo attribution (author + license); rendered empty when the
      issue has no photo. Required by the photo's Creative Commons license. -->
 {{ATHLETE_PHOTO_CREDIT}}

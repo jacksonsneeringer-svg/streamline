@@ -9,7 +9,8 @@
  *   - Athlete of the Week: must never repeat a name from a past issue.
  *   - In the Water This Week: none of the topic slugs may repeat.
  *   - Blog posts: none of the picked posts may repeat.
- *   - Gear: none of the picked gear slugs may repeat.
+ *   - Gear: NOT deduped — it comes from the site's gear blog articles and is
+ *     allowed to repeat week to week (see select-gear-items.js).
  *   - Calendar events: MAY repeat an event from a past issue, but only if
  *     that event's date has not already passed. An event whose date is in
  *     the past must be swapped for something new before this will pass.
@@ -54,7 +55,6 @@ const {
 
 const ROOT = path.join(__dirname, '..');
 const DRAFT_PATH = path.join(ROOT, 'data', 'draft-issue.json');
-const GEAR_PATH = path.join(ROOT, 'data', 'selected-gear.json');
 const BLOG_PATH = path.join(ROOT, 'data', 'newsletter-blog-picks.json');
 
 function readJsonIfExists(filePath) {
@@ -73,16 +73,14 @@ function main() {
   const draft = JSON.parse(fs.readFileSync(DRAFT_PATH, 'utf8'));
   const history = loadHistory();
 
-  // gearItems/blogPosts are normally already-filtered by select-gear-items.js
-  // and fetch-blog-posts.js, but pull them in here too so the check is
-  // authoritative even if the draft was hand-edited afterward.
-  const gearSelection = readJsonIfExists(GEAR_PATH) || [];
+  // blogPosts are normally already-filtered by fetch-blog-posts.js, but pull
+  // them in here too so the check is authoritative even if the draft was
+  // hand-edited afterward.
   const blogSelection = readJsonIfExists(BLOG_PATH) || [];
 
   const athleteOfWeek = draft.athleteOfWeek || (draft.athlete && draft.athlete.name);
   const inTheWaterTopics =
     draft.inTheWaterTopics || (draft.newsItems || []).map((item) => item.topicSlug).filter(Boolean);
-  const gearItems = draft.gearItems || gearSelection.map((item) => item.slug);
   const blogPosts = draft.blogPosts || blogSelection.map((post) => post.url);
 
   try {
@@ -90,7 +88,6 @@ function main() {
       athleteOfWeek,
       inTheWaterTopics,
       blogPosts,
-      gearItems,
     });
   } catch (err) {
     console.error(err.message);
@@ -118,7 +115,6 @@ function main() {
     athleteOfWeek,
     inTheWaterTopics,
     blogPosts,
-    gearItems,
     events: draft.events,
   });
   saveHistory(history);

@@ -52,13 +52,8 @@ function usedBlogPosts(history) {
   return set;
 }
 
-function usedGearItems(history) {
-  const set = new Set();
-  for (const issue of history.issues) {
-    for (const item of issue.gearItems || []) set.add(normalize(item));
-  }
-  return set;
-}
+// Gear is intentionally NOT deduped: it now comes from the site's gear blog
+// articles and is allowed to repeat week to week (see select-gear-items.js).
 
 // An event may repeat across issues as long as its date is still ahead of
 // (or equal to) the issue date being checked. Once the date has passed, it
@@ -94,13 +89,6 @@ function assertNoRepeats(history, candidates) {
     }
   }
 
-  const gearUsed = usedGearItems(history);
-  for (const item of candidates.gearItems || []) {
-    if (gearUsed.has(normalize(item))) {
-      violations.push(`Gear item "${item}" has already been featured.`);
-    }
-  }
-
   if (violations.length > 0) {
     throw new Error(`Repeated content detected:\n` + violations.map((v) => `  - ${v}`).join('\n'));
   }
@@ -118,7 +106,6 @@ module.exports = {
   usedAthletes,
   usedTopics,
   usedBlogPosts,
-  usedGearItems,
   isEventStillValid,
   assertNoRepeats,
   recordIssue,

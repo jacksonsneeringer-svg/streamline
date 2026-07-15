@@ -91,9 +91,10 @@ function formatDate(dateText) {
 
 // ---- In the Water This Week ----
 // Every item is a summary of someone else's original reporting, so each one
-// must link back to and credit the source story (item.url, carried through
-// from the SwimSwam feed by the compose Lambda). Never render an uncredited
-// summary — that's republishing another outlet's work as our own.
+// must credit and link back to the source story (item.url + item.source,
+// carried through from the news feed by the compose Lambda). The synopsis ends
+// with a "(via <Source>)" link — never an uncredited summary, which would be
+// republishing another outlet's work as our own.
 function renderNewsItems(items) {
   return items
     .map((item, i) => {
@@ -103,11 +104,16 @@ function renderNewsItems(items) {
       const textCellPadding = isLast ? '14px 0 0 12px' : '14px 0 14px 12px';
       const border = isLast ? '' : ' border-bottom:1px solid #E3EEE7;';
       const url = item.url ? escapeHtml(item.url) : '';
+      const source = item.source ? escapeHtml(item.source) : '';
       const title = url
         ? `<a href="${url}" target="_blank" rel="noopener" style="color:#0E2E28; text-decoration:none;">${escapeHtml(item.title)}</a>`
         : escapeHtml(item.title);
-      const sourceLine = url
-        ? `\n<div style="font-family:'Inter',Arial,sans-serif; font-size:11.5px; margin-top:5px;"><a href="${url}" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">Read the full story at SwimSwam &rarr;</a></div>`
+      // "(via Source)" appended to the end of the synopsis, linking the article.
+      const sourceName = url && source
+        ? `<a href="${url}" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">${source}</a>`
+        : source;
+      const via = sourceName
+        ? ` <span style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#7C8B85;">(via ${sourceName})</span>`
         : '';
       return `<tr>
 <td width="56" valign="top" style="padding:${iconCellPadding};${border}">
@@ -117,7 +123,7 @@ ${iconSvg}
 </td>
 <td valign="top" style="padding:${textCellPadding};${border}">
 <div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;">${title}</div>
-<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;">${item.body}</div>${sourceLine}
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;">${item.body}${via}</div>
 </td>
 </tr>`;
     })
@@ -138,6 +144,23 @@ function renderAthleteBadges(badges) {
     rows.push(`<tr>\n${cells}\n</tr>`);
   }
   return rows.join('\n');
+}
+
+// ---- Athlete bio (two Wikipedia-sourced paragraphs: who they are, then their
+// competitive achievements). The Lambda returns them separated by a blank line;
+// a single-paragraph bio still renders fine. ----
+function renderAthleteBio(bio) {
+  const paras = String(bio == null ? '' : bio)
+    .split(/\n\s*\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (!paras.length) return '';
+  return paras
+    .map((p, i) => {
+      const margin = i === paras.length - 1 ? 'margin:0;' : 'margin:0 0 10px 0;';
+      return `<p style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#C7DAD3; line-height:1.65; ${margin}">${p}</p>`;
+    })
+    .join('\n');
 }
 
 // ---- Athlete photo credit (license attribution, empty when unknown) ----
@@ -297,7 +320,7 @@ function main() {
     '{{ATHLETE_PHOTO_URL}}': escapeHtml(draft.athlete.photoUrl),
     '{{ATHLETE_NAME}}': escapeHtml(draft.athlete.name),
     '{{ATHLETE_BADGES}}': renderAthleteBadges(draft.athlete.badges),
-    '{{ATHLETE_BIO}}': draft.athlete.bio,
+    '{{ATHLETE_BIO}}': renderAthleteBio(draft.athlete.bio),
     '{{ATHLETE_PHOTO_CREDIT}}': renderAthletePhotoCredit(draft.athlete.photoCredit),
     // Fixed, athlete-neutral headline: naming the athlete here ("What
     // Swimmers Like Her Are Using") implied an endorsement they never gave.

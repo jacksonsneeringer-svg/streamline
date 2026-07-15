@@ -1376,6 +1376,7 @@ Resources:
         Variables:
           SITE_URL: !Sub "https://${DomainName}"
           NEWS_FEED_URL: "https://swimswam.com/feed/"
+          NEWS_FEED_URL_2: "https://www.swimmingworldmagazine.com/feed/"
       Code:
         ZipFile: |
           import json, os, re, boto3, urllib.request, urllib.parse
@@ -1391,9 +1392,15 @@ Resources:
           dryland_tbl = dynamo.Table('streamline-daily-dryland')
 
           SITE = os.environ.get('SITE_URL', 'https://winlanefour.com')
-          FEED = os.environ.get('NEWS_FEED_URL', 'https://swimswam.com/feed/')
+          # Real swim-news RSS feeds, each tagged with the outlet name so every
+          # rendered synopsis can credit and link it "(via <Source>)".
+          FEEDS = [
+            ('SwimSwam', os.environ.get('NEWS_FEED_URL', 'https://swimswam.com/feed/')),
+            ('Swimming World', os.environ.get('NEWS_FEED_URL_2', 'https://www.swimmingworldmagazine.com/feed/')),
+          ]
           UA = 'lane-four-newsletter/1.0 (+https://winlanefour.com)'
           ICONS = ('doc', 'trend', 'medal', 'globe')
+          FREE_LICENSE_RE = re.compile(r'^(cc[\s-]?(by|0|zero)|public domain|pd|no restrictions)', re.I)
 
           def http_get(url, timeout=15):
             req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': '*/*'})
@@ -1403,31 +1410,46 @@ Resources:
           def strip_tags(s):
             return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', s or '')).strip()
 
+          def norm_title(t):
+            return re.sub(r'[^a-z0-9]+', ' ', (t or '').lower()).strip()
+
           def fetch_news():
-            # Real swim news from the SwimSwam RSS feed, last 7 days only. The
-            # post's URL slug becomes the topicSlug, which is what the pipeline's
-            # no-repeat history records — so the same story can never run twice.
+            # Real swim news from each outlet's RSS feed, last 7 days only. The
+            # post's URL slug becomes the topicSlug (what the no-repeat history
+            # records), and the outlet name rides along as the credited source so
+            # the same story can never run twice and is always attributed.
             items, now = [], datetime.now(timezone.utc)
-            root = ET.fromstring(http_get(FEED))
-            for it in root.iter('item'):
-              title = (it.findtext('title') or '').strip()
-              link = (it.findtext('link') or '').strip()
-              summary = strip_tags(it.findtext('description') or '')[:400]
-              if not title or not link:
-                continue
+            seen_slugs, seen_titles = set(), set()
+            for source, feed_url in FEEDS:
               try:
-                dt = parsedate_to_datetime(it.findtext('pubDate') or '')
-                if (now - dt).days > 7:
+                root = ET.fromstring(http_get(feed_url))
+              except Exception as ex:
+                print('feed fetch failed for %s: %s' % (source, ex))
+                continue
+              for it in root.iter('item'):
+                title = (it.findtext('title') or '').strip()
+                link = (it.findtext('link') or '').strip()
+                summary = strip_tags(it.findtext('description') or '')[:400]
+                if not title or not link:
                   continue
-              except Exception:
-                pass
-              slug = re.sub(r'[^a-z0-9]+', '-', link.rstrip('/').rsplit('/', 1)[-1].lower()).strip('-')
-              if slug:
-                # The link rides along so the rendered item can attribute and
-                # point readers to the original SwimSwam story.
-                items.append({'slug': slug, 'title': title, 'summary': summary, 'url': link})
-              if len(items) >= 12:
-                break
+                try:
+                  dt = parsedate_to_datetime(it.findtext('pubDate') or '')
+                  if (now - dt).days > 7:
+                    continue
+                except Exception:
+                  pass
+                slug = re.sub(r'[^a-z0-9]+', '-', link.rstrip('/').rsplit('/', 1)[-1].lower()).strip('-')
+                nt = norm_title(title)
+                # Skip a story we already have: same outlet slug, or the same
+                # headline reported by both outlets.
+                if not slug or slug in seen_slugs or (nt and nt in seen_titles):
+                  continue
+                seen_slugs.add(slug)
+                if nt:
+                  seen_titles.add(nt)
+                items.append({'slug': slug, 'title': title, 'summary': summary, 'url': link, 'source': source})
+                if len(items) >= 16:
+                  return items
             return items
 
           def fetch_workout(date_str):
@@ -1449,44 +1471,82 @@ Resources:
             return swim, lift
 
           def wiki_photo(name):
-            # A real press-quality photo, and a cheap existence check that the
-            # proposed athlete is a real, notable person. Returns (url, credit);
-            # the credit is the author/license attribution the photo's free
-            # license (usually Creative Commons) requires us to print wherever
-            # we reuse it.
+            # A real press-quality photo AND a cheap existence check that the
+            # proposed athlete is a real, notable person. Returns
+            # (url, credit, is_free): is_free gates on the lead image's license,
+            # since only Creative Commons / public-domain photos are legal to
+            # reuse in the newsletter. Fair-use lead images are rejected.
             try:
               url = 'https://en.wikipedia.org/api/rest_v1/page/summary/' + urllib.parse.quote(name.replace(' ', '_'))
               data = json.loads(http_get(url, timeout=10))
-              if data.get('type') == 'standard':
-                photo = ((data.get('thumbnail') or {}).get('source')) or ''
-                if photo:
-                  return photo, wiki_photo_credit(name)
+              if data.get('type') != 'standard':
+                return '', '', False
+              photo = ((data.get('thumbnail') or {}).get('source')) or ''
+              if not photo:
+                return '', '', False
+              credit, is_free = wiki_photo_license(name)
+              return photo, credit, is_free
             except Exception as ex:
               print('wikipedia lookup failed for %s: %s' % (name, ex))
-            return '', ''
+            return '', '', False
 
-          def wiki_photo_credit(name):
+          def wiki_photo_license(name):
             # Author + license of the page's lead image, via the extmetadata of
-            # the file behind the summary thumbnail.
+            # the file behind the summary thumbnail. Returns (credit, is_free);
+            # the credit is the attribution the free license requires us to print.
             try:
               api = ('https://en.wikipedia.org/w/api.php?format=json&action=query&redirects=1'
                      '&prop=pageimages&piprop=name&titles=' + urllib.parse.quote(name))
               pages = json.loads(http_get(api, timeout=10)).get('query', {}).get('pages', {})
               file_name = next((p.get('pageimage') for p in pages.values() if p.get('pageimage')), '')
               if not file_name:
-                return ''
+                return '', False
               api = ('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=imageinfo'
-                     '&iiprop=extmetadata&iiextmetadatafilter=Artist%7CLicenseShortName'
+                     '&iiprop=extmetadata&iiextmetadatafilter=Artist%7CLicenseShortName%7CLicense'
                      '&titles=' + urllib.parse.quote('File:' + file_name))
               pages = json.loads(http_get(api, timeout=10)).get('query', {}).get('pages', {})
               info = next(iter(pages.values()), {}).get('imageinfo') or [{}]
               meta = info[0].get('extmetadata') or {}
               artist = strip_tags((meta.get('Artist') or {}).get('value') or '')[:80]
               license_name = strip_tags((meta.get('LicenseShortName') or {}).get('value') or '')
+              license_code = strip_tags((meta.get('License') or {}).get('value') or '')
+              is_free = bool(FREE_LICENSE_RE.match(license_name) or FREE_LICENSE_RE.match(license_code))
               parts = [p for p in (artist, license_name) if p]
-              return ('Photo: ' + ', '.join(parts) + ', via Wikimedia Commons') if parts else ''
+              credit = ('Photo: ' + ', '.join(parts) + ', via Wikimedia Commons') if parts else ''
+              return credit, is_free
             except Exception as ex:
-              print('wikipedia credit lookup failed for %s: %s' % (name, ex))
+              print('wikipedia license lookup failed for %s: %s' % (name, ex))
+              return '', False
+
+          def wiki_extract(name):
+            # Plain-text article extract from Wikipedia — the factual basis for
+            # the two-paragraph bio, so the model summarizes real sourced text
+            # instead of inventing career facts.
+            try:
+              api = ('https://en.wikipedia.org/w/api.php?format=json&action=query&redirects=1'
+                     '&prop=extracts&explaintext=1&exsectionformat=plain&titles=' + urllib.parse.quote(name))
+              pages = json.loads(http_get(api, timeout=12)).get('query', {}).get('pages', {})
+              extract = next((p.get('extract') for p in pages.values() if p.get('extract')), '')
+              return (extract or '')[:5000]
+            except Exception as ex:
+              print('wikipedia extract failed for %s: %s' % (name, ex))
+              return ''
+
+          def summarize_bio(name, extract):
+            # Two-paragraph bio grounded in the athlete's Wikipedia page:
+            # (1) who they are as a person, (2) their competitive achievements.
+            if not extract:
+              return ''
+            prompt = ('Using ONLY the Wikipedia text below about %s, write exactly two short paragraphs '
+                      'separated by a blank line. Paragraph 1: who they are as a person (nationality, sport, '
+                      'a sentence of background). Paragraph 2: their competitive achievements (medals, records, '
+                      'titles). About 90 words total. Use only facts present in the text. No em dashes, no '
+                      'invented dates or times, no preamble or quotes around the answer.\n\nWIKIPEDIA:\n%s'
+                      % (name, extract))
+            try:
+              return invoke(prompt).strip()
+            except Exception as ex:
+              print('bio summarize failed for %s: %s' % (name, ex))
               return ''
 
           PROMPT = """You write LANE FOUR's weekly swim training newsletter (winlanefour.com). Tone: warm, direct, a coach who loves the sport — never corporate, never hype.
@@ -1509,11 +1569,11 @@ Resources:
           "outroLine":"That's the week in the water. Happy swimming,",
           "workout":{{"dateLabel":"e.g. Mon, Jul 6 &middot; <swim focus> in the pool, <dryland focus> on land","swimSet":{{"title":"Today's Swim Set","description":"one sentence describing today's swim set from the data above"}},"lift":{{"title":"Today's Lift","description":"one sentence describing today's dryland from the data above (if it is a rest day, say so and tease tomorrow)"}}}},
           "newsItems":[{{"topicSlug":"MUST be the exact slug of one provided story","icon":"doc|trend|medal|globe","title":"short headline, punchier than the source's","body":"1-3 sentences summarizing that story. <strong>Bold</strong> athlete and organization names."}}],
-          "athleteCandidates":[{{"name":"Full Name","badges":["4 short stat chips e.g. '7x Olympic Gold'"],"bio":"1-2 short paragraphs, max 90 words, accurate career facts only"}}]}}
+          "athleteCandidates":[{{"name":"Full Name","badges":["4 short stat chips e.g. '7x Olympic Gold'"]}}]}}
 
           Rules:
           - newsItems: exactly 4, each from a DIFFERENT provided story. Use only facts present in the provided title/summary — do not add details you are not given. Vary the icons.
-          - athleteCandidates: exactly 3 real, famous competitive swimmers (past or present), most interesting first, none from the already-featured list. Only include career facts you are certain of.
+          - athleteCandidates: exactly 5 real aquatic or endurance athletes (pool swimming, open-water or marathon swimming, triathlon, para-swimming, or diving), each with an English Wikipedia page and at least one national- or international-level medal or award. Most interesting first, none from the already-featured list. Give only badges you are certain of. The bio is written separately from Wikipedia, so do not include one here.
           - No em dashes. No invented quotes, dates, times, or results."""
 
           def invoke(prompt):
@@ -1553,38 +1613,42 @@ Resources:
             # Hard-validate the news against the feed: every item must reference
             # a real provided story and a slug never used before.
             valid_slugs = {n['slug'] for n in news}
-            # Source attribution comes from the feed itself (never the model),
-            # so every rendered item links back to the real SwimSwam story.
+            # Source + link come from the feed itself (never the model), so every
+            # rendered item credits and links the real story it summarizes.
             url_by_slug = {n['slug']: n.get('url', '') for n in news}
+            source_by_slug = {n['slug']: n.get('source', '') for n in news}
             items, seen = [], set()
             for it in data.get('newsItems') or []:
               slug = (it.get('topicSlug') or '').strip()
               if slug in valid_slugs and slug.lower() not in used_topics and slug not in seen and it.get('title') and it.get('body'):
                 icon = it.get('icon') if it.get('icon') in ICONS else ICONS[len(items) % 4]
                 items.append({'topicSlug': slug, 'icon': icon, 'title': it['title'], 'body': it['body'],
-                              'url': url_by_slug.get(slug, '')})
+                              'url': url_by_slug.get(slug, ''), 'source': source_by_slug.get(slug, '')})
                 seen.add(slug)
             if len(items) < 3:
               raise RuntimeError('Compose returned too few valid news items (%d).' % len(items))
 
-            # First candidate that is genuinely new and has a Wikipedia photo.
+            # First candidate that is genuinely new AND has a free-licensed
+            # Wikipedia photo (legal to reuse in email). The two-paragraph bio is
+            # then summarized from that athlete's Wikipedia page, not invented, so
+            # a candidate with no usable extract is skipped too.
             athlete = None
             candidates = [c for c in (data.get('athleteCandidates') or [])
                           if (c.get('name') or '').strip() and (c.get('name') or '').strip().lower() not in used_athletes]
             for cand in candidates:
-              photo, credit = wiki_photo(cand['name'].strip())
-              if photo:
-                athlete = {'name': cand['name'].strip(), 'photoUrl': photo, 'photoCredit': credit,
-                           'badges': [str(b) for b in (cand.get('badges') or [])][:4],
-                           'bio': cand.get('bio') or ''}
-                break
-            if athlete is None and candidates:
-              cand = candidates[0]
-              athlete = {'name': cand['name'].strip(), 'photoUrl': '', 'photoCredit': '',
+              name = cand['name'].strip()
+              photo, credit, is_free = wiki_photo(name)
+              if not (photo and is_free):
+                continue
+              bio = summarize_bio(name, wiki_extract(name))
+              if not bio:
+                continue
+              athlete = {'name': name, 'photoUrl': photo, 'photoCredit': credit,
                          'badges': [str(b) for b in (cand.get('badges') or [])][:4],
-                         'bio': cand.get('bio') or ''}
+                         'bio': bio}
+              break
             if athlete is None:
-              raise RuntimeError('Compose returned no usable athlete candidate.')
+              raise RuntimeError('No athlete candidate had a free-licensed Wikipedia photo and a usable bio.')
 
             draft = {
               'date': date_str,
