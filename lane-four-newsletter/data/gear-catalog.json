@@ -61,5 +61,61 @@
     "url": "https://www.amazon.com/s?k=Speedo+Center+Mount+Snorkel",
     "imageUrl": "https://winlanefour.com/snorkel-speedo.jpg",
     "description": "the low-risk way into snorkel training. Comfortable head mount, does the core job for half the price of the premium picks."
+  },
+  {
+    "slug": "speedo-team-kickboard",
+    "name": "Speedo Team Kickboard",
+    "url": "https://www.amazon.com/s?k=Speedo+Team+Kickboard",
+    "imageUrl": "https://winlanefour.com/snorkel-training-underwater.jpeg",
+    "description": "the practice-deck standard. Contoured EVA foam with underside grooves and gripped edges so your hands stay parked while you kick your brains out."
+  },
+  {
+    "slug": "sporti-pull-buoy",
+    "name": "Sporti Pull Buoy",
+    "url": "https://www.amazon.com/s?k=Sporti+Pull+Buoy",
+    "imageUrl": "https://winlanefour.com/snorkelswimmer.jpeg",
+    "description": "the workhorse buoy. Figure-eight EVA sits between the thighs, lifts the hips, and shuts the legs off so a set is all pull and body line. Cheap, indestructible, in every team bag."
+  },
+  {
+    "slug": "arena-powerfin-pro-ii",
+    "name": "Arena Powerfin Pro II",
+    "url": "https://www.arenasport.com/en_us/006151-powerfin-pro-ii.html",
+    "imageUrl": "https://winlanefour.com/snorkel-training-underwater.jpeg",
+    "description": "a short-blade silicone fin built for tempo, not cruising. The open heel frees the ankle and the slotted blade keeps your kick fast instead of turning it into a slow-motion flutter."
+  },
+  {
+    "slug": "finis-tempo-trainer-pro",
+    "name": "FINIS Tempo Trainer Pro",
+    "url": "https://www.amazon.com/s?k=FINIS+Tempo+Trainer+Pro",
+    "imageUrl": "https://winlanefour.com/snorkelswimmer.jpeg",
+    "description": "a waterproof metronome that tucks under your cap and beeps your target pace. Hold stroke rate or send-off on the beep and pacing stops being a guess."
+  },
+  {
+    "slug": "finis-agility-paddles",
+    "name": "FINIS Agility Paddles",
+    "url": "https://www.amazon.com/s?k=FINIS+Agility+Paddles",
+    "imageUrl": "https://winlanefour.com/snorkel-training-underwater.jpeg",
+    "description": "strapless paddles that stay on only when your catch is right. Drop the elbow or slip the hand and they fall off mid-stroke, so they coach your pull instead of just loading it."
+  },
+  {
+    "slug": "tyr-catalyst-paddles",
+    "name": "TYR Catalyst Training Paddles",
+    "url": "https://www.amazon.com/s?k=TYR+Catalyst+Training+Paddles",
+    "imageUrl": "https://winlanefour.com/snorkelswimmer.jpeg",
+    "description": "a contoured power paddle with adjustable tubing that grips the whole hand. Extra surface area for strength sets without the flat-plate slap of the old rectangular paddles."
+  },
+  {
+    "slug": "speedo-vanquisher-2",
+    "name": "Speedo Vanquisher 2.0 Goggles",
+    "url": "https://www.amazon.com/s?k=Speedo+Vanquisher+2.0+goggles",
+    "imageUrl": "https://winlanefour.com/snorkel-training-underwater.jpeg",
+    "description": "the low-profile training goggle that has outlasted every trend. Anti-fog coating, four nose-bridge sizes in the box, and a fit that disappears once you push off."
+  },
+  {
+    "slug": "tyr-big-mesh-mummy-backpack",
+    "name": "TYR Big Mesh Mummy Backpack",
+    "url": "https://www.amazon.com/s?k=TYR+Big+Mesh+Mummy+Backpack",
+    "imageUrl": "https://winlanefour.com/snorkelswimmer.jpeg",
+    "description": "the mesh bag that swallows a full deck's worth of buoys, paddles, fins and snorkels, then drains and dries them on the walk to the car instead of stewing in a puddle."
   }
 ]
