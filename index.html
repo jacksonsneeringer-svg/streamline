@@ -7928,7 +7928,7 @@ function renderPlanMealView() {
           <p style="font-size:0.86rem; color:var(--gray-500); margin:0;">${escHtml(macro || 'Macros coming with your next plan')}</p>
           ${m.note ? `<p style="font-size:0.78rem; color:var(--gray-400); margin:0.15rem 0 0;">${escHtml(cleanNote(m.note))}</p>` : ''}
         </div>
-        <button type="button" class="btn btn-outline-dark btn-sm" id="meal-suggest-btn-${i}" style="margin-left:auto; white-space:nowrap;" onclick="suggestMealForSlot(${i})" title="AI-generated recipe suggestion that fits this meal's macros">Suggest Meal</button>
+        <button type="button" class="btn btn-outline-dark btn-sm" id="meal-suggest-btn-${i}" style="margin-left:auto; white-space:nowrap;" onclick="suggestMealForSlot(${i})">Suggest Meal</button>
       </div>
       <div id="meal-recipe-slot-${i}" style="display:none; padding:0 1.5rem 1.25rem;"></div>
     </div>`;
