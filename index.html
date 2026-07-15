@@ -412,7 +412,8 @@ section { padding: 6rem 0; }
   list-style: none;
   margin: 0;
   padding: 0.4rem;
-  background: var(--deep);
+  /* Match the header band exactly so the menu reads as an extension of the nav. */
+  background: #062b27;
   border: 1px solid rgba(93,219,201,0.14);
   border-radius: var(--r-md);
   box-shadow: 0 14px 34px rgba(0,0,0,0.4);
@@ -2657,6 +2658,53 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .ex-table tr:last-child td { border-bottom: none; }
 .ex-table tr:hover td { background: var(--off-white, #f0f7f6); }
 .mtag { font-size: 0.82rem; color: var(--gray-500); }
+/* Exercise form-diagram helper: a small "?" circle beside a dryland exercise
+   name. Hovering (or focusing) it floats a form diagram — see the
+   ex-diagram-tip layer, which is appended to <body> so no set-block/table
+   overflow can clip it. */
+.ex-diagram-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; margin-left: 0.35rem; padding: 0;
+  border: 1.5px solid var(--teal, #12897b);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--teal, #12897b);
+  font-family: var(--font-body); font-size: 0.66rem; font-weight: 700;
+  line-height: 1; cursor: help; vertical-align: middle;
+  transition: background 0.15s, color 0.15s;
+}
+.ex-diagram-btn:hover, .ex-diagram-btn:focus-visible {
+  background: var(--teal, #12897b); color: #fff; outline: none;
+}
+.ex-diagram-tip {
+  position: fixed; z-index: 400; width: 208px;
+  background: #fff; border: 1px solid var(--gray-200, #d9e2e0);
+  border-radius: 10px; padding: 0.7rem 0.7rem 0.55rem;
+  box-shadow: 0 16px 40px rgba(6,43,39,0.22);
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity 0.14s ease, transform 0.14s ease, visibility 0.14s;
+  pointer-events: none;
+}
+.ex-diagram-tip.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.ex-diagram-tip::after {
+  content: ''; position: absolute; top: 100%; left: var(--arw-x, 50%);
+  transform: translateX(-50%);
+  border: 7px solid transparent; border-top-color: #fff;
+}
+.ex-diagram-tip.below::after {
+  top: auto; bottom: 100%;
+  border-top-color: transparent; border-bottom-color: #fff;
+}
+.ex-diagram-tip svg { display: block; width: 100%; height: auto; }
+.ex-diagram-cap {
+  margin-top: 0.45rem; font-size: 0.72rem; font-weight: 600;
+  color: var(--deep, #0d4f47); text-align: center; line-height: 1.35;
+}
+.ex-diagram-svg .fig { fill: none; stroke: #0d4f47; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.ex-diagram-svg .fig-fill { fill: #0d4f47; }
+.ex-diagram-svg .grd { stroke: #cbd8d5; stroke-width: 2.6; stroke-linecap: round; }
+.ex-diagram-svg .arw { fill: none; stroke: #12897b; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.ex-diagram-svg .eqp { fill: none; stroke: #12897b; stroke-width: 3; stroke-linecap: round; }
 /* Recipe cards (My Training meal plan): ingredients + steps side by side,
    stacked on small screens. */
 @media (max-width: 700px) {
@@ -2933,6 +2981,18 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .success-state.show .success-circle-ring { animation: drawCircle 0.55s cubic-bezier(0.4,0,0.2,1) 0.1s forwards; }
 .success-state.show .success-checkmark { animation: drawCheck 0.4s cubic-bezier(0.4,0,0.2,1) 0.5s forwards; }
 .success-state.show .success-text-group { opacity: 1; transform: translateY(0); }
+/* Newsletter subscribe confirmation: hold a calm green "Subscribed" state that
+   gently pulses for the full confirmation window (see handleNewsletterSubmit). */
+.btn.newsletter-success {
+  background: var(--lap, #5ddbc9) !important;
+  border-color: var(--lap, #5ddbc9) !important;
+  color: var(--deep, #0d4f47) !important;
+  animation: newsletterSuccessPulse 1.5s ease-in-out 3;
+}
+@keyframes newsletterSuccessPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(93,219,201,0); }
+  50% { box-shadow: 0 0 0 7px rgba(93,219,201,0.30); }
+}
 .unit-input { position: relative; }
 .unit-input .form-input { padding-right: 3rem; }
 .unit-label { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--gray-400); pointer-events: none; }
@@ -3099,7 +3159,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </a>
     <ul class="nav-links" id="nav-links-main">
       <li class="nav-dropdown">
-        <a href="#" class="nav-dropdown-toggle" aria-haspopup="true" onclick="return false;">Daily Programming<svg class="nav-dropdown-caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <a href="#" class="nav-dropdown-toggle" aria-haspopup="true" onclick="this.blur(); return false;">Daily Programming<svg class="nav-dropdown-caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
         <ul class="nav-dropdown-menu">
           <li><a href="/swim-sets" id="nav-swim-sets">Swim Sets</a></li>
           <li><a href="/dryland-workouts" id="nav-dryland-workouts">Dryland</a></li>
@@ -10836,6 +10896,270 @@ async function loadDrylandWorkout(category) {
   }
 }
 
+/* ── Dryland exercise form diagrams ──────────────────────────────────────
+   A small library of side-view stick-figure diagrams keyed to the movements
+   the dryland generator draws from (see dryland.md). Each daily exercise name
+   is matched to the closest diagram; when one is found, renderDryland drops a
+   "?" circle next to the exercise that floats the diagram on hover/focus.
+   Figures use classed paths (.fig / .grd / .arw / .eqp) styled in CSS, and
+   an <svg viewBox="0 0 150 96"> so they scale into the tooltip. */
+const _AR = { // reusable motion-arrow snippets
+  up:   (x,y1,y2) => `<path class="arw" d="M${x} ${y1} V${y2}"/><path class="arw" d="M${x-5} ${y2+7} L${x} ${y2} L${x+5} ${y2+7}"/>`,
+  down: (x,y1,y2) => `<path class="arw" d="M${x} ${y1} V${y2}"/><path class="arw" d="M${x-5} ${y2-7} L${x} ${y2} L${x+5} ${y2-7}"/>`,
+  updown: (x,y1,y2) => `<path class="arw" d="M${x} ${y1} V${y2}"/><path class="arw" d="M${x-5} ${y1+7} L${x} ${y1} L${x+5} ${y1+7}"/><path class="arw" d="M${x-5} ${y2-7} L${x} ${y2} L${x+5} ${y2-7}"/>`
+};
+function _svg(inner) { return `<svg class="ex-diagram-svg" viewBox="0 0 150 96" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`; }
+const DRYLAND_DIAGRAMS = {
+  'plank': { label: 'Forearm Plank', svg: _svg(
+    `<line class="grd" x1="16" y1="80" x2="138" y2="80"/><circle class="fig-fill" cx="33" cy="45" r="7"/>`+
+    `<path class="fig" d="M40 49 L120 74"/><path class="fig" d="M120 74 L132 79"/>`+
+    `<path class="fig" d="M42 51 L42 78 L26 78"/>`) },
+  'side-plank': { label: 'Side Plank', svg: _svg(
+    `<line class="grd" x1="16" y1="80" x2="138" y2="80"/><circle class="fig-fill" cx="48" cy="43" r="7"/>`+
+    `<path class="fig" d="M30 80 L48 80 L52 57"/><path class="fig" d="M52 57 L128 78 L136 80"/>`+
+    `<path class="fig" d="M52 57 L61 33"/>`) },
+  'push-up': { label: 'Push-Up', svg: _svg(
+    `<line class="grd" x1="16" y1="80" x2="138" y2="80"/><circle class="fig-fill" cx="112" cy="46" r="7"/>`+
+    `<path class="fig" d="M104 52 L110 80"/><path class="fig" d="M100 55 L36 74 L24 79"/>`+
+    _AR.updown(74,42,62)) },
+  'mountain-climber': { label: 'Mountain Climber', svg: _svg(
+    `<line class="grd" x1="16" y1="82" x2="138" y2="82"/><circle class="fig-fill" cx="114" cy="48" r="7"/>`+
+    `<path class="fig" d="M106 54 L112 82"/><path class="fig" d="M102 57 L46 74 L30 82"/>`+
+    `<path class="fig" d="M74 68 L96 72 L96 82"/>`+
+    `<path class="arw" d="M84 60 L74 68"/><path class="arw" d="M80 59 L84 60 L83 64"/>`) },
+  'burpee': { label: 'Burpee (jump finish)', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="26" r="7"/>`+
+    `<path class="fig" d="M70 32 L70 60"/><path class="fig" d="M70 38 L56 20"/><path class="fig" d="M70 38 L84 20"/>`+
+    `<path class="fig" d="M70 60 L60 82"/><path class="fig" d="M70 60 L80 82"/>`+_AR.up(112,66,34)) },
+  'pull-up': { label: 'Pull-Up', svg: _svg(
+    `<path class="eqp" d="M25 16 H125"/><path class="fig" d="M60 18 L67 42"/><path class="fig" d="M90 18 L83 42"/>`+
+    `<circle class="fig-fill" cx="75" cy="37" r="7"/><path class="fig" d="M75 44 L75 66"/>`+
+    `<path class="fig" d="M75 66 L67 84"/><path class="fig" d="M75 66 L83 84"/>`+_AR.up(112,62,38)) },
+  'pulldown': { label: 'Lat Pulldown', svg: _svg(
+    `<path class="eqp" d="M45 18 H105"/><path class="fig" d="M62 18 L70 44"/><path class="fig" d="M88 18 L80 44"/>`+
+    `<circle class="fig-fill" cx="75" cy="40" r="7"/><path class="fig" d="M75 46 L75 72"/>`+
+    `<path class="fig" d="M75 72 L96 72 L96 86"/><line class="grd" x1="60" y1="88" x2="112" y2="88"/>`+_AR.down(120,30,52)) },
+  'squat': { label: 'Squat', svg: _svg(
+    `<line class="grd" x1="16" y1="86" x2="138" y2="86"/><circle class="fig-fill" cx="57" cy="26" r="7"/>`+
+    `<path class="fig" d="M57 32 L66 54 L92 56 L90 86"/><path class="fig" d="M58 37 L88 48"/>`+_AR.updown(114,40,62)) },
+  'wall-sit': { label: 'Wall Sit', svg: _svg(
+    `<path class="eqp" d="M40 18 V88"/><line class="grd" x1="40" y1="88" x2="130" y2="88"/>`+
+    `<circle class="fig-fill" cx="52" cy="30" r="7"/><path class="fig" d="M50 36 L50 60 L84 60 L84 88"/>`+
+    `<path class="fig" d="M50 44 L78 52"/>`) },
+  'lunge': { label: 'Lunge', svg: _svg(
+    `<line class="grd" x1="14" y1="86" x2="140" y2="86"/><circle class="fig-fill" cx="70" cy="24" r="7"/>`+
+    `<path class="fig" d="M70 30 L70 54"/><path class="fig" d="M70 54 L96 60 L96 86"/>`+
+    `<path class="fig" d="M70 54 L44 74 L28 86"/><path class="fig" d="M70 36 L82 46"/>`) },
+  'bulgarian': { label: 'Bulgarian Split Squat', svg: _svg(
+    `<line class="grd" x1="14" y1="88" x2="140" y2="88"/><path class="eqp" d="M16 64 H48 M22 64 V88 M42 64 V88"/>`+
+    `<circle class="fig-fill" cx="86" cy="26" r="7"/><path class="fig" d="M86 32 L88 56 L104 62 L104 88"/>`+
+    `<path class="fig" d="M88 56 L64 60 L48 66"/>`) },
+  'sumo-squat': { label: 'Sumo / Wide Squat', svg: _svg(
+    `<line class="grd" x1="16" y1="88" x2="134" y2="88"/><circle class="fig-fill" cx="75" cy="22" r="7"/>`+
+    `<path class="fig" d="M75 28 L75 52"/><path class="fig" d="M75 52 L52 66 L48 88"/><path class="fig" d="M75 52 L98 66 L102 88"/>`+
+    `<path class="fig" d="M75 40 L75 56"/><path class="eqp" d="M70 40 H80"/>`+_AR.updown(120,44,66)) },
+  'jump': { label: 'Explosive Jump', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="62" cy="30" r="7"/>`+
+    `<path class="fig" d="M62 36 L70 56 L92 58 L90 84"/><path class="fig" d="M62 40 L44 34"/>`+_AR.up(112,68,30)) },
+  'lateral-lunge': { label: 'Lateral Lunge', svg: _svg(
+    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><circle class="fig-fill" cx="76" cy="22" r="7"/>`+
+    `<path class="fig" d="M76 28 L74 50"/><path class="fig" d="M74 50 L50 62 L50 88"/>`+
+    `<path class="fig" d="M74 50 L108 74 L118 88"/><path class="fig" d="M76 34 L90 46"/>`) },
+  'single-leg-rdl': { label: 'Single-Leg RDL', svg: _svg(
+    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><path class="fig" d="M70 52 L70 88"/>`+
+    `<circle class="fig-fill" cx="31" cy="42" r="7"/><path class="fig" d="M38 44 L70 52 L106 44"/>`+
+    `<path class="fig" d="M42 45 L42 66"/><circle class="fig-fill" cx="42" cy="70" r="3.5"/>`) },
+  'rdl': { label: 'Romanian Deadlift', svg: _svg(
+    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><path class="fig" d="M72 54 L72 86"/>`+
+    `<circle class="fig-fill" cx="35" cy="40" r="7"/><path class="fig" d="M42 42 L72 54"/>`+
+    `<path class="fig" d="M46 44 L46 70"/><path class="eqp" d="M32 70 H60"/>`+
+    `<circle class="fig-fill" cx="33" cy="70" r="5.5"/><circle class="fig-fill" cx="59" cy="70" r="5.5"/>`) },
+  'hip-thrust': { label: 'Glute Bridge / Hip Thrust', svg: _svg(
+    `<line class="grd" x1="12" y1="84" x2="140" y2="84"/><circle class="fig-fill" cx="26" cy="76" r="7"/>`+
+    `<path class="fig" d="M34 79 L84 56"/><path class="fig" d="M84 56 L104 58 L106 84"/>`+_AR.up(84,50,32)) },
+  'superman': { label: 'Superman / Back Extension', svg: _svg(
+    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="47" cy="60" r="7"/>`+
+    `<path class="fig" d="M53 63 L98 72"/><path class="fig" d="M53 63 L30 54"/><path class="fig" d="M98 72 L122 60"/>`+
+    _AR.up(75,54,38)) },
+  'russian-twist': { label: 'Russian Twist', svg: _svg(
+    `<line class="grd" x1="16" y1="86" x2="134" y2="86"/><circle class="fig-fill" cx="62" cy="40" r="7"/>`+
+    `<path class="fig" d="M63 46 L75 72"/><path class="fig" d="M75 72 L98 64 L92 82"/>`+
+    `<path class="fig" d="M66 52 L88 58"/><circle class="fig-fill" cx="92" cy="59" r="4"/>`+
+    `<path class="arw" d="M42 54 Q54 44 68 50"/><path class="arw" d="M65 45 L69 50 L63 53"/>`) },
+  'dead-bug': { label: 'Dead Bug', svg: _svg(
+    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="42" cy="74" r="7"/>`+
+    `<path class="fig" d="M49 76 L86 76"/><path class="fig" d="M60 76 L54 50"/>`+
+    `<path class="fig" d="M80 76 L92 54 L104 58"/>`) },
+  'bird-dog': { label: 'Bird Dog', svg: _svg(
+    `<line class="grd" x1="12" y1="84" x2="140" y2="84"/><circle class="fig-fill" cx="40" cy="56" r="7"/>`+
+    `<path class="fig" d="M46 58 L92 58"/><path class="fig" d="M46 58 L46 84"/><path class="fig" d="M92 58 L92 84"/>`+
+    `<path class="fig" d="M46 58 L22 50"/><path class="fig" d="M92 58 L118 50"/>`) },
+  'hollow': { label: 'Hollow Body Hold', svg: _svg(
+    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="34" cy="58" r="7"/>`+
+    `<path class="fig" d="M28 60 Q75 86 122 60"/><path class="fig" d="M40 62 L30 46"/>`) },
+  'crunch': { label: 'Crunch / V-Up', svg: _svg(
+    `<line class="grd" x1="16" y1="84" x2="134" y2="84"/><circle class="fig-fill" cx="58" cy="58" r="7"/>`+
+    `<path class="fig" d="M64 61 L86 80 L104 66 L112 82"/><path class="fig" d="M64 61 L86 66"/>`+
+    `<path class="arw" d="M50 74 Q46 60 60 54"/><path class="arw" d="M56 53 L60 54 L60 60"/>`) },
+  'bench-press': { label: 'Bench Press', svg: _svg(
+    `<line class="grd" x1="20" y1="88" x2="130" y2="88"/><path class="eqp" d="M28 70 H96 M40 70 V88 M84 70 V88"/>`+
+    `<circle class="fig-fill" cx="34" cy="62" r="7"/><path class="fig" d="M40 66 L84 66"/><path class="fig" d="M70 66 L70 42"/>`+
+    `<path class="eqp" d="M52 40 H92"/><circle class="fig-fill" cx="51" cy="40" r="5.5"/><circle class="fig-fill" cx="93" cy="40" r="5.5"/>`+
+    _AR.up(112,60,40)) },
+  'chest-fly': { label: 'Chest Fly', svg: _svg(
+    `<path class="eqp" d="M24 74 H108 M34 74 V88 M98 74 V88"/><line class="grd" x1="18" y1="88" x2="120" y2="88"/>`+
+    `<circle class="fig-fill" cx="32" cy="64" r="7"/><path class="fig" d="M38 68 L96 68"/>`+
+    `<path class="fig" d="M67 68 L44 48"/><path class="fig" d="M67 68 L90 48"/>`+
+    `<circle class="fig-fill" cx="42" cy="45" r="4"/><circle class="fig-fill" cx="92" cy="45" r="4"/>`+
+    `<path class="arw" d="M52 40 Q60 30 67 38"/><path class="arw" d="M82 38 Q75 30 67 38"/>`) },
+  'row': { label: 'Bent-Over Row', svg: _svg(
+    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><path class="fig" d="M64 56 L64 88"/>`+
+    `<circle class="fig-fill" cx="28" cy="44" r="7"/><path class="fig" d="M35 46 L64 56"/>`+
+    `<path class="fig" d="M40 48 L40 66"/><circle class="fig-fill" cx="40" cy="70" r="5"/>`+
+    `<path class="arw" d="M54 62 L64 52"/><path class="arw" d="M60 50 L64 52 L63 57"/>`) },
+  'face-pull': { label: 'Face Pull', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="24" r="7"/>`+
+    `<path class="fig" d="M70 30 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
+    `<path class="fig" d="M70 38 L92 34 L84 24"/><path class="fig" d="M70 38 L48 34 L56 24"/>`+
+    `<path class="eqp" d="M84 24 L114 30"/><path class="eqp" d="M56 24 L26 30"/>`) },
+  'shoulder-press': { label: 'Overhead Press', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="32" r="7"/>`+
+    `<path class="fig" d="M70 38 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
+    `<path class="fig" d="M70 44 L54 26"/><path class="fig" d="M70 44 L86 26"/>`+
+    `<circle class="fig-fill" cx="52" cy="24" r="4"/><circle class="fig-fill" cx="88" cy="24" r="4"/>`+_AR.up(112,44,24)) },
+  'shoulder-raise': { label: 'Lateral Raise / Y-T-W', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="30" r="7"/>`+
+    `<path class="fig" d="M70 36 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
+    `<path class="fig" d="M70 44 L44 40"/><path class="fig" d="M70 44 L96 40"/>`+
+    `<circle class="fig-fill" cx="40" cy="40" r="4"/><circle class="fig-fill" cx="100" cy="40" r="4"/>`) },
+  'external-rotation': { label: 'External Rotation', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="58" cy="28" r="7"/>`+
+    `<path class="fig" d="M58 34 L58 66 L48 90"/><path class="fig" d="M58 66 L68 90"/>`+
+    `<path class="fig" d="M58 42 L58 54 L88 48"/><path class="eqp" d="M88 48 L112 54"/>`+
+    `<path class="arw" d="M74 58 Q80 50 88 50"/><path class="arw" d="M84 46 L88 50 L83 53"/>`) },
+  'tricep': { label: 'Triceps Extension', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="34" r="7"/>`+
+    `<path class="fig" d="M70 40 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
+    `<path class="fig" d="M70 46 L64 26"/><path class="fig" d="M64 26 L80 34"/>`+
+    `<circle class="fig-fill" cx="82" cy="36" r="4"/>`+_AR.up(104,42,24)) },
+  'curl': { label: 'Biceps Curl', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="64" cy="30" r="7"/>`+
+    `<path class="fig" d="M64 36 L64 66 L54 90"/><path class="fig" d="M64 66 L74 90"/>`+
+    `<path class="fig" d="M64 42 L64 60 L86 50"/><circle class="fig-fill" cx="90" cy="48" r="4.5"/>`+
+    `<path class="arw" d="M78 62 Q86 54 86 48"/><path class="arw" d="M82 52 L86 48 L88 53"/>`) },
+  'calf-raise': { label: 'Calf Raise', svg: _svg(
+    `<line class="grd" x1="16" y1="88" x2="134" y2="88"/><circle class="fig-fill" cx="70" cy="28" r="7"/>`+
+    `<path class="fig" d="M70 34 L70 64 L68 84"/><path class="fig" d="M60 84 L76 84"/>`+_AR.up(102,66,40)) },
+  'clamshell': { label: 'Clamshell / Abductor', svg: _svg(
+    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="36" cy="72" r="7"/>`+
+    `<path class="fig" d="M43 74 L78 74"/><path class="fig" d="M78 74 L96 74 L94 82"/>`+
+    `<path class="fig" d="M78 74 L98 62 L96 70"/>`+
+    `<path class="arw" d="M86 60 Q94 56 98 60"/><path class="arw" d="M94 56 L98 60 L93 62"/>`) },
+  'pallof': { label: 'Pallof Press', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="60" cy="30" r="7"/>`+
+    `<path class="fig" d="M60 36 L60 66 L50 90"/><path class="fig" d="M60 66 L70 90"/>`+
+    `<path class="fig" d="M60 44 L96 44"/><path class="eqp" d="M96 44 L120 52"/>`+
+    `<path class="arw" d="M104 66 L118 66"/><path class="arw" d="M112 62 L118 66 L112 70"/>`) },
+  'stretch': { label: 'Mobility / Stretch', svg: _svg(
+    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><path class="fig" d="M74 52 L74 90"/>`+
+    `<circle class="fig-fill" cx="47" cy="72" r="7"/><path class="fig" d="M53 70 L74 52"/>`+
+    `<path class="fig" d="M55 66 L68 88"/>`+
+    `<path class="arw" d="M90 56 Q80 48 70 52"/><path class="arw" d="M74 47 L70 52 L76 55"/>`) }
+};
+// Substring → diagram key, ordered specific-first so "side plank" wins over
+// "plank", "bulgarian split squat" over "squat", etc. First match wins.
+const DRYLAND_DIAGRAM_MATCH = [
+  [['side plank'], 'side-plank'],
+  [['plank'], 'plank'],
+  [['mountain climber','mountain-climber'], 'mountain-climber'],
+  [['burpee'], 'burpee'],
+  [['push-up','push up','pushup'], 'push-up'],
+  [['pull-up','pull up','pullup','chin-up','chin up','chinup'], 'pull-up'],
+  [['pulldown','pull-down','pull down','straight-arm','straight arm','pullover'], 'pulldown'],
+  [['bulgarian','split squat','split-squat'], 'bulgarian'],
+  [['sumo'], 'sumo-squat'],
+  [['squat jump','box jump','broad jump','tuck jump','jump squat','jump','plyo','bound','depth drop'], 'jump'],
+  [['wall sit','wall-sit'], 'wall-sit'],
+  [['squat','goblet'], 'squat'],
+  [['lateral lunge','side lunge','lateral squat','cossack'], 'lateral-lunge'],
+  [['lunge','step-up','step up'], 'lunge'],
+  [['single-leg rdl','single leg rdl','single-leg deadlift','single leg deadlift','sldl'], 'single-leg-rdl'],
+  [['romanian','rdl','deadlift'], 'rdl'],
+  [['hip thrust','glute bridge','hip bridge','bridge'], 'hip-thrust'],
+  [['superman','back extension','reverse hyper','cobra','prone i'], 'superman'],
+  [['russian twist','woodchop','wood chop','rotational throw','rotational med','oblique twist','bicycle crunch','bicycle'], 'russian-twist'],
+  [['dead bug','dead-bug','deadbug'], 'dead-bug'],
+  [['bird dog','bird-dog','birddog'], 'bird-dog'],
+  [['hollow'], 'hollow'],
+  [['pallof','anti-rotation press','anti rotation press'], 'pallof'],
+  [['face pull','face-pull'], 'face-pull'],
+  [['lateral raise','front raise','y-t-w','ytw','y t w','prone y','prone t','prone w','pull-apart','pull apart','band pull','w raise','t raise','y raise','scaption','scap'], 'shoulder-raise'],
+  [['external rotation','rotator cuff','shoulder cars','wall slide','wall angel','cuban','shoulder car'], 'external-rotation'],
+  [['shoulder press','overhead press','military press','ohp','arnold press','push press','landmine press'], 'shoulder-press'],
+  [['tricep','pushdown','push-down','skull','close-grip','close grip','diamond push','kickback','overhead extension','dip'], 'tricep'],
+  [['bicep','curl'], 'curl'],
+  [['bench press','chest press','floor press','incline press','bench'], 'bench-press'],
+  [['fly','flye','pec deck','pec fly'], 'chest-fly'],
+  [['row','seal row','bench pull','inverted row'], 'row'],
+  [['calf'], 'calf-raise'],
+  [['clamshell','clam shell','side step','band side','monster walk','abductor','adductor','inner thigh','fire hydrant','side-lying leg','hip circle','clam'], 'clamshell'],
+  [['crunch','v-up','v up','sit-up','sit up','situp','leg raise','knee tuck','knee raise','toe touch','flutter','scissor','hollow rock'], 'crunch'],
+  [['stretch','pose','pigeon','downward dog','thread the needle','world','greatest stretch','mobility','figure-4','figure 4','frog','child','cat-cow','cat cow','leg swing','arm circle','open book','90/90','couch stretch','hamstring','hip flexor','lat stretch','chest opener','doorway','thoracic','ankle','flow','cars'], 'stretch']
+];
+function drylandDiagramKey(name) {
+  const n = String(name || '').toLowerCase();
+  for (const [subs, key] of DRYLAND_DIAGRAM_MATCH) {
+    for (const s of subs) { if (n.indexOf(s) !== -1) return key; }
+  }
+  return '';
+}
+// Floating diagram tooltip (appended to <body> so no ancestor overflow clips it).
+let _exDiagramTip = null;
+function _ensureExDiagramTip() {
+  if (_exDiagramTip) return _exDiagramTip;
+  _exDiagramTip = document.createElement('div');
+  _exDiagramTip.className = 'ex-diagram-tip';
+  _exDiagramTip.setAttribute('role', 'tooltip');
+  document.body.appendChild(_exDiagramTip);
+  return _exDiagramTip;
+}
+function showExDiagram(btn) {
+  const d = DRYLAND_DIAGRAMS[btn.getAttribute('data-diagram')];
+  if (!d) return;
+  const tip = _ensureExDiagramTip();
+  tip.innerHTML = d.svg + `<div class="ex-diagram-cap">${escHtml(d.label)}</div>`;
+  tip.classList.add('show');
+  const r = btn.getBoundingClientRect();
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let left = r.left + r.width / 2 - tw / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+  let top = r.top - th - 10;
+  const below = top < 8;
+  tip.classList.toggle('below', below);
+  if (below) top = r.bottom + 10;
+  tip.style.left = left + 'px';
+  tip.style.top = top + 'px';
+  tip.style.setProperty('--arw-x', (r.left + r.width / 2 - left) + 'px');
+}
+function hideExDiagram() { if (_exDiagramTip) _exDiagramTip.classList.remove('show'); }
+document.addEventListener('mouseover', function(e) {
+  const b = e.target.closest && e.target.closest('.ex-diagram-btn');
+  if (b) showExDiagram(b);
+});
+document.addEventListener('mouseout', function(e) {
+  const b = e.target.closest && e.target.closest('.ex-diagram-btn');
+  if (b) hideExDiagram();
+});
+document.addEventListener('focusin', function(e) {
+  const b = e.target.closest && e.target.closest('.ex-diagram-btn');
+  if (b) showExDiagram(b);
+});
+document.addEventListener('focusout', function(e) {
+  const b = e.target.closest && e.target.closest('.ex-diagram-btn');
+  if (b) hideExDiagram();
+});
+window.addEventListener('scroll', hideExDiagram, true);
+
 function drylandSectionColor(name) {
   if (/^warm/i.test(name)) return 'var(--deep)';
   if (/cool|mobility|stretch|recovery|rest|movement/i.test(name)) return 'var(--teal)';
@@ -10854,7 +11178,11 @@ function buildDrylandSectionsHtml(sections) {
       const muscles = Array.isArray(item.muscles) && item.muscles.length
         ? item.muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(', ') : '';
       const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
-      return `<tr><td><strong>${escHtml(ex)}</strong>${note}</td><td>${presc}</td><td>${muscles}</td></tr>`;
+      const diagKey = drylandDiagramKey(ex);
+      const help = diagKey
+        ? ` <button type="button" class="ex-diagram-btn" data-diagram="${diagKey}" aria-label="Show form diagram for ${escHtml(ex)}" title="Show form diagram">?</button>`
+        : '';
+      return `<tr><td><strong>${escHtml(ex)}</strong>${help}${note}</td><td>${presc}</td><td>${muscles}</td></tr>`;
     }).join('');
     html += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
@@ -12144,8 +12472,13 @@ async function handleNewsletterSubmit(event, source) {
       });
     }
     btn.textContent = 'Subscribed ✓';
+    btn.classList.add('newsletter-success');
     form.reset();
-    setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 3000);
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.classList.remove('newsletter-success');
+    }, 6000);
   } catch (err) {
     btn.textContent = originalText;
     btn.disabled = false;
