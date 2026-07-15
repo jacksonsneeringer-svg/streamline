@@ -1383,6 +1383,8 @@ section { padding: 6rem 0; }
   text-align: center;
 }
 .footer-disclaimer strong { font-weight: 500; color: rgba(255,255,255,0.5); }
+/* Blog home heading: keep it on a single line on wider screens. */
+.blog-home-title { white-space: nowrap; }
 
 /* ── Blog inline editor ── */
 body.blog-edit-mode .post-body[contenteditable="true"],
@@ -2405,6 +2407,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .dash-grid,
   .for-who-grid,
   .grid-3 { grid-template-columns: 1fr; }
+  /* On mobile the About-section disclaimers are dropped; the health and
+     affiliate disclosures live in the footer instead. */
+  .about-disclaimers { display: none; }
+  /* Allow the blog home heading to wrap on narrow screens. */
+  .blog-home-title { white-space: normal; }
   .coaching-cta { max-width: none !important; }
   .nav-inner { padding: 0 1.25rem; }
   #nav-account-btn { display: none; }
@@ -3183,13 +3190,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div class="about-divider" style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, transparent, var(--lap) 15%, var(--lap) 85%, transparent); opacity:0.45; transform:translateX(-50%); pointer-events:none;"></div>
       <div class="about-col-left" style="padding-right:3rem;">
         <span class="eyebrow">About LANE FOUR</span>
-        <h2>Elite swimmers have full support systems. LANE FOUR builds one around you.</h2>
+        <h2>Elite swimmers have support systems. LANE FOUR builds one around you.</h2>
         <div class="accent-bar"></div>
         <p style="margin-top:1.5rem; font-size:1rem; line-height:1.85;">Elite swimmers succeed because they have a <strong>full support system</strong>: coaches who design every session, strength trainers who build power out of the water, and nutritionists who fuel it all. That kind of support has always been <strong>reserved for the few</strong>.</p>
         <p style="font-size:1rem; line-height:1.85;">LANE FOUR changes that. With <strong>purposeful daily sets</strong> organized by intensities, <strong>dryland work synced to your pool sessions</strong>, technique breakdowns that go beyond what to do and explain why it matters, and <strong>nutrition guidance built around what your training actually demands</strong>, you're set up for success both in the pool and in life.</p>
         <p style="font-size:1rem; line-height:1.85;">If you try us out and it doesn't work for you, no harm, no foul. Drop some feedback and freestyle your own thing. But <strong>we are everything your training has been missing.</strong></p>
-        <div style="margin-top:1.75rem; padding-top:1.5rem; border-top:1px solid var(--gray-100); font-size:0.72rem; font-weight:300; color:var(--gray-400); line-height:1.7;">
-          <strong style="font-weight:500; color:var(--gray-500);">Affiliate disclosure:</strong> Some links on this site are affiliate links. As an Amazon Associate we earn from qualifying purchases. If you purchase through one, we may earn a small commission at no additional cost to you. &nbsp;<strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
+        <div class="about-disclaimers" style="margin-top:1.75rem; padding-top:1.5rem; border-top:1px solid var(--gray-100); font-size:0.72rem; font-weight:300; color:var(--gray-400); line-height:1.7;">
+          <strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
         </div>
       </div>
       <div class="about-col-right" style="padding-left:3rem;">
@@ -3217,7 +3224,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="section-header center">
       <h2 style="color:var(--deep);">Features &amp; Resources</h2>
       <div class="accent-bar center"></div>
-      <p style="color:var(--gray-400); font-size:0.72rem; font-weight:300; line-height:1.7; margin-top:0.9rem; max-width:44rem; margin-left:auto; margin-right:auto; text-align:center;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
     </div>
     <div class="resources-grid">
       <div class="resource-card">
@@ -3336,10 +3342,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </div>
     <div class="sneak-plan-cta" style="margin-top:2.5rem; background:linear-gradient(150deg, rgba(93,219,201,0.14) 0%, rgba(255,255,255,0.05) 60%); border:1px solid rgba(93,219,201,0.32); border-radius:var(--r-lg); padding:2.25rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;">
       <div style="max-width:34rem;">
-        <h3 style="color:var(--white); font-size:1.5rem; line-height:1.25; margin:0;">Create your unique <em class="serif-italic" style="color:var(--lap);">workout plan.</em></h3>
+        <h3 style="color:var(--white); font-size:1.5rem; line-height:1.25; margin:0;">Create your unique <em style="font-style:normal; color:var(--lap);">workout plan.</em></h3>
         <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; font-weight:300; line-height:1.65; margin:0.7rem 0 0;">Set your level and goals, and we'll build a training plan that's tailored to you.</p>
       </div>
       <a href="/get-started" class="btn btn-gold" id="sneak-plan-cta-btn" onclick="return sneakPlanCTA()">Create an account →</a>
+      <p style="color:rgba(255,255,255,0.5); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0; flex-basis:100%; width:100%;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
     </div>
   </div>
 </section>
@@ -3349,7 +3356,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:3rem; flex-wrap:wrap; gap:1rem;">
       <div>
         <span class="eyebrow">From the blog</span>
-        <h2 style="color:var(--deep);">Latest tips, tricks,<br/><em class="serif-italic" style="color:var(--teal);">and training advice.</em></h2>
+        <h2 class="blog-home-title" style="color:var(--deep);">Latest tips, tricks, <em class="serif-italic" style="color:var(--teal);">and training advice.</em></h2>
         <div class="accent-bar"></div>
       </div>
       <a href="/blog" class="all-posts-link" style="font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); display:flex; align-items:center; gap:0.35rem; transition:color 0.15s;" onclick="navigate('blog')">All posts →</a>
@@ -6702,6 +6709,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem; max-width:26rem; margin-left:auto; margin-right:auto;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of LANE FOUR, and to LANE FOUR's <a href="/terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="/privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
   </div>
+  <p class="footer-disclaimer"><strong>Affiliate disclosure:</strong> Some links on this site are affiliate links. As an Amazon Associate we earn from qualifying purchases. If you purchase through one, we may earn a small commission at no additional cost to you.</p>
   <p class="footer-disclaimer"><strong>Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
   <div class="footer-bottom">
     <span>© 2026 LANE FOUR. All rights reserved.</span>
