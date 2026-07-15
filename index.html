@@ -245,7 +245,7 @@ strong { font-weight: 500; }
   font-size: 0.64rem;
   font-weight: 400;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.8);
   display: block;
   letter-spacing: 0.93em;
   word-spacing: 0.25em;
@@ -1216,10 +1216,10 @@ section { padding: 6rem 0; }
   margin-top: 0.45rem;
 }
 .sneak-dryland-actions .sneak-meta { margin-top: 0; }
-.sneak-dryland-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.sneak-dryland-btns { display: flex; gap: 0.65rem; flex-wrap: wrap; align-items: center; }
 .sneak-dryland-btns .btn {
-  padding: 0.45rem 1rem;
-  font-size: 0.66rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.78rem;
   letter-spacing: 0.09em;
 }
 
@@ -3275,17 +3275,15 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </div>
     <div class="coaching-cta-row" style="margin-top:2.5rem; display:flex; align-items:center; gap:2.5rem; flex-wrap:wrap;">
     <div class="coaching-cta" style="flex:1 1 60%; min-width:280px; background:rgba(93,219,201,0.06); border:1px solid rgba(93,219,201,0.2); border-radius:var(--r-xl); padding:2rem 2.5rem; display:flex; flex-direction:column; gap:1.25rem;">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
-        <div>
-          <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal-2); margin-bottom:0.4rem; opacity:0.85;">Specialized coaching</p>
-          <h3 style="color:var(--deep); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Daily training &amp; nutrition. Built for your current abilities, progressing toward your future goals.</h3>
-          <p style="color:var(--gray-500); font-size:0.88rem; margin:0; font-weight:300;">Daily swim sets, lift workouts, meal plans, and bodyweight dryland you can do in your bedroom. All <strong>calibrated to what you can do</strong>, building up to what you want to do. <strong>No subscription, no fees.</strong></p>
-        </div>
-        <a href="/get-started" class="btn btn-gold" style="flex-shrink:0;" onclick="navigate('get-started')">Try it out!</a>
+      <div>
+        <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal-2); margin-bottom:0.4rem; opacity:0.85;">Specialized coaching</p>
+        <h3 style="color:var(--deep); font-size:1.15rem; margin-bottom:0.4rem; font-weight:400;">Daily training &amp; nutrition. Built for your current abilities, progressing toward your future goals.</h3>
+        <p style="color:var(--gray-500); font-size:0.88rem; margin:0; font-weight:300;">Daily swim sets, lift workouts, meal plans, and bodyweight dryland you can do in your bedroom. All <strong>calibrated to what you can do</strong>, building up to what you want to do. <strong>No subscription, no fees.</strong></p>
       </div>
       <p style="color:var(--gray-400); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
+      <a href="/get-started" class="btn btn-gold" style="flex-shrink:0; align-self:flex-start;" onclick="navigate('get-started')">Try it out!</a>
     </div>
-    <img src="/shark-coach.png?v=2" alt="LANE FOUR shark coach mascot" style="display:block; flex:0 1 220px; width:100%; max-width:220px; height:auto; margin:0 auto;" />
+    <img src="/shark-coach.png?v=2" alt="LANE FOUR shark coach mascot" style="display:block; flex:0 1 300px; width:100%; max-width:300px; height:auto; margin:0 auto;" />
     </div>
   </div>
 </section>
@@ -3327,26 +3325,26 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </div>
     <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin:2rem 0 1rem; opacity:0.85;">On land</p>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem;">
-      <div class="sneak-card" id="sneak-dryland" style="display:none; flex-direction:column; background:rgba(255,255,255,0.04); border:1px solid rgba(93,219,201,0.28); border-radius:var(--r-lg); padding:1.5rem;">
-        <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Today's Dryland</span>
-        <div class="sneak-title" style="color:var(--white); font-size:1.05rem; line-height:1.3; margin-top:0.55rem;"></div>
-        <div class="sneak-dryland-actions">
-          <div class="sneak-meta" style="color:rgba(255,255,255,0.65); font-size:0.82rem;"></div>
-          <div class="sneak-dryland-btns">
-            <a href="/dryland-workouts" class="btn btn-outline-light" onclick="return goToDrylandWorkout('bodyweight')">Bodyweight →</a>
-            <a href="/dryland-workouts" class="btn btn-outline-light" onclick="return goToDrylandWorkout('freeweights')">Free Weights →</a>
-            <a href="/dryland-workouts" class="btn btn-outline-light" onclick="return goToDrylandWorkout('commercial')">Commercial Gym →</a>
-          </div>
+      <div class="sneak-card" id="sneak-dryland" style="display:none; flex-direction:row; align-items:center; justify-content:space-between; gap:1.25rem 2rem; flex-wrap:wrap; background:rgba(255,255,255,0.04); border:1px solid rgba(93,219,201,0.28); border-radius:var(--r-lg); padding:1.5rem;">
+        <div class="sneak-dryland-info" style="flex:1 1 220px; min-width:200px;">
+          <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Today's Dryland</span>
+          <div class="sneak-title" style="color:var(--white); font-size:1.05rem; line-height:1.3; margin-top:0.55rem;"></div>
+          <div class="sneak-meta" style="color:rgba(255,255,255,0.65); font-size:0.82rem; margin-top:0.45rem;"></div>
+        </div>
+        <div class="sneak-dryland-btns">
+          <a href="/dryland-workouts" class="btn btn-outline-light" onclick="return goToDrylandWorkout('bodyweight')">Bodyweight →</a>
+          <a href="/dryland-workouts" class="btn btn-outline-light" onclick="return goToDrylandWorkout('freeweights')">Free Weights →</a>
+          <a href="/dryland-workouts" class="btn btn-outline-light" onclick="return goToDrylandWorkout('commercial')">Commercial Gym →</a>
         </div>
       </div>
     </div>
     <div class="sneak-plan-cta" style="margin-top:2.5rem; background:linear-gradient(150deg, rgba(93,219,201,0.14) 0%, rgba(255,255,255,0.05) 60%); border:1px solid rgba(93,219,201,0.32); border-radius:var(--r-lg); padding:2.25rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;">
-      <div style="max-width:34rem;">
-        <h3 style="color:var(--white); font-size:1.5rem; line-height:1.25; margin:0;">Create your unique <em style="font-style:normal; color:var(--lap);">workout plan.</em></h3>
+      <div style="max-width:41rem;">
+        <h3 style="font-family:var(--font-display); font-weight:400; color:var(--white); font-size:1.5rem; line-height:1.25; margin:0;">Create your unique <em style="font-style:normal; color:var(--lap);">workout plan.</em></h3>
         <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; font-weight:300; line-height:1.65; margin:0.7rem 0 0;">Set your level and goals, and we'll build a training plan that's tailored to you.</p>
+        <p style="color:rgba(255,255,255,0.5); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0.9rem 0 0; max-width:41rem;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
       </div>
       <a href="/get-started" class="btn btn-gold" id="sneak-plan-cta-btn" onclick="return sneakPlanCTA()">Create an account →</a>
-      <p style="color:rgba(255,255,255,0.5); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0; flex-basis:100%; width:100%;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
     </div>
   </div>
 </section>
