@@ -160,11 +160,26 @@ async function getGearProducts() {
     return found;
   };
 
+  // Product-heading anchors (<h2 id="pick-…">) mark where each product's
+  // section starts; the deep link points there so the reader lands on the
+  // title, with the whole product below it.
+  const headings = [];
+  const headRe = /<h2[^>]*\bid="(pick-[a-z0-9-]+)"/g;
+  let hm;
+  while ((hm = headRe.exec(html)) !== null) headings.push({ id: hm[1], index: hm.index });
+  const anchorAt = (index) => {
+    let found = null;
+    for (const h of headings) {
+      if (h.index <= index) found = h.id;
+      else break;
+    }
+    return found;
+  };
+
   const products = [];
-  const pickRe = /<div class="product-pick"([^>]*)>/g;
+  const pickRe = /<div class="product-pick"[^>]*>/g;
   let match;
   while ((match = pickRe.exec(html)) !== null) {
-    const attrs = match[1] || '';
     const start = match.index;
     // Slice to the next product-pick or the end of this article so the inner
     // regexes stay scoped to this one product.
@@ -184,8 +199,7 @@ async function getGearProducts() {
     const quoteMatch = block.match(/<p class="product-pick-quote">([\s\S]*?)<\/p>/i);
     const description = quoteMatch ? condenseReview(quoteMatch[1]) : '';
 
-    const idMatch = attrs.match(/\bid="([^"]+)"/);
-    const anchor = idMatch ? idMatch[1] : null;
+    const anchor = anchorAt(start);
     const slug = anchor ? anchor.replace(/^pick-/, '') : slugify(name);
     const pageId = pageIdAt(start);
 
