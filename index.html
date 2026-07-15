@@ -2670,17 +2670,17 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   background: transparent;
   color: var(--teal, #12897b);
   font-family: var(--font-body); font-size: 0.66rem; font-weight: 700;
-  line-height: 1; cursor: help; vertical-align: middle;
+  line-height: 1; cursor: pointer; vertical-align: middle;
   transition: background 0.15s, color 0.15s;
 }
 .ex-diagram-btn:hover, .ex-diagram-btn:focus-visible {
   background: var(--teal, #12897b); color: #fff; outline: none;
 }
 .ex-diagram-tip {
-  position: fixed; z-index: 400; width: 208px;
-  background: #fff; border: 1px solid var(--gray-200, #d9e2e0);
-  border-radius: 10px; padding: 0.7rem 0.7rem 0.55rem;
-  box-shadow: 0 16px 40px rgba(6,43,39,0.22);
+  position: fixed; z-index: 400; width: 224px;
+  background: #f4eee1; border: 1px solid #d8cfba;
+  border-radius: 12px; padding: 0.75rem 0.8rem 0.6rem;
+  box-shadow: 0 18px 44px rgba(6,43,39,0.28);
   opacity: 0; visibility: hidden; transform: translateY(4px);
   transition: opacity 0.14s ease, transform 0.14s ease, visibility 0.14s;
   pointer-events: none;
@@ -2689,22 +2689,65 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .ex-diagram-tip::after {
   content: ''; position: absolute; top: 100%; left: var(--arw-x, 50%);
   transform: translateX(-50%);
-  border: 7px solid transparent; border-top-color: #fff;
+  border: 7px solid transparent; border-top-color: #f4eee1;
 }
 .ex-diagram-tip.below::after {
   top: auto; bottom: 100%;
-  border-top-color: transparent; border-bottom-color: #fff;
+  border-top-color: transparent; border-bottom-color: #f4eee1;
 }
-.ex-diagram-tip svg { display: block; width: 100%; height: auto; }
+.ex-diagram-tip svg, .exd-svg { display: block; width: 100%; height: auto; }
+.exd-tip-title {
+  font-family: var(--font-head, Georgia, serif); font-weight: 800;
+  font-size: 0.8rem; letter-spacing: 0.02em; text-transform: uppercase;
+  color: #163a34; text-align: center; margin-bottom: 0.35rem;
+}
 .ex-diagram-cap {
-  margin-top: 0.45rem; font-size: 0.72rem; font-weight: 600;
-  color: var(--deep, #0d4f47); text-align: center; line-height: 1.35;
+  margin-top: 0.4rem; font-size: 0.72rem; font-weight: 500;
+  color: #3a4b47; text-align: center; line-height: 1.4;
 }
-.ex-diagram-svg .fig { fill: none; stroke: #0d4f47; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
-.ex-diagram-svg .fig-fill { fill: #0d4f47; }
-.ex-diagram-svg .grd { stroke: #cbd8d5; stroke-width: 2.6; stroke-linecap: round; }
-.ex-diagram-svg .arw { fill: none; stroke: #12897b; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.ex-diagram-svg .eqp { fill: none; stroke: #12897b; stroke-width: 3; stroke-linecap: round; }
+.exd-tip-hint {
+  margin-top: 0.45rem; font-size: 0.6rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #93938a; text-align: center; font-weight: 600;
+}
+/* Click-to-open multi-panel poster (full step-by-step breakdown). */
+.exd-poster-overlay {
+  position: fixed; inset: 0; z-index: 1000; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+  background: rgba(8,28,25,0.55); opacity: 0; transition: opacity 0.18s ease;
+}
+.exd-poster-overlay.show { display: flex; opacity: 1; }
+.exd-poster-card {
+  background: #efe7d5; border-radius: 18px; padding: 1.5rem 1.6rem 1.7rem;
+  max-width: 900px; width: 100%; max-height: 90vh; overflow: auto;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.42); position: relative;
+  transform: translateY(8px) scale(0.99); transition: transform 0.18s ease;
+}
+.exd-poster-overlay.show .exd-poster-card { transform: none; }
+.exd-poster-title {
+  font-family: var(--font-head, Georgia, serif); font-size: 1.55rem; font-weight: 800;
+  color: #163a34; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.1;
+  padding-right: 2.5rem;
+}
+.exd-poster-sub { font-size: 0.88rem; color: #4a5f5a; margin: 0.35rem 0 1.2rem; line-height: 1.4; }
+.exd-poster-close {
+  position: absolute; top: 0.85rem; right: 0.95rem; width: 34px; height: 34px;
+  border-radius: 50%; border: none; background: rgba(22,58,52,0.10); color: #163a34;
+  font-size: 1.35rem; line-height: 1; cursor: pointer; transition: background 0.15s;
+}
+.exd-poster-close:hover { background: rgba(22,58,52,0.2); }
+.exd-poster-panels { display: grid; gap: 0.9rem; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 640px) {
+  .exd-poster-panels[data-n="3"] { grid-template-columns: repeat(3, 1fr); }
+  .exd-poster-panels[data-n="4"] { grid-template-columns: repeat(4, 1fr); }
+}
+.exd-panel { background: #fbf8f0; border-radius: 12px; padding: 0.75rem 0.75rem 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.exd-panel-head { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.2rem; }
+.exd-badge {
+  width: 21px; height: 21px; border-radius: 50%; background: #6f8d86; color: #fff;
+  font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.exd-panel-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #163a34; }
+.exd-panel-cue { font-size: 0.73rem; color: #3a4b47; line-height: 1.42; margin-top: 0.45rem; }
 /* Recipe cards (My Training meal plan): ingredients + steps side by side,
    stacked on small screens. */
 @media (max-width: 700px) {
@@ -10896,176 +10939,390 @@ async function loadDrylandWorkout(category) {
   }
 }
 
-/* ── Dryland exercise form diagrams ──────────────────────────────────────
-   A small library of side-view stick-figure diagrams keyed to the movements
-   the dryland generator draws from (see dryland.md). Each daily exercise name
-   is matched to the closest diagram; when one is found, renderDryland drops a
-   "?" circle next to the exercise that floats the diagram on hover/focus.
-   Figures use classed paths (.fig / .grd / .arw / .eqp) styled in CSS, and
-   an <svg viewBox="0 0 150 96"> so they scale into the tooltip. */
-const _AR = { // reusable motion-arrow snippets
-  up:   (x,y1,y2) => `<path class="arw" d="M${x} ${y1} V${y2}"/><path class="arw" d="M${x-5} ${y2+7} L${x} ${y2} L${x+5} ${y2+7}"/>`,
-  down: (x,y1,y2) => `<path class="arw" d="M${x} ${y1} V${y2}"/><path class="arw" d="M${x-5} ${y2-7} L${x} ${y2} L${x+5} ${y2-7}"/>`,
-  updown: (x,y1,y2) => `<path class="arw" d="M${x} ${y1} V${y2}"/><path class="arw" d="M${x-5} ${y1+7} L${x} ${y1} L${x+5} ${y1+7}"/><path class="arw" d="M${x-5} ${y2-7} L${x} ${y2} L${x+5} ${y2-7}"/>`
-};
-function _svg(inner) { return `<svg class="ex-diagram-svg" viewBox="0 0 150 96" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`; }
-const DRYLAND_DIAGRAMS = {
-  'plank': { label: 'Forearm Plank', svg: _svg(
-    `<line class="grd" x1="16" y1="80" x2="138" y2="80"/><circle class="fig-fill" cx="33" cy="45" r="7"/>`+
-    `<path class="fig" d="M40 49 L120 74"/><path class="fig" d="M120 74 L132 79"/>`+
-    `<path class="fig" d="M42 51 L42 78 L26 78"/>`) },
-  'side-plank': { label: 'Side Plank', svg: _svg(
-    `<line class="grd" x1="16" y1="80" x2="138" y2="80"/><circle class="fig-fill" cx="48" cy="43" r="7"/>`+
-    `<path class="fig" d="M30 80 L48 80 L52 57"/><path class="fig" d="M52 57 L128 78 L136 80"/>`+
-    `<path class="fig" d="M52 57 L61 33"/>`) },
-  'push-up': { label: 'Push-Up', svg: _svg(
-    `<line class="grd" x1="16" y1="80" x2="138" y2="80"/><circle class="fig-fill" cx="112" cy="46" r="7"/>`+
-    `<path class="fig" d="M104 52 L110 80"/><path class="fig" d="M100 55 L36 74 L24 79"/>`+
-    _AR.updown(74,42,62)) },
-  'mountain-climber': { label: 'Mountain Climber', svg: _svg(
-    `<line class="grd" x1="16" y1="82" x2="138" y2="82"/><circle class="fig-fill" cx="114" cy="48" r="7"/>`+
-    `<path class="fig" d="M106 54 L112 82"/><path class="fig" d="M102 57 L46 74 L30 82"/>`+
-    `<path class="fig" d="M74 68 L96 72 L96 82"/>`+
-    `<path class="arw" d="M84 60 L74 68"/><path class="arw" d="M80 59 L84 60 L83 64"/>`) },
-  'burpee': { label: 'Burpee (jump finish)', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="26" r="7"/>`+
-    `<path class="fig" d="M70 32 L70 60"/><path class="fig" d="M70 38 L56 20"/><path class="fig" d="M70 38 L84 20"/>`+
-    `<path class="fig" d="M70 60 L60 82"/><path class="fig" d="M70 60 L80 82"/>`+_AR.up(112,66,34)) },
-  'pull-up': { label: 'Pull-Up', svg: _svg(
-    `<path class="eqp" d="M25 16 H125"/><path class="fig" d="M60 18 L67 42"/><path class="fig" d="M90 18 L83 42"/>`+
-    `<circle class="fig-fill" cx="75" cy="37" r="7"/><path class="fig" d="M75 44 L75 66"/>`+
-    `<path class="fig" d="M75 66 L67 84"/><path class="fig" d="M75 66 L83 84"/>`+_AR.up(112,62,38)) },
-  'pulldown': { label: 'Lat Pulldown', svg: _svg(
-    `<path class="eqp" d="M45 18 H105"/><path class="fig" d="M62 18 L70 44"/><path class="fig" d="M88 18 L80 44"/>`+
-    `<circle class="fig-fill" cx="75" cy="40" r="7"/><path class="fig" d="M75 46 L75 72"/>`+
-    `<path class="fig" d="M75 72 L96 72 L96 86"/><line class="grd" x1="60" y1="88" x2="112" y2="88"/>`+_AR.down(120,30,52)) },
-  'squat': { label: 'Squat', svg: _svg(
-    `<line class="grd" x1="16" y1="86" x2="138" y2="86"/><circle class="fig-fill" cx="57" cy="26" r="7"/>`+
-    `<path class="fig" d="M57 32 L66 54 L92 56 L90 86"/><path class="fig" d="M58 37 L88 48"/>`+_AR.updown(114,40,62)) },
-  'wall-sit': { label: 'Wall Sit', svg: _svg(
-    `<path class="eqp" d="M40 18 V88"/><line class="grd" x1="40" y1="88" x2="130" y2="88"/>`+
-    `<circle class="fig-fill" cx="52" cy="30" r="7"/><path class="fig" d="M50 36 L50 60 L84 60 L84 88"/>`+
-    `<path class="fig" d="M50 44 L78 52"/>`) },
-  'lunge': { label: 'Lunge', svg: _svg(
-    `<line class="grd" x1="14" y1="86" x2="140" y2="86"/><circle class="fig-fill" cx="70" cy="24" r="7"/>`+
-    `<path class="fig" d="M70 30 L70 54"/><path class="fig" d="M70 54 L96 60 L96 86"/>`+
-    `<path class="fig" d="M70 54 L44 74 L28 86"/><path class="fig" d="M70 36 L82 46"/>`) },
-  'bulgarian': { label: 'Bulgarian Split Squat', svg: _svg(
-    `<line class="grd" x1="14" y1="88" x2="140" y2="88"/><path class="eqp" d="M16 64 H48 M22 64 V88 M42 64 V88"/>`+
-    `<circle class="fig-fill" cx="86" cy="26" r="7"/><path class="fig" d="M86 32 L88 56 L104 62 L104 88"/>`+
-    `<path class="fig" d="M88 56 L64 60 L48 66"/>`) },
-  'sumo-squat': { label: 'Sumo / Wide Squat', svg: _svg(
-    `<line class="grd" x1="16" y1="88" x2="134" y2="88"/><circle class="fig-fill" cx="75" cy="22" r="7"/>`+
-    `<path class="fig" d="M75 28 L75 52"/><path class="fig" d="M75 52 L52 66 L48 88"/><path class="fig" d="M75 52 L98 66 L102 88"/>`+
-    `<path class="fig" d="M75 40 L75 56"/><path class="eqp" d="M70 40 H80"/>`+_AR.updown(120,44,66)) },
-  'jump': { label: 'Explosive Jump', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="62" cy="30" r="7"/>`+
-    `<path class="fig" d="M62 36 L70 56 L92 58 L90 84"/><path class="fig" d="M62 40 L44 34"/>`+_AR.up(112,68,30)) },
-  'lateral-lunge': { label: 'Lateral Lunge', svg: _svg(
-    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><circle class="fig-fill" cx="76" cy="22" r="7"/>`+
-    `<path class="fig" d="M76 28 L74 50"/><path class="fig" d="M74 50 L50 62 L50 88"/>`+
-    `<path class="fig" d="M74 50 L108 74 L118 88"/><path class="fig" d="M76 34 L90 46"/>`) },
-  'single-leg-rdl': { label: 'Single-Leg RDL', svg: _svg(
-    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><path class="fig" d="M70 52 L70 88"/>`+
-    `<circle class="fig-fill" cx="31" cy="42" r="7"/><path class="fig" d="M38 44 L70 52 L106 44"/>`+
-    `<path class="fig" d="M42 45 L42 66"/><circle class="fig-fill" cx="42" cy="70" r="3.5"/>`) },
-  'rdl': { label: 'Romanian Deadlift', svg: _svg(
-    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><path class="fig" d="M72 54 L72 86"/>`+
-    `<circle class="fig-fill" cx="35" cy="40" r="7"/><path class="fig" d="M42 42 L72 54"/>`+
-    `<path class="fig" d="M46 44 L46 70"/><path class="eqp" d="M32 70 H60"/>`+
-    `<circle class="fig-fill" cx="33" cy="70" r="5.5"/><circle class="fig-fill" cx="59" cy="70" r="5.5"/>`) },
-  'hip-thrust': { label: 'Glute Bridge / Hip Thrust', svg: _svg(
-    `<line class="grd" x1="12" y1="84" x2="140" y2="84"/><circle class="fig-fill" cx="26" cy="76" r="7"/>`+
-    `<path class="fig" d="M34 79 L84 56"/><path class="fig" d="M84 56 L104 58 L106 84"/>`+_AR.up(84,50,32)) },
-  'superman': { label: 'Superman / Back Extension', svg: _svg(
-    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="47" cy="60" r="7"/>`+
-    `<path class="fig" d="M53 63 L98 72"/><path class="fig" d="M53 63 L30 54"/><path class="fig" d="M98 72 L122 60"/>`+
-    _AR.up(75,54,38)) },
-  'russian-twist': { label: 'Russian Twist', svg: _svg(
-    `<line class="grd" x1="16" y1="86" x2="134" y2="86"/><circle class="fig-fill" cx="62" cy="40" r="7"/>`+
-    `<path class="fig" d="M63 46 L75 72"/><path class="fig" d="M75 72 L98 64 L92 82"/>`+
-    `<path class="fig" d="M66 52 L88 58"/><circle class="fig-fill" cx="92" cy="59" r="4"/>`+
-    `<path class="arw" d="M42 54 Q54 44 68 50"/><path class="arw" d="M65 45 L69 50 L63 53"/>`) },
-  'dead-bug': { label: 'Dead Bug', svg: _svg(
-    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="42" cy="74" r="7"/>`+
-    `<path class="fig" d="M49 76 L86 76"/><path class="fig" d="M60 76 L54 50"/>`+
-    `<path class="fig" d="M80 76 L92 54 L104 58"/>`) },
-  'bird-dog': { label: 'Bird Dog', svg: _svg(
-    `<line class="grd" x1="12" y1="84" x2="140" y2="84"/><circle class="fig-fill" cx="40" cy="56" r="7"/>`+
-    `<path class="fig" d="M46 58 L92 58"/><path class="fig" d="M46 58 L46 84"/><path class="fig" d="M92 58 L92 84"/>`+
-    `<path class="fig" d="M46 58 L22 50"/><path class="fig" d="M92 58 L118 50"/>`) },
-  'hollow': { label: 'Hollow Body Hold', svg: _svg(
-    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="34" cy="58" r="7"/>`+
-    `<path class="fig" d="M28 60 Q75 86 122 60"/><path class="fig" d="M40 62 L30 46"/>`) },
-  'crunch': { label: 'Crunch / V-Up', svg: _svg(
-    `<line class="grd" x1="16" y1="84" x2="134" y2="84"/><circle class="fig-fill" cx="58" cy="58" r="7"/>`+
-    `<path class="fig" d="M64 61 L86 80 L104 66 L112 82"/><path class="fig" d="M64 61 L86 66"/>`+
-    `<path class="arw" d="M50 74 Q46 60 60 54"/><path class="arw" d="M56 53 L60 54 L60 60"/>`) },
-  'bench-press': { label: 'Bench Press', svg: _svg(
-    `<line class="grd" x1="20" y1="88" x2="130" y2="88"/><path class="eqp" d="M28 70 H96 M40 70 V88 M84 70 V88"/>`+
-    `<circle class="fig-fill" cx="34" cy="62" r="7"/><path class="fig" d="M40 66 L84 66"/><path class="fig" d="M70 66 L70 42"/>`+
-    `<path class="eqp" d="M52 40 H92"/><circle class="fig-fill" cx="51" cy="40" r="5.5"/><circle class="fig-fill" cx="93" cy="40" r="5.5"/>`+
-    _AR.up(112,60,40)) },
-  'chest-fly': { label: 'Chest Fly', svg: _svg(
-    `<path class="eqp" d="M24 74 H108 M34 74 V88 M98 74 V88"/><line class="grd" x1="18" y1="88" x2="120" y2="88"/>`+
-    `<circle class="fig-fill" cx="32" cy="64" r="7"/><path class="fig" d="M38 68 L96 68"/>`+
-    `<path class="fig" d="M67 68 L44 48"/><path class="fig" d="M67 68 L90 48"/>`+
-    `<circle class="fig-fill" cx="42" cy="45" r="4"/><circle class="fig-fill" cx="92" cy="45" r="4"/>`+
-    `<path class="arw" d="M52 40 Q60 30 67 38"/><path class="arw" d="M82 38 Q75 30 67 38"/>`) },
-  'row': { label: 'Bent-Over Row', svg: _svg(
-    `<line class="grd" x1="12" y1="88" x2="140" y2="88"/><path class="fig" d="M64 56 L64 88"/>`+
-    `<circle class="fig-fill" cx="28" cy="44" r="7"/><path class="fig" d="M35 46 L64 56"/>`+
-    `<path class="fig" d="M40 48 L40 66"/><circle class="fig-fill" cx="40" cy="70" r="5"/>`+
-    `<path class="arw" d="M54 62 L64 52"/><path class="arw" d="M60 50 L64 52 L63 57"/>`) },
-  'face-pull': { label: 'Face Pull', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="24" r="7"/>`+
-    `<path class="fig" d="M70 30 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
-    `<path class="fig" d="M70 38 L92 34 L84 24"/><path class="fig" d="M70 38 L48 34 L56 24"/>`+
-    `<path class="eqp" d="M84 24 L114 30"/><path class="eqp" d="M56 24 L26 30"/>`) },
-  'shoulder-press': { label: 'Overhead Press', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="32" r="7"/>`+
-    `<path class="fig" d="M70 38 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
-    `<path class="fig" d="M70 44 L54 26"/><path class="fig" d="M70 44 L86 26"/>`+
-    `<circle class="fig-fill" cx="52" cy="24" r="4"/><circle class="fig-fill" cx="88" cy="24" r="4"/>`+_AR.up(112,44,24)) },
-  'shoulder-raise': { label: 'Lateral Raise / Y-T-W', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="30" r="7"/>`+
-    `<path class="fig" d="M70 36 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
-    `<path class="fig" d="M70 44 L44 40"/><path class="fig" d="M70 44 L96 40"/>`+
-    `<circle class="fig-fill" cx="40" cy="40" r="4"/><circle class="fig-fill" cx="100" cy="40" r="4"/>`) },
-  'external-rotation': { label: 'External Rotation', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="58" cy="28" r="7"/>`+
-    `<path class="fig" d="M58 34 L58 66 L48 90"/><path class="fig" d="M58 66 L68 90"/>`+
-    `<path class="fig" d="M58 42 L58 54 L88 48"/><path class="eqp" d="M88 48 L112 54"/>`+
-    `<path class="arw" d="M74 58 Q80 50 88 50"/><path class="arw" d="M84 46 L88 50 L83 53"/>`) },
-  'tricep': { label: 'Triceps Extension', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="70" cy="34" r="7"/>`+
-    `<path class="fig" d="M70 40 L70 66 L60 90"/><path class="fig" d="M70 66 L80 90"/>`+
-    `<path class="fig" d="M70 46 L64 26"/><path class="fig" d="M64 26 L80 34"/>`+
-    `<circle class="fig-fill" cx="82" cy="36" r="4"/>`+_AR.up(104,42,24)) },
-  'curl': { label: 'Biceps Curl', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="64" cy="30" r="7"/>`+
-    `<path class="fig" d="M64 36 L64 66 L54 90"/><path class="fig" d="M64 66 L74 90"/>`+
-    `<path class="fig" d="M64 42 L64 60 L86 50"/><circle class="fig-fill" cx="90" cy="48" r="4.5"/>`+
-    `<path class="arw" d="M78 62 Q86 54 86 48"/><path class="arw" d="M82 52 L86 48 L88 53"/>`) },
-  'calf-raise': { label: 'Calf Raise', svg: _svg(
-    `<line class="grd" x1="16" y1="88" x2="134" y2="88"/><circle class="fig-fill" cx="70" cy="28" r="7"/>`+
-    `<path class="fig" d="M70 34 L70 64 L68 84"/><path class="fig" d="M60 84 L76 84"/>`+_AR.up(102,66,40)) },
-  'clamshell': { label: 'Clamshell / Abductor', svg: _svg(
-    `<line class="grd" x1="16" y1="82" x2="134" y2="82"/><circle class="fig-fill" cx="36" cy="72" r="7"/>`+
-    `<path class="fig" d="M43 74 L78 74"/><path class="fig" d="M78 74 L96 74 L94 82"/>`+
-    `<path class="fig" d="M78 74 L98 62 L96 70"/>`+
-    `<path class="arw" d="M86 60 Q94 56 98 60"/><path class="arw" d="M94 56 L98 60 L93 62"/>`) },
-  'pallof': { label: 'Pallof Press', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><circle class="fig-fill" cx="60" cy="30" r="7"/>`+
-    `<path class="fig" d="M60 36 L60 66 L50 90"/><path class="fig" d="M60 66 L70 90"/>`+
-    `<path class="fig" d="M60 44 L96 44"/><path class="eqp" d="M96 44 L120 52"/>`+
-    `<path class="arw" d="M104 66 L118 66"/><path class="arw" d="M112 62 L118 66 L112 70"/>`) },
-  'stretch': { label: 'Mobility / Stretch', svg: _svg(
-    `<line class="grd" x1="16" y1="90" x2="134" y2="90"/><path class="fig" d="M74 52 L74 90"/>`+
-    `<circle class="fig-fill" cx="47" cy="72" r="7"/><path class="fig" d="M53 70 L74 52"/>`+
-    `<path class="fig" d="M55 66 L68 88"/>`+
-    `<path class="arw" d="M90 56 Q80 48 70 52"/><path class="arw" d="M74 47 L70 52 L76 55"/>`) }
-};
+/* ── Dryland exercise form diagrams ─────────────────────────────────────
+   Parametric side-view figure engine: filled sage silhouettes, chunky teal
+   motion arrows, cream cards and short coaching cues (mirrors the swim-drill
+   posters). Each exercise has phases used for both the hover tooltip (hero
+   pose) and the click-to-open multi-panel poster. */
+/* Parametric side-view figure engine for dryland exercise diagrams.
+   Style target: filled sage-green silhouettes + cap, chunky light-teal motion
+   arrows, cream cards, short coaching cues (mirrors the swim-drill posters). */
+(function (root) {
+  const COL = {
+    near: '#6f8d86',   // near-side body
+    far:  '#a4bab4',   // far-side limbs (behind)
+    cap:  '#47645d',   // swim-cap / hair
+    arrow:'#9ecec4',   // motion arrows
+    eqp:  '#3f6e66',   // equipment (bench/bar/band)
+    ground:'#e7e1d1'   // ground shadow
+  };
+
+  function seg(a, b, w, c) {
+    return `<path d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+  }
+  // Draw a side-view figure from a pose object of joint coordinates.
+  function drawFigure(p, o) {
+    o = o || {};
+    const near = o.near || COL.near, far = o.far || COL.far, cap = o.cap || COL.cap;
+    const wT = o.torso || 15, wL = o.limb || 10, wF = o.limbFar || 9, hr = o.head || 9;
+    let s = '';
+    // far leg / far arm first (depth)
+    if (p.kneeF && p.footF) s += seg(p.hip, p.kneeF, wF, far) + seg(p.kneeF, p.footF, wF, far);
+    if (p.elbF && p.handF) s += seg(p.sh, p.elbF, wF, far) + seg(p.elbF, p.handF, wF, far);
+    // torso
+    s += seg(p.sh, p.hip, wT, near);
+    // near leg / near arm
+    if (p.knee && p.foot) s += seg(p.hip, p.knee, wL, near) + seg(p.knee, p.foot, wL, near);
+    if (p.elb && p.hand) s += seg(p.sh, p.elb, wL, near) + seg(p.elb, p.hand, wL, near);
+    // neck + head + cap
+    if (p.head) {
+      const nx = p.head[0] + (p.face === 'l' ? hr * 0.5 : -hr * 0.5);
+      s += seg(p.sh, [p.head[0], p.head[1] + hr * 0.55], Math.max(wL * 0.72, 7), near);
+      s += `<circle cx="${p.head[0]}" cy="${p.head[1]}" r="${hr}" fill="${near}"/>`;
+      // cap over the top half
+      s += `<path d="M${p.head[0] - hr} ${p.head[1]} A ${hr} ${hr} 0 0 1 ${p.head[0] + hr} ${p.head[1]} Z" fill="${cap}"/>`;
+    }
+    return s;
+  }
+
+  // Chunky filled motion arrow from a→b.
+  function arw(a, b, col) {
+    col = col || COL.arrow;
+    const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1;
+    const ux = dx / len, uy = dy / len, hl = 9, hw = 6.5;
+    const base = [b[0] - ux * hl, b[1] - uy * hl];
+    const px = -uy, py = ux;
+    const p1 = [base[0] + px * hw, base[1] + py * hw], p2 = [base[0] - px * hw, base[1] - py * hw];
+    return `<path d="M${a[0]} ${a[1]} L${base[0].toFixed(1)} ${base[1].toFixed(1)}" stroke="${col}" stroke-width="5" fill="none" stroke-linecap="round"/>`
+      + `<path d="M${b[0]} ${b[1]} L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} L${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z" fill="${col}"/>`;
+  }
+
+  function scene(inner, sx) {
+    return `<svg class="exd-svg" viewBox="0 0 150 128" xmlns="http://www.w3.org/2000/svg">`
+      + `<ellipse cx="${sx == null ? 75 : sx}" cy="114" rx="44" ry="4.5" fill="${COL.ground}"/>`
+      + inner + `</svg>`;
+  }
+  // spec: {pose, arrows:[[a,b]|[a,b,col]], eqp:'<svg>', sx, o}
+  function buildScene(spec) {
+    let inner = spec.eqpBack || '';
+    inner += drawFigure(spec.pose, spec.o);
+    inner += spec.eqp || '';
+    (spec.arrows || []).forEach(a => inner += arw(a[0], a[1], a[2]));
+    return scene(inner, spec.sx);
+  }
+
+  // ── equipment helpers ──
+  const bench = (x1, x2, y) => `<path d="M${x1} ${y} H${x2}" stroke="${COL.eqp}" stroke-width="6" stroke-linecap="round"/>`
+    + `<path d="M${x1 + 5} ${y + 2} V114 M${x2 - 5} ${y + 2} V114" stroke="${COL.eqp}" stroke-width="4" stroke-linecap="round"/>`;
+  const bar = (x1, x2, y) => `<path d="M${x1} ${y} H${x2}" stroke="${COL.eqp}" stroke-width="4" stroke-linecap="round"/>`
+    + `<circle cx="${x1}" cy="${y}" r="5.5" fill="${COL.eqp}"/><circle cx="${x2}" cy="${y}" r="5.5" fill="${COL.eqp}"/>`;
+  const dumbbell = (x, y) => `<circle cx="${x}" cy="${y}" r="4.5" fill="${COL.eqp}"/>`;
+  const band = (a, b) => `<path d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" stroke="${COL.eqp}" stroke-width="2.5" stroke-dasharray="4 3" fill="none"/>`;
+  const barTop = (x1, x2, y) => `<path d="M${x1} ${y} H${x2}" stroke="${COL.eqp}" stroke-width="5" stroke-linecap="round"/>`;
+
+  // ── pose fragments (facing right; ground y≈110) ──
+  const P = {
+    stand: { head:[80,30], face:'r', sh:[77,47], hip:[75,76], knee:[76,93], foot:[75,110], kneeF:[72,93], footF:[72,110], elb:[79,63], hand:[81,79], elbF:[74,63], handF:[76,79] }
+  };
+
+  // helper to clone+override a pose
+  const pz = (base, over) => Object.assign({}, base, over);
+  const STAND = P.stand;
+  const armStand = (over) => pz(STAND, over);
+  // shared plank base (hands on floor, facing left)
+  const PUSH_TOP = { head:[112,58], face:'l', sh:[104,64], hip:[66,80], knee:[42,90], foot:[24,99], kneeF:[42,92], footF:[24,101], elb:[106,86], hand:[110,110], elbF:[102,86], handF:[106,110] };
+
+  const DIAG = {
+    squat: { title:'Squat', cue:'Sit hips back and down, drive through the heels.', hero:1, phases:[
+      { label:'Stand', cue:'Tall spine, feet hip-width, brace.',
+        pose: P.stand },
+      { label:'Bottom', cue:'Hips back, thighs to parallel, chest up.',
+        pose: { head:[68,52], face:'r', sh:[64,64], hip:[56,86], knee:[90,88], foot:[96,110], kneeF:[88,88], footF:[92,110], elb:[74,62], hand:[98,60], elbF:[70,64], handF:[96,64] },
+        arrows:[ [[42,70],[42,92]] ] },
+      { label:'Drive', cue:'Push the floor away, squeeze glutes at top.',
+        pose: { head:[74,42], face:'r', sh:[71,55], hip:[66,80], knee:[90,86], foot:[92,110], kneeF:[88,86], footF:[90,110], elb:[78,56], hand:[96,58], elbF:[75,58], handF:[94,60] },
+        arrows:[ [[44,86],[44,60]] ] }
+    ]},
+    'push-up': { title:'Push-Up', cue:'Rigid plank; lower and press with elbows tucked.', hero:1, phases:[
+      { label:'Top', cue:'Straight line head to heels, hands under shoulders.',
+        pose: { head:[112,58], face:'l', sh:[104,64], hip:[66,80], knee:[42,90], foot:[24,99], kneeF:[42,92], footF:[24,101], elb:[106,86], hand:[110,110], elbF:[102,86], handF:[106,110] } },
+      { label:'Bottom', cue:'Chest to floor, elbows ~45°.',
+        pose: { head:[112,70], face:'l', sh:[104,76], hip:[66,86], knee:[42,94], foot:[24,101], kneeF:[42,96], footF:[24,103], elb:[100,96], hand:[110,110], elbF:[98,96], handF:[106,110] },
+        arrows:[ [[74,58],[74,80]] ] },
+      { label:'Press', cue:'Drive the floor away, keep the body tight.',
+        pose: { head:[112,60], face:'l', sh:[104,66], hip:[66,81], knee:[42,90], foot:[24,99], kneeF:[42,92], footF:[24,101], elb:[106,88], hand:[110,110], elbF:[102,88], handF:[106,110] },
+        arrows:[ [[74,80],[74,58]] ] }
+    ]},
+    plank: { title:'Forearm Plank', cue:'Squeeze glutes and brace — one straight line.', hero:0, phases:[
+      { label:'Set Up', cue:'Elbows under shoulders, forearms down.',
+        pose: { head:[110,62], face:'l', sh:[102,68], hip:[64,82], knee:[42,92], foot:[24,100], kneeF:[42,94], footF:[24,102], elb:[100,96], hand:[86,100], elbF:[98,96], handF:[84,100] },
+        eqp: '' },
+      { label:'Hold', cue:'Ribs down, hips level — don’t sag or pike.',
+        pose: { head:[110,62], face:'l', sh:[102,68], hip:[64,82], knee:[42,92], foot:[24,100], kneeF:[42,94], footF:[24,102], elb:[100,96], hand:[86,100], elbF:[98,96], handF:[84,100] },
+        arrows:[ [[64,72],[64,60]], [[64,90],[64,102]] ] }
+    ]},
+    rdl: { title:'Romanian Deadlift', cue:'Hinge at the hips with a flat back; feel the hamstrings.', hero:1, phases:[
+      { label:'Stand', cue:'Tall, bar/weights at the thighs, soft knees.',
+        pose: pz(P.stand, { elb:[79,64], hand:[80,84], elbF:[74,64], handF:[76,84] }), eqp: bar(70, 92, 86) },
+      { label:'Hinge', cue:'Push hips back, weights track down the legs.',
+        pose: { head:[38,44], face:'r', sh:[46,50], hip:[74,66], knee:[74,90], foot:[74,110], kneeF:[71,90], footF:[71,110], elb:[52,64], hand:[56,86], elbF:[50,64], handF:[54,86] },
+        eqp: bar(46, 68, 88), arrows:[ [[92,60],[100,74]] ] },
+      { label:'Return', cue:'Drive hips forward to stand tall.',
+        pose: { head:[58,36], face:'r', sh:[62,48], hip:[74,72], knee:[75,92], foot:[74,110], kneeF:[72,92], footF:[72,110], elb:[66,60], hand:[68,82], elbF:[63,60], handF:[65,82] },
+        eqp: bar(60, 82, 84), arrows:[ [[100,80],[100,60]] ] }
+    ]},
+    'shoulder-press': { title:'Overhead Press', cue:'Press weights overhead, ribs down, glutes tight.', hero:1, phases:[
+      { label:'Rack', cue:'Weights at shoulder height, elbows forward.',
+        pose: pz(P.stand, { elb:[64,52], hand:[74,42], elbF:[90,52], handF:[80,42] }),
+        eqp: dumbbell(74,40) + dumbbell(80,40) },
+      { label:'Press', cue:'Punch straight up, biceps by the ears.',
+        pose: pz(P.stand, { elb:[70,34], hand:[76,20], elbF:[84,34], handF:[80,20] }),
+        eqp: dumbbell(76,18) + dumbbell(80,18), arrows:[ [[100,44],[100,22]] ] }
+    ]},
+    row: { title:'Bent-Over Row', cue:'Flat back; drive the elbow up toward the hip.', hero:1, phases:[
+      { label:'Hang', cue:'Hinge forward, arm long, shoulder relaxed.',
+        pose: { head:[36,44], face:'r', sh:[46,50], hip:[74,64], knee:[74,90], foot:[74,110], kneeF:[71,90], footF:[71,110], elb:[48,66], hand:[50,86], elbF:[46,66], handF:[48,86] },
+        eqp: dumbbell(50,90) },
+      { label:'Pull', cue:'Elbow past the ribs, squeeze the lat.',
+        pose: { head:[36,44], face:'r', sh:[46,50], hip:[74,64], knee:[74,90], foot:[74,110], kneeF:[71,90], footF:[71,110], elb:[58,54], hand:[52,70], elbF:[56,54], handF:[50,70] },
+        eqp: dumbbell(52,74), arrows:[ [[62,80],[58,58]] ] }
+    ]},
+    'pull-up': { title:'Pull-Up', cue:'Hang tall, then pull the chest to the bar.', hero:1, phases:[
+      { label:'Hang', cue:'Full hang, shoulders active, core braced.',
+        pose: { head:[75,44], face:'r', sh:[75,52], hip:[75,80], knee:[70,96], foot:[68,110], kneeF:[80,96], footF:[82,110], elb:[66,32], hand:[62,18], elbF:[84,32], handF:[88,18] },
+        eqpBack: barTop(40,110,16) },
+      { label:'Pull', cue:'Elbows down and back, chin over the bar.',
+        pose: { head:[75,30], face:'r', sh:[75,40], hip:[75,66], knee:[68,80], foot:[66,92], kneeF:[82,80], footF:[84,92], elb:[64,28], hand:[62,18], elbF:[86,28], handF:[88,18] },
+        eqpBack: barTop(40,110,16), arrows:[ [[105,64],[105,40]] ] }
+    ]},
+    'hip-thrust': { title:'Glute Bridge / Hip Thrust', cue:'Drive hips up, squeeze glutes, ribs down.', hero:1, phases:[
+      { label:'Down', cue:'Shoulders down, feet flat, knees bent.',
+        pose: { head:[26,84], face:'l', sh:[36,84], hip:[78,84], knee:[100,86], foot:[100,110], kneeF:[100,88], footF:[100,110] } },
+      { label:'Up', cue:'Body flat from shoulders to knees at the top.',
+        pose: { head:[26,84], face:'l', sh:[38,80], hip:[86,58], knee:[104,74], foot:[104,110], kneeF:[104,76], footF:[104,110] },
+        arrows:[ [[86,74],[86,54]] ] }
+    ]},
+    superman: { title:'Superman', cue:'Lift the arms and legs off the floor, squeeze the back.', hero:1, phases:[
+      { label:'Down', cue:'Lie prone, arms reaching long.',
+        pose: { head:[40,88], face:'l', sh:[52,88], hip:[96,88], knee:[116,90], foot:[128,92], elb:[40,88], hand:[26,88] } },
+      { label:'Lift', cue:'Raise chest, arms and thighs together.',
+        pose: { head:[42,74], face:'l', sh:[54,78], hip:[96,80], knee:[116,70], foot:[128,64], elb:[38,66], hand:[26,60] },
+        arrows:[ [[30,80],[26,66]], [[124,80],[128,66]] ] }
+    ]},
+    'russian-twist': { title:'Russian Twist', cue:'Lean back and rotate the weight side to side.', hero:0, phases:[
+      { label:'Center', cue:'Feet up, lean back, weight at the chest.',
+        pose: { head:[58,44], face:'r', sh:[62,52], hip:[80,78], knee:[100,66], foot:[96,84], kneeF:[100,68], footF:[96,86], elb:[70,58], hand:[86,62], elbF:[68,60], handF:[84,64] },
+        eqp: dumbbell(90,63) },
+      { label:'Twist', cue:'Rotate through the ribs, hips stay quiet.',
+        pose: { head:[58,44], face:'r', sh:[62,52], hip:[80,78], knee:[100,66], foot:[96,84], kneeF:[100,68], footF:[96,86], elb:[66,60], hand:[50,66], elbF:[68,58], handF:[52,64] },
+        eqp: dumbbell(46,66), arrows:[ [[70,44],[52,52]] ] }
+    ]},
+    stretch: { title:'Mobility / Stretch', cue:'Ease into the position and breathe — no bouncing.', hero:0, phases:[
+      { label:'Reach', cue:'Lengthen through the target muscle, relax.',
+        pose: { head:[46,72], face:'r', sh:[54,68], hip:[74,54], knee:[75,80], foot:[74,110], kneeF:[72,80], footF:[72,110], elb:[58,80], hand:[66,96], elbF:[56,80], handF:[64,96] },
+        arrows:[ [[92,58],[74,52]] ] }
+    ]},
+
+    'side-plank': { title:'Side Plank', cue:'Stack the hips and lift — one straight line from head to heel.', hero:1, phases:[
+      { label:'Set Up', cue:'Forearm down under the shoulder, legs stacked.',
+        pose: { head:[46,50], face:'r', sh:[52,58], hip:[100,84], knee:[118,90], foot:[132,96], kneeF:[118,92], footF:[132,98], elb:[52,84], hand:[36,90], elbF:[52,84], handF:[36,90] } },
+      { label:'Lift', cue:'Drive hips up, top arm reaches to the ceiling.',
+        pose: { head:[46,44], face:'r', sh:[52,54], hip:[100,74], knee:[118,84], foot:[132,92], kneeF:[118,86], footF:[132,94], elb:[52,82], hand:[40,96], elbF:[54,44], handF:[58,26] },
+        arrows:[ [[92,70],[96,54]] ] }
+    ]},
+    'mountain-climber': { title:'Mountain Climber', cue:'Hold a tight plank and drive the knees fast.', hero:1, phases:[
+      { label:'Plank', cue:'Hands under shoulders, hips level.',
+        pose: PUSH_TOP },
+      { label:'Drive', cue:'Pull one knee toward the chest, then switch.',
+        pose: { head:[112,58], face:'l', sh:[104,64], hip:[70,80], knee:[86,74], foot:[96,88], kneeF:[46,92], footF:[26,101], elb:[106,86], hand:[110,110], elbF:[102,86], handF:[106,110] },
+        arrows:[ [[76,86],[90,76]] ] }
+    ]},
+    burpee: { title:'Burpee', cue:'Squat, kick to a plank, then jump up tall.', hero:2, phases:[
+      { label:'Squat', cue:'Hips back, hands reach to the floor.',
+        pose: { head:[70,54], face:'r', sh:[66,64], hip:[58,84], knee:[88,88], foot:[94,110], kneeF:[86,88], footF:[92,110], elb:[72,74], hand:[86,104], elbF:[70,74], handF:[84,104] } },
+      { label:'Plank', cue:'Feet back to a tight plank.',
+        pose: PUSH_TOP },
+      { label:'Jump', cue:'Explode up, arms overhead.',
+        pose: { head:[76,26], face:'r', sh:[74,42], hip:[75,68], knee:[74,84], foot:[73,100], kneeF:[71,84], footF:[70,100], elb:[68,26], hand:[62,12], elbF:[82,26], handF:[88,12] },
+        arrows:[ [[104,74],[104,44]] ] }
+    ]},
+    pulldown: { title:'Lat Pulldown', cue:'Reach tall, then pull the bar to the upper chest.', hero:1, phases:[
+      { label:'Reach', cue:'Arms long overhead, chest proud.',
+        pose: { head:[76,42], face:'r', sh:[75,54], hip:[75,80], knee:[92,84], foot:[92,110], kneeF:[90,84], footF:[90,110], elb:[70,34], hand:[66,20], elbF:[82,34], handF:[86,20] },
+        eqpBack: barTop(52,100,16) },
+      { label:'Pull', cue:'Elbows down and back, squeeze the lats.',
+        pose: { head:[76,44], face:'r', sh:[75,56], hip:[75,80], knee:[92,84], foot:[92,110], kneeF:[90,84], footF:[90,110], elb:[62,44], hand:[64,30], elbF:[90,44], handF:[88,30] },
+        eqpBack: barTop(52,100,28), arrows:[ [[108,34],[108,52]] ] }
+    ]},
+    bulgarian: { title:'Bulgarian Split Squat', cue:'Rear foot elevated; drive through the front heel.', hero:1, phases:[
+      { label:'Set Up', cue:'Rear foot on the bench, torso tall.',
+        pose: { head:[84,32], face:'r', sh:[82,48], hip:[80,76], knee:[82,92], foot:[82,110], kneeF:[62,86], footF:[48,90], elb:[84,62], hand:[86,78], elbF:[79,62], handF:[81,78] },
+        eqp: bench(28,52,90) },
+      { label:'Bottom', cue:'Front thigh to parallel, rear knee drops.',
+        pose: { head:[80,44], face:'r', sh:[78,58], hip:[76,86], knee:[100,90], foot:[94,110], kneeF:[58,96], footF:[46,92], elb:[80,70], hand:[82,86], elbF:[75,70], handF:[77,86] },
+        eqp: bench(28,52,90), arrows:[ [[112,72],[112,92]] ] },
+      { label:'Drive', cue:'Push the floor away back to tall.',
+        pose: { head:[82,38], face:'r', sh:[80,52], hip:[78,80], knee:[92,90], foot:[92,110], kneeF:[60,90], footF:[48,90], elb:[82,66], hand:[84,82], elbF:[77,66], handF:[79,82] },
+        eqp: bench(28,52,90), arrows:[ [[112,90],[112,66]] ] }
+    ]},
+    'sumo-squat': { title:'Sumo / Wide Squat', cue:'Wide stance, toes out — sit straight down.', hero:1, phases:[
+      { label:'Stand', cue:'Feet wide, weight held at the chest/center.',
+        pose: { head:[75,30], face:'r', sh:[74,47], hip:[74,74], knee:[88,90], foot:[96,110], kneeF:[60,90], footF:[54,110], elb:[74,58], hand:[74,72], elbF:[74,58], handF:[74,72] },
+        eqp: dumbbell(74,74) },
+      { label:'Bottom', cue:'Hips down between the heels, chest tall.',
+        pose: { head:[74,50], face:'r', sh:[74,62], hip:[74,86], knee:[100,90], foot:[104,110], kneeF:[48,90], footF:[44,110], elb:[74,72], hand:[74,86], elbF:[74,72], handF:[74,86] },
+        eqp: dumbbell(74,88), arrows:[ [[118,64],[118,86]] ] }
+    ]},
+    jump: { title:'Explosive Jump', cue:'Load the hips, then explode up with full extension.', hero:1, phases:[
+      { label:'Load', cue:'Quarter squat, arms swing back.',
+        pose: { head:[72,42], face:'r', sh:[68,54], hip:[62,76], knee:[90,84], foot:[92,110], kneeF:[88,84], footF:[90,110], elb:[58,60], hand:[44,54], elbF:[56,60], handF:[42,56] } },
+      { label:'Explode', cue:'Triple-extend, arms drive up, leave the ground.',
+        pose: { head:[76,24], face:'r', sh:[74,40], hip:[75,66], knee:[74,84], foot:[73,100], kneeF:[71,84], footF:[70,100], elb:[70,24], hand:[66,10], elbF:[82,24], handF:[86,10] },
+        arrows:[ [[104,72],[104,40]] ] }
+    ]},
+    'wall-sit': { title:'Wall Sit', cue:'Back flat on the wall, thighs parallel — hold.', hero:1, phases:[
+      { label:'Set', cue:'Slide down until the knees reach 90°.',
+        pose: { head:[48,38], face:'r', sh:[48,54], hip:[50,78], knee:[86,78], foot:[86,110], kneeF:[86,80], footF:[88,110], elb:[54,64], hand:[74,74], elbF:[52,64], handF:[72,74] },
+        eqpBack: `<path d="M36 20 V112" stroke="${COL.eqp}" stroke-width="5" stroke-linecap="round"/>` },
+      { label:'Hold', cue:'Knees over ankles, weight in the heels.',
+        pose: { head:[48,38], face:'r', sh:[48,54], hip:[50,78], knee:[86,78], foot:[86,110], kneeF:[86,80], footF:[88,110], elb:[54,64], hand:[74,74], elbF:[52,64], handF:[72,74] },
+        eqpBack: `<path d="M36 20 V112" stroke="${COL.eqp}" stroke-width="5" stroke-linecap="round"/>` }
+    ]},
+    lunge: { title:'Lunge', cue:'Step out, drop the back knee, then drive up tall.', hero:1, phases:[
+      { label:'Stand', cue:'Tall posture, brace the core.',
+        pose: STAND },
+      { label:'Descend', cue:'Both knees ~90°, torso upright.',
+        pose: { head:[72,40], face:'r', sh:[70,54], hip:[70,80], knee:[94,88], foot:[94,110], kneeF:[52,96], footF:[38,110], elb:[72,66], hand:[74,82], elbF:[68,66], handF:[70,82] },
+        arrows:[ [[50,74],[50,94]] ] },
+      { label:'Drive', cue:'Push through the front heel to stand.',
+        pose: { head:[73,34], face:'r', sh:[71,50], hip:[71,76], knee:[90,88], foot:[92,110], kneeF:[56,92], footF:[42,110], elb:[73,62], hand:[75,78], elbF:[69,62], handF:[71,78] },
+        arrows:[ [[52,90],[52,66]] ] }
+    ]},
+    'lateral-lunge': { title:'Lateral Lunge', cue:'Sit into one hip, keep the other leg long.', hero:1, phases:[
+      { label:'Stand', cue:'Wide stance, feet forward.',
+        pose: { head:[75,30], face:'r', sh:[74,47], hip:[74,76], knee:[88,92], foot:[96,110], kneeF:[60,92], footF:[54,110], elb:[74,60], hand:[74,76], elbF:[74,60], handF:[74,76] } },
+      { label:'Sink', cue:'Bend one knee, push the hips back.',
+        pose: { head:[92,44], face:'r', sh:[90,56], hip:[92,82], knee:[104,92], foot:[108,110], kneeF:[62,100], footF:[40,110], elb:[90,66], hand:[104,66], elbF:[88,66], handF:[102,68] },
+        arrows:[ [[112,70],[112,86]] ] }
+    ]},
+    'single-leg-rdl': { title:'Single-Leg RDL', cue:'Hinge over one leg, the other lifts behind you.', hero:1, phases:[
+      { label:'Stand', cue:'Balance tall on one leg, soft knee.',
+        pose: { head:[74,30], face:'r', sh:[73,47], hip:[73,76], knee:[73,92], foot:[73,110], elb:[75,62], hand:[76,80], elbF:[71,62], handF:[72,80] } },
+      { label:'Hinge', cue:'Body and free leg form one long line.',
+        pose: { head:[34,52], face:'r', sh:[44,54], hip:[74,60], knee:[74,86], foot:[74,110], elb:[46,68], hand:[48,88], elbF:[44,68], handF:[46,88], kneeF:[100,54], footF:[122,50] },
+        eqp: dumbbell(48,92), arrows:[ [[108,64],[122,52]] ] }
+    ]},
+    'dead-bug': { title:'Dead Bug', cue:'Extend opposite arm and leg while the back stays flat.', hero:1, phases:[
+      { label:'Set', cue:'On your back, arms up, knees over hips.',
+        pose: { head:[36,80], face:'l', sh:[48,80], hip:[86,80], knee:[100,64], foot:[110,70], kneeF:[100,66], footF:[110,72], elb:[52,64], hand:[54,50], elbF:[50,64], handF:[52,50] } },
+      { label:'Extend', cue:'Reach one arm back, opposite leg long.',
+        pose: { head:[36,80], face:'l', sh:[48,80], hip:[86,80], knee:[104,72], foot:[122,80], kneeF:[100,64], footF:[110,66], elb:[40,68], hand:[24,60], elbF:[52,64], handF:[54,50] },
+        arrows:[ [[112,80],[126,82]] ] }
+    ]},
+    'bird-dog': { title:'Bird Dog', cue:'Reach opposite arm and leg, keep the spine level.', hero:1, phases:[
+      { label:'Set', cue:'Hands under shoulders, knees under hips.',
+        pose: { head:[42,58], face:'l', sh:[50,62], hip:[92,62], knee:[96,86], foot:[104,92], kneeF:[96,88], footF:[104,94], elb:[48,78], hand:[48,92], elbF:[48,78], handF:[48,92] } },
+      { label:'Extend', cue:'Arm forward, opposite leg back, brace.',
+        pose: { head:[42,58], face:'l', sh:[50,62], hip:[92,62], knee:[96,86], foot:[104,92], elb:[36,58], hand:[22,52], kneeF:[112,58], footF:[128,52] },
+        arrows:[ [[28,60],[18,54]], [[118,60],[130,54]] ] }
+    ]},
+    hollow: { title:'Hollow Body Hold', cue:'Press the low back down and hold a shallow dish.', hero:0, phases:[
+      { label:'Hold', cue:'Arms and legs off the floor, ribs down.',
+        pose: { head:[42,70], face:'l', sh:[52,74], hip:[86,80], knee:[104,72], foot:[120,66], elb:[40,64], hand:[26,58] },
+        arrows:[ [[86,90],[86,82]] ] }
+    ]},
+    crunch: { title:'Crunch / V-Up', cue:'Curl the ribcage toward the hips, then lower slow.', hero:1, phases:[
+      { label:'Down', cue:'On your back, knees bent, feet down.',
+        pose: { head:[36,82], face:'l', sh:[48,82], hip:[86,82], knee:[104,66], foot:[104,92], kneeF:[104,68], footF:[104,94], elb:[52,74], hand:[64,72], elbF:[50,74], handF:[62,72] } },
+      { label:'Up', cue:'Lift the shoulder blades, reach the knees.',
+        pose: { head:[54,62], face:'l', sh:[60,72], hip:[86,82], knee:[104,66], foot:[104,92], kneeF:[104,68], footF:[104,94], elb:[64,66], hand:[80,64], elbF:[62,66], handF:[78,64] },
+        arrows:[ [[44,74],[54,60]] ] }
+    ]},
+    pallof: { title:'Pallof Press', cue:'Press straight out and resist the twist.', hero:1, phases:[
+      { label:'In', cue:'Hands at the chest, band pulling to the side.',
+        pose: armStand({ elb:[72,58], hand:[84,56], elbF:[72,58], handF:[84,56] }),
+        eqp: band([84,56],[118,66]) },
+      { label:'Press', cue:'Arms extend, hips and shoulders stay square.',
+        pose: armStand({ elb:[86,54], hand:[104,52], elbF:[86,54], handF:[104,52] }),
+        eqp: band([104,52],[118,66]), arrows:[ [[104,68],[118,68]] ] }
+    ]},
+    'face-pull': { title:'Face Pull', cue:'Pull the band to your face, elbows high and wide.', hero:1, phases:[
+      { label:'Start', cue:'Arms long toward the anchor, tall posture.',
+        pose: armStand({ elb:[82,50], hand:[100,46], elbF:[82,50], handF:[100,46] }),
+        eqp: band([100,46],[122,44]) },
+      { label:'Pull', cue:'Hands to the ears, squeeze the upper back.',
+        pose: armStand({ elb:[92,42], hand:[80,34], elbF:[92,42], handF:[80,34] }),
+        eqp: band([80,34],[122,44]), arrows:[ [[104,40],[88,36]] ] }
+    ]},
+    'shoulder-raise': { title:'Lateral Raise / Y-T-W', cue:'Lift to shoulder height, lead with the elbows.', hero:1, phases:[
+      { label:'Down', cue:'Weights at the sides, shoulders down.',
+        pose: armStand({ elb:[79,62], hand:[80,78], elbF:[74,62], handF:[76,78] }),
+        eqp: dumbbell(80,80) + dumbbell(76,80) },
+      { label:'Raise', cue:'Arms out to a T, thumbs level.',
+        pose: armStand({ elb:[62,48], hand:[46,46], elbF:[92,48], handF:[104,46] }),
+        eqp: dumbbell(44,46) + dumbbell(106,46), arrows:[ [[40,62],[40,48]], [[110,62],[110,48]] ] }
+    ]},
+    'external-rotation': { title:'External Rotation', cue:'Elbow pinned to the side, rotate the forearm out.', hero:1, phases:[
+      { label:'In', cue:'Elbow bent 90°, hand across the belly.',
+        pose: armStand({ elb:[74,58], hand:[62,54], elbF:[74,58], handF:[62,54] }),
+        eqp: band([62,54],[40,60]) },
+      { label:'Out', cue:'Rotate the hand away, keep the elbow tucked.',
+        pose: armStand({ elb:[74,58], hand:[94,52], elbF:[74,58], handF:[94,52] }),
+        eqp: band([94,52],[116,58]), arrows:[ [[80,66],[92,60]] ] }
+    ]},
+    tricep: { title:'Triceps Extension', cue:'Keep the elbows still and straighten the arms.', hero:1, phases:[
+      { label:'Bent', cue:'Elbows high, forearms behind the head.',
+        pose: armStand({ elb:[70,28], hand:[82,40], elbF:[80,28], handF:[68,40] }),
+        eqp: dumbbell(84,42) },
+      { label:'Extend', cue:'Press to full lockout overhead.',
+        pose: armStand({ elb:[72,26], hand:[74,10], elbF:[80,26], handF:[78,10] }),
+        eqp: dumbbell(76,8), arrows:[ [[100,32],[100,14]] ] }
+    ]},
+    curl: { title:'Biceps Curl', cue:'Pin the elbows and curl the weight up.', hero:1, phases:[
+      { label:'Down', cue:'Arms long, palms forward, shoulders back.',
+        pose: armStand({ elb:[79,62], hand:[80,80], elbF:[74,62], handF:[76,80] }),
+        eqp: dumbbell(80,82) },
+      { label:'Curl', cue:'Bring the hands to the shoulders, elbows fixed.',
+        pose: armStand({ elb:[79,62], hand:[70,46], elbF:[74,62], handF:[66,46] }),
+        eqp: dumbbell(68,44), arrows:[ [[86,68],[78,50]] ] }
+    ]},
+    'bench-press': { title:'Bench Press', cue:'Lower the bar to the chest, then press it up.', hero:1, phases:[
+      { label:'Down', cue:'Bar at the chest, elbows tucked ~45°.',
+        pose: { head:[34,64], face:'l', sh:[46,68], hip:[86,68], knee:[104,66], foot:[112,84], kneeF:[104,68], footF:[112,86], elb:[52,52], hand:[60,44], elbF:[52,52], handF:[60,44] },
+        eqpBack: bench(30,96,72), eqp: bar(50,72,42) },
+      { label:'Press', cue:'Drive the bar straight up to lockout.',
+        pose: { head:[34,64], face:'l', sh:[46,68], hip:[86,68], knee:[104,66], foot:[112,84], kneeF:[104,68], footF:[112,86], elb:[58,44], hand:[60,26], elbF:[58,44], handF:[60,26] },
+        eqpBack: bench(30,96,72), eqp: bar(50,72,24), arrows:[ [[86,44],[86,26]] ] }
+    ]},
+    'chest-fly': { title:'Chest Fly', cue:'Open the arms wide, then squeeze them together.', hero:1, phases:[
+      { label:'Open', cue:'Arms out wide with a soft elbow bend.',
+        pose: { head:[34,64], face:'l', sh:[46,68], hip:[86,68], knee:[104,66], foot:[112,84], kneeF:[104,68], footF:[112,86], elb:[40,52], hand:[28,44], elbF:[60,52], handF:[70,44] },
+        eqpBack: bench(30,96,72), eqp: dumbbell(26,42) + dumbbell(72,42) },
+      { label:'Squeeze', cue:'Hug the arms up over the chest.',
+        pose: { head:[34,64], face:'l', sh:[46,68], hip:[86,68], knee:[104,66], foot:[112,84], kneeF:[104,68], footF:[112,86], elb:[52,50], hand:[54,36], elbF:[54,50], handF:[56,36] },
+        eqpBack: bench(30,96,72), eqp: dumbbell(53,34) + dumbbell(58,34), arrows:[ [[30,50],[48,44]], [[80,50],[62,44]] ] }
+    ]},
+    'calf-raise': { title:'Calf Raise', cue:'Rise onto the toes as high as possible, then lower.', hero:1, phases:[
+      { label:'Down', cue:'Feet flat, tall posture.',
+        pose: STAND },
+      { label:'Up', cue:'Press through the balls of the feet, pause at the top.',
+        pose: { head:[80,24], face:'r', sh:[77,41], hip:[75,70], knee:[76,87], foot:[75,104], kneeF:[72,87], footF:[72,104], elb:[79,57], hand:[81,73], elbF:[74,57], handF:[76,73] },
+        arrows:[ [[100,66],[100,48]] ] }
+    ]},
+    clamshell: { title:'Clamshell / Abduction', cue:'Keep the feet together and open the top knee.', hero:1, phases:[
+      { label:'Closed', cue:'Side-lying, knees bent and stacked.',
+        pose: { head:[34,72], face:'l', sh:[46,74], hip:[86,76], knee:[102,72], foot:[96,86], kneeF:[102,74], footF:[96,88], elb:[44,64], hand:[40,54] } },
+      { label:'Open', cue:'Rotate the top knee up, hips stay still.',
+        pose: { head:[34,72], face:'l', sh:[46,74], hip:[86,76], knee:[104,62], foot:[96,84], kneeF:[102,74], footF:[96,88], elb:[44,64], hand:[40,54] },
+        arrows:[ [[110,68],[110,54]] ] }
+    ]}
+  };
+
+  root.DRYLAND_DIAGRAMS = DIAG;
+  root.exdBuildScene = buildScene;
+  root.exdDraw = drawFigure;
+  root.EXD_COL = COL;
+})(typeof window !== 'undefined' ? window : globalThis);
 // Substring → diagram key, ordered specific-first so "side plank" wins over
 // "plank", "bulgarian split squat" over "squat", etc. First match wins.
 const DRYLAND_DIAGRAM_MATCH = [
@@ -11125,9 +11382,13 @@ function _ensureExDiagramTip() {
 }
 function showExDiagram(btn) {
   const d = DRYLAND_DIAGRAMS[btn.getAttribute('data-diagram')];
-  if (!d) return;
+  if (!d || !d.phases) return;
+  const hero = d.phases[Math.min(d.hero || 0, d.phases.length - 1)];
   const tip = _ensureExDiagramTip();
-  tip.innerHTML = d.svg + `<div class="ex-diagram-cap">${escHtml(d.label)}</div>`;
+  const multi = d.phases.length > 1 ? '<div class="exd-tip-hint">Click for the full step-by-step</div>' : '';
+  tip.innerHTML = `<div class="exd-tip-title">${escHtml(d.title)}</div>`
+    + exdBuildScene(hero)
+    + `<div class="ex-diagram-cap">${escHtml(d.cue || '')}</div>` + multi;
   tip.classList.add('show');
   const r = btn.getBoundingClientRect();
   const tw = tip.offsetWidth, th = tip.offsetHeight;
@@ -11142,6 +11403,42 @@ function showExDiagram(btn) {
   tip.style.setProperty('--arw-x', (r.left + r.width / 2 - left) + 'px');
 }
 function hideExDiagram() { if (_exDiagramTip) _exDiagramTip.classList.remove('show'); }
+
+// Click-to-open multi-panel poster (the full step-by-step breakdown).
+function _exdEsc(e) { if (e.key === 'Escape') closeExDiagramPoster(); }
+function openExDiagramPoster(key) {
+  const d = DRYLAND_DIAGRAMS[key];
+  if (!d || !d.phases) return;
+  hideExDiagram();
+  let ov = document.getElementById('exd-poster');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'exd-poster';
+    ov.className = 'exd-poster-overlay';
+    ov.addEventListener('click', function (e) {
+      if (e.target === ov || (e.target.closest && e.target.closest('.exd-poster-close'))) closeExDiagramPoster();
+    });
+    document.body.appendChild(ov);
+  }
+  const panels = d.phases.map((ph, i) => `<div class="exd-panel">
+      <div class="exd-panel-head"><span class="exd-badge">${i + 1}</span><span class="exd-panel-label">${escHtml(ph.label || '')}</span></div>
+      ${exdBuildScene(ph)}
+      <div class="exd-panel-cue">${escHtml(ph.cue || '')}</div>
+    </div>`).join('');
+  ov.innerHTML = `<div class="exd-poster-card" role="dialog" aria-modal="true" aria-label="${escHtml(d.title)} form diagram">
+      <button class="exd-poster-close" aria-label="Close diagram">×</button>
+      <div class="exd-poster-title">${escHtml(d.title)}</div>
+      <div class="exd-poster-sub">${escHtml(d.cue || '')}</div>
+      <div class="exd-poster-panels" data-n="${d.phases.length}">${panels}</div>
+    </div>`;
+  requestAnimationFrame(() => ov.classList.add('show'));
+  document.addEventListener('keydown', _exdEsc);
+}
+function closeExDiagramPoster() {
+  const ov = document.getElementById('exd-poster');
+  if (ov) ov.classList.remove('show');
+  document.removeEventListener('keydown', _exdEsc);
+}
 document.addEventListener('mouseover', function(e) {
   const b = e.target.closest && e.target.closest('.ex-diagram-btn');
   if (b) showExDiagram(b);
@@ -11157,6 +11454,10 @@ document.addEventListener('focusin', function(e) {
 document.addEventListener('focusout', function(e) {
   const b = e.target.closest && e.target.closest('.ex-diagram-btn');
   if (b) hideExDiagram();
+});
+document.addEventListener('click', function(e) {
+  const b = e.target.closest && e.target.closest('.ex-diagram-btn');
+  if (b) { e.preventDefault(); openExDiagramPoster(b.getAttribute('data-diagram')); }
 });
 window.addEventListener('scroll', hideExDiagram, true);
 
@@ -11180,7 +11481,7 @@ function buildDrylandSectionsHtml(sections) {
       const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
       const diagKey = drylandDiagramKey(ex);
       const help = diagKey
-        ? ` <button type="button" class="ex-diagram-btn" data-diagram="${diagKey}" aria-label="Show form diagram for ${escHtml(ex)}" title="Show form diagram">?</button>`
+        ? ` <button type="button" class="ex-diagram-btn" data-diagram="${diagKey}" aria-label="Show form diagram for ${escHtml(ex)}" title="Form diagram — hover to preview, click for the full breakdown">?</button>`
         : '';
       return `<tr><td><strong>${escHtml(ex)}</strong>${help}${note}</td><td>${presc}</td><td>${muscles}</td></tr>`;
     }).join('');
