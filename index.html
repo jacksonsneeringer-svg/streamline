@@ -1383,9 +1383,6 @@ section { padding: 6rem 0; }
   text-align: center;
 }
 .footer-disclaimer strong { font-weight: 500; color: rgba(255,255,255,0.5); }
-/* Affiliate disclosure in the footer: only surfaced on mobile, where the
-   About-section disclaimers are hidden to reduce clutter. */
-.footer-affiliate-mobile { display: none; }
 /* Blog home heading: keep it on a single line on wider screens. */
 .blog-home-title { white-space: nowrap; }
 
@@ -2410,10 +2407,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .dash-grid,
   .for-who-grid,
   .grid-3 { grid-template-columns: 1fr; }
-  /* On mobile the About-section disclaimers are dropped; the affiliate
-     disclosure moves to the footer alongside the health disclaimer. */
+  /* On mobile the About-section disclaimers are dropped; the health and
+     affiliate disclosures live in the footer instead. */
   .about-disclaimers { display: none; }
-  .footer-affiliate-mobile { display: block; }
   /* Allow the blog home heading to wrap on narrow screens. */
   .blog-home-title { white-space: normal; }
   .coaching-cta { max-width: none !important; }
@@ -3200,7 +3196,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <p style="font-size:1rem; line-height:1.85;">LANE FOUR changes that. With <strong>purposeful daily sets</strong> organized by intensities, <strong>dryland work synced to your pool sessions</strong>, technique breakdowns that go beyond what to do and explain why it matters, and <strong>nutrition guidance built around what your training actually demands</strong>, you're set up for success both in the pool and in life.</p>
         <p style="font-size:1rem; line-height:1.85;">If you try us out and it doesn't work for you, no harm, no foul. Drop some feedback and freestyle your own thing. But <strong>we are everything your training has been missing.</strong></p>
         <div class="about-disclaimers" style="margin-top:1.75rem; padding-top:1.5rem; border-top:1px solid var(--gray-100); font-size:0.72rem; font-weight:300; color:var(--gray-400); line-height:1.7;">
-          <strong style="font-weight:500; color:var(--gray-500);">Affiliate disclosure:</strong> Some links on this site are affiliate links. As an Amazon Associate we earn from qualifying purchases. If you purchase through one, we may earn a small commission at no additional cost to you. &nbsp;<strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
+          <strong style="font-weight:500; color:var(--gray-500);">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.
         </div>
       </div>
       <div class="about-col-right" style="padding-left:3rem;">
@@ -6713,7 +6709,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="font-size:0.65rem; font-weight:300; color:rgba(255,255,255,0.22); line-height:1.6; margin-top:0.6rem; max-width:26rem; margin-left:auto; margin-right:auto;">By signing up for our newsletter, you agree to receive email communications and marketing from or on behalf of LANE FOUR, and to LANE FOUR's <a href="/terms-of-use" onclick="navigate('terms-of-use')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Terms of Service</a>. See our <a href="/privacy-policy" onclick="navigate('privacy-policy')" style="color:rgba(255,255,255,0.38); text-decoration:underline;">Privacy Policy</a> for more information.</p>
     </div>
   </div>
-  <p class="footer-disclaimer footer-affiliate-mobile"><strong>Affiliate disclosure:</strong> Some links on this site are affiliate links. As an Amazon Associate we earn from qualifying purchases. If you purchase through one, we may earn a small commission at no additional cost to you.</p>
+  <p class="footer-disclaimer"><strong>Affiliate disclosure:</strong> Some links on this site are affiliate links. As an Amazon Associate we earn from qualifying purchases. If you purchase through one, we may earn a small commission at no additional cost to you.</p>
   <p class="footer-disclaimer"><strong>Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
   <div class="footer-bottom">
     <span>© 2026 LANE FOUR. All rights reserved.</span>
