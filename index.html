@@ -352,7 +352,9 @@ section { padding: 6rem 0; }
   top: 0;
   z-index: 200;
   height: var(--nav-h);
-  background: var(--deep);
+  /* Dark teal fills the full header width, all the way to the right edge
+     (matches the darker logo box so the whole bar reads as one solid band). */
+  background: #062b27;
   border-bottom: 1px solid rgba(93,219,201,0.08);
 }
 .nav-inner {
@@ -1201,7 +1203,7 @@ section { padding: 6rem 0; }
 /* ── Sneak peek cards ── */
 .sneak-card { display: flex; }
 .sneak-card-btn {
-  margin-top: 1.25rem;
+  margin-top: 0.85rem;
   align-self: flex-start;
   padding: 0.5rem 1.15rem;
   font-size: 0.68rem;
@@ -2418,6 +2420,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   /* 16px keeps iOS/Android from auto-zooming the viewport when the search
      input gains focus. */
   .nav-search-field input { font-size: 16px; }
+  /* Same guard for every form field (sign-in, get-started, log workout, etc.):
+     a sub-16px font-size makes iOS auto-zoom into the field on focus — e.g.
+     when logging in on mobile. Hold them at 16px so the viewport stays put. */
+  .form-input,
+  .form-select,
+  .form-textarea { font-size: 16px; }
   .form-row,
   .form-row-3 { grid-template-columns: 1fr; }
   section { padding: 4rem 0; }
@@ -2440,8 +2448,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   #page-blog-guides .page-hero-sm::after { display: none; }
 }
 @media (max-width: 480px) {
-  /* Slim the header on phones so the lighter teal bar hugs the dark logo box
-     (only ~1-2px of teal shows past it). Sticky offsets track --nav-h. */
+  /* Slim the header on phones. The bar is one solid dark teal across its full
+     width now; this just tightens its height. Sticky offsets track --nav-h. */
   :root { --nav-h: 66px; }
   .container { padding: 0 1.25rem !important; }
   .hero { min-height: 48vh; padding: 0; }
@@ -2654,6 +2662,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 @media (max-width: 700px) {
   .recipe-columns { grid-template-columns: 1fr !important; }
 }
+/* Meal-suggestion mobile layout: on phones, stop the "Favorite" button from
+   squeezing the recipe title into a narrow column, and stop the meal-slot
+   "Suggest Meal" button from floating off on its own line. Both stack so the
+   text runs full width and the buttons sit flush below. */
+@media (max-width: 640px) {
+  .recipe-head { flex-direction: column; gap: 0.85rem !important; }
+  .recipe-head .recipe-fav { align-self: flex-start; }
+  .meal-slot-row { flex-direction: column; align-items: stretch !important; gap: 0.55rem !important; padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+  .meal-slot-row > button { margin-left: 0 !important; width: 100%; }
+}
 /* Progress view: weekly volume chart. Swim and lift minutes are paired bars
    (flush, color-coded); swim yardage rides a line on the right axis. */
 .prog-bar-swim { fill: #279e8e; transition: opacity 0.15s; }
@@ -2686,24 +2704,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 }
 .reason-toggle-chevron { display: none; flex-shrink: 0; }
 @media (max-width: 768px) {
-  /* Move "How can we help?" above the form as a collapsible panel. */
+  /* On mobile, drop the "How can we help?" card entirely — the contact form
+     stands on its own, and the reason cards just add clutter on a phone. */
   .contact-layout { display: flex; flex-direction: column; align-items: stretch; }
-  .contact-layout > .contact-aside-sticky {
-    order: -1; margin: 0 0 1.1rem; width: 100%;
-    background: var(--white); border: 1px solid var(--gray-100);
-    border-radius: var(--r-lg); overflow: hidden;
-  }
-  .contact-aside-sticky .reason-toggle {
-    cursor: pointer; padding: 0.5rem 0.9rem; margin: 0; font-size: 0.68rem;
-  }
-  .contact-aside-sticky .reason-toggle-chevron {
-    display: block; color: var(--teal); transition: transform 0.2s ease;
-  }
-  .contact-aside-sticky.reasons-open .reason-toggle-chevron { transform: rotate(180deg); }
-  .contact-aside-sticky .reason-cards { padding: 0 0.9rem 0.9rem; }
-  .contact-aside-sticky .reason-card { padding: 0.7rem 0.85rem; margin-bottom: 0.5rem; }
-  .contact-aside-sticky .reason-card:last-child { margin-bottom: 0; }
-  .contact-aside-sticky:not(.reasons-open) .reason-cards { display: none; }
+  .contact-layout > .contact-aside-sticky { display: none; }
 }
 .contact-aside-sticky { }
 /* Profile page */
@@ -3289,14 +3293,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 </section>
 
 <!-- ══ SNEAK PEEK: today's workouts (populated by renderHomeSneakPeek) ══ -->
-<section id="sneak-peek-section" style="background:var(--deep); background-image:var(--pattern-waves), var(--pattern-hatch); padding-top:4rem; padding-bottom:4rem; display:none;">
+<section id="sneak-peek-section" style="background:var(--deep); background-image:var(--pattern-waves), var(--pattern-hatch); padding-top:2.75rem; padding-bottom:2.75rem; display:none;">
   <div class="container">
-    <div class="section-header center">
+    <div class="section-header center" style="margin-bottom:1.75rem;">
       <span class="eyebrow on-dark">Fresh today</span>
       <h2 style="color:var(--white);">Sneak peek at today's <em class="serif-italic" style="color:var(--lap);">workouts.</em></h2>
       <div class="accent-bar center"></div>
     </div>
-    <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin:0 0 1rem; opacity:0.85;">In the pool</p>
+    <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin:0 0 0.85rem; opacity:0.85;">In the pool</p>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem;">
       <div class="sneak-card" id="sneak-swim-beginner" style="display:none; flex-direction:column; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:var(--r-lg); padding:1.5rem;">
         <span style="font-family:'DM Sans',sans-serif; font-size:0.64rem; font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--lap);">Beginner</span>
@@ -3323,7 +3327,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <a href="/swim-sets" class="btn btn-outline-light btn-sm sneak-card-btn" onclick="return goToSwimLevel('pro')">View this set →</a>
       </div>
     </div>
-    <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin:2rem 0 1rem; opacity:0.85;">On land</p>
+    <p style="font-family:'DM Sans',sans-serif; font-size:0.66rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--lap); margin:1.5rem 0 0.85rem; opacity:0.85;">On land</p>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem;">
       <div class="sneak-card" id="sneak-dryland" style="display:none; flex-direction:row; align-items:center; justify-content:space-between; gap:1.25rem 2rem; flex-wrap:wrap; background:rgba(255,255,255,0.04); border:1px solid rgba(93,219,201,0.28); border-radius:var(--r-lg); padding:1.5rem;">
         <div class="sneak-dryland-info" style="flex:1 1 220px; min-width:200px;">
@@ -3338,7 +3342,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
       </div>
     </div>
-    <div class="sneak-plan-cta" style="margin-top:2.5rem; background:linear-gradient(150deg, rgba(93,219,201,0.14) 0%, rgba(255,255,255,0.05) 60%); border:1px solid rgba(93,219,201,0.32); border-radius:var(--r-lg); padding:2.25rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;">
+    <div class="sneak-plan-cta" style="margin-top:1.75rem; background:linear-gradient(150deg, rgba(93,219,201,0.14) 0%, rgba(255,255,255,0.05) 60%); border:1px solid rgba(93,219,201,0.32); border-radius:var(--r-lg); padding:2.25rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;">
       <div style="max-width:41rem;">
         <h3 style="font-family:var(--font-display); font-weight:400; color:var(--white); font-size:1.5rem; line-height:1.25; margin:0;">Create your unique <em style="font-style:normal; color:var(--lap);">workout plan.</em></h3>
         <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; font-weight:300; line-height:1.65; margin:0.7rem 0 0;">Set your level and goals, and we'll build a training plan that's tailored to you.</p>
@@ -7086,6 +7090,11 @@ function showDashView(view) {
   });
   if (view === 'favorites') renderTrainingFavorites();
   if (view === 'progress') { _progWeek = null; renderProgress(); }
+  // Land at the top of the newly shown view. Without this, switching views
+  // (e.g. tapping a card button from a scrolled-down Overview on mobile) keeps
+  // the old scroll position and drops the athlete into the middle/bottom of the
+  // new view. 'instant' overrides the global smooth scroll so there's no jump.
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
 
 // ── Daily Briefing: weather + swim window + motivation ─────────────────────
@@ -7292,9 +7301,56 @@ function geolocationErrorMessage(e) {
   return 'We could not get your location just now. Try again in a moment.';
 }
 
+// True when the browser has location permission blocked for this site. In that
+// state getCurrentPosition never re-prompts — it just fails — so the only way
+// back is the browser's own settings.
+async function geolocationBlocked() {
+  try {
+    if (!navigator.permissions || !navigator.permissions.query) return false;
+    const s = await navigator.permissions.query({ name: 'geolocation' });
+    return s.state === 'denied';
+  } catch (e) { return false; }
+}
+
+// Browsers don't let a page open the native permission UI directly, so we open
+// the closest per-browser location-settings guide in a new tab; it's one step
+// from there to the site's location toggle.
+function browserLocationSettingsUrl() {
+  const ua = navigator.userAgent || '';
+  if (/Edg\//.test(ua))     return 'https://support.microsoft.com/en-us/microsoft-edge/location-and-privacy-in-microsoft-edge-31b5d154-0b1b-90ef-e389-7c7d4ffe7b04';
+  if (/Firefox\//.test(ua)) return 'https://support.mozilla.org/en-US/kb/does-firefox-share-my-location-websites';
+  if (/Chrome\//.test(ua))  return 'https://support.google.com/chrome/answer/142065';
+  if (/Safari\//.test(ua))  return 'https://support.apple.com/en-us/HT207092';
+  return 'https://support.google.com/chrome/answer/142065';
+}
+
+// Opened synchronously off the user's click (still within the activation
+// window) so the popup blocker lets it through.
+function openBrowserLocationSettings() {
+  window.open(browserLocationSettingsUrl(), '_blank', 'noopener');
+}
+
+function showBriefingLocError(btn, text) {
+  let msg = document.getElementById('briefing-loc-error');
+  if (!msg) {
+    msg = document.createElement('p');
+    msg.id = 'briefing-loc-error';
+    msg.style.cssText = 'font-size:0.8rem; color:var(--gray-400); margin:0.6rem 0 0; line-height:1.5;';
+    if (btn) btn.insertAdjacentElement('afterend', msg);
+  }
+  msg.textContent = text;
+}
+
 // "Allow Location Access" inside the daily briefing card: ask the browser,
 // save the result to the profile, and refresh the briefing.
 async function briefingEnableLocation(btn) {
+  // Location already blocked for this site? The browser won't re-prompt, so open
+  // its location settings in a new tab instead of failing silently.
+  if (await geolocationBlocked()) {
+    openBrowserLocationSettings();
+    showBriefingLocError(btn, 'Location is turned off for this site. We opened your browser settings in a new tab, allow location there, then come back and try again.');
+    return;
+  }
   if (btn) { btn.disabled = true; btn.textContent = 'Requesting…'; }
   try {
     const { lat, lon } = await getBrowserLocation();
@@ -7309,14 +7365,9 @@ async function briefingEnableLocation(btn) {
     if (btn) {
       btn.disabled = false;
       btn.textContent = 'Allow Location Access';
-      let msg = document.getElementById('briefing-loc-error');
-      if (!msg) {
-        msg = document.createElement('p');
-        msg.id = 'briefing-loc-error';
-        msg.style.cssText = 'font-size:0.8rem; color:var(--gray-400); margin:0.6rem 0 0; line-height:1.5;';
-        btn.insertAdjacentElement('afterend', msg);
-      }
-      msg.textContent = geolocationErrorMessage(e);
+      // A denial here means it's now blocked — send them to settings on this click.
+      if (e && e.code === 1) openBrowserLocationSettings();
+      showBriefingLocError(btn, geolocationErrorMessage(e));
     }
   }
 }
@@ -7863,7 +7914,7 @@ function renderPlanMealView() {
   const slots = meals.map((m, i) => {
     const macro = mealMacroLine(m);
     return `<div style="border-top:1px solid var(--gray-100);">
-      <div style="display:flex; align-items:center; gap:0.75rem 1.25rem; padding:0.95rem 1.5rem; flex-wrap:wrap;">
+      <div class="meal-slot-row" style="display:flex; align-items:center; gap:0.75rem 1.25rem; padding:0.95rem 1.5rem; flex-wrap:wrap;">
         <div style="min-width:110px;">
           <p style="font-weight:700; color:var(--deep); font-size:0.92rem; margin:0;">${escHtml(m.name || 'Meal')}</p>
           ${m.time ? `<p style="font-size:0.78rem; color:var(--gray-400); margin:0.1rem 0 0;">${escHtml(m.time)}</p>` : ''}
@@ -7955,14 +8006,14 @@ function recipeMarkup(r) {
   const ingredients = (r.ingredients || []).map(i => `<li style="margin-bottom:0.35rem;">${escHtml(i)}</li>`).join('');
   const steps = (r.steps || []).map(s => `<li style="margin-bottom:0.5rem;">${escHtml(s)}</li>`).join('');
   return `
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+    <div class="recipe-head" style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
       <div style="min-width:0;">
         <span class="eyebrow">${escHtml(r.meal || 'Recipe')}</span>
         <h3 style="font-family:var(--font-display); font-size:1.5rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(deDash(r.title || 'Recipe'))}</h3>
         ${meta ? `<p style="font-size:0.84rem; color:var(--gray-400); margin-top:0.3rem;">${meta}</p>` : ''}
         ${r.description ? `<p style="font-size:0.9rem; color:var(--gray-500); margin-top:0.5rem;">${escHtml(deDash(r.description))}</p>` : ''}
       </div>
-      ${r.setId ? `<div style="flex-shrink:0;">${favoriteButtonHtml(r.setId)}</div>` : ''}
+      ${r.setId ? `<div class="recipe-fav" style="flex-shrink:0;">${favoriteButtonHtml(r.setId)}</div>` : ''}
     </div>
     <div style="display:grid; grid-template-columns:minmax(200px,1fr) 2fr; gap:1.5rem;" class="recipe-columns">
       <div>
@@ -9382,6 +9433,13 @@ function setupLocationUI() {
 async function requestSetupLocation() {
   const btn = document.getElementById('gs-location-btn');
   const status = document.getElementById('gs-location-status');
+  // Location already blocked for this site? Open the browser's location settings
+  // in a new tab; re-requesting would just fail without a prompt.
+  if (await geolocationBlocked()) {
+    openBrowserLocationSettings();
+    if (status) status.textContent = 'Location is off for this site. We opened your browser settings in a new tab, allow it there, then try again.';
+    return;
+  }
   if (btn) btn.disabled = true;
   if (status) status.textContent = 'Requesting…';
   try {
@@ -9391,6 +9449,8 @@ async function requestSetupLocation() {
     setupLocationUI();
   } catch (e) {
     if (btn) btn.disabled = false;
+    // A fresh denial means it's now blocked — take them to settings on this click.
+    if (e && e.code === 1) openBrowserLocationSettings();
     if (status) status.textContent = geolocationErrorMessage(e);
   }
 }
@@ -12210,12 +12270,64 @@ async function handleNewsletterSubmit(event, source) {
   @media (max-width: 900px) {
     #shark-mascot { display: none !important; }
   }
+
+  /* Back-to-top button: mobile only (pages here run long). Hidden on desktop;
+     on phones it fades in once the reader passes the halfway mark. */
+  #back-to-top {
+    position: fixed;
+    right: 1.05rem;
+    bottom: 1.05rem;
+    z-index: 190;
+    width: 44px;
+    height: 44px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(93,219,201,0.5);
+    border-radius: 50%;
+    background: #062b27;
+    color: var(--white, #fff);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  @media (max-width: 768px) { #back-to-top { display: flex; } }
+  @media (prefers-reduced-motion: reduce) { #back-to-top { transition: opacity 0.2s ease; transform: none; } }
 </style>
 
 <div id="shark-mascot">
   <div id="shark-bubble" role="status"></div>
   <img src="/shark-coach.png?v=2" alt="" aria-hidden="true">
 </div>
+
+<button id="back-to-top" aria-label="Back to top" title="Back to top" onclick="scrollToTop()">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<script>
+// Back-to-top (mobile): reveal the button once the reader is more than halfway
+// down, since these pages get long. Uses window scroll (the whole page scrolls).
+(function () {
+  var btn = document.getElementById('back-to-top');
+  if (!btn) return;
+  function update() {
+    var doc = document.documentElement;
+    var scrollable = doc.scrollHeight - window.innerHeight;
+    var y = window.scrollY || doc.scrollTop || 0;
+    btn.classList.toggle('visible', scrollable > 200 && (y / scrollable) > 0.5);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+function scrollToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+}
+</script>
 
 <script>
 (function () {
