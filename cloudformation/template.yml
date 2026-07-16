@@ -953,7 +953,18 @@ Resources:
               + '<div class="hdr-title" style="' + G + 'font-size:34px;line-height:1.25;color:#ffffff;">You just dove in. Congrats!</div>'
               + div(F + 'font-size:16px;color:#a8ede5;padding-top:12px;', 'Welcome to LANE FOUR, ' + first + '!')
               + '</td></tr>'
-              '<tr><td style="padding:36px 40px 24px;">' + div(F + 'font-size:15px;line-height:1.75;color:#3a6560;', INTRO) + '</td></tr>'
+              # Intro paragraph with the LANE FOUR shark coach alongside it on
+              # the right, just below the header. shark-coach.png ships
+              # transparent at the site root. Width/height attrs keep Outlook
+              # from distorting it; on a narrow phone the cells simply narrow.
+              '<tr><td style="padding:32px 40px 20px;">'
+              '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'
+              '<td valign="middle" style="padding-right:18px;">' + div(F + 'font-size:15px;line-height:1.75;color:#3a6560;', INTRO) + '</td>'
+              '<td width="124" valign="middle" style="padding:0;">'
+              + '<img src="' + SITE + '/shark-coach.png" width="114" height="118" alt="LANE FOUR shark coach" style="display:block;border:0;outline:none;width:114px;height:auto;">'
+              + '</td>'
+              '</tr></table>'
+              '</td></tr>'
               '<tr><td style="padding:0 40px 10px;">' + div(eyebrow, 'What your account unlocks') + feats + '</td></tr>'
               '<tr><td style="padding:8px 40px;">'
               '<div style="background:#e6faf7;border-radius:8px;padding:22px 24px;">'
