@@ -2092,6 +2092,129 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   color: var(--deep);
   transform: none;
 }
+
+/* ── Workout share celebration ──
+   Popup shown right after a workout is logged: success message, a generated
+   branded result card (canvas, not a screenshot), and share buttons. */
+.share-cel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9,31,28,0.65);
+  display: none;
+  z-index: 3200;
+  overflow-y: auto;
+  padding: 2.5rem 1rem;
+}
+.share-cel-overlay.open { display: block; }
+.share-cel-modal {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.25rem 2rem 2rem;
+  position: relative;
+  box-shadow: var(--shadow-xl);
+  text-align: center;
+  animation: shareCelPop 0.35s cubic-bezier(0.18, 1.25, 0.4, 1);
+}
+@keyframes shareCelPop {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.share-cel-check {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--lap-pale);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  animation: shareCelCheck 0.5s cubic-bezier(0.18, 1.6, 0.4, 1) 0.1s backwards;
+}
+@keyframes shareCelCheck {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+.share-cel-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--deep);
+  margin: 0 0 0.4rem;
+}
+.share-cel-sub {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+.share-cel-card {
+  display: block;
+  width: 100%;
+  border-radius: var(--r-lg);
+  box-shadow: 0 10px 30px rgba(13,79,71,0.28);
+  margin-bottom: 0.6rem;
+}
+.share-cel-download {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.78rem;
+  color: var(--teal);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-bottom: 1.25rem;
+}
+.share-cel-download:hover { color: var(--deep); }
+.share-cel-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0 0 0.75rem;
+}
+.share-cel-btns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.share-cel-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-100);
+  background: var(--off-white);
+  color: var(--deep);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s;
+}
+.share-cel-btn:hover {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: var(--lap);
+  transform: translateY(-2px);
+}
+.share-cel-btn svg { width: 19px; height: 19px; display: block; }
+.share-cel-btn.copied,
+.share-cel-btn.copied:hover {
+  background: var(--lap-pale);
+  border-color: var(--lap-hover);
+  color: var(--deep);
+  transform: none;
+}
+@media (max-width: 520px) {
+  .share-cel-modal { padding: 1.75rem 1.25rem 1.5rem; }
+  .share-cel-title { font-size: 1.5rem; }
+}
 .post-body {
   max-width: 860px;
   margin: 0 auto;
@@ -6023,6 +6146,24 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </div>
 </div>
 
+<!-- Post-log celebration: success message + generated result card + share
+     buttons. Opened by showShareCelebration() after any workout is logged;
+     lives outside every .page container (same as the log-note overlay) so it
+     works from the daily pages, the plan, and My Training alike. -->
+<div class="share-cel-overlay" id="share-cel-overlay" onclick="if(event.target===this)closeShareCelebration()">
+  <div class="share-cel-modal">
+    <button class="set-detail-close" onclick="closeShareCelebration()" aria-label="Close">✕</button>
+    <div class="share-cel-check"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h3 class="share-cel-title" id="share-cel-title">Workout logged!</h3>
+    <p class="share-cel-sub" id="share-cel-sub"></p>
+    <img class="share-cel-card" id="share-cel-card" alt="Your workout result card" style="display:none;" />
+    <button type="button" class="share-cel-download" id="share-cel-download" style="display:none;" onclick="downloadShareCard()">Download image</button>
+    <p class="share-cel-label">Share your results</p>
+    <div class="share-cel-btns" id="share-cel-btns"></div>
+    <button class="btn btn-outline-dark btn-sm" onclick="closeShareCelebration()">Done</button>
+  </div>
+</div>
+
 <!-- ══ SIGN IN PAGE ══ -->
 <div class="page" id="page-sign-in">
   <div style="min-height:100vh; background:var(--deep); background-image:var(--pattern-waves); display:flex; align-items:center; justify-content:center; padding:2rem;">
@@ -8803,6 +8944,7 @@ function saveWorkoutLog() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  showShareCelebration({ type, duration, distance }, 'manual');
 }
 
 // One-tap logging for the plan's swim set / lift session (Today's Swim and
@@ -8902,6 +9044,7 @@ function confirmDailyLog() {
   renderWorkoutLog();
   renderProgress();
   updateProgressCard();
+  showShareCelebration(pending.entry, 'daily');
 }
 
 // One-tap logging first opens a small popup so the athlete can attach an
@@ -8973,6 +9116,318 @@ function confirmPlanLog() {
   renderWorkoutLog();
   renderProgress();
   updateProgressCard();
+  showShareCelebration(entry, 'plan');
+}
+
+// ── Share your results ──────────────────────────────────────────────────────
+// Right after a workout is logged (one-tap plan/daily buttons or the manual
+// Log Workout form), a celebration popup congratulates the athlete and offers
+// share buttons for Instagram, X, Facebook, Messages, the native share sheet,
+// and copy. The shared image is a branded result card drawn on a canvas —
+// deep-teal water, wave lines, big stat numbers — not a screenshot. The link
+// points at the page the workout came from (/swim-sets, /dryland-workouts, or
+// /my-training) so friends land somewhere they can try the same session.
+
+let _shareCelInfo = null; // { kind, title, minutes, distance, link, message, cardUrl }
+
+function _shareCelLink(kind, source) {
+  if (source === 'daily') return SITE_ORIGIN + (kind === 'swim' ? '/swim-sets' : '/dryland-workouts');
+  return SITE_ORIGIN + '/my-training';
+}
+
+// Pull a clean number + unit out of the free-text distance field
+// ("3500 yards", "2,000m", …). Returns null when there's nothing numeric.
+function _shareCelDistance(distance) {
+  const m = String(distance || '').match(/([\d][\d,.]*)\s*(meters?|metres?|m\b|yards?|yds?|y\b)?/i);
+  if (!m || !m[1]) return null;
+  const num = parseFloat(m[1].replace(/,/g, ''));
+  if (!isFinite(num) || num <= 0) return null;
+  const unit = /^m/i.test(m[2] || '') ? 'meters' : 'yards';
+  return { num, unit, text: num.toLocaleString() + ' ' + unit };
+}
+
+// "Crushed my LANE FOUR "Threshold 400s" swim session today! 3,500 yards,
+//  60 minutes in the pool — easy. See how you compare to me: <link>"
+function _shareCelMessage(info) {
+  const what = info.kind === 'swim' ? 'swim session' : info.kind === 'dryland' ? 'dryland workout' : 'workout';
+  const place = info.kind === 'swim' ? ' in the pool' : info.kind === 'dryland' ? ' in the gym' : '';
+  const bits = [];
+  if (info.dist) bits.push(info.dist.text);
+  if (info.minutes) bits.push(info.minutes + ' minutes' + place);
+  return 'Crushed my LANE FOUR ' + (info.title ? '"' + info.title + '" ' : '') + what + ' today!' +
+    (bits.length ? ' ' + bits.join(', ') + ' — easy.' : '') +
+    ' See how you compare to me: ' + info.link;
+}
+
+// Draw the branded result card (1080×1080, Instagram-friendly) and resolve
+// with a PNG data URL. Uses the site's own fonts — the CC Smash wordmark and
+// DM Serif Display numbers — over deep-teal water with wave lines.
+function _drawShareCard(info) {
+  const W = 1080, H = 1080, PAD = 96;
+  const fonts = ['60px "CC Smash"', '400 82px "DM Serif Display"', '400 150px "DM Serif Display"', '700 30px "DM Sans"', '500 34px "DM Sans"'];
+  const ready = (document.fonts && document.fonts.load)
+    ? Promise.all(fonts.map(f => document.fonts.load(f))).catch(() => {})
+    : Promise.resolve();
+  return ready.then(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // Water: deep vertical gradient with a soft lap-colored glow up top.
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#0d4f47');
+    bg.addColorStop(1, '#093a34');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+    const glow = ctx.createRadialGradient(W - 140, 60, 0, W - 140, 60, 620);
+    glow.addColorStop(0, 'rgba(93,219,201,0.14)');
+    glow.addColorStop(1, 'rgba(93,219,201,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // Wave lines rolling across the lower half.
+    for (let i = 0; i < 5; i++) {
+      const baseY = H - 330 + i * 62;
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(93,219,201,' + (0.05 + i * 0.02) + ')';
+      ctx.lineWidth = 3;
+      for (let x = -20; x <= W + 20; x += 8) {
+        const y = baseY + Math.sin((x + i * 130) / 105) * 16;
+        x === -20 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    // Lane-rope dotted line under the header.
+    ctx.save();
+    ctx.strokeStyle = 'rgba(93,219,201,0.35)';
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([2, 34]);
+    ctx.beginPath();
+    ctx.moveTo(PAD, 208);
+    ctx.lineTo(W - PAD, 208);
+    ctx.stroke();
+    ctx.restore();
+
+    // Header: wordmark left, date right.
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#5ddbc9';
+    ctx.font = '60px "CC Smash", Impact, sans-serif';
+    ctx.fillText('LANE FOUR', PAD, 160);
+    ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.textAlign = 'right';
+    ctx.letterSpacing = '4px';
+    ctx.fillText(new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' }).toUpperCase(), W - PAD, 156);
+    ctx.textAlign = 'left';
+
+    // Eyebrow + session title.
+    ctx.fillStyle = '#5ddbc9';
+    ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+    ctx.letterSpacing = '7px';
+    ctx.fillText((info.kind === 'swim' ? 'SWIM SET' : info.kind === 'dryland' ? 'DRYLAND WORKOUT' : 'WORKOUT') + ' COMPLETE', PAD, 330);
+    ctx.letterSpacing = '0px';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '400 82px "DM Serif Display", Georgia, serif';
+    const words = String(info.title || (info.kind === 'swim' ? 'Today\'s swim' : 'Today\'s session')).split(/\s+/);
+    const lines = [];
+    let line = '';
+    words.forEach(w => {
+      const t = line ? line + ' ' + w : w;
+      if (ctx.measureText(t).width > W - PAD * 2 && line) { lines.push(line); line = w; } else { line = t; }
+    });
+    if (line) lines.push(line);
+    lines.slice(0, 2).forEach((l, i) => ctx.fillText(l, PAD, 440 + i * 100));
+
+    // Stat blocks: yards (when logged) and minutes.
+    const stats = [];
+    if (info.dist) stats.push({ v: info.dist.num.toLocaleString(), l: info.dist.unit.toUpperCase() });
+    if (info.minutes) stats.push({ v: String(info.minutes), l: 'MINUTES' });
+    if (!stats.length) stats.push({ v: '100%', l: 'EFFORT' });
+    const statY = 780;
+    stats.forEach((s, i) => {
+      const x = PAD + i * ((W - PAD * 2) / stats.length);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '400 150px "DM Serif Display", Georgia, serif';
+      ctx.fillText(s.v, x, statY);
+      ctx.fillStyle = 'rgba(93,219,201,0.9)';
+      ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+      ctx.letterSpacing = '6px';
+      ctx.fillText(s.l, x + 6, statY + 56);
+      ctx.letterSpacing = '0px';
+    });
+
+    // Footer CTA.
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = '500 34px "DM Sans", system-ui, sans-serif';
+    ctx.fillText('See how you compare', PAD, H - 132);
+    ctx.fillStyle = '#5ddbc9';
+    ctx.font = '700 34px "DM Sans", system-ui, sans-serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('winlanefour.com', PAD, H - 78);
+    ctx.letterSpacing = '0px';
+
+    return canvas.toDataURL('image/png');
+  });
+}
+
+function _shareCardFile() {
+  const info = _shareCelInfo;
+  if (!info || !info.cardUrl) return null;
+  try {
+    const bin = atob(info.cardUrl.split(',')[1]);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new File([bytes], 'lane-four-workout.png', { type: 'image/png' });
+  } catch (e) { return null; }
+}
+
+function downloadShareCard() {
+  const info = _shareCelInfo;
+  if (!info || !info.cardUrl) return;
+  const a = document.createElement('a');
+  a.href = info.cardUrl;
+  a.download = 'lane-four-workout.png';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function _copyShareMessage(btn, doneTitle) {
+  const info = _shareCelInfo;
+  if (!info) return;
+  const confirm = function() {
+    if (!btn) return;
+    const prev = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = _SHARE_ICONS.check;
+    btn.title = doneTitle || 'Copied!';
+    setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = prev; btn.title = btn.dataset.label || ''; }, 2200);
+  };
+  const fallback = function() {
+    const ta = document.createElement('textarea');
+    ta.value = info.message;
+    ta.style.cssText = 'position:fixed; opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    try { if (document.execCommand('copy')) confirm(); } catch (e) {}
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(info.message).then(confirm, fallback);
+  } else fallback();
+}
+
+function _shareCelTo(network, btn) {
+  const info = _shareCelInfo;
+  if (!info) return;
+  const file = _shareCardFile();
+  if (network === 'instagram') {
+    // Instagram has no web share intent. On phones the share sheet (which
+    // lists Instagram) gets the card + caption; on desktop we save the card
+    // and copy the caption so it can be posted by hand.
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], text: info.message }).catch(function() {});
+    } else {
+      downloadShareCard();
+      _copyShareMessage(btn, 'Card saved & caption copied — post it on Instagram!');
+    }
+    return;
+  }
+  if (network === 'messages') {
+    window.location.href = 'sms:?&body=' + encodeURIComponent(info.message);
+    return;
+  }
+  if (network === 'native') {
+    const withFile = file ? { text: info.message, files: [file] } : null;
+    if (withFile && navigator.canShare && navigator.canShare(withFile)) {
+      navigator.share(withFile).catch(function() {});
+    } else {
+      navigator.share({ text: info.message }).catch(function() {});
+    }
+    return;
+  }
+  const targets = {
+    x: 'https://x.com/intent/post?text=' + encodeURIComponent(info.message),
+    facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(info.link) + '&quote=' + encodeURIComponent(info.message),
+  };
+  if (targets[network]) window.open(targets[network], '_blank', 'noopener,noreferrer,width=600,height=560');
+}
+
+const _SHARE_CEL_ICONS = {
+  instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
+  messages: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+};
+
+// A grabby "well done" headline, personalized when we know the athlete.
+function _shareCelHeadline() {
+  const pool = ['Crushed it', 'Nice work', 'That\'s a wrap', 'Strong effort', 'In the books'];
+  const name = getAccount()?.firstName;
+  return pool[Math.floor(Math.random() * pool.length)] + (name ? ', ' + name : '') + '!';
+}
+
+// entry: { type, title, duration, distance } straight from the log row.
+// source: 'plan' | 'daily' | 'manual' — decides which page the link opens.
+function showShareCelebration(entry, source) {
+  const overlay = document.getElementById('share-cel-overlay');
+  if (!overlay) return;
+  const kind = entry.type === 'Swim' ? 'swim' : entry.type === 'Dryland / Lift' ? 'dryland' : 'other';
+  const minutes = parseInt(entry.duration, 10) > 0 ? parseInt(entry.duration, 10) : null;
+  const info = {
+    kind,
+    title: (entry.title || '').trim(),
+    minutes,
+    dist: kind === 'swim' ? _shareCelDistance(entry.distance) : null,
+    link: _shareCelLink(kind, source),
+    cardUrl: null,
+  };
+  info.message = _shareCelMessage(info);
+  _shareCelInfo = info;
+
+  document.getElementById('share-cel-title').textContent = _shareCelHeadline();
+  const bits = [info.dist ? info.dist.text : '', info.minutes ? info.minutes + ' min' : ''].filter(Boolean).join(' · ');
+  document.getElementById('share-cel-sub').textContent =
+    (info.title || (kind === 'swim' ? 'Today\'s swim' : kind === 'dryland' ? 'Today\'s workout' : 'Your workout')) +
+    ' is in the books' + (bits ? ' — ' + bits : '') + '. Tell your lane mates.';
+
+  const btns = document.getElementById('share-cel-btns');
+  btns.innerHTML = '';
+  const addBtn = function(icon, label, onClick) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'share-cel-btn';
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    b.dataset.label = label;
+    b.innerHTML = _SHARE_CEL_ICONS[icon] || _SHARE_ICONS[icon];
+    b.addEventListener('click', onClick);
+    btns.appendChild(b);
+  };
+  addBtn('instagram', 'Share on Instagram', function() { _shareCelTo('instagram', this); });
+  addBtn('x', 'Share on X', function() { _shareCelTo('x', this); });
+  addBtn('facebook', 'Share on Facebook', function() { _shareCelTo('facebook', this); });
+  addBtn('messages', 'Send in Messages', function() { _shareCelTo('messages', this); });
+  if (navigator.share) addBtn('native', 'Share…', function() { _shareCelTo('native', this); });
+  addBtn('copy', 'Copy message', function() { _copyShareMessage(this); });
+
+  const img = document.getElementById('share-cel-card');
+  const dl = document.getElementById('share-cel-download');
+  img.style.display = 'none';
+  dl.style.display = 'none';
+  overlay.classList.add('open');
+  _drawShareCard(info).then(function(url) {
+    if (_shareCelInfo !== info) return; // popup was closed / reopened meanwhile
+    info.cardUrl = url;
+    img.src = url;
+    img.style.display = '';
+    dl.style.display = '';
+  }).catch(function() {});
+}
+
+function closeShareCelebration() {
+  _shareCelInfo = null;
+  const overlay = document.getElementById('share-cel-overlay');
+  if (overlay) overlay.classList.remove('open');
 }
 
 function deleteWorkoutLog(savedAt) {
