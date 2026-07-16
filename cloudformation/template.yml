@@ -645,12 +645,36 @@ Resources:
             except Exception:
               return {}
 
+          # Favorites snapshot the full set/recipe data so they render even when
+          # the generator API is offline. They share the user's DynamoDB item
+          # (400 KB hard limit) with the profile, so cap both the entry count
+          # and the serialized size, trimming oldest-first (the client keeps
+          # newest entries at the front of the list).
+          MAX_FAVORITES = 300
+          MAX_FAVORITES_BYTES = 350000
+
+          def user_favorites(user):
+            try:
+              favs = json.loads(user.get('favorites') or '[]')
+              return favs if isinstance(favs, list) else []
+            except Exception:
+              return []
+
+          def clean_favorites(favs):
+            if not isinstance(favs, list):
+              return None
+            favs = [f for f in favs if isinstance(f, dict) and isinstance(f.get('setId'), str) and f['setId']][:MAX_FAVORITES]
+            while favs and len(json.dumps(favs)) > MAX_FAVORITES_BYTES:
+              favs.pop()
+            return favs
+
           def session_payload(user):
             return {
               'success': True,
               'token': issue_token(user['email'], 'session', SESSION_TTL),
               'account': public_account(user),
-              'profile': user_profile(user)
+              'profile': user_profile(user),
+              'favorites': user_favorites(user)
             }
 
           # Names are echoed into page greetings and welcome-email HTML, so they
@@ -710,7 +734,22 @@ Resources:
             user = get_user(session['email']) if session else None
             if not user:
               return resp(401, {'error': 'Session expired. Please log in again.'})
-            return resp(200, {'success': True, 'account': public_account(user), 'profile': user_profile(user)})
+            return resp(200, {'success': True, 'account': public_account(user), 'profile': user_profile(user), 'favorites': user_favorites(user)})
+
+          # Favorites live on the account so they follow the user across tabs,
+          # browsers, and devices instead of being stranded in one browser's
+          # localStorage. The client sends the full list on every change.
+          def save_favorites(body):
+            session = get_valid_token(body.get('token') or '', 'session')
+            user = get_user(session['email']) if session else None
+            if not user:
+              return resp(401, {'error': 'Session expired. Please log in again.'})
+            favs = clean_favorites(body.get('favorites'))
+            if favs is None:
+              return resp(400, {'error': 'favorites must be a list.'})
+            user['favorites'] = json.dumps(favs)
+            users.put_item(Item=user)
+            return resp(200, {'success': True})
 
           def save_profile(body):
             session = get_valid_token(body.get('token') or '', 'session')
@@ -821,7 +860,7 @@ Resources:
             tokens.delete_item(Key={'token': token_item['token']})  # single use
             return resp(200, {'success': True})
 
-          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'delete': delete_account}
+          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'favorites': save_favorites, 'delete': delete_account}
 
           def handler(event, context):
             if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':

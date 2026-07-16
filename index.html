@@ -6912,6 +6912,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <li><strong>Account Registration:</strong> Username and email address. Your password is stored as a one-way cryptographic hash (PBKDF2 SHA-256). We cannot read your password in plain text.</li>
         <li><strong>Body Profile (optional):</strong> Age, height, weight, and gender. This information is used solely to personalize your training recommendations.</li>
         <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, and race or distance goals, used to tailor your daily workouts.</li>
+        <li><strong>Saved Favorites:</strong> Swim sets, dryland workouts, meals, and recipes you mark as favorites are saved to your account so they are available whenever you sign in, on any browser or device.</li>
         <li><strong>Contact Form Submissions:</strong> Name, email address, subject, message, and optional newsletter opt-in when you contact us.</li>
         <li><strong>Newsletter Subscription:</strong> Email address when you subscribe to The Fast Lane newsletter.</li>
         <li><strong>Location (optional):</strong> If you grant your browser's location permission, we collect your approximate latitude and longitude, used solely to show local weather and outdoor training conditions in your daily briefing. Coordinates are sent to the Open-Meteo weather service to retrieve the forecast; no other personal information accompanies them. You can decline or revoke this permission at any time in your browser settings.</li>
@@ -6921,7 +6922,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li><strong>Log Data:</strong> IP address, browser type, device type, operating system, and pages visited, collected automatically by our servers when you use the Site.</li>
         <li><strong>Session Tokens:</strong> A unique identifier saved in your browser's local storage for up to 30 days to keep you signed in to your account.</li>
-        <li><strong>Browser Local Storage:</strong> Site preferences and your training data (such as workout logs and favorites) saved in your browser's local storage on your own device. We do not use this data for advertising or cross-site tracking.</li>
+        <li><strong>Browser Local Storage:</strong> Site preferences and your training data (such as workout logs, plus a local copy of your saved favorites) saved in your browser's local storage on your own device. We do not use this data for advertising or cross-site tracking.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">C. Information Processed by AI Systems</h3>
@@ -9609,7 +9610,29 @@ function setSession(data) {
   if (data.token) localStorage.setItem('streamline_session', data.token);
   if (data.account) localStorage.setItem('streamline_account', JSON.stringify(data.account));
   if (data.profile) localStorage.setItem('streamline_profile', JSON.stringify(data.profile));
+  // Favorites are account data: the server copy replaces whatever this
+  // browser had, so the same list follows the user across tabs and devices.
+  if (Array.isArray(data.favorites)) localStorage.setItem('streamline_favorites', JSON.stringify(data.favorites));
 }
+
+// On load, pull the signed-in account's latest data from the server so
+// favorites (and profile edits) saved from another tab, browser, or device
+// show up here without needing to log in again.
+async function refreshAccountFromServer() {
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token || !getAccount()) return;
+  try {
+    const res = await fetch(apiBase() + '/auth/me?token=' + encodeURIComponent(token));
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.success) return;
+    setSession(data);
+    updateNavButton();
+    refreshAllFavButtons();
+    rerenderOpenFavoriteViews();
+  } catch (e) {}
+}
+window.addEventListener('DOMContentLoaded', refreshAccountFromServer);
 
 let _profileSyncTimer = null;
 function syncProfileToServer() {
@@ -9868,6 +9891,10 @@ function signOut() {
   localStorage.removeItem('streamline_session');
   localStorage.removeItem('streamline_account');
   localStorage.removeItem('streamline_profile');
+  // Favorites belong to the account: on the live site the server holds them
+  // (they come back at next login), so don't leave them behind for whoever
+  // signs in next on this device. Local dev has no server copy, so keep them.
+  if (apiBase()) localStorage.removeItem('streamline_favorites');
   _trainingPlan = null;
   clearTimeout(_planPollTimer);
   updateNavButton();
@@ -9895,6 +9922,7 @@ async function deleteMyAccount() {
     localStorage.removeItem('streamline_session');
     localStorage.removeItem('streamline_account');
     localStorage.removeItem('streamline_profile');
+    localStorage.removeItem('streamline_favorites');
     _trainingPlan = null;
     clearTimeout(_planPollTimer);
     updateNavButton();
@@ -11196,7 +11224,41 @@ function refreshAllFavButtons() {
 function getFavorites() {
   try { return JSON.parse(localStorage.getItem('streamline_favorites') || '[]'); } catch (e) { return []; }
 }
-function saveFavorites(f) { localStorage.setItem('streamline_favorites', JSON.stringify(f)); }
+function saveFavorites(f) {
+  localStorage.setItem('streamline_favorites', JSON.stringify(f));
+  syncFavoritesToServer();
+}
+
+// Push the favorites list to the account on the server (debounced, like the
+// profile sync) so it isn't stranded in this one browser's localStorage.
+let _favSyncTimer = null;
+function syncFavoritesToServer() {
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token) return;
+  clearTimeout(_favSyncTimer);
+  _favSyncTimer = setTimeout(() => {
+    authApi('favorites', { token, favorites: getFavorites() }).catch(() => {});
+  }, 800);
+}
+
+// Re-render whichever favorites panels are currently on screen.
+function rerenderOpenFavoriteViews() {
+  const favPanel = document.getElementById('swim-level-favorites');
+  if (favPanel && favPanel.style.display !== 'none') renderFavorites();
+  const liftFavPanel = document.getElementById('lift-level-favorites');
+  if (liftFavPanel && liftFavPanel.style.display !== 'none') renderLiftFavorites();
+  const dashFavs = document.getElementById('dash-view-favorites');
+  if (dashFavs && dashFavs.style.display !== 'none') renderTrainingFavorites();
+}
+
+// Favorites changed in another tab of this browser (the storage event only
+// fires in the tabs that didn't make the change): update buttons and any
+// open favorites panels in place.
+window.addEventListener('storage', e => {
+  if (e.key !== 'streamline_favorites') return;
+  refreshAllFavButtons();
+  rerenderOpenFavoriteViews();
+});
 function isFavorite(id) { return getFavorites().some(s => s.setId === id); }
 function toggleFavorite(set) {
   const favs = getFavorites();
@@ -11225,12 +11287,7 @@ function onFavoriteClick(btn) {
   if (!set) return;
   toggleFavorite(set);
   updateFavButtons(id);
-  const favPanel = document.getElementById('swim-level-favorites');
-  if (favPanel && favPanel.style.display !== 'none') renderFavorites();
-  const liftFavPanel = document.getElementById('lift-level-favorites');
-  if (liftFavPanel && liftFavPanel.style.display !== 'none') renderLiftFavorites();
-  const dashFavs = document.getElementById('dash-view-favorites');
-  if (dashFavs && dashFavs.style.display !== 'none') renderTrainingFavorites();
+  rerenderOpenFavoriteViews();
 }
 function updateFavButtons(id) {
   const fav = isFavorite(id);
