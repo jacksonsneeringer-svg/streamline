@@ -9146,7 +9146,7 @@ function _shareCelDistance(distance) {
   return { num, unit, text: num.toLocaleString() + ' ' + unit };
 }
 
-// "Crushed my LANE FOUR "Threshold 400s" swim session today! 3,500 yards,
+// "Crushed my LANE FOUR Threshold 400s swim session today! 3,500 yards,
 //  60 minutes in the pool — easy. See how you compare to me: <link>"
 function _shareCelMessage(info) {
   const what = info.kind === 'swim' ? 'swim session' : info.kind === 'dryland' ? 'dryland workout' : 'workout';
@@ -9154,21 +9154,92 @@ function _shareCelMessage(info) {
   const bits = [];
   if (info.dist) bits.push(info.dist.text);
   if (info.minutes) bits.push(info.minutes + ' minutes' + place);
-  return 'Crushed my LANE FOUR ' + (info.title ? '"' + info.title + '" ' : '') + what + ' today!' +
+  return 'Crushed my LANE FOUR ' + (info.title ? info.title + ' ' : '') + what + ' today!' +
     (bits.length ? ' ' + bits.join(', ') + ' — easy.' : '') +
     ' See how you compare to me: ' + info.link;
 }
 
+// The header logo's goggles mark (same paths as the site nav's .logo-mark),
+// rasterized onto the card via an SVG data URL.
+const _SHARE_CARD_GOGGLES = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 0 148 33" fill="none">'
+  + '<path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>'
+  + '<path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>'
+  + '<defs>'
+  + '<radialGradient id="slg" cx="40%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>'
+  + '<radialGradient id="srg" cx="60%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>'
+  + '<clipPath id="sll"><path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/></clipPath>'
+  + '<clipPath id="srl"><path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/></clipPath>'
+  + '</defs>'
+  + '<path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>'
+  + '<path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>'
+  + '<g clip-path="url(#sll)">'
+  + '<line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>'
+  + '<circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>'
+  + '<path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>'
+  + '</g>'
+  + '<g clip-path="url(#srl)">'
+  + '<line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>'
+  + '<circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>'
+  + '<path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>'
+  + '</g>'
+  + '<path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>'
+  + '<path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>'
+  + '<path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>'
+  + '</svg>';
+
+function _loadCardImg(src) {
+  return new Promise(function(resolve) {
+    const img = new Image();
+    img.onload = function() { resolve(img); };
+    img.onerror = function() { resolve(null); };
+    img.src = src;
+  });
+}
+
+// Split the title into exactly two balanced lines (a one-word title is the
+// only case that stays on one line). Shrinks the font until both lines fit.
+function _twoLineTitle(ctx, text, maxWidth, startSize) {
+  let size = startSize;
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const setFont = function() { ctx.font = '400 ' + size + 'px "DM Serif Display", Georgia, serif'; };
+  setFont();
+  if (words.length < 2) return { lines: [text], size };
+  const split = function() {
+    let best = null;
+    for (let i = 1; i < words.length; i++) {
+      const a = words.slice(0, i).join(' ');
+      const b = words.slice(i).join(' ');
+      const w = Math.max(ctx.measureText(a).width, ctx.measureText(b).width);
+      if (!best || w < best.w) best = { w, lines: [a, b] };
+    }
+    return best;
+  };
+  let best = split();
+  while (best.w > maxWidth && size > 46) {
+    size -= 4;
+    setFont();
+    best = split();
+  }
+  return { lines: best.lines, size };
+}
+
 // Draw the branded result card (1080×1080, Instagram-friendly) and resolve
-// with a PNG data URL. Uses the site's own fonts — the CC Smash wordmark and
-// DM Serif Display numbers — over deep-teal water with wave lines.
+// with a PNG data URL: the full LANE FOUR logo (goggles, wordmark, tagline),
+// the session title on two lines, yards/minutes stacked on the left, and the
+// shark coach on the right — over deep-teal water with wave lines.
 function _drawShareCard(info) {
   const W = 1080, H = 1080, PAD = 96;
-  const fonts = ['60px "CC Smash"', '400 82px "DM Serif Display"', '400 150px "DM Serif Display"', '700 30px "DM Sans"', '500 34px "DM Sans"'];
+  const fonts = ['62px "CC Smash"', '400 78px "DM Serif Display"', '400 104px "DM Serif Display"', '700 30px "DM Sans"', '400 24px "DM Sans"', '500 34px "DM Sans"'];
   const ready = (document.fonts && document.fonts.load)
     ? Promise.all(fonts.map(f => document.fonts.load(f))).catch(() => {})
     : Promise.resolve();
-  return ready.then(() => {
+  const goggles = _loadCardImg('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(_SHARE_CARD_GOGGLES));
+  const shark = _loadCardImg('/shark-coach.png?v=2');
+  return Promise.all([ready, goggles, shark]).then(([_, gogglesImg, sharkImg]) => {
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
@@ -9197,6 +9268,32 @@ function _drawShareCard(info) {
       }
       ctx.stroke();
     }
+
+    // Header: the full site logo — goggles mark, wordmark ("FOUR" in lap,
+    // like the nav), and the letterspaced tagline underneath.
+    ctx.textBaseline = 'alphabetic';
+    const gW = 250, gH = gW * 33 / 148, gY = 96;
+    if (gogglesImg) ctx.drawImage(gogglesImg, PAD - 14, gY, gW, gH);
+    ctx.font = '62px "CC Smash", Impact, sans-serif';
+    const wordX = PAD - 14 + gW + 20, wordY = gY + gH / 2 + 22;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('LANE ', wordX, wordY);
+    ctx.fillStyle = '#5ddbc9';
+    ctx.fillText('FOUR', wordX + ctx.measureText('LANE ').width, wordY);
+    ctx.font = '400 24px "DM Sans", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.letterSpacing = '13px';
+    ctx.fillText('TRAIN FOR THE FAST LANE', PAD, gY + gH + 46);
+    ctx.letterSpacing = '0px';
+    // Date, top right.
+    ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.textAlign = 'right';
+    ctx.letterSpacing = '4px';
+    ctx.fillText(new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' }).toUpperCase(), W - PAD, gY + 36);
+    ctx.textAlign = 'left';
+    ctx.letterSpacing = '0px';
+
     // Lane-rope dotted line under the header.
     ctx.save();
     ctx.strokeStyle = 'rgba(93,219,201,0.35)';
@@ -9204,56 +9301,47 @@ function _drawShareCard(info) {
     ctx.lineCap = 'round';
     ctx.setLineDash([2, 34]);
     ctx.beginPath();
-    ctx.moveTo(PAD, 208);
-    ctx.lineTo(W - PAD, 208);
+    ctx.moveTo(PAD, 258);
+    ctx.lineTo(W - PAD, 258);
     ctx.stroke();
     ctx.restore();
 
-    // Header: wordmark left, date right.
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = '#5ddbc9';
-    ctx.font = '60px "CC Smash", Impact, sans-serif';
-    ctx.fillText('LANE FOUR', PAD, 160);
-    ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    ctx.textAlign = 'right';
-    ctx.letterSpacing = '4px';
-    ctx.fillText(new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' }).toUpperCase(), W - PAD, 156);
-    ctx.textAlign = 'left';
-
-    // Eyebrow + session title.
+    // Eyebrow + session title (always wrapped onto two balanced lines).
     ctx.fillStyle = '#5ddbc9';
     ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
     ctx.letterSpacing = '7px';
-    ctx.fillText((info.kind === 'swim' ? 'SWIM SET' : info.kind === 'dryland' ? 'DRYLAND WORKOUT' : 'WORKOUT') + ' COMPLETE', PAD, 330);
+    ctx.fillText((info.kind === 'swim' ? 'SWIM SET' : info.kind === 'dryland' ? 'DRYLAND WORKOUT' : 'WORKOUT') + ' COMPLETE', PAD, 348);
     ctx.letterSpacing = '0px';
     ctx.fillStyle = '#ffffff';
-    ctx.font = '400 82px "DM Serif Display", Georgia, serif';
-    const words = String(info.title || (info.kind === 'swim' ? 'Today\'s swim' : 'Today\'s session')).split(/\s+/);
-    const lines = [];
-    let line = '';
-    words.forEach(w => {
-      const t = line ? line + ' ' + w : w;
-      if (ctx.measureText(t).width > W - PAD * 2 && line) { lines.push(line); line = w; } else { line = t; }
-    });
-    if (line) lines.push(line);
-    lines.slice(0, 2).forEach((l, i) => ctx.fillText(l, PAD, 440 + i * 100));
+    const titleText = String(info.title || (info.kind === 'swim' ? 'Today\'s swim session' : 'Today\'s training session'));
+    const title = _twoLineTitle(ctx, titleText, W - PAD * 2, 78);
+    title.lines.forEach((l, i) => ctx.fillText(l, PAD, 440 + i * (title.size + 18)));
 
-    // Stat blocks: yards (when logged) and minutes.
+    // Shark coach on the right, resting on the bottom of the card.
+    if (sharkImg) {
+      const sw = 400, sh = sw * sharkImg.height / sharkImg.width;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 36;
+      ctx.shadowOffsetY = 12;
+      ctx.drawImage(sharkImg, W - sw - 56, H - sh - 56, sw, sh);
+      ctx.restore();
+    }
+
+    // Stat blocks stacked on the left: yards on top, minutes underneath.
     const stats = [];
     if (info.dist) stats.push({ v: info.dist.num.toLocaleString(), l: info.dist.unit.toUpperCase() });
     if (info.minutes) stats.push({ v: String(info.minutes), l: 'MINUTES' });
     if (!stats.length) stats.push({ v: '100%', l: 'EFFORT' });
-    const statY = 780;
     stats.forEach((s, i) => {
-      const x = PAD + i * ((W - PAD * 2) / stats.length);
+      const y = 690 + i * 158;
       ctx.fillStyle = '#ffffff';
-      ctx.font = '400 150px "DM Serif Display", Georgia, serif';
-      ctx.fillText(s.v, x, statY);
+      ctx.font = '400 104px "DM Serif Display", Georgia, serif';
+      ctx.fillText(s.v, PAD, y);
       ctx.fillStyle = 'rgba(93,219,201,0.9)';
-      ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+      ctx.font = '700 26px "DM Sans", system-ui, sans-serif';
       ctx.letterSpacing = '6px';
-      ctx.fillText(s.l, x + 6, statY + 56);
+      ctx.fillText(s.l, PAD + 4, y + 44);
       ctx.letterSpacing = '0px';
     });
 
