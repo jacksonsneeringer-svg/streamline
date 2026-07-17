@@ -6228,44 +6228,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <a href="/get-started" class="btn btn-primary btn-sm signin-create-btn" onclick="navigate('get-started')">Create account</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <div class="google-auth-block" style="display:flex; flex-direction:column; gap:1.1rem;">
-          <div id="google-signin-signin" class="google-btn-slot" data-gsi-text="signin_with" style="display:flex; justify-content:center; min-height:44px;"></div>
-          <div class="auth-or-divider" style="display:flex; align-items:center; gap:0.75rem; color:var(--gray-400); font-size:0.78rem; letter-spacing:0.06em;">
-            <span style="flex:1; height:1px; background:var(--gray-100);"></span>OR USE YOUR EMAIL<span style="flex:1; height:1px; background:var(--gray-100);"></span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email <span style="color:var(--lap);">*</span></label>
-          <input type="email" id="signin-email" class="form-input" placeholder="you@example.com" maxlength="254" required onkeydown="if(event.key==='Enter')signIn()" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password <span style="color:var(--lap);">*</span></label>
-          <div class="pw-field">
-            <input type="password" id="signin-password" class="form-input" placeholder="Your password" maxlength="128" required onkeydown="if(event.key==='Enter')signIn()" />
-            <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
-          </div>
-        </div>
-        <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; font-size:0.86rem; color:var(--text-muted); user-select:none;">
-          <input type="checkbox" />
-          Remember me
-        </label>
-        <button type="button" onclick="toggleForgotPassword()" style="background:none; border:none; padding:0; margin-top:-0.5rem; align-self:flex-start; font-size:0.86rem; color:var(--teal); cursor:pointer; text-decoration:underline;">Forgot password?</button>
-        <div id="forgot-panel" style="display:none; flex-direction:column; gap:0.85rem; background:var(--off-white); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem;">
-          <div id="forgot-local-mode" style="display:none; flex-direction:column; gap:0.85rem;">
-            <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">Enter your account email above, then choose a new password.</p>
-            <div class="pw-field">
-              <input type="password" id="forgot-new-password" class="form-input" placeholder="New password (8+ characters)" maxlength="128" />
-              <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
-            </div>
-            <div class="pw-field">
-              <input type="password" id="forgot-confirm-password" class="form-input" placeholder="Confirm new password" maxlength="128" />
-              <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
-            </div>
-            <button type="button" class="btn btn-primary btn-sm" style="justify-content:center;" onclick="resetPassword()">Reset Password</button>
-          </div>
-        </div>
+        <p style="font-size:0.92rem; color:var(--text-muted); margin:0; line-height:1.6;">Continue with Google to log in &mdash; or to create your account instantly. No password to set or remember.</p>
+        <div id="google-signin-signin" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:center; min-height:44px;"></div>
         <p id="signin-message" style="display:none; font-size:0.86rem; margin:-0.25rem 0 0; color:#c0392b;"></p>
-        <button class="btn btn-gold" style="width:100%; justify-content:center; font-size:1rem; padding:0.75rem 1.5rem;" onclick="signIn()">Go!</button>
+        <p id="google-signin-note" style="display:none; font-size:0.82rem; color:var(--text-muted); margin:0;"></p>
       </div>
     </div>
   </div>
@@ -6329,25 +6295,15 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <a href="/sign-in" class="btn btn-outline-dark btn-sm setup-login-btn" onclick="return navigate('sign-in')">Log in</a>
         </div>
         <h2>Create your account</h2>
-        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Fields marked * are required</p>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Sign in with Google to get started &mdash; no password to set or remember.</p>
       </div>
       <div class="setup-fields">
-        <div class="google-auth-block" style="display:flex; flex-direction:column; gap:1.1rem;">
-          <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="signup_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
-          <p style="font-size:0.8rem; color:var(--text-muted); margin:0;">Fastest way in &mdash; no password to remember.</p>
-          <div class="auth-or-divider" style="display:flex; align-items:center; gap:0.75rem; color:var(--gray-400); font-size:0.78rem; letter-spacing:0.06em;">
-            <span style="flex:1; height:1px; background:var(--gray-100);"></span>OR SIGN UP WITH EMAIL<span style="flex:1; height:1px; background:var(--gray-100);"></span>
-          </div>
-        </div>
-        <div class="form-group"><label class="form-label required-dot">Username</label><input type="text" id="gs-username" class="form-input" placeholder="Alex" maxlength="60" /></div>
-        <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" id="gs-email" class="form-input" placeholder="you@example.com" maxlength="254" /><p class="form-hint">We do not share or sell your personal information.</p></div>
-        <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" id="gs-password" class="form-input" placeholder="8+ characters" maxlength="128" /></div>
-        <div class="form-group"><label class="form-label required-dot">Confirm Password</label><input type="password" id="gs-confirm-password" class="form-input" placeholder="Repeat password" maxlength="128" /></div>
+        <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
+        <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6; margin:0;">We use your Google account only to sign you in. We never see your password and never post anything on your behalf. After this you'll set up your training profile.</p>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
-          <label style="display:flex; align-items:flex-start; gap:0.75rem; cursor:pointer;"><input type="checkbox" id="gs-terms" style="margin-top:0.2rem; flex-shrink:0;" /><span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">I agree to the <a href="/terms-of-use" onclick="navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="navigate('privacy-policy')">Privacy Policy</a>. I understand this platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span></label>
+          <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">By continuing with Google you agree to the <a href="/terms-of-use" onclick="navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="navigate('privacy-policy')">Privacy Policy</a>. This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
         </div>
       </div>
-      <div class="setup-nav"><button class="btn btn-gold" onclick="createAccount()">Create Account →</button></div>
     </div>
     <div class="setup-step-content" id="step-2">
       <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
@@ -10410,9 +10366,10 @@ function renderGoogleButtons() {
 
 function ensureGoogleSignIn() {
   if (!googleClientId()) {
-    // No client id configured: hide the Google buttons and their dividers so
-    // the email/password form stands alone.
-    document.querySelectorAll('.google-auth-block').forEach(b => { b.style.display = 'none'; });
+    // No client id configured: sign-in is unavailable (Google is the only
+    // method). Surface a clear note instead of an empty button slot.
+    const note = document.getElementById('google-signin-note');
+    if (note) { note.textContent = 'Sign-in is temporarily unavailable. Please try again later.'; note.style.display = ''; }
     return;
   }
   if (window.google && google.accounts && google.accounts.id) { renderGoogleButtons(); return; }
