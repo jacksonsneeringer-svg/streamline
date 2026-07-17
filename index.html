@@ -6228,6 +6228,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <a href="/get-started" class="btn btn-primary btn-sm signin-create-btn" onclick="navigate('get-started')">Create account</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="google-auth-block" style="display:flex; flex-direction:column; gap:1.1rem;">
+          <div id="google-signin-signin" class="google-btn-slot" data-gsi-text="signin_with" style="display:flex; justify-content:center; min-height:44px;"></div>
+          <div class="auth-or-divider" style="display:flex; align-items:center; gap:0.75rem; color:var(--gray-400); font-size:0.78rem; letter-spacing:0.06em;">
+            <span style="flex:1; height:1px; background:var(--gray-100);"></span>OR USE YOUR EMAIL<span style="flex:1; height:1px; background:var(--gray-100);"></span>
+          </div>
+        </div>
         <div class="form-group">
           <label class="form-label">Email <span style="color:var(--lap);">*</span></label>
           <input type="email" id="signin-email" class="form-input" placeholder="you@example.com" maxlength="254" required onkeydown="if(event.key==='Enter')signIn()" />
@@ -6326,6 +6332,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Fields marked * are required</p>
       </div>
       <div class="setup-fields">
+        <div class="google-auth-block" style="display:flex; flex-direction:column; gap:1.1rem;">
+          <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="signup_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin:0;">Fastest way in &mdash; no password to remember.</p>
+          <div class="auth-or-divider" style="display:flex; align-items:center; gap:0.75rem; color:var(--gray-400); font-size:0.78rem; letter-spacing:0.06em;">
+            <span style="flex:1; height:1px; background:var(--gray-100);"></span>OR SIGN UP WITH EMAIL<span style="flex:1; height:1px; background:var(--gray-100);"></span>
+          </div>
+        </div>
         <div class="form-group"><label class="form-label required-dot">Username</label><input type="text" id="gs-username" class="form-input" placeholder="Alex" maxlength="60" /></div>
         <div class="form-group"><label class="form-label required-dot">Email Address</label><input type="email" id="gs-email" class="form-input" placeholder="you@example.com" maxlength="254" /><p class="form-hint">We do not share or sell your personal information.</p></div>
         <div class="form-group"><label class="form-label required-dot">Password</label><input type="password" id="gs-password" class="form-input" placeholder="8+ characters" maxlength="128" /></div>
@@ -7617,6 +7630,7 @@ function showPage(pageId, allowSetup) {
   if (pageId === 'profile') renderProfilePage();
   if (pageId === 'my-training') { updateTrainingPage(); showDashView('overview'); renderWorkoutLog(); }
   if (pageId === 'contact') { prefillContactForm(); ensureContactRecaptcha(); }
+  if (pageId === 'sign-in' || pageId === 'get-started') ensureGoogleSignIn();
 }
 
 function navigate(pageId, allowSetup) {
@@ -10308,6 +10322,109 @@ async function authApi(action, payload) {
   let data = {};
   try { data = await res.json(); } catch (e) {}
   return { ok: res.ok, status: res.status, data };
+}
+
+// ── Sign in with Google ─────────────────────────────────────────────────────
+// Google Identity Services renders the button and hands us a signed ID token
+// (a JWT) in the callback. On the live site that token goes to the backend,
+// which verifies it with Google and issues a session. With no backend (local
+// dev) we decode the token's payload just to populate the localStorage-fallback
+// account — that path is dev-only and does no signature check.
+let _gsiLoading = false, _gsiReady = false;
+function googleClientId() { return window.STREAMLINE_GOOGLE_CLIENT_ID || ''; }
+
+function decodeJwtPayload(jwt) {
+  try {
+    const b64 = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const json = decodeURIComponent(atob(b64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return JSON.parse(json);
+  } catch (e) { return null; }
+}
+
+function googleAuthError(msg) {
+  if (document.querySelector('#page-sign-in.active')) { showSignInMessage(msg, true); return; }
+  alert(msg);
+}
+
+async function handleGoogleCredential(response) {
+  const credential = response && response.credential;
+  if (!credential) return;
+  const onGetStarted = !!document.querySelector('#page-get-started.active');
+  if (apiBase()) {
+    let r;
+    try { r = await authApi('google', { credential }); }
+    catch (e) { googleAuthError('Could not reach the server. Please check your connection and try again.'); return; }
+    if (!r.ok) { googleAuthError(r.data.error || 'Google sign-in failed. Please try again.'); return; }
+    const mergedTraining = mergeLocalTraining(r.data);
+    setSession(r.data);
+    if (mergedTraining) syncTrainingToServer();
+  } else {
+    const claims = decodeJwtPayload(credential);
+    if (!claims || !claims.email) { googleAuthError('Google sign-in is only available on the live site.'); return; }
+    const email = String(claims.email).toLowerCase();
+    const existing = getUsers()[email];
+    const firstName = existing ? existing.firstName
+      : (claims.given_name || (claims.name || '').split(' ')[0] || email.split('@')[0] || 'Swimmer');
+    const account = { firstName, lastName: (existing && existing.lastName) || '', email, createdAt: (existing && existing.createdAt) || Date.now() };
+    saveUser({ ...account, authProvider: 'google' });
+    localStorage.setItem('streamline_account', JSON.stringify(account));
+  }
+
+  showSignInMessage('', false);
+  updateNavButton();
+  if (onGetStarted) {
+    // Brand-new Google accounts land on the profile-setup steps to personalize
+    // their plan; returning users already have a profile and skip ahead.
+    _previousPage = localStorage.getItem('streamline_pre_signup_page') || _previousPage;
+    const acct = getAccount();
+    const greeting = document.getElementById('account-created-greeting');
+    if (greeting && acct) greeting.textContent = 'Welcome, ' + acct.firstName + '!';
+    const hasProfile = Object.keys(getProfile() || {}).length > 0;
+    navigate('get-started', true);
+    if (hasProfile) { navigate('my-training'); } else { goToStep(2); }
+  } else {
+    navigate('my-training');
+  }
+}
+
+function renderGoogleButtons() {
+  if (!window.google || !google.accounts || !google.accounts.id) return;
+  if (!_gsiReady) {
+    google.accounts.id.initialize({ client_id: googleClientId(), callback: handleGoogleCredential, ux_mode: 'popup', auto_select: false });
+    _gsiReady = true;
+  }
+  document.querySelectorAll('.google-btn-slot').forEach(slot => {
+    // Skip slots that are already drawn or currently hidden (on an inactive
+    // page); the latter render when their page is shown.
+    if (slot.dataset.rendered || slot.offsetParent === null) return;
+    try {
+      google.accounts.id.renderButton(slot, {
+        theme: 'outline', size: 'large', shape: 'rectangular', logo_alignment: 'center',
+        text: slot.dataset.gsiText || 'continue_with',
+        width: Math.min(400, Math.max(240, slot.clientWidth || 320))
+      });
+      slot.dataset.rendered = '1';
+    } catch (e) {}
+  });
+}
+
+function ensureGoogleSignIn() {
+  if (!googleClientId()) {
+    // No client id configured: hide the Google buttons and their dividers so
+    // the email/password form stands alone.
+    document.querySelectorAll('.google-auth-block').forEach(b => { b.style.display = 'none'; });
+    return;
+  }
+  if (window.google && google.accounts && google.accounts.id) { renderGoogleButtons(); return; }
+  if (_gsiLoading) return;
+  _gsiLoading = true;
+  const s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client';
+  s.async = true;
+  s.defer = true;
+  s.onload = () => renderGoogleButtons();
+  s.onerror = () => { _gsiLoading = false; };
+  document.head.appendChild(s);
 }
 
 function setSession(data) {

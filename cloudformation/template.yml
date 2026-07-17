@@ -28,6 +28,11 @@ Parameters:
     NoEcho: true
     Default: ""
 
+  GoogleClientId:
+    Type: String
+    Description: Google OAuth 2.0 Web client ID used to verify "Sign in with Google" credentials server-side. This is a public value (also rendered into the client). Empty disables Google sign-in.
+    Default: "999928080923-q8e138qp4asjtm9bjl3gl9fgg3lp7dj3.apps.googleusercontent.com"
+
 Resources:
 
   # ─── S3 / CLOUDFRONT ───────────────────────────────────────────────────────
@@ -522,9 +527,11 @@ Resources:
           SITE_URL: !Sub "https://${DomainName}"
           EMAIL_FROM: "LANE FOUR <noreply@winlanefour.com>"
           RESEND_API_KEY: !Ref ResendApiKey
+          GOOGLE_CLIENT_ID: !Ref GoogleClientId
       Code:
         ZipFile: |
           import json, os, re, time, hmac, hashlib, secrets, boto3, urllib.request
+          from urllib.parse import quote
           from datetime import datetime, timezone
           from boto3.dynamodb.conditions import Attr
 
@@ -545,6 +552,7 @@ Resources:
           SITE_URL = os.environ.get('SITE_URL', 'https://winlanefour.com')
           EMAIL_FROM = os.environ.get('EMAIL_FROM', 'LANE FOUR <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+          GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
           SESSION_TTL = 30 * 24 * 3600  # 30 days
           RESET_TTL = 3600              # 1 hour
           ITERATIONS = 120000
@@ -812,14 +820,16 @@ Resources:
 
           # CCPA/CPRA right to delete, self-service: removes the account and
           # every row keyed to it (user, training plan, sessions/tokens,
-          # newsletter subscription, contact messages). Password re-entry
-          # required so a stolen session token alone can't destroy an account.
+          # newsletter subscription, contact messages). Password-backed accounts
+          # must re-enter their password so a stolen session token alone can't
+          # destroy an account; Google accounts have no password, so a valid
+          # session is the only proof of identity available for them.
           def delete_account(body):
             session = get_valid_token(body.get('token') or '', 'session')
             user = get_user(session['email']) if session else None
             if not user:
               return resp(401, {'error': 'Session expired. Please log in again.'})
-            if not verify_password(body.get('password') or '', user.get('passwordHash', '')):
+            if user.get('passwordHash') and not verify_password(body.get('password') or '', user.get('passwordHash', '')):
               return resp(401, {'error': 'That password is not correct.'})
             email = user['email']
             errors = []
@@ -903,7 +913,75 @@ Resources:
             tokens.delete_item(Key={'token': token_item['token']})  # single use
             return resp(200, {'success': True})
 
-          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'favorites': save_favorites, 'training': save_training, 'delete': delete_account}
+          # ── Sign in with Google ──────────────────────────────────────────────
+          # Accounts created this way have no password: the passwordHash field is
+          # simply never set. Identity is proven by a Google ID token (a signed
+          # JWT) that the browser gets from Google Identity Services and posts
+          # here. We hand that token to Google's tokeninfo endpoint, which does
+          # the JWT signature / issuer / expiry checks; we then confirm the
+          # audience is our own client ID so a token minted for some other app
+          # can never mint a session here.
+          def verify_google_token(id_token):
+            if not id_token or not isinstance(id_token, str) or len(id_token) > 8000:
+              return None
+            try:
+              req = urllib.request.Request(
+                'https://oauth2.googleapis.com/tokeninfo?id_token=' + quote(id_token, safe=''),
+                headers={'User-Agent': 'lane-four-auth/1.0 (+https://winlanefour.com)', 'Accept': 'application/json'})
+              with urllib.request.urlopen(req, timeout=10) as r:
+                claims = json.loads(r.read())
+            except Exception as e:
+              print('google tokeninfo failed:', e)
+              return None
+            if not GOOGLE_CLIENT_ID or claims.get('aud') != GOOGLE_CLIENT_ID:
+              return None
+            if claims.get('iss') not in ('accounts.google.com', 'https://accounts.google.com'):
+              return None
+            # email_verified comes back as the string 'true' from tokeninfo.
+            if str(claims.get('email_verified')).lower() != 'true':
+              return None
+            if not claims.get('email'):
+              return None
+            return claims
+
+          def google_auth(body):
+            if not GOOGLE_CLIENT_ID:
+              return resp(503, {'error': 'Google Sign-In is not configured.'})
+            claims = verify_google_token(body.get('credential') or '')
+            if not claims:
+              return resp(401, {'error': 'Google sign-in failed. Please try again.'})
+            email = (claims.get('email') or '').strip().lower()
+            if not re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', email):
+              return resp(400, {'error': 'A valid email is required.'})
+            sub = str(claims.get('sub') or '')
+            user = get_user(email)
+            if not user:
+              first = clean_name(claims.get('given_name') or (claims.get('name') or '').split(' ')[0] or email.split('@')[0])
+              last = clean_name(claims.get('family_name'))
+              user = {
+                'email': email, 'firstName': first or 'Swimmer', 'lastName': last,
+                'authProvider': 'google', 'googleSub': sub,
+                'createdAt': int(time.time() * 1000),
+                'profile': json.dumps({})
+              }
+              users.put_item(Item=user)
+              try:
+                lam.invoke(FunctionName='streamline-welcome-email', InvocationType='Event',
+                           Payload=json.dumps({'email': email}).encode())
+              except Exception as e:
+                print('welcome email invoke failed:', e)
+            elif sub and not user.get('googleSub'):
+              # An existing (password) account signs in with Google for the first
+              # time: link the Google identity so future logins match by sub too.
+              user['googleSub'] = sub
+              user['authProvider'] = user.get('authProvider') or 'google'
+              try:
+                users.put_item(Item=user)
+              except Exception as e:
+                print('google link save failed:', e)
+            return resp(200, session_payload(user))
+
+          ACTIONS = {'signup': signup, 'login': login, 'google': google_auth, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'favorites': save_favorites, 'training': save_training, 'delete': delete_account}
 
           def handler(event, context):
             if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':

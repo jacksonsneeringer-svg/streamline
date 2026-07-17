@@ -68,6 +68,11 @@ jobs:
 
       - name: Deploy CloudFormation stack
         run: |
+          # Google OAuth Web client ID (public). Override via the GOOGLE_CLIENT_ID
+          # repo secret; otherwise fall back to the project's configured client ID
+          # so the stack's default and the client stay in sync.
+          GOOGLE_CLIENT_ID='${{ secrets.GOOGLE_CLIENT_ID }}'
+          [ -z "$GOOGLE_CLIENT_ID" ] && GOOGLE_CLIENT_ID='999928080923-q8e138qp4asjtm9bjl3gl9fgg3lp7dj3.apps.googleusercontent.com'
           aws cloudformation deploy \
             --template-file cloudformation/template.yml \
             --s3-bucket ${{ env.ARTIFACTS_BUCKET }} \
@@ -79,6 +84,7 @@ jobs:
               ResendApiKey=${{ secrets.RESEND_API_KEY }} \
               EditorPassword=${{ secrets.EDITOR_PASSWORD }} \
               RecaptchaSecretKey=${{ secrets.RECAPTCHA_SECRET_KEY }} \
+              GoogleClientId="$GOOGLE_CLIENT_ID" \
             --capabilities CAPABILITY_NAMED_IAM \
             --region ${{ env.AWS_REGION }} \
             --no-fail-on-empty-changeset
@@ -125,6 +131,11 @@ jobs:
           # reCAPTCHA v2 SITE key (public, safe in client JS). The matching
           # SECRET key is passed to the stack as RecaptchaSecretKey above.
           echo "window.STREAMLINE_RECAPTCHA_SITE_KEY = '${{ secrets.RECAPTCHA_SITE_KEY }}';" >> api-config.js
+          # Google OAuth Web client ID (public). Must match the GoogleClientId the
+          # stack verifies against; falls back to the project's configured id.
+          GOOGLE_CLIENT_ID='${{ secrets.GOOGLE_CLIENT_ID }}'
+          [ -z "$GOOGLE_CLIENT_ID" ] && GOOGLE_CLIENT_ID='999928080923-q8e138qp4asjtm9bjl3gl9fgg3lp7dj3.apps.googleusercontent.com'
+          echo "window.STREAMLINE_GOOGLE_CLIENT_ID = '$GOOGLE_CLIENT_ID';" >> api-config.js
 
       # Writes one <route>/index.html per page and blog post (with per-route
       # title/description/canonical/social/JSON-LD head tags) plus sitemap.xml,
