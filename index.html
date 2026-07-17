@@ -2757,6 +2757,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .no-print, .no-print * { display: none !important; }
   .focus-cue-body { display: block !important; }
   .focus-cue-chevron { display: none !important; }
+  .exd-detail { display: block !important; }
+  .exd-chevron { display: none !important; }
 }
 .level-tab {
   font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em;
@@ -2814,6 +2816,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .ex-table tr:last-child td { border-bottom: none; }
 .ex-table tr:hover td { background: var(--off-white, #f0f7f6); }
 .mtag { font-size: 0.82rem; color: var(--gray-500); }
+/* Collapsible per-exercise details (dryland description + targets, swim drill
+   notes). Desktop renders everything expanded with an inert toggle so nothing
+   changes there; the mobile media block below turns the header into a
+   tappable expander. */
+.exd-toggle { display: flex; align-items: flex-start; gap: 0.5rem; width: 100%; background: none; border: none; padding: 0; font: inherit; color: inherit; text-align: left; cursor: default; pointer-events: none; }
+.exd-chevron { display: none; flex-shrink: 0; margin-left: auto; margin-top: 0.2em; color: var(--gray-400); transition: transform 0.2s; }
+.exd-presc-inline { display: none; }
+.dl-ex-note { font-size: 0.78rem; color: var(--gray-400); font-weight: 400; margin: 0.15rem 0 0; line-height: 1.5; }
+.dl-ex-targets { display: none; }
+.set-rows .set-item .exd-detail { margin-top: 0.7rem; }
 /* Recipe cards (My Training meal plan): ingredients + steps side by side,
    stacked on small screens. */
 @media (max-width: 700px) {
@@ -3021,18 +3033,29 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     padding: 0;
   }
   .ex-table.dryland-ex-table tr:hover td { background: transparent; }
-  .ex-table.dryland-ex-table td:first-child {
-    font-size: 0.95rem;
-    margin-bottom: 0.35rem;
-  }
-  /* Reps / target sit together on a line under the exercise name */
-  .ex-table.dryland-ex-table td:not(:first-child) {
-    display: inline-block;
-    width: auto;
-    font-size: 0.8rem;
-    color: var(--gray-400);
-    margin-right: 0.85rem;
-  }
+  .ex-table.dryland-ex-table td.dl-ex-cell { font-size: 0.95rem; }
+  /* Reps move up next to the exercise title (as a pill) and the desktop
+     Sets/Reps + Target columns fold into the expandable detail instead. */
+  .ex-table.dryland-ex-table td.dl-col-desktop { display: none; }
+
+  /* Collapsible exercise details: tappable header with the reps pill and a
+     chevron; description + targets expand underneath. */
+  .exd-toggle { pointer-events: auto; cursor: pointer; }
+  .exd-toggle.exd-static { pointer-events: none; cursor: default; }
+  .exd-chevron { display: block; }
+  .exd-presc-inline { display: inline-block; font-size: 0.76rem; font-weight: 600; color: var(--teal); background: var(--lap-pale); border-radius: 999px; padding: 0.16rem 0.6rem; white-space: nowrap; flex-shrink: 0; }
+  .exd-detail { display: none; }
+  .exd-item.open .exd-detail { display: block; margin-top: 0.5rem; }
+  .exd-item.open .exd-chevron { transform: rotate(180deg); }
+  .dl-ex-note { margin: 0; font-size: 0.8rem; }
+  /* Distinct "Targets" block so it's obvious which muscles the move hits */
+  .dl-ex-targets { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px dashed var(--gray-100); }
+  .dl-ex-note + .dl-ex-targets { margin-top: 0.5rem; }
+  .dl-ex-targets-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-right: 0.15rem; }
+  .dl-ex-targets .mtag { font-size: 0.74rem; color: var(--gray-500); background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 999px; padding: 0.14rem 0.55rem; }
+  /* Swim set lines: a touch more breathing room between collapsible rows */
+  .set-rows { gap: 0.85rem; }
+  .set-rows .set-item.exd-item.open .exd-detail { margin-top: 0.4rem; }
 }
 /* Swim set + dryland daily header: on mobile, stack the title above the
    favorite/print buttons (instead of squeezing them into one nowrap row) and
@@ -11504,6 +11527,9 @@ const SECTION_COLORS = {
 
 const PRINT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
 
+// Chevron for the mobile collapsible exercise/drill details.
+const EXD_CHEVRON_SVG = '<svg class="exd-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+
 // Original LANE FOUR rest-day mark: a hand-built crescent moon (recovery /
 // sleep) with two stylized "Z" sleep cues, replacing the bed emoji so the rest
 // card uses our own iconography in the brand teal.
@@ -11518,11 +11544,16 @@ function buildSetSectionsHtml(sections) {
     // descriptor text for every level; the effort is self-explanatory.
     const suppressSectionNote = /warm|cool/i.test(sec.name || '');
     const items = (sec.items || []).map(item => {
-      let h = `<div class="set-row">${formatCalLabel(escHtml(item.text))}</div>`;
+      const label = formatCalLabel(escHtml(item.text));
       const isEasy = /\beasy\b/i.test(item.text || '');
       const note = (suppressSectionNote || isEasy) ? '' : cleanNote(item.note);
-      if (note) h += `<div class="set-note">${escHtml(note)}</div>`;
-      return h;
+      if (!note) return `<div class="set-row">${label}</div>`;
+      // Lines with a descriptor collapse it under the line on mobile (the
+      // toggle is inert on desktop, where the note stays visible).
+      return `<div class="set-item exd-item">
+        <button type="button" class="exd-toggle" aria-expanded="false" onclick="toggleExDetail(this)"><span class="set-row">${label}</span>${EXD_CHEVRON_SVG}</button>
+        <div class="exd-detail"><div class="set-note">${escHtml(note)}</div></div>
+      </div>`;
     }).join('');
     html += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
@@ -11593,6 +11624,16 @@ function toggleFocusCue(btn) {
   const wrap = btn.closest('.focus-cue');
   if (!wrap) return;
   const open = wrap.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+// Mobile-only expand/collapse for per-exercise details (description + targets
+// on dryland rows, drill notes on swim set lines). On desktop the details are
+// always visible and the toggle is inert (pointer-events: none).
+function toggleExDetail(btn) {
+  const item = btn.closest('.exd-item');
+  if (!item) return;
+  const open = item.classList.toggle('open');
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
@@ -12176,11 +12217,26 @@ function buildDrylandSectionsHtml(sections) {
     const rows = (sec.items || []).map(item => {
       const ex = item.exercise || item.text || '';
       const noteText = cleanNote(item.note);
-      const note = noteText ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(noteText)}</span>` : '';
-      const muscles = Array.isArray(item.muscles) && item.muscles.length
-        ? item.muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(', ') : '';
+      const muscles = Array.isArray(item.muscles) ? item.muscles : [];
       const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
-      return `<tr><td><strong>${escHtml(ex)}</strong>${note}</td><td>${presc}</td><td>${muscles}</td></tr>`;
+      // Mobile: reps sit next to the exercise title as a pill, and the
+      // description + a labeled "Targets" group collapse under the title.
+      // Desktop keeps the three-column table (the toggle is inert, the
+      // description stays visible, and the targets render in their column).
+      const prescInline = presc ? `<span class="exd-presc-inline">${presc}</span>` : '';
+      const noteHtml = noteText ? `<p class="dl-ex-note">${escHtml(noteText)}</p>` : '';
+      const targetsHtml = muscles.length
+        ? `<div class="dl-ex-targets"><span class="dl-ex-targets-label">Targets</span>${muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join('')}</div>` : '';
+      const hasDetail = !!(noteHtml || targetsHtml);
+      const head = hasDetail
+        ? `<button type="button" class="exd-toggle" aria-expanded="false" onclick="toggleExDetail(this)"><strong>${escHtml(ex)}</strong>${prescInline}${EXD_CHEVRON_SVG}</button>`
+        : `<div class="exd-toggle exd-static"><strong>${escHtml(ex)}</strong>${prescInline}</div>`;
+      const musclesDesktop = muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(', ');
+      return `<tr class="exd-item">
+        <td class="dl-ex-cell">${head}${hasDetail ? `<div class="exd-detail">${noteHtml}${targetsHtml}</div>` : ''}</td>
+        <td class="dl-col-desktop">${presc}</td>
+        <td class="dl-col-desktop">${musclesDesktop}</td>
+      </tr>`;
     }).join('');
     html += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
