@@ -2505,7 +2505,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .setup-content { padding: calc(var(--nav-h) + 2rem) 1.5rem 3.5rem; }
   .setup-login-link { display: none; }
   .setup-login-btn { display: inline-flex; margin-left: auto; }
-  .dashboard-layout { grid-template-columns: minmax(0, 1fr); }
+  /* Single column: the sidebar becomes a top tab bar sized to its content
+     (auto). Without the explicit rows, the grid's min-height stretches the
+     sidebar row too, leaving a tall empty dark-teal band between the tab bar
+     and short views like Favorites. */
+  .dashboard-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
   .dashboard-sidebar, .dashboard-main { min-width: 0; }
   /* Keep the dashboard nav available on mobile as a horizontal tab bar */
   .dashboard-sidebar {
@@ -2990,38 +2994,39 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .swim-level-layout { flex-direction: column; align-items: stretch; }
   .swim-sidebar { width: 100%; position: static; }
 }
-/* Dryland exercise tables: stacked, readable cards on mobile instead of the
-   global nowrap horizontal-scroll fallback (which pushes the exercise
-   descriptions off-screen). */
+/* Dryland exercise tables (daily page, My Training lift view, archive/favorite
+   detail modals): stacked, readable cards on mobile instead of the global
+   nowrap horizontal-scroll fallback (which pushes the exercise descriptions
+   off-screen). */
 @media (max-width: 768px) {
-  #page-dryland-workouts .ex-table,
-  #page-dryland-workouts .ex-table tbody,
-  #page-dryland-workouts .ex-table tr,
-  #page-dryland-workouts .ex-table td {
+  .ex-table.dryland-ex-table,
+  .ex-table.dryland-ex-table tbody,
+  .ex-table.dryland-ex-table tr,
+  .ex-table.dryland-ex-table td {
     display: block;
     width: 100%;
     overflow: visible;
     white-space: normal;
   }
-  #page-dryland-workouts .ex-table thead { display: none; }
-  #page-dryland-workouts .ex-table tr {
+  .ex-table.dryland-ex-table thead { display: none; }
+  .ex-table.dryland-ex-table tr {
     border: 1px solid var(--gray-100);
     border-radius: var(--r-md);
     padding: 0.8rem 0.95rem;
     margin-bottom: 0.55rem;
   }
-  #page-dryland-workouts .ex-table tr:last-child { margin-bottom: 0; }
-  #page-dryland-workouts .ex-table td {
+  .ex-table.dryland-ex-table tr:last-child { margin-bottom: 0; }
+  .ex-table.dryland-ex-table td {
     border: none !important;
     padding: 0;
   }
-  #page-dryland-workouts .ex-table tr:hover td { background: transparent; }
-  #page-dryland-workouts .ex-table td:first-child {
+  .ex-table.dryland-ex-table tr:hover td { background: transparent; }
+  .ex-table.dryland-ex-table td:first-child {
     font-size: 0.95rem;
     margin-bottom: 0.35rem;
   }
   /* Reps / target sit together on a line under the exercise name */
-  #page-dryland-workouts .ex-table td:not(:first-child) {
+  .ex-table.dryland-ex-table td:not(:first-child) {
     display: inline-block;
     width: auto;
     font-size: 0.8rem;
@@ -3034,8 +3039,12 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
    tighten the page hero + level tabs. */
 @media (max-width: 768px) {
   .swim-set-head { flex-direction: column; gap: 0.9rem !important; margin-bottom: 1.5rem !important; }
-  .swim-set-head h2 { font-size: 1.35rem !important; }
-  .swim-set-head .set-action-btns { width: 100%; }
+  .swim-set-head h2,
+  .swim-set-head h3 { font-size: 1.35rem !important; }
+  /* The My Training plan headers stack their buttons in a column and
+     right-align them (inline styles); on mobile stretch them across the full
+     row instead so nothing is squeezed against the title. */
+  .swim-set-head .set-action-btns { width: 100%; align-items: stretch !important; }
   .swim-set-head .set-action-btns .btn { flex: 1; justify-content: center; }
   #page-swim-sets .page-hero-sm,
   #page-dryland-workouts .page-hero-sm { padding: 3rem 0 2.25rem; }
@@ -6090,7 +6099,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Meal Plan</h2>
         <p style="color:var(--gray-400); font-size:0.8rem; margin:0.5rem 0 0;">LANE FOUR nutrition guidance; not advice from a licensed dietician.</p>
-        <p style="color:var(--gray-400); font-size:0.8rem; margin:0.35rem 0 0;">Struggling with food or body image? Free, confidential support: <a href="https://www.nationaleatingdisorders.org" target="_blank" rel="noopener" style="color:var(--teal);">National Eating Disorders Association</a>, or call or text <strong>988</strong>.</p>
       </div>
       <div id="profile-nudge-meal"></div>
       <div id="dash-meal-detail">
@@ -6101,6 +6109,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <button class="btn btn-outline-dark" onclick="editProfile()">Update Your Profile</button>
       </div>
       </div>
+      <p style="color:var(--gray-400); font-size:0.8rem; margin:1.5rem 0 0;">Struggling with food or body image? Free, confidential support: <a href="https://www.nationaleatingdisorders.org" target="_blank" rel="noopener" style="color:var(--teal);">National Eating Disorders Association</a>, or call or text <strong>988</strong>.</p>
     </div>
 
     <!-- ── Favorites view ── -->
@@ -8492,7 +8501,7 @@ function renderPlanSwimView() {
   if (day.swimSet) {
     const s = day.swimSet;
     el.innerHTML = `<div class="swim-print-area">
-      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
+      <div class="swim-set-head" style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
         <div style="min-width:0;">
           <span class="eyebrow">${escHtml(day.day)} · ${escHtml(planCap(_trainingPlan.level || ''))}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
           <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(deDash(s.title || 'Today\'s Swim'))}</h3>
@@ -8529,7 +8538,7 @@ function renderPlanLiftView() {
     ].filter(Boolean);
     const liftId = 'plan-lift-' + _trainingPlan.weekStart + '-' + day.day;
     el.innerHTML = `<div class="swim-print-area">
-      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
+      <div class="swim-set-head" style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem;">
         <div style="min-width:0;">
           <span class="eyebrow">${escHtml(day.day)}${_trainingPlan.liftCategory ? ' · ' + escHtml(_trainingPlan.liftCategory) : ''}${_trainingPlan.phaseLabel ? ' · ' + escHtml(_trainingPlan.phaseLabel) : ''}</span>
           <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--deep); font-weight:400; margin-top:0.25rem;">${escHtml(deDash(w.title || 'Today\'s Lift'))}</h3>
@@ -8925,14 +8934,18 @@ function editProfile() {
 }
 
 // ── Workout log & progress ──────────────────────────────────────────────────
-// One shared log (localStorage) feeds the Log Workout view, the Progress view,
-// the overview Progress card, and the one-tap "Log This Workout" buttons on
-// Today's Swim / Today's Lift.
+// One shared log feeds the Log Workout view, the Progress view, the overview
+// Progress card, and the one-tap "Log This Workout" buttons on Today's Swim /
+// Today's Lift. localStorage is the working copy; every save is pushed to the
+// signed-in account so the log follows the athlete across devices.
 
 function getWorkoutLogs() {
   try { return JSON.parse(localStorage.getItem('streamline_workout_log') || '[]'); } catch (e) { return []; }
 }
-function saveWorkoutLogs(logs) { localStorage.setItem('streamline_workout_log', JSON.stringify(logs)); }
+function saveWorkoutLogs(logs) {
+  localStorage.setItem('streamline_workout_log', JSON.stringify(logs));
+  syncTrainingToServer();
+}
 
 function localISODate(d) {
   d = d || new Date();
@@ -9873,13 +9886,17 @@ function initProgChartTip(scope) {
 }
 
 // ── Personal records (Progress view) ────────────────────────────────────────
-// Best times the athlete records by hand, stored per device like the workout
-// log. Rendered above Recent Workouts.
+// Best times the athlete records by hand. Like the workout log, localStorage
+// is the working copy and every save syncs to the signed-in account.
+// Rendered above Recent Workouts.
 
 function getPRs() {
   try { return JSON.parse(localStorage.getItem('streamline_prs') || '[]'); } catch (e) { return []; }
 }
-function savePRs(prs) { localStorage.setItem('streamline_prs', JSON.stringify(prs)); }
+function savePRs(prs) {
+  localStorage.setItem('streamline_prs', JSON.stringify(prs));
+  syncTrainingToServer();
+}
 
 let _prFormOpen = false;
 function togglePrForm() { _prFormOpen = !_prFormOpen; renderProgress(); }
@@ -10273,14 +10290,46 @@ function setSession(data) {
   if (data.token) localStorage.setItem('streamline_session', data.token);
   if (data.account) localStorage.setItem('streamline_account', JSON.stringify(data.account));
   if (data.profile) localStorage.setItem('streamline_profile', JSON.stringify(data.profile));
-  // Favorites are account data: the server copy replaces whatever this
-  // browser had, so the same list follows the user across tabs and devices.
+  // Favorites, workout logs, and PRs are account data: the server copy
+  // replaces whatever this browser had, so the same lists follow the user
+  // across tabs, browsers, and devices.
   if (Array.isArray(data.favorites)) localStorage.setItem('streamline_favorites', JSON.stringify(data.favorites));
+  if (Array.isArray(data.workoutLog)) localStorage.setItem('streamline_workout_log', JSON.stringify(data.workoutLog));
+  if (Array.isArray(data.prs)) localStorage.setItem('streamline_prs', JSON.stringify(data.prs));
+}
+
+// Workouts and PRs logged on this device before signing in are folded into
+// the account at login (deduped by savedAt) instead of being overwritten by
+// the server copy. Mutates the payload before setSession applies it; returns
+// true when local entries were added, so the caller can push the merge back
+// to the server.
+function mergeLocalTraining(data) {
+  const merge = (local, server) => {
+    const seen = new Set(server.map(e => Number(e && e.savedAt)));
+    const extras = local.filter(e => e && e.savedAt && !seen.has(Number(e.savedAt)));
+    return extras.length
+      ? server.concat(extras).sort((a, b) => (Number(b.savedAt) || 0) - (Number(a.savedAt) || 0))
+      : null;
+  };
+  const logs = merge(getWorkoutLogs(), Array.isArray(data.workoutLog) ? data.workoutLog : []);
+  if (logs) data.workoutLog = logs;
+  const prs = merge(getPRs(), Array.isArray(data.prs) ? data.prs : []);
+  if (prs) data.prs = prs;
+  return !!(logs || prs);
+}
+
+// Re-render every view fed by the workout log / PRs after their localStorage
+// copies change from outside the normal save path (server refresh, another
+// tab). Each renderer bails when its view isn't in the DOM/open.
+function rerenderTrainingData() {
+  renderWorkoutLog();
+  renderProgress();
+  updateProgressCard();
 }
 
 // On load, pull the signed-in account's latest data from the server so
-// favorites (and profile edits) saved from another tab, browser, or device
-// show up here without needing to log in again.
+// favorites, workout logs, PRs (and profile edits) saved from another tab,
+// browser, or device show up here without needing to log in again.
 async function refreshAccountFromServer() {
   const token = localStorage.getItem('streamline_session');
   if (!apiBase() || !token || !getAccount()) return;
@@ -10293,6 +10342,7 @@ async function refreshAccountFromServer() {
     updateNavButton();
     refreshAllFavButtons();
     rerenderOpenFavoriteViews();
+    rerenderTrainingData();
   } catch (e) {}
 }
 window.addEventListener('DOMContentLoaded', refreshAccountFromServer);
@@ -10372,7 +10422,9 @@ async function signIn() {
         : (r.data.error || 'Something went wrong. Please try again.'), true);
       return;
     }
+    const mergedTraining = mergeLocalTraining(r.data);
     setSession(r.data);
+    if (mergedTraining) syncTrainingToServer();
   } else {
     const user = getUsers()[email.toLowerCase()];
     if (!user || user.passwordHash !== await hashPassword(password)) {
@@ -10521,7 +10573,9 @@ async function createAccount() {
     try { r = await authApi('signup', { firstName, lastName, email, password }); }
     catch (e) { alert('Could not reach the server. Please check your connection and try again.'); return; }
     if (!r.ok) { alert(r.data.error || 'Could not create your account. Please try again.'); return; }
+    const mergedTraining = mergeLocalTraining(r.data);
     setSession(r.data);
+    if (mergedTraining) syncTrainingToServer();
   } else {
     const account = { firstName, lastName, email, createdAt: Date.now() };
     saveUser({ ...account, passwordHash: await hashPassword(password) });
@@ -10554,10 +10608,15 @@ function signOut() {
   localStorage.removeItem('streamline_session');
   localStorage.removeItem('streamline_account');
   localStorage.removeItem('streamline_profile');
-  // Favorites belong to the account: on the live site the server holds them
-  // (they come back at next login), so don't leave them behind for whoever
-  // signs in next on this device. Local dev has no server copy, so keep them.
-  if (apiBase()) localStorage.removeItem('streamline_favorites');
+  // Favorites, workout logs, and PRs belong to the account: on the live site
+  // the server holds them (they come back at next login), so don't leave them
+  // behind for whoever signs in next on this device. Local dev has no server
+  // copy, so keep them.
+  if (apiBase()) {
+    localStorage.removeItem('streamline_favorites');
+    localStorage.removeItem('streamline_workout_log');
+    localStorage.removeItem('streamline_prs');
+  }
   _trainingPlan = null;
   clearTimeout(_planPollTimer);
   updateNavButton();
@@ -10586,6 +10645,8 @@ async function deleteMyAccount() {
     localStorage.removeItem('streamline_account');
     localStorage.removeItem('streamline_profile');
     localStorage.removeItem('streamline_favorites');
+    localStorage.removeItem('streamline_workout_log');
+    localStorage.removeItem('streamline_prs');
     _trainingPlan = null;
     clearTimeout(_planPollTimer);
     updateNavButton();
@@ -11796,7 +11857,7 @@ function swimSetMarkup(data) {
   const sectionsHtml = buildSetSectionsHtml(data.sections);
   const focusCueHtml = buildFocusCueHtml(data.focusCue);
   return `<div class="swim-print-area">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+    <div class="swim-set-head" style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
       <div style="min-width:0;">
         ${eyebrow ? `<span class="eyebrow">${escHtml(eyebrow)}</span>` : ''}
         <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || '')}</h2>
@@ -11904,6 +11965,19 @@ function syncFavoritesToServer() {
   }, 800);
 }
 
+// Same for the workout log + PRs: every save lands on the account (debounced),
+// so training history follows the athlete across devices instead of living in
+// one browser's localStorage.
+let _trainingSyncTimer = null;
+function syncTrainingToServer() {
+  const token = localStorage.getItem('streamline_session');
+  if (!apiBase() || !token) return;
+  clearTimeout(_trainingSyncTimer);
+  _trainingSyncTimer = setTimeout(() => {
+    authApi('training', { token, workoutLog: getWorkoutLogs(), prs: getPRs() }).catch(() => {});
+  }, 800);
+}
+
 // Re-render whichever favorites panels are currently on screen.
 function rerenderOpenFavoriteViews() {
   const favPanel = document.getElementById('swim-level-favorites');
@@ -11921,6 +11995,11 @@ window.addEventListener('storage', e => {
   if (e.key !== 'streamline_favorites') return;
   refreshAllFavButtons();
   rerenderOpenFavoriteViews();
+});
+// Same cross-tab refresh for the workout log and PRs.
+window.addEventListener('storage', e => {
+  if (e.key !== 'streamline_workout_log' && e.key !== 'streamline_prs') return;
+  rerenderTrainingData();
 });
 function isFavorite(id) { return getFavorites().some(s => s.setId === id); }
 function toggleFavorite(set) {
@@ -12108,7 +12187,7 @@ function buildDrylandSectionsHtml(sections) {
         <span class="set-label">${escHtml(sec.name || '')}</span><span class="set-yds">${escHtml(sec.duration || '')}</span>
       </div>
       <div style="padding:1.25rem 1.5rem;">
-        <table class="ex-table">
+        <table class="ex-table dryland-ex-table">
           <thead><tr><th>Exercise</th><th>Sets / Reps</th><th>Target</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
@@ -12409,7 +12488,7 @@ function drylandWorkoutMarkup(set) {
     sectionsHtml = `<div class="set-block">${buildDrylandSectionsHtml(data.sections)}</div>`;
   }
   return `<div class="swim-print-area">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
+    <div class="swim-set-head" style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:nowrap; gap:1rem; margin-bottom:2rem;">
       <div style="min-width:0;">
         ${eyebrow ? `<span class="eyebrow">${escHtml(eyebrow)}</span>` : ''}
         <h2 style="font-size:1.75rem; color:var(--deep); margin-top:0.25rem;">${escHtml(data.title || set.title || '')}</h2>

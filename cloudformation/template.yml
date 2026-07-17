@@ -647,18 +647,26 @@ Resources:
 
           # Favorites snapshot the full set/recipe data so they render even when
           # the generator API is offline. They share the user's DynamoDB item
-          # (400 KB hard limit) with the profile, so cap both the entry count
-          # and the serialized size, trimming oldest-first (the client keeps
-          # newest entries at the front of the list).
+          # (400 KB hard limit) with the profile, the workout log, and the PRs,
+          # so cap both the entry count and the serialized size of each list,
+          # trimming oldest-first (the client keeps newest entries at the front
+          # of the list). The caps sum to well under the 400 KB item limit.
           MAX_FAVORITES = 300
-          MAX_FAVORITES_BYTES = 350000
+          MAX_FAVORITES_BYTES = 250000
+          MAX_LOG_ENTRIES = 500
+          MAX_LOG_BYTES = 100000
+          MAX_PRS = 200
+          MAX_PR_BYTES = 20000
 
-          def user_favorites(user):
+          def user_list(user, attr):
             try:
-              favs = json.loads(user.get('favorites') or '[]')
-              return favs if isinstance(favs, list) else []
+              val = json.loads(user.get(attr) or '[]')
+              return val if isinstance(val, list) else []
             except Exception:
               return []
+
+          def user_favorites(user):
+            return user_list(user, 'favorites')
 
           def clean_favorites(favs):
             if not isinstance(favs, list):
@@ -668,13 +676,23 @@ Resources:
               favs.pop()
             return favs
 
+          def clean_entries(entries, max_items, max_bytes):
+            if not isinstance(entries, list):
+              return None
+            entries = [e for e in entries if isinstance(e, dict)][:max_items]
+            while entries and len(json.dumps(entries)) > max_bytes:
+              entries.pop()
+            return entries
+
           def session_payload(user):
             return {
               'success': True,
               'token': issue_token(user['email'], 'session', SESSION_TTL),
               'account': public_account(user),
               'profile': user_profile(user),
-              'favorites': user_favorites(user)
+              'favorites': user_favorites(user),
+              'workoutLog': user_list(user, 'workoutLog'),
+              'prs': user_list(user, 'prs')
             }
 
           # Names are echoed into page greetings and welcome-email HTML, so they
@@ -734,7 +752,7 @@ Resources:
             user = get_user(session['email']) if session else None
             if not user:
               return resp(401, {'error': 'Session expired. Please log in again.'})
-            return resp(200, {'success': True, 'account': public_account(user), 'profile': user_profile(user), 'favorites': user_favorites(user)})
+            return resp(200, {'success': True, 'account': public_account(user), 'profile': user_profile(user), 'favorites': user_favorites(user), 'workoutLog': user_list(user, 'workoutLog'), 'prs': user_list(user, 'prs')})
 
           # Favorites live on the account so they follow the user across tabs,
           # browsers, and devices instead of being stranded in one browser's
@@ -749,6 +767,31 @@ Resources:
               return resp(400, {'error': 'favorites must be a list.'})
             user['favorites'] = json.dumps(favs)
             users.put_item(Item=user)
+            return resp(200, {'success': True})
+
+          # The workout log and hand-entered PRs live on the account too, so
+          # training history follows the athlete across tabs, browsers, and
+          # devices. The client sends the full lists on every change.
+          def save_training(body):
+            session = get_valid_token(body.get('token') or '', 'session')
+            user = get_user(session['email']) if session else None
+            if not user:
+              return resp(401, {'error': 'Session expired. Please log in again.'})
+            changed = False
+            if 'workoutLog' in body:
+              logs = clean_entries(body.get('workoutLog'), MAX_LOG_ENTRIES, MAX_LOG_BYTES)
+              if logs is None:
+                return resp(400, {'error': 'workoutLog must be a list.'})
+              user['workoutLog'] = json.dumps(logs)
+              changed = True
+            if 'prs' in body:
+              prs = clean_entries(body.get('prs'), MAX_PRS, MAX_PR_BYTES)
+              if prs is None:
+                return resp(400, {'error': 'prs must be a list.'})
+              user['prs'] = json.dumps(prs)
+              changed = True
+            if changed:
+              users.put_item(Item=user)
             return resp(200, {'success': True})
 
           def save_profile(body):
@@ -860,7 +903,7 @@ Resources:
             tokens.delete_item(Key={'token': token_item['token']})  # single use
             return resp(200, {'success': True})
 
-          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'favorites': save_favorites, 'delete': delete_account}
+          ACTIONS = {'signup': signup, 'login': login, 'logout': logout, 'forgot': forgot, 'reset': reset, 'profile': save_profile, 'favorites': save_favorites, 'training': save_training, 'delete': delete_account}
 
           def handler(event, context):
             if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
