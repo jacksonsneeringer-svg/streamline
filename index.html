@@ -3431,7 +3431,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="color:var(--gray-400); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
       <a href="/get-started" class="btn btn-gold" style="flex-shrink:0; align-self:flex-start;" onclick="navigate('get-started')">Try it out!</a>
     </div>
-    <img src="/shark-coach.png?v=3" alt="LANE FOUR shark coach mascot" style="display:block; flex:0 1 300px; width:100%; max-width:300px; height:auto; margin:0 auto;" />
+    <img src="/shark-coach.png?v=4" alt="LANE FOUR shark coach mascot" style="display:block; flex:0 1 300px; width:100%; max-width:300px; height:auto; margin:0 auto;" />
     </div>
   </div>
 </section>
@@ -9238,7 +9238,7 @@ function _drawShareCard(info) {
     ? Promise.all(fonts.map(f => document.fonts.load(f))).catch(() => {})
     : Promise.resolve();
   const goggles = _loadCardImg('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(_SHARE_CARD_GOGGLES));
-  const shark = _loadCardImg('/shark-coach.png?v=3');
+  const shark = _loadCardImg('/shark-coach.png?v=4');
   return Promise.all([ready, goggles, shark]).then(([_, gogglesImg, sharkImg]) => {
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
@@ -9320,7 +9320,12 @@ function _drawShareCard(info) {
     // Shark coach on the right, resting on the bottom of the card.
     if (sharkImg) {
       const sw = 400, sh = sw * sharkImg.height / sharkImg.width;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 36;
+      ctx.shadowOffsetY = 12;
       ctx.drawImage(sharkImg, W - sw - 56, H - sh - 56, sw, sh);
+      ctx.restore();
     }
 
     // Stat blocks stacked on the left: yards on top, minutes underneath.
@@ -13505,7 +13510,7 @@ async function handleNewsletterSubmit(event, source) {
 
 <div id="shark-mascot">
   <div id="shark-bubble" role="status"></div>
-  <img src="/shark-coach.png?v=3" alt="" aria-hidden="true">
+  <img src="/shark-coach.png?v=4" alt="" aria-hidden="true">
 </div>
 
 <button id="back-to-top" aria-label="Back to top" title="Back to top" onclick="scrollToTop()">
