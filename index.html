@@ -2092,6 +2092,138 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   color: var(--deep);
   transform: none;
 }
+
+/* Short disclosure line sitting just above each gear "Check price" CTA. */
+.affiliate-tag {
+  display: block;
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--gray-400);
+}
+
+/* ── Workout share celebration ──
+   Popup shown right after a workout is logged: success message, a generated
+   branded result card (canvas, not a screenshot), and share buttons. */
+.share-cel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9,31,28,0.65);
+  display: none;
+  z-index: 3200;
+  overflow-y: auto;
+  padding: 2.5rem 1rem;
+}
+.share-cel-overlay.open { display: block; }
+.share-cel-modal {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.25rem 2rem 2rem;
+  position: relative;
+  box-shadow: var(--shadow-xl);
+  text-align: center;
+  animation: shareCelPop 0.35s cubic-bezier(0.18, 1.25, 0.4, 1);
+}
+@keyframes shareCelPop {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.share-cel-check {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--lap-pale);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  animation: shareCelCheck 0.5s cubic-bezier(0.18, 1.6, 0.4, 1) 0.1s backwards;
+}
+@keyframes shareCelCheck {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+.share-cel-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--deep);
+  margin: 0 0 0.4rem;
+}
+.share-cel-sub {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+.share-cel-card {
+  display: block;
+  width: 100%;
+  border-radius: var(--r-lg);
+  box-shadow: 0 10px 30px rgba(13,79,71,0.28);
+  margin-bottom: 0.6rem;
+}
+.share-cel-download {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.78rem;
+  color: var(--teal);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-bottom: 1.25rem;
+}
+.share-cel-download:hover { color: var(--deep); }
+.share-cel-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0 0 0.75rem;
+}
+.share-cel-btns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.share-cel-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-100);
+  background: var(--off-white);
+  color: var(--deep);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s;
+}
+.share-cel-btn:hover {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: var(--lap);
+  transform: translateY(-2px);
+}
+.share-cel-btn svg { width: 19px; height: 19px; display: block; }
+.share-cel-btn.copied,
+.share-cel-btn.copied:hover {
+  background: var(--lap-pale);
+  border-color: var(--lap-hover);
+  color: var(--deep);
+  transform: none;
+}
+@media (max-width: 520px) {
+  .share-cel-modal { padding: 1.75rem 1.25rem 1.5rem; }
+  .share-cel-title { font-size: 1.5rem; }
+}
 .post-body {
   max-width: 860px;
   margin: 0 auto;
@@ -3308,7 +3440,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="color:var(--gray-400); font-size:0.68rem; font-weight:300; line-height:1.65; margin:0;"><strong style="font-weight:500;">Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
       <a href="/get-started" class="btn btn-gold" style="flex-shrink:0; align-self:flex-start;" onclick="navigate('get-started')">Try it out!</a>
     </div>
-    <img src="/shark-coach.png?v=2" alt="LANE FOUR shark coach mascot" style="display:block; flex:0 1 300px; width:100%; max-width:300px; height:auto; margin:0 auto;" />
+    <img src="/shark-coach.png?v=4" alt="LANE FOUR shark coach mascot" style="display:block; flex:0 1 300px; width:100%; max-width:300px; height:auto; margin:0 auto;" />
     </div>
   </div>
 </section>
@@ -4629,7 +4761,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$30–40</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The one we hand to first-timers and never worry about again. It doesn't leak, it stays put on flip turns, and the purge valve clears without a fight, so you can focus on technique instead of the tube. Forgiving enough that most swimmers get comfortable within a few lengths.</p>
-      <a href="https://amzn.to/4axSAyf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4axSAyf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-finis-cardio-cap-snorkel">2. <a href="https://www.finisswim.com/Cardio-Cap" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Cardio Cap Snorkel</a>: Best for Breath Control</h2>
@@ -4641,7 +4773,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$10–13 · add-on cap</span><span class="product-pick-tag">Best for Breath Control</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A genuine step up in breath-control work — FINIS itself cites up to a 40% increase in workload on the lungs. Our one gripe is that the restriction isn't adjustable, so it's a one-setting tool: plenty for most swimmers, not enough for elite hypoxic work.</p>
-      <a href="https://www.finisswim.com/Cardio-Cap" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price at FINIS →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://www.finisswim.com/Cardio-Cap" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price at FINIS →</a>
     </div>
   </div>
   <h2 id="pick-arena-swim-snorkel-iii">3. <a href="https://amzn.to/4v3ynrf" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Swim Snorkel III</a>: Best Build Quality</h2>
@@ -4653,7 +4785,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$25–30 · built to last</span><span class="product-pick-tag">Best Build Quality</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The durability is the whole story. The frame and seal shrug off seasons of chlorine, the soft liquid-silicone strap stays comfortable long after cheaper straps stiffen, and the purge valve clears easily. This is the snorkel that outlives everything else in your mesh bag.</p>
-      <a href="https://amzn.to/4v3ynrf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4v3ynrf" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-mp-focus-snorkel">4. <a href="https://amzn.to/44aNtAl" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">MP Michael Phelps Focus Snorkel</a>: Best for Head Position</h2>
@@ -4665,7 +4797,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$40 · premium</span><span class="product-pick-tag">Best for Head Position</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> Rock-stable and low-drag even at all-out speed with fins, with very little wobble. Two things to know before buying: breathing purely through your mouth takes some getting used to (expect a little water up the nose at first), and the strap is the part to watch for wear after heavy use.</p>
-      <a href="https://amzn.to/44aNtAl" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/44aNtAl" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-speedo-center-mount-snorkel">5. <a href="https://amzn.to/4eJcGbj" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Center-Mount Snorkel</a>: Best Budget Pick</h2>
@@ -4677,7 +4809,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$15–20 · best value</span><span class="product-pick-tag">Best Budget Pick</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A comfortable, low-profile head mount and a solid value for the money. The trade-off is a more basic clear compared with the FINIS purge valve, so expect to push a little harder to blow the tube clear.</p>
-      <a href="https://amzn.to/4eJcGbj" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4eJcGbj" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2>How to Pick the One for You</h2>
@@ -4742,7 +4874,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.5 · 3,433 reviews</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The fin that created the short-blade category and still the one we hand most swimmers first. The stubby blade keeps your kick rate high and your ankles working, it's comfortable enough for long sets, and it lasts for years. If you buy one pair of training fins, buy these.</p>
-      <a href="https://amzn.to/4yqW1AZ" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4yqW1AZ" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-arena-powerfin-pro">2. <a href="https://amzn.to/4pjOq2U" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Powerfin Pro</a>: Best for Comfort and Fit</h2>
@@ -4754,7 +4886,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.6 · 2,079 reviews</span><span class="product-pick-tag">Best for Comfort &amp; Fit</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The open-heel pocket is the comfort winner for big yardage — no heel blisters, and easy on and off with cold, pruny hands. The short, stiff blade still delivers real propulsion without slowing your tempo. A masters and triathlon favorite for good reason.</p>
-      <a href="https://amzn.to/4pjOq2U" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4pjOq2U" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-dmc-elite">3. <a href="https://amzn.to/4fC2S38" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">DMC Elite</a>: Best for Serious Kickers</h2>
@@ -4766,7 +4898,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">5.0 · 14 reviews</span><span class="product-pick-tag">Best for Serious Kickers</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The elite-deck fin. A slightly longer, angled blade rewards a strong, technically sound kick with serious propulsion for underwater dolphin work. The catch: it demands good mechanics and it's expensive. Advanced kickers will love it; beginners should earn their way up.</p>
-      <a href="https://amzn.to/4fC2S38" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4fC2S38" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-speedo-short-blade">4. <a href="https://amzn.to/4fkP8Za" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Short Blade Fin</a>: Best Budget Pick</h2>
@@ -4778,7 +4910,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.4 · 3,303 reviews</span><span class="product-pick-tag">Best Budget</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The core short-blade job for less money. Not as refined as the Zoomer or as plush as the Arena, but a reasonable, low-risk way to try fin work — or to outfit a kid who'll grow out of them by spring. Start here and upgrade if you get hooked.</p>
-      <a href="https://amzn.to/4fkP8Za" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4fkP8Za" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-finis-long-floating">5. <a href="https://amzn.to/3T3bze6" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Long Floating Fins</a>: Best for Beginners Learning to Kick</h2>
@@ -4790,7 +4922,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.5 · 11,123 reviews</span><span class="product-pick-tag">Best for Beginners</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The exception to the short-blade rule, and the fin nearly every swimmer starts on. The extra length and float give true beginners the propulsion and flotation to learn the kicking motion. Treat them as training wheels — useful, but move to short blades once your kick has a pulse of its own.</p>
-      <a href="https://amzn.to/3T3bze6" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/3T3bze6" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2>How to Pick Your Pair</h2>
@@ -4856,7 +4988,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 2,301 reviews</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The no-nonsense classic done right. Solid EVA foam, a comfortable contour, and buoyancy that suits most adult swimmers — it won't waterlog or crack, and it costs almost nothing. The peanut we recommend by default and the one you see in half the milk crates in America.</p>
-      <a href="https://amzn.to/3REqM4T" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/3REqM4T" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-tyr-pull-float">2. <a href="https://amzn.to/4w6sHhL" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">TYR Junior/Standard Pull Float</a>: Best for Size Options</h2>
@@ -4868,7 +5000,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 670 reviews</span><span class="product-pick-tag">Best for Size Options</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The one to buy when a standard buoy has always sat wrong. Clearly sized options let you match the float to your body, so it doesn't shove a smaller swimmer too high or leave a bigger swimmer's legs dragging. Get the size right and the buoy disappears.</p>
-      <a href="https://amzn.to/4w6sHhL" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4w6sHhL" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-speedo-team-buoy">3. <a href="https://amzn.to/4ypMk5Q" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Team Pull Buoy</a>: Best Budget Pick</h2>
@@ -4880,7 +5012,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.8 · 8,813 reviews</span><span class="product-pick-tag">Best Budget</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The bulk-bin workhorse — cheap, durable, and perfectly functional. It survives being thrown in a bag, stepped on, and left in a hot car all summer, which is why clubs buy it by the dozen. Nothing special, nothing wrong with it, and the no-regret budget pick.</p>
-      <a href="https://amzn.to/4ypMk5Q" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4ypMk5Q" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-arena-freeflow">4. <a href="https://amzn.to/4f6u9L0" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Freeflow Pull Buoy</a>: Best Ergonomic Shape</h2>
@@ -4892,7 +5024,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 994 reviews</span><span class="product-pick-tag">Best Ergonomic Shape</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A sculpted contour built to sit against the thighs without the death-grip squeeze. If standard peanut buoys have ever felt awkward or chafed, this is the fix — and the more the buoy fits, the more you can relax your lower body, which is the whole point. Worth the small premium.</p>
-      <a href="https://amzn.to/4f6u9L0" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4f6u9L0" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-finis-axis">5. <a href="https://amzn.to/4fBgPOK" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Axis Buoy</a>: Best 2-in-1 Tool</h2>
@@ -4904,7 +5036,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.2 · 239 reviews</span><span class="product-pick-tag">Best 2-in-1 Tool</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The Swiss Army knife of foam peanuts. It works as a normal pull buoy, but the notched shape also doubles as an ankle float or an alignment tool. If you like versatility or want to experiment with ankle-float work to expose body-position flaws, it earns its slightly higher price.</p>
-      <a href="https://amzn.to/4fBgPOK" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4fBgPOK" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2>How to Pick Your Buoy</h2>
@@ -4969,7 +5101,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 3,037 reviews</span><span class="product-pick-tag">Best for Technique</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The smartest paddle on the market — no strap, just a thumb hole, so it only stays on if you keep constant pressure on the water with a proper catch. Go lazy and it falls off. A built-in cheat detector, and the first paddle we hand technique-obsessed swimmers.</p>
-      <a href="https://amzn.to/4wco2uK" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4wco2uK" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-speedo-tech">2. <a href="https://amzn.to/4fEuOTW" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Tech Paddle</a>: Best All-Around</h2>
@@ -4981,7 +5113,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.6 · 4,866 reviews</span><span class="product-pick-tag">Best All-Around</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The versatile everyday choice — a mid-size rectangular paddle with adjustable finger and wrist tubing. Big enough to build real strength, small enough not to instantly wreck your shoulders, and adjustable enough to grow with you. A safe, reliable default for most swimmers.</p>
-      <a href="https://amzn.to/4fEuOTW" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4fEuOTW" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-tyr-catalyst">3. <a href="https://amzn.to/4wKb72M" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">TYR Catalyst</a>: Best for Strength Training</h2>
@@ -4993,7 +5125,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.6 · 725 reviews</span><span class="product-pick-tag">Best for Strength Training</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A power-builder's paddle — clear size options, a contoured shape, and adjustable straps that hold securely for heavy pull sets with a buoy. For experienced swimmers with solid technique who want to load the catch. Respect the size and ramp your paddle yardage up slowly.</p>
-      <a href="https://amzn.to/4wKb72M" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4wKb72M" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-arena-vortex">4. <a href="https://amzn.to/4f6uXzw" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Vortex / Elite Paddle</a>: Best Build Quality</h2>
@@ -5005,7 +5137,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.4 · 2,691 reviews</span><span class="product-pick-tag">Best Build Quality</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> Built tough — durable plastic and reliable tubing that survive seasons of chlorine and daily life crammed in a wet gear bag. The shape encourages a good catch position. For high-volume swimmers who want paddles that last: buy once, use for years.</p>
-      <a href="https://amzn.to/4f6uXzw" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4f6uXzw" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-finis-freestyler">5. <a href="https://amzn.to/4vCuppL" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Freestyler Paddle</a>: Best for Fixing Crossover</h2>
@@ -5017,7 +5149,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 725 reviews</span><span class="product-pick-tag">Best for Fixing Crossover</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The specialist. Its elongated shape and bottom skeg act like a keel — cross over your centerline on entry and the paddle tracks crooked so you feel the error instantly. A one-trick tool, but for a crossover or a fishtail wiggle it does that trick better than anything on the wall.</p>
-      <a href="https://amzn.to/4vCuppL" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4vCuppL" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2>How to Pick Your Paddles</h2>
@@ -5075,7 +5207,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.2 · 29,956 reviews</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The reliable default. Durable, comfortable, gentle on hair, and easy to pull on without the hair-yanking drama of latex. It shrugs off daily chlorine and doesn't split after a month. If you want one everyday training cap and no fuss, this is the answer.</p>
-      <a href="https://amzn.to/3T7esdM" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/3T7esdM" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-tyr-long-hair">2. <a href="https://amzn.to/4hefU86" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">TYR Long Hair Silicone Cap</a>: Best for Long or Thick Hair</h2>
@@ -5087,7 +5219,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.3 · 6,003 reviews</span><span class="product-pick-tag">Best for Long / Thick Hair</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A deeper, domed shape with extra room that finally ends the long-hair wrestling match — it holds more hair without the painful squeeze or the slow creep off the back of your head mid-set. If a standard cap has never quite fit, this is worth every cent for the hassle it eliminates.</p>
-      <a href="https://amzn.to/4hefU86" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4hefU86" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-arena-classic">3. <a href="https://amzn.to/4hfhSoH" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Arena Classic Silicone Cap</a>: Best for Everyday Durability</h2>
@@ -5099,7 +5231,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.2 · 25,264 reviews</span><span class="product-pick-tag">Best for Everyday Durability</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A tank. Thick, well-made silicone that resists tearing and survives seasons of daily chlorine. It runs a touch snugger for a secure fit. For the daily lap swimmer who doesn't want to replace a cap every few months: buy it once and forget about it for a good long while.</p>
-      <a href="https://amzn.to/4hfhSoH" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4hfhSoH" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-finis-team">4. <a href="https://amzn.to/4gHdHC8" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">FINIS Silicone / Latex Team Caps</a>: Best Budget and Bulk</h2>
@@ -5111,7 +5243,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.1 · 100 reviews</span><span class="product-pick-tag">Best Budget &amp; Bulk</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The smart buy for a team, a family, or anyone who loses caps constantly. Team packs in silicone or cheaper latex cover the basics without the per-cap premium. Latex is the cheapest way to always have a spare — it grips hair more and won't last as long, but for a bin of backups it's perfectly fine.</p>
-      <a href="https://amzn.to/4gHdHC8" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4gHdHC8" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2 id="pick-speedo-fastskin">5. <a href="https://amzn.to/4hgyKeR" class="product-pick-title-link" target="_blank" rel="nofollow sponsored noopener">Speedo Fastskin Racing Cap</a>: Best for Racing</h2>
@@ -5123,7 +5255,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.0 · 82 reviews</span><span class="product-pick-tag">Best for Racing</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A dome cap built for one job — reducing drag. The smooth silicone fits tighter and sleeker than a training cap to shave resistance at the surface, which is why you see it on the blocks at every big meet, often doubled over a first cap. Overkill for everyday laps; exactly right on race day.</p>
-      <a href="https://amzn.to/4hgyKeR" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
+      <span class="affiliate-tag">(affiliate link — we may earn a commission)</span><a href="https://amzn.to/4hgyKeR" class="btn btn-gold btn-sm" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon →</a>
     </div>
   </div>
   <h2>How to Pick Your Cap</h2>
@@ -5946,6 +6078,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Meal Plan</h2>
         <p style="color:var(--gray-400); font-size:0.8rem; margin:0.5rem 0 0;">LANE FOUR nutrition guidance; not advice from a licensed dietician.</p>
+        <p style="color:var(--gray-400); font-size:0.8rem; margin:0.35rem 0 0;">Struggling with food or body image? Free, confidential support: <a href="https://www.nationaleatingdisorders.org" target="_blank" rel="noopener" style="color:var(--teal);">National Eating Disorders Association</a>, or call or text <strong>988</strong>.</p>
       </div>
       <div id="profile-nudge-meal"></div>
       <div id="dash-meal-detail">
@@ -6020,6 +6153,24 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <button class="btn btn-outline-dark btn-sm" onclick="cancelPlanLog()">Cancel</button>
       <button class="btn btn-primary btn-sm" onclick="confirmPlanLog()">Log Workout</button>
     </div>
+  </div>
+</div>
+
+<!-- Post-log celebration: success message + generated result card + share
+     buttons. Opened by showShareCelebration() after any workout is logged;
+     lives outside every .page container (same as the log-note overlay) so it
+     works from the daily pages, the plan, and My Training alike. -->
+<div class="share-cel-overlay" id="share-cel-overlay" onclick="if(event.target===this)closeShareCelebration()">
+  <div class="share-cel-modal">
+    <button class="set-detail-close" onclick="closeShareCelebration()" aria-label="Close">✕</button>
+    <div class="share-cel-check"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h3 class="share-cel-title" id="share-cel-title">Workout logged!</h3>
+    <p class="share-cel-sub" id="share-cel-sub"></p>
+    <img class="share-cel-card" id="share-cel-card" alt="Your workout result card" style="display:none;" />
+    <button type="button" class="share-cel-download" id="share-cel-download" style="display:none;" onclick="downloadShareCard()">Download image</button>
+    <p class="share-cel-label">Share your results</p>
+    <div class="share-cel-btns" id="share-cel-btns"></div>
+    <button class="btn btn-outline-dark btn-sm" onclick="closeShareCelebration()">Done</button>
   </div>
 </div>
 
@@ -7138,11 +7289,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1rem;">Before initiating arbitration, you agree to contact us in writing at the address below and attempt to resolve the dispute informally for at least 30 days.</p>
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Binding Arbitration</h3>
       <p style="margin-bottom:1rem;">If informal resolution fails, any dispute, controversy, or claim arising from or related to these Terms or your use of the Site ("Dispute") shall be finally and exclusively resolved by binding arbitration. <strong>BY AGREEING TO ARBITRATION, YOU WAIVE YOUR RIGHT TO SUE IN COURT AND TO HAVE A JURY TRIAL.</strong></p>
-      <p style="margin-bottom:1rem;">Arbitration shall be conducted under the Commercial Arbitration Rules of the American Arbitration Association ("AAA"), including the AAA's Supplementary Procedures for Consumer Related Disputes (available at www.adr.org). The arbitration will take place in Los Angeles County, California, or may be conducted remotely by phone or document submission at the arbitrator's discretion. The arbitrator's decision will be final and binding and may be entered as a judgment in any court of competent jurisdiction.</p>
+      <p style="margin-bottom:1rem;">Arbitration shall be conducted under the Commercial Arbitration Rules of the American Arbitration Association ("AAA"), including the AAA's Supplementary Procedures for Consumer Related Disputes (available at www.adr.org). The arbitration will take place in San Francisco County, California, or may be conducted remotely by phone or document submission at the arbitrator's discretion. The arbitrator's decision will be final and binding and may be entered as a judgment in any court of competent jurisdiction.</p>
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Class Action Waiver</h3>
       <p style="margin-bottom:1rem;">All arbitrations shall be conducted on an individual basis only. You waive any right to bring a Dispute as a class action or representative action, and no arbitration may be joined or consolidated with any other proceeding without the written consent of all parties.</p>
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Exceptions to Arbitration</h3>
-      <p style="margin-bottom:1.5rem;">The following Disputes are excluded from binding arbitration: (a) claims to enforce or protect intellectual property rights; (b) claims related to theft, piracy, or unauthorized access; and (c) claims for injunctive or other equitable relief. Any such claims shall be brought exclusively in the state or federal courts located in Los Angeles County, California, and you consent to the personal jurisdiction of those courts. No Dispute may be brought more than one (1) year after the cause of action arose. If any portion of this section is found unenforceable, that portion shall be severed and the remaining arbitration provisions shall remain in full force.</p>
+      <p style="margin-bottom:1.5rem;">The following Disputes are excluded from binding arbitration: (a) claims to enforce or protect intellectual property rights; (b) claims related to theft, piracy, or unauthorized access; and (c) claims for injunctive or other equitable relief. Any such claims shall be brought exclusively in the state or federal courts located in San Francisco County, California, and you consent to the personal jurisdiction of those courts. No Dispute may be brought more than one (1) year after the cause of action arose. If any portion of this section is found unenforceable, that portion shall be severed and the remaining arbitration provisions shall remain in full force.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">16. Disclaimer of Warranties</h2>
       <p style="margin-bottom:1.5rem;"><strong>THE SITE AND ALL CONTENT ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SITE WILL BE UNINTERRUPTED, ERROR-FREE, SECURE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS. WE MAKE NO WARRANTIES REGARDING THE ACCURACY, COMPLETENESS, OR RELIABILITY OF ANY CONTENT, INCLUDING AI-GENERATED WORKOUT CONTENT.</strong></p>
@@ -8803,6 +8954,7 @@ function saveWorkoutLog() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  showShareCelebration({ type, duration, distance }, 'manual');
 }
 
 // One-tap logging for the plan's swim set / lift session (Today's Swim and
@@ -8902,6 +9054,7 @@ function confirmDailyLog() {
   renderWorkoutLog();
   renderProgress();
   updateProgressCard();
+  showShareCelebration(pending.entry, 'daily');
 }
 
 // One-tap logging first opens a small popup so the athlete can attach an
@@ -8973,6 +9126,453 @@ function confirmPlanLog() {
   renderWorkoutLog();
   renderProgress();
   updateProgressCard();
+  showShareCelebration(entry, 'plan');
+}
+
+// ── Share your results ──────────────────────────────────────────────────────
+// Right after a workout is logged (one-tap plan/daily buttons or the manual
+// Log Workout form), a celebration popup congratulates the athlete and offers
+// share buttons for Instagram, X, Facebook, Messages, the native share sheet,
+// and copy. The shared image is a branded result card drawn on a canvas —
+// deep-teal water, wave lines, big stat numbers — not a screenshot. The link
+// points at the page the workout came from (/swim-sets, /dryland-workouts, or
+// /my-training) so friends land somewhere they can try the same session.
+
+let _shareCelInfo = null; // { kind, title, minutes, distance, link, message, cardUrl }
+
+function _shareCelLink(kind, source) {
+  if (source === 'daily') return SITE_ORIGIN + (kind === 'swim' ? '/swim-sets' : '/dryland-workouts');
+  return SITE_ORIGIN + '/my-training';
+}
+
+// Pull a clean number + unit out of the free-text distance field
+// ("3500 yards", "2,000m", …). Returns null when there's nothing numeric.
+function _shareCelDistance(distance) {
+  const m = String(distance || '').match(/([\d][\d,.]*)\s*(meters?|metres?|m\b|yards?|yds?|y\b)?/i);
+  if (!m || !m[1]) return null;
+  const num = parseFloat(m[1].replace(/,/g, ''));
+  if (!isFinite(num) || num <= 0) return null;
+  const unit = /^m/i.test(m[2] || '') ? 'meters' : 'yards';
+  return { num, unit, text: num.toLocaleString() + ' ' + unit };
+}
+
+// "Crushed my LANE FOUR Threshold 400s swim session today! 3,500 yards,
+//  60 minutes in the pool — easy. See how you compare to me: <link>"
+function _shareCelMessage(info) {
+  const what = info.kind === 'swim' ? 'swim session' : info.kind === 'dryland' ? 'dryland workout' : 'workout';
+  const place = info.kind === 'swim' ? ' in the pool' : info.kind === 'dryland' ? ' in the gym' : '';
+  const bits = [];
+  if (info.dist) bits.push(info.dist.text);
+  if (info.minutes) bits.push(info.minutes + ' minutes' + place);
+  return 'Crushed my LANE FOUR ' + (info.title ? info.title + ' ' : '') + what + ' today!' +
+    (bits.length ? ' ' + bits.join(', ') + ' — easy.' : '') +
+    ' See how you compare to me: ' + info.link;
+}
+
+// The header logo's goggles mark (same paths as the site nav's .logo-mark),
+// rasterized onto the card via an SVG data URL.
+const _SHARE_CARD_GOGGLES = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 0 148 33" fill="none">'
+  + '<path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3"/>'
+  + '<path d="M-13 16.5 C-4 13 4 20.5 12 16.5 C22 12.5 32 20 42 17.5 C52 15 62 13 72 16.5 C82 20 94 13.5 104 17 C112 19.5 120 13 128 16.5" stroke="#5ddbc9" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>'
+  + '<defs>'
+  + '<radialGradient id="slg" cx="40%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>'
+  + '<radialGradient id="srg" cx="60%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>'
+  + '<clipPath id="sll"><path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z"/></clipPath>'
+  + '<clipPath id="srl"><path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z"/></clipPath>'
+  + '</defs>'
+  + '<path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" fill="url(#slg)"/>'
+  + '<path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" fill="url(#srg)"/>'
+  + '<g clip-path="url(#sll)">'
+  + '<line x1="18" y1="6" x2="30" y2="20" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<line x1="22" y1="5" x2="34" y2="19" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<path d="M10 19 Q18 12 28 16 Q34 18 40 14" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>'
+  + '<circle cx="38" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>'
+  + '<path d="M14 13 Q20 9 28 12" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>'
+  + '</g>'
+  + '<g clip-path="url(#srl)">'
+  + '<line x1="78" y1="20" x2="90" y2="6" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<line x1="82" y1="19" x2="94" y2="5" stroke="#a8ede5" stroke-width="1.1" opacity="0.7"/>'
+  + '<path d="M70 14 Q76 18 86 16 Q96 12 104 19" stroke="#a8ede5" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.85"/>'
+  + '<circle cx="72" cy="10" r="3.5" fill="#a8ede5" opacity="0.25"/>'
+  + '<path d="M82 12 Q90 9 96 13" stroke="#a8ede5" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.5"/>'
+  + '</g>'
+  + '<path d="M52 16.5 C51 10 41 2 25 2 C14 2 9 8 9 16.5 C9 25 14 31 25 31 C41 31 51 23 52 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>'
+  + '<path d="M68 16.5 C69 10 79 2 95 2 C106 2 111 8 111 16.5 C111 25 106 31 95 31 C79 31 69 23 68 16.5 Z" stroke="#5ddbc9" stroke-width="2.2" fill="none"/>'
+  + '<path d="M53 16.5 Q60 17.3 67 16.5" stroke="#5ddbc9" stroke-width="2" stroke-linecap="round" fill="none"/>'
+  + '</svg>';
+
+function _loadCardImg(src) {
+  return new Promise(function(resolve) {
+    const img = new Image();
+    img.onload = function() { resolve(img); };
+    img.onerror = function() { resolve(null); };
+    img.src = src;
+  });
+}
+
+// Fit the title on one line when it's narrow enough, otherwise on two
+// balanced lines, shrinking the font until the lines fit.
+function _fitTitleLines(ctx, text, maxWidth, startSize) {
+  let size = startSize;
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const setFont = function() { ctx.font = '400 ' + size + 'px "DM Serif Display", Georgia, serif'; };
+  setFont();
+  if (ctx.measureText(text).width <= maxWidth || words.length < 2) return { lines: [text], size };
+  const split = function() {
+    let best = null;
+    for (let i = 1; i < words.length; i++) {
+      const a = words.slice(0, i).join(' ');
+      const b = words.slice(i).join(' ');
+      const w = Math.max(ctx.measureText(a).width, ctx.measureText(b).width);
+      if (!best || w < best.w) best = { w, lines: [a, b] };
+    }
+    return best;
+  };
+  let best = split();
+  while (best.w > maxWidth && size > 46) {
+    size -= 4;
+    setFont();
+    best = split();
+  }
+  return { lines: best.lines, size };
+}
+
+// Draw the branded result card (1080×1080, Instagram-friendly) and resolve
+// with a PNG data URL: the full LANE FOUR logo (goggles, wordmark, tagline),
+// the session title on two lines, yards/minutes stacked on the left, and the
+// shark coach on the right — over deep-teal water with wave lines.
+function _drawShareCard(info) {
+  const W = 1080, H = 1080, PAD = 96;
+  const fonts = ['62px "CC Smash"', '400 78px "DM Serif Display"', '400 104px "DM Serif Display"', '700 30px "DM Sans"', '400 24px "DM Sans"', '500 34px "DM Sans"'];
+  const ready = (document.fonts && document.fonts.load)
+    ? Promise.all(fonts.map(f => document.fonts.load(f))).catch(() => {})
+    : Promise.resolve();
+  const goggles = _loadCardImg('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(_SHARE_CARD_GOGGLES));
+  const shark = _loadCardImg('/shark-coach.png?v=4');
+  return Promise.all([ready, goggles, shark]).then(([_, gogglesImg, sharkImg]) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // Water: deep vertical gradient with a soft lap-colored glow up top.
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#0d4f47');
+    bg.addColorStop(1, '#093a34');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+    const glow = ctx.createRadialGradient(W - 140, 60, 0, W - 140, 60, 620);
+    glow.addColorStop(0, 'rgba(93,219,201,0.14)');
+    glow.addColorStop(1, 'rgba(93,219,201,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // Wave lines rolling across the lower half.
+    for (let i = 0; i < 5; i++) {
+      const baseY = H - 330 + i * 62;
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(93,219,201,' + (0.05 + i * 0.02) + ')';
+      ctx.lineWidth = 3;
+      for (let x = -20; x <= W + 20; x += 8) {
+        const y = baseY + Math.sin((x + i * 130) / 105) * 16;
+        x === -20 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    // Header: the full site logo — goggles mark, wordmark ("FOUR" in lap,
+    // like the nav), and the letterspaced tagline underneath.
+    ctx.textBaseline = 'alphabetic';
+    const gW = 250, gH = gW * 33 / 148, gY = 96;
+    if (gogglesImg) ctx.drawImage(gogglesImg, PAD - 14, gY, gW, gH);
+    ctx.font = '62px "CC Smash", Impact, sans-serif';
+    const wordX = PAD - 14 + gW + 20, wordY = gY + gH / 2 + 22;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('LANE ', wordX, wordY);
+    ctx.fillStyle = '#5ddbc9';
+    ctx.fillText('FOUR', wordX + ctx.measureText('LANE ').width, wordY);
+    ctx.font = '400 24px "DM Sans", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.letterSpacing = '13px';
+    ctx.fillText('TRAIN FOR THE FAST LANE', PAD, gY + gH + 46);
+    ctx.letterSpacing = '0px';
+    // Date, top right.
+    ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.textAlign = 'right';
+    ctx.letterSpacing = '4px';
+    ctx.fillText(new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' }).toUpperCase(), W - PAD, gY + 36);
+    ctx.textAlign = 'left';
+    ctx.letterSpacing = '0px';
+
+    // Lane-rope dotted line under the header.
+    ctx.save();
+    ctx.strokeStyle = 'rgba(93,219,201,0.35)';
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([2, 34]);
+    ctx.beginPath();
+    ctx.moveTo(PAD, 258);
+    ctx.lineTo(W - PAD, 258);
+    ctx.stroke();
+    ctx.restore();
+
+    // Eyebrow + session title (one line when it fits, else two balanced lines).
+    ctx.fillStyle = '#5ddbc9';
+    ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
+    ctx.letterSpacing = '7px';
+    ctx.fillText((info.kind === 'swim' ? 'SWIM SET' : info.kind === 'dryland' ? 'DRYLAND WORKOUT' : 'WORKOUT') + ' COMPLETE', PAD, 348);
+    ctx.letterSpacing = '0px';
+    ctx.fillStyle = '#ffffff';
+    const titleText = String(info.title || (info.kind === 'swim' ? 'Today\'s swim session' : 'Today\'s training session'));
+    const title = _fitTitleLines(ctx, titleText, W - PAD * 2, 78);
+    title.lines.forEach((l, i) => ctx.fillText(l, PAD, 440 + i * (title.size + 18)));
+
+    // Shark coach on the right, resting on the bottom of the card — bigger
+    // when a one-line title leaves the room for it.
+    const sharkW = title.lines.length === 1 ? 490 : 400;
+    const sharkX = W - sharkW - 56;
+    if (sharkImg) {
+      const sh = sharkW * sharkImg.height / sharkImg.width;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 36;
+      ctx.shadowOffsetY = 12;
+      ctx.drawImage(sharkImg, sharkX, H - sh - 56, sharkW, sh);
+      ctx.restore();
+    }
+
+    // Stat blocks stacked on the left (yards on top, minutes underneath),
+    // vertically centered between the title and the footer CTA.
+    const stats = [];
+    if (info.dist) stats.push({ v: info.dist.num.toLocaleString(), l: info.dist.unit.toUpperCase() });
+    if (info.minutes) stats.push({ v: String(info.minutes), l: 'MINUTES' });
+    if (!stats.length) stats.push({ v: '100%', l: 'EFFORT' });
+    const titleBottom = 440 + (title.lines.length - 1) * (title.size + 18) + 26;
+    const footerTop = H - 132 - 38;
+    const statGap = 158, valueAscent = 78, labelDrop = 44;
+    const blockH = valueAscent + (stats.length - 1) * statGap + labelDrop + 12;
+    const firstY = Math.round((titleBottom + footerTop) / 2 - blockH / 2 + valueAscent);
+
+    // White-border speech bubble around the stat block, its tail pointing at
+    // the shark so the numbers read as the coach calling out the results.
+    let statW = 0;
+    stats.forEach(s => {
+      ctx.font = '400 104px "DM Serif Display", Georgia, serif';
+      statW = Math.max(statW, ctx.measureText(s.v).width);
+      ctx.font = '700 26px "DM Sans", system-ui, sans-serif';
+      ctx.letterSpacing = '6px';
+      statW = Math.max(statW, ctx.measureText(s.l).width + 4);
+      ctx.letterSpacing = '0px';
+    });
+    const lastY = firstY + (stats.length - 1) * statGap;
+    const bx0 = PAD - 38, bx1 = PAD + statW + 42;
+    const by0 = Math.max(firstY - valueAscent - 30, titleBottom - 2);
+    const by1 = Math.min(lastY + labelDrop + 28, footerTop - 8);
+    const br = 30, bmid = (by0 + by1) / 2;
+    ctx.beginPath();
+    ctx.moveTo(bx0 + br, by0);
+    ctx.lineTo(bx1 - br, by0);
+    ctx.arcTo(bx1, by0, bx1, by0 + br, br);
+    ctx.lineTo(bx1, bmid - 36);
+    ctx.lineTo(Math.min(bx1 + 170, sharkX - 8), bmid - 4);
+    ctx.lineTo(bx1, bmid + 30);
+    ctx.lineTo(bx1, by1 - br);
+    ctx.arcTo(bx1, by1, bx1 - br, by1, br);
+    ctx.lineTo(bx0 + br, by1);
+    ctx.arcTo(bx0, by1, bx0, by1 - br, br);
+    ctx.lineTo(bx0, by0 + br);
+    ctx.arcTo(bx0, by0, bx0 + br, by0, br);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(9,42,38,0.35)';
+    ctx.fill();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 5;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    stats.forEach((s, i) => {
+      const y = firstY + i * statGap;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '400 104px "DM Serif Display", Georgia, serif';
+      ctx.fillText(s.v, PAD, y);
+      ctx.fillStyle = 'rgba(93,219,201,0.9)';
+      ctx.font = '700 26px "DM Sans", system-ui, sans-serif';
+      ctx.letterSpacing = '6px';
+      ctx.fillText(s.l, PAD + 4, y + 44);
+      ctx.letterSpacing = '0px';
+    });
+
+    // Footer CTA.
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = '500 34px "DM Sans", system-ui, sans-serif';
+    ctx.fillText('See how you compare', PAD, H - 132);
+    ctx.fillStyle = '#5ddbc9';
+    ctx.font = '700 34px "DM Sans", system-ui, sans-serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('winlanefour.com', PAD, H - 78);
+    ctx.letterSpacing = '0px';
+
+    return canvas.toDataURL('image/png');
+  });
+}
+
+function _shareCardFile() {
+  const info = _shareCelInfo;
+  if (!info || !info.cardUrl) return null;
+  try {
+    const bin = atob(info.cardUrl.split(',')[1]);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new File([bytes], 'lane-four-workout.png', { type: 'image/png' });
+  } catch (e) { return null; }
+}
+
+function downloadShareCard() {
+  const info = _shareCelInfo;
+  if (!info || !info.cardUrl) return;
+  const a = document.createElement('a');
+  a.href = info.cardUrl;
+  a.download = 'lane-four-workout.png';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function _copyShareMessage(btn, doneTitle) {
+  const info = _shareCelInfo;
+  if (!info) return;
+  const confirm = function() {
+    if (!btn) return;
+    const prev = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = _SHARE_ICONS.check;
+    btn.title = doneTitle || 'Copied!';
+    setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = prev; btn.title = btn.dataset.label || ''; }, 2200);
+  };
+  const fallback = function() {
+    const ta = document.createElement('textarea');
+    ta.value = info.message;
+    ta.style.cssText = 'position:fixed; opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    try { if (document.execCommand('copy')) confirm(); } catch (e) {}
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(info.message).then(confirm, fallback);
+  } else fallback();
+}
+
+function _shareCelTo(network, btn) {
+  const info = _shareCelInfo;
+  if (!info) return;
+  const file = _shareCardFile();
+  if (network === 'instagram') {
+    // Instagram has no web share intent. On phones the share sheet (which
+    // lists Instagram) gets the card + caption; on desktop we save the card
+    // and copy the caption so it can be posted by hand.
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], text: info.message }).catch(function() {});
+    } else {
+      downloadShareCard();
+      _copyShareMessage(btn, 'Card saved & caption copied — post it on Instagram!');
+    }
+    return;
+  }
+  if (network === 'messages') {
+    window.location.href = 'sms:?&body=' + encodeURIComponent(info.message);
+    return;
+  }
+  if (network === 'native') {
+    const withFile = file ? { text: info.message, files: [file] } : null;
+    if (withFile && navigator.canShare && navigator.canShare(withFile)) {
+      navigator.share(withFile).catch(function() {});
+    } else {
+      navigator.share({ text: info.message }).catch(function() {});
+    }
+    return;
+  }
+  const targets = {
+    x: 'https://x.com/intent/post?text=' + encodeURIComponent(info.message),
+    facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(info.link) + '&quote=' + encodeURIComponent(info.message),
+  };
+  if (targets[network]) window.open(targets[network], '_blank', 'noopener,noreferrer,width=600,height=560');
+}
+
+const _SHARE_CEL_ICONS = {
+  instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
+  messages: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+};
+
+// A grabby "well done" headline, personalized when we know the athlete.
+function _shareCelHeadline() {
+  const pool = ['Crushed it', 'Nice work', 'That\'s a wrap', 'Strong effort', 'In the books'];
+  const name = getAccount()?.firstName;
+  return pool[Math.floor(Math.random() * pool.length)] + (name ? ', ' + name : '') + '!';
+}
+
+// entry: { type, title, duration, distance } straight from the log row.
+// source: 'plan' | 'daily' | 'manual' — decides which page the link opens.
+function showShareCelebration(entry, source) {
+  const overlay = document.getElementById('share-cel-overlay');
+  if (!overlay) return;
+  const kind = entry.type === 'Swim' ? 'swim' : entry.type === 'Dryland / Lift' ? 'dryland' : 'other';
+  const minutes = parseInt(entry.duration, 10) > 0 ? parseInt(entry.duration, 10) : null;
+  const info = {
+    kind,
+    title: (entry.title || '').trim(),
+    minutes,
+    dist: kind === 'swim' ? _shareCelDistance(entry.distance) : null,
+    link: _shareCelLink(kind, source),
+    cardUrl: null,
+  };
+  info.message = _shareCelMessage(info);
+  _shareCelInfo = info;
+
+  document.getElementById('share-cel-title').textContent = _shareCelHeadline();
+  const bits = [info.dist ? info.dist.text : '', info.minutes ? info.minutes + ' min' : ''].filter(Boolean).join(' · ');
+  document.getElementById('share-cel-sub').textContent =
+    (info.title || (kind === 'swim' ? 'Today\'s swim' : kind === 'dryland' ? 'Today\'s workout' : 'Your workout')) +
+    ' is in the books' + (bits ? ' — ' + bits : '') + '. Tell your lane mates.';
+
+  const btns = document.getElementById('share-cel-btns');
+  btns.innerHTML = '';
+  const addBtn = function(icon, label, onClick) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'share-cel-btn';
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    b.dataset.label = label;
+    b.innerHTML = _SHARE_CEL_ICONS[icon] || _SHARE_ICONS[icon];
+    b.addEventListener('click', onClick);
+    btns.appendChild(b);
+  };
+  addBtn('instagram', 'Share on Instagram', function() { _shareCelTo('instagram', this); });
+  addBtn('x', 'Share on X', function() { _shareCelTo('x', this); });
+  addBtn('facebook', 'Share on Facebook', function() { _shareCelTo('facebook', this); });
+  addBtn('messages', 'Send in Messages', function() { _shareCelTo('messages', this); });
+  if (navigator.share) addBtn('native', 'Share…', function() { _shareCelTo('native', this); });
+  addBtn('copy', 'Copy message', function() { _copyShareMessage(this); });
+
+  const img = document.getElementById('share-cel-card');
+  const dl = document.getElementById('share-cel-download');
+  img.style.display = 'none';
+  dl.style.display = 'none';
+  overlay.classList.add('open');
+  _drawShareCard(info).then(function(url) {
+    if (_shareCelInfo !== info) return; // popup was closed / reopened meanwhile
+    info.cardUrl = url;
+    img.src = url;
+    img.style.display = '';
+    dl.style.display = '';
+  }).catch(function() {});
+}
+
+function closeShareCelebration() {
+  _shareCelInfo = null;
+  const overlay = document.getElementById('share-cel-overlay');
+  if (overlay) overlay.classList.remove('open');
 }
 
 function deleteWorkoutLog(savedAt) {
@@ -12967,7 +13567,7 @@ async function handleNewsletterSubmit(event, source) {
 
 <div id="shark-mascot">
   <div id="shark-bubble" role="status"></div>
-  <img src="/shark-coach.png?v=2" alt="" aria-hidden="true">
+  <img src="/shark-coach.png?v=4" alt="" aria-hidden="true">
 </div>
 
 <button id="back-to-top" aria-label="Back to top" title="Back to top" onclick="scrollToTop()">
