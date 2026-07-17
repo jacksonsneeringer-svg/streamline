@@ -9200,14 +9200,14 @@ function _loadCardImg(src) {
   });
 }
 
-// Split the title into exactly two balanced lines (a one-word title is the
-// only case that stays on one line). Shrinks the font until both lines fit.
-function _twoLineTitle(ctx, text, maxWidth, startSize) {
+// Fit the title on one line when it's narrow enough, otherwise on two
+// balanced lines, shrinking the font until the lines fit.
+function _fitTitleLines(ctx, text, maxWidth, startSize) {
   let size = startSize;
   const words = String(text).split(/\s+/).filter(Boolean);
   const setFont = function() { ctx.font = '400 ' + size + 'px "DM Serif Display", Georgia, serif'; };
   setFont();
-  if (words.length < 2) return { lines: [text], size };
+  if (ctx.measureText(text).width <= maxWidth || words.length < 2) return { lines: [text], size };
   const split = function() {
     let best = null;
     for (let i = 1; i < words.length; i++) {
@@ -9306,7 +9306,7 @@ function _drawShareCard(info) {
     ctx.stroke();
     ctx.restore();
 
-    // Eyebrow + session title (always wrapped onto two balanced lines).
+    // Eyebrow + session title (one line when it fits, else two balanced lines).
     ctx.fillStyle = '#5ddbc9';
     ctx.font = '700 30px "DM Sans", system-ui, sans-serif';
     ctx.letterSpacing = '7px';
@@ -9314,12 +9314,14 @@ function _drawShareCard(info) {
     ctx.letterSpacing = '0px';
     ctx.fillStyle = '#ffffff';
     const titleText = String(info.title || (info.kind === 'swim' ? 'Today\'s swim session' : 'Today\'s training session'));
-    const title = _twoLineTitle(ctx, titleText, W - PAD * 2, 78);
+    const title = _fitTitleLines(ctx, titleText, W - PAD * 2, 78);
     title.lines.forEach((l, i) => ctx.fillText(l, PAD, 440 + i * (title.size + 18)));
 
-    // Shark coach on the right, resting on the bottom of the card.
+    // Shark coach on the right, resting on the bottom of the card — bigger
+    // when a one-line title leaves the room for it.
     if (sharkImg) {
-      const sw = 400, sh = sw * sharkImg.height / sharkImg.width;
+      const sw = title.lines.length === 1 ? 490 : 400;
+      const sh = sw * sharkImg.height / sharkImg.width;
       ctx.save();
       ctx.shadowColor = 'rgba(0,0,0,0.35)';
       ctx.shadowBlur = 36;
@@ -9328,13 +9330,19 @@ function _drawShareCard(info) {
       ctx.restore();
     }
 
-    // Stat blocks stacked on the left: yards on top, minutes underneath.
+    // Stat blocks stacked on the left (yards on top, minutes underneath),
+    // vertically centered between the title and the footer CTA.
     const stats = [];
     if (info.dist) stats.push({ v: info.dist.num.toLocaleString(), l: info.dist.unit.toUpperCase() });
     if (info.minutes) stats.push({ v: String(info.minutes), l: 'MINUTES' });
     if (!stats.length) stats.push({ v: '100%', l: 'EFFORT' });
+    const titleBottom = 440 + (title.lines.length - 1) * (title.size + 18) + 26;
+    const footerTop = H - 132 - 38;
+    const statGap = 158, valueAscent = 78, labelDrop = 44;
+    const blockH = valueAscent + (stats.length - 1) * statGap + labelDrop + 12;
+    const firstY = Math.round((titleBottom + footerTop) / 2 - blockH / 2 + valueAscent);
     stats.forEach((s, i) => {
-      const y = 690 + i * 158;
+      const y = firstY + i * statGap;
       ctx.fillStyle = '#ffffff';
       ctx.font = '400 104px "DM Serif Display", Georgia, serif';
       ctx.fillText(s.v, PAD, y);
