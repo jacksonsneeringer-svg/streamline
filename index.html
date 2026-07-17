@@ -13761,11 +13761,14 @@ async function handleNewsletterSubmit(event, source) {
   }
   .shark-header-note img {
     flex: 0 0 auto;
-    width: 38px;
+    order: 2; /* shark rides the right end of the line, like on desktop */
+    width: 50px;
     height: auto;
   }
   .shark-header-note-text {
     margin: 0;
+    flex: 1 1 0;
+    min-width: 0;
     font-size: 0.78rem;
     line-height: 1.55;
     color: var(--gray-500, #4a5568);
