@@ -6045,7 +6045,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div id="profile-nudge-overview"></div>
       <!-- Coach's tip + personalized weekly plan, surfaced above today's cards
            (plan filled by renderTrainingPlan when signed in) -->
-      <div id="dash-coach-tip" style="display:none;"><span class="coach-tip-text"><strong>Coach's tip:</strong> bookmark this page for easy return to your personal programming.</span><span class="coach-tip-disclaimer"><strong>Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</span></div>
+      <div id="dash-coach-tip" style="display:none;"><div class="shark-header-note" data-shark-note="overview" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div><span class="coach-tip-text"><strong>Coach's tip:</strong> bookmark this page for easy return to your personal programming.</span><span class="coach-tip-disclaimer"><strong>Health disclaimer:</strong> The workouts and nutrition content on this site are for general informational purposes only. Consult a qualified healthcare professional before beginning any new exercise or dietary program.</span></div>
       <div id="dash-plan-section" style="display:none; margin-bottom:2rem;"></div>
       <p id="dash-overview-section-label" style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray-500); margin-bottom:1rem;">Preview: sign in to personalize</p>
       <div class="dash-grid">
@@ -6082,6 +6082,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Today's Swim</h2>
+        <div class="shark-header-note" data-shark-note="swim" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div>
       </div>
       <div id="profile-nudge-swim"></div>
       <div id="dash-swim-detail">
@@ -6099,6 +6100,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Today's Lift</h2>
+        <div class="shark-header-note" data-shark-note="lift" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div>
       </div>
       <div id="profile-nudge-lift"></div>
       <div id="dash-lift-detail">
@@ -6117,6 +6119,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Meal Plan</h2>
         <p style="color:var(--gray-400); font-size:0.8rem; margin:0.5rem 0 0;">LANE FOUR nutrition guidance; not advice from a licensed dietician.</p>
+        <div class="shark-header-note" data-shark-note="meal" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div>
       </div>
       <div id="profile-nudge-meal"></div>
       <div id="dash-meal-detail">
@@ -6135,6 +6138,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Favorites</h2>
+        <div class="shark-header-note" data-shark-note="favorites" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div>
       </div>
       <div id="profile-nudge-favorites"></div>
       <div id="dash-favorites-list"></div>
@@ -6145,6 +6149,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Progress</h2>
+        <div class="shark-header-note" data-shark-note="progress" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div>
       </div>
       <div id="profile-nudge-progress"></div>
       <div id="dash-progress-body"></div>
@@ -6155,6 +6160,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div style="margin-bottom:2rem;">
         <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:0.35rem;">My Training</p>
         <h2 style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0;">Log Workout</h2>
+        <div class="shark-header-note" data-shark-note="log" role="status"><img src="/shark-coach.png?v=4" alt="" aria-hidden="true"><p class="shark-header-note-text"></p></div>
       </div>
       <div id="profile-nudge-log"></div>
       <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:2rem 2.5rem;">
@@ -13725,8 +13731,58 @@ async function handleNewsletterSubmit(event, source) {
     padding-bottom: 1px;
   }
   .shark-bubble-link:hover { opacity: 0.75; }
+  /* Phones: the fixed mascot would sit on top of the content, so it hides and
+     the coach's note re-homes as an inline card at the top of the My Training
+     content instead (#shark-mobile-card, in the page markup). */
   @media (max-width: 900px) {
     #shark-mascot { display: none !important; }
+  }
+
+  /* Mobile coach note: at phone widths the coach's daily note joins content
+     that's already on the page instead of floating: on Overview it takes the
+     place of the generic sentence in the existing Coach's tip strip, and on
+     the other views it sits as a sub-line inside the existing view header
+     (the same spot the Meal Plan header keeps its sub-line). JS toggles
+     .show on the active view's line; the media query keeps every line off
+     at desktop widths, where the fixed mascot shows the note. */
+  .shark-header-note { display: none; }
+  @media (max-width: 900px) {
+    .shark-header-note.show {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex: 1 1 100%;
+      margin-top: 0.85rem;
+    }
+    /* Inside the Overview strip the flex gap already spaces it, and the
+       daily note stands in for the generic bookmark tip for the day. */
+    #dash-coach-tip .shark-header-note.show { margin-top: 0; }
+    #dash-coach-tip .shark-header-note.show ~ .coach-tip-text { display: none; }
+  }
+  .shark-header-note img {
+    flex: 0 0 auto;
+    order: 2; /* shark rides the right end of the line, like on desktop */
+    width: 84px;
+    height: auto;
+  }
+  .shark-header-note-text {
+    margin: 0;
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--gray-500, #4a5568);
+  }
+  .shark-header-note-text strong {
+    color: var(--teal, #1a7f8e);
+    font-weight: 700;
+  }
+  .shark-header-note-text a {
+    color: var(--teal, #1a7f8e);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1.5px solid currentColor;
+    padding-bottom: 1px;
   }
 
   /* Back-to-top button: mobile only (pages here run long). Hidden on desktop;
@@ -13951,7 +14007,51 @@ function scrollToTop() {
     } catch (e) { return null; }
   }
 
+  // Shared note picker: the same view + day always yields the same note, so
+  // the desktop bubble and the mobile card show identical content.
+  function currentSharkNote() {
+    const dayKey = sharkDayKey();
+    const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
+    const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
+    let article = entry.article || null;
+    if (currentView === 'swim') article = swimFocusArticle() || article;
+    if (!(article && SHARK_ARTICLES[article])) article = null;
+    return { label: KIND_LABELS[entry.kind] || KIND_LABELS.note, text: entry.text, article };
+  }
+
+  function sharkNoteHTML(note) {
+    return `
+      <button class="shark-bubble-close" type="button" aria-label="Hide the coach's note until tomorrow">×</button>
+      <p class="shark-bubble-label">${note.label}</p>
+      <p class="shark-bubble-text">${note.text}</p>
+      ${note.article ? `<a class="shark-bubble-link" href="#${note.article}" onclick="return navigate('${note.article}')">${SHARK_ARTICLES[note.article]} →</a>` : ''}`;
+  }
+
+  // Mobile companion to the fixed mascot: at phone widths the mascot is
+  // hidden, so the coach's daily note joins content that's already on the
+  // page: the Coach's tip strip on Overview (standing in for its generic
+  // bookmark sentence for the day), and the header block on every other
+  // view. Same account gate and same note as the desktop bubble. It's plain
+  // page content here, so there's no dismiss X; it changes with the day.
+  function renderSharkMobileNote() {
+    const target = document.querySelector('.shark-header-note[data-shark-note="' + currentView + '"]');
+    document.querySelectorAll('.shark-header-note.show').forEach(el => {
+      if (el !== target) el.classList.remove('show');
+    });
+    if (!target) return;
+    if (typeof getAccount !== 'function' || !getAccount()) {
+      target.classList.remove('show');
+      return;
+    }
+    const note = currentSharkNote();
+    target.querySelector('.shark-header-note-text').innerHTML =
+      `<strong>${note.label}:</strong> ${note.text}` +
+      (note.article ? ` <a href="#${note.article}" onclick="return navigate('${note.article}')">${SHARK_ARTICLES[note.article]} →</a>` : '');
+    target.classList.add('show');
+  }
+
   function renderSharkBubble() {
+    renderSharkMobileNote();
     const bubble = document.getElementById('shark-bubble');
     if (!bubble) return;
     // Coach's notes are for account holders; signed-out visitors get the
@@ -13974,18 +14074,7 @@ function scrollToTop() {
       return;
     }
     bubble.style.display = 'block';
-    const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
-    const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
-
-    let article = entry.article || null;
-    if (currentView === 'swim') article = swimFocusArticle() || article;
-    const label = KIND_LABELS[entry.kind] || KIND_LABELS.note;
-
-    bubble.innerHTML = `
-      <button class="shark-bubble-close" type="button" aria-label="Hide the coach's note until tomorrow">×</button>
-      <p class="shark-bubble-label">${label}</p>
-      <p class="shark-bubble-text">${entry.text}</p>
-      ${article && SHARK_ARTICLES[article] ? `<a class="shark-bubble-link" href="#${article}" onclick="return navigate('${article}')">${SHARK_ARTICLES[article]} →</a>` : ''}`;
+    bubble.innerHTML = sharkNoteHTML(currentSharkNote());
     bubble.querySelector('.shark-bubble-close').addEventListener('click', dismissBubble);
     lastRenderedKey = currentView + '|' + dayKey;
 
