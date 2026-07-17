@@ -2757,6 +2757,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .no-print, .no-print * { display: none !important; }
   .focus-cue-body { display: block !important; }
   .focus-cue-chevron { display: none !important; }
+  .exd-detail { display: block !important; }
+  .exd-chevron { display: none !important; }
 }
 .level-tab {
   font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em;
@@ -2814,6 +2816,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .ex-table tr:last-child td { border-bottom: none; }
 .ex-table tr:hover td { background: var(--off-white, #f0f7f6); }
 .mtag { font-size: 0.82rem; color: var(--gray-500); }
+/* Collapsible per-exercise details (dryland description + targets, swim drill
+   notes). Desktop renders everything expanded with an inert toggle so nothing
+   changes there; the mobile media block below turns the header into a
+   tappable expander. */
+.exd-toggle { display: flex; align-items: flex-start; gap: 0.5rem; width: 100%; background: none; border: none; padding: 0; font: inherit; color: inherit; text-align: left; cursor: default; pointer-events: none; }
+.exd-chevron { display: none; flex-shrink: 0; margin-left: auto; margin-top: 0.2em; color: var(--gray-400); transition: transform 0.2s; }
+.exd-presc-inline { display: none; }
+.dl-ex-note { font-size: 0.78rem; color: var(--gray-400); font-weight: 400; margin: 0.15rem 0 0; line-height: 1.5; }
+.dl-ex-targets { display: none; }
+.set-rows .set-item .exd-detail { margin-top: 0.7rem; }
 /* Recipe cards (My Training meal plan): ingredients + steps side by side,
    stacked on small screens. */
 @media (max-width: 700px) {
@@ -2995,7 +3007,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .swim-sidebar { width: 100%; position: static; }
 }
 /* Dryland exercise tables (daily page, My Training lift view, archive/favorite
-   detail modals): stacked, readable cards on mobile instead of the global
+   detail modals): stacked, readable rows on mobile instead of the global
    nowrap horizontal-scroll fallback (which pushes the exercise descriptions
    off-screen). */
 @media (max-width: 768px) {
@@ -3009,30 +3021,36 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     white-space: normal;
   }
   .ex-table.dryland-ex-table thead { display: none; }
-  .ex-table.dryland-ex-table tr {
-    border: 1px solid var(--gray-100);
-    border-radius: var(--r-md);
-    padding: 0.8rem 0.95rem;
-    margin-bottom: 0.55rem;
-  }
+  .ex-table.dryland-ex-table tr { margin-bottom: 1.05rem; }
   .ex-table.dryland-ex-table tr:last-child { margin-bottom: 0; }
   .ex-table.dryland-ex-table td {
     border: none !important;
     padding: 0;
   }
   .ex-table.dryland-ex-table tr:hover td { background: transparent; }
-  .ex-table.dryland-ex-table td:first-child {
-    font-size: 0.95rem;
-    margin-bottom: 0.35rem;
-  }
-  /* Reps / target sit together on a line under the exercise name */
-  .ex-table.dryland-ex-table td:not(:first-child) {
-    display: inline-block;
-    width: auto;
-    font-size: 0.8rem;
-    color: var(--gray-400);
-    margin-right: 0.85rem;
-  }
+  .ex-table.dryland-ex-table td.dl-ex-cell { font-size: 0.95rem; }
+  /* Reps move up next to the exercise title (as a pill) and the desktop
+     Sets/Reps + Target columns fold into the expandable detail instead. */
+  .ex-table.dryland-ex-table td.dl-col-desktop { display: none; }
+
+  /* Collapsible exercise details: tappable header with the reps pill and a
+     chevron; description + targets expand underneath. */
+  .exd-toggle { pointer-events: auto; cursor: pointer; }
+  .exd-toggle.exd-static { pointer-events: none; cursor: default; }
+  .exd-chevron { display: block; }
+  .exd-presc-inline { display: inline-block; font-size: 0.76rem; font-weight: 600; color: var(--teal); background: var(--lap-pale); border-radius: 999px; padding: 0.16rem 0.6rem; white-space: nowrap; flex-shrink: 0; }
+  .exd-detail { display: none; }
+  .exd-item.open .exd-detail { display: block; margin-top: 0.5rem; }
+  .exd-item.open .exd-chevron { transform: rotate(180deg); }
+  .dl-ex-note { margin: 0; font-size: 0.8rem; }
+  /* Distinct "Targets" block so it's obvious which muscles the move hits */
+  .dl-ex-targets { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px dashed var(--gray-100); }
+  .dl-ex-note + .dl-ex-targets { margin-top: 0.5rem; }
+  .dl-ex-targets-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-right: 0.15rem; }
+  .dl-ex-targets .mtag { font-size: 0.74rem; color: var(--gray-500); background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 999px; padding: 0.14rem 0.55rem; }
+  /* Swim set lines: a touch more breathing room between collapsible rows */
+  .set-rows { gap: 0.85rem; }
+  .set-rows .set-item.exd-item.open .exd-detail { margin-top: 0.4rem; }
 }
 /* Swim set + dryland daily header: on mobile, stack the title above the
    favorite/print buttons (instead of squeezing them into one nowrap row) and
@@ -4778,7 +4796,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>It hits the sweet spot of price and quality, usually in the thirty to forty dollar range. If you want one snorkel that just works and you don't want to think about it again, this is the default answer. I've put nervous first-timers on this exact model for years because it's forgiving enough that the "I can't breathe through this" panic passes fast.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">1</span></div>
-    <a href="https://amzn.to/4axSAyf" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/snorkel-finis-swimmers.jpg" alt="FINIS Swimmer's Snorkel" loading="lazy" width="500" height="850"></a>
+    <a href="https://amzn.to/4axSAyf" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/snorkel-finis-swimmers.jpg" alt="FINIS Swimmer's Snorkel" loading="lazy" width="500" height="850"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$30–40</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The one we hand to first-timers and never worry about again. It doesn't leak, it stays put on flip turns, and the purge valve clears without a fight, so you can focus on technique instead of the tube. Forgiving enough that most swimmers get comfortable within a few lengths.</p>
@@ -4790,7 +4808,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>It's for intermediate and advanced swimmers who already breathe comfortably through a normal snorkel and want the next challenge. Go in gradually, and never push a cap set to the point of dizziness. The cap fits on top of the FINIS Swimmer's Snorkel above, so you'll want that snorkel first.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">2</span></div>
-    <a href="https://www.finisswim.com/Cardio-Cap" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/snorkel-finis-cardio-cap.webp" alt="FINIS Cardio Cap Snorkel" loading="lazy" width="500" height="500"></a>
+    <a href="https://www.finisswim.com/Cardio-Cap" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/snorkel-finis-cardio-cap.webp" alt="FINIS Cardio Cap Snorkel" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$10–13 · add-on cap</span><span class="product-pick-tag">Best for Breath Control</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A genuine step up in breath-control work — FINIS itself cites up to a 40% increase in workload on the lungs. Our one gripe is that the restriction isn't adjustable, so it's a one-setting tool: plenty for most swimmers, not enough for elite hypoxic work.</p>
@@ -4802,7 +4820,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you're the kind of person who buys the heavy-duty version of everything and keeps it for a decade, this is your snorkel. Triathletes putting in serious pool volume tend to gravitate here.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">3</span></div>
-    <a href="https://amzn.to/4v3ynrf" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/snorkel-arena.jpg" alt="Arena Swim Snorkel III" loading="lazy" width="500" height="850"></a>
+    <a href="https://amzn.to/4v3ynrf" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/snorkel-arena.jpg" alt="Arena Swim Snorkel III" loading="lazy" width="500" height="850"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$25–30 · built to last</span><span class="product-pick-tag">Best Build Quality</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The durability is the whole story. The frame and seal shrug off seasons of chlorine, the soft liquid-silicone strap stays comfortable long after cheaper straps stiffen, and the purge valve clears easily. This is the snorkel that outlives everything else in your mesh bag.</p>
@@ -4814,7 +4832,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>It's a premium pick, usually pricier than the FINIS, and the payoff is a slightly cleaner feel in the water. Good for technique-obsessed swimmers chasing that last bit of stillness in their freestyle.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">4</span></div>
-    <a href="https://amzn.to/44aNtAl" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/snorkel-mp-focus.webp" alt="MP Michael Phelps Focus Snorkel" loading="lazy" width="500" height="850"></a>
+    <a href="https://amzn.to/44aNtAl" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/snorkel-mp-focus.webp" alt="MP Michael Phelps Focus Snorkel" loading="lazy" width="500" height="850"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$40 · premium</span><span class="product-pick-tag">Best for Head Position</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> Rock-stable and low-drag even at all-out speed with fins, with very little wobble. Two things to know before buying: breathing purely through your mouth takes some getting used to (expect a little water up the nose at first), and the strap is the part to watch for wear after heavy use.</p>
@@ -4826,7 +4844,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you're not sure you'll stick with snorkel work and don't want to spend forty dollars on a maybe, start here. You can always upgrade once you're hooked, and most people who commit eventually do end up on a FINIS.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">5</span></div>
-    <a href="https://amzn.to/4eJcGbj" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/snorkel-speedo.jpg" alt="Speedo Center-Mount Snorkel" loading="lazy" width="500" height="850"></a>
+    <a href="https://amzn.to/4eJcGbj" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/snorkel-speedo.jpg" alt="Speedo Center-Mount Snorkel" loading="lazy" width="500" height="850"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-rating">~$15–20 · best value</span><span class="product-pick-tag">Best Budget Pick</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A comfortable, low-profile head mount and a solid value for the money. The trade-off is a more basic clear compared with the FINIS purge valve, so expect to push a little harder to blow the tube clear.</p>
@@ -4891,7 +4909,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you want one pair of fins that does everything a swimmer needs and you don't want to overthink it, buy these. Usually around forty dollars, and they last for years. The short blade forces the kind of fast, compact kick that actually transfers.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">1</span></div>
-    <a href="https://amzn.to/4yqW1AZ" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/fins-finis-zoomers-gold.jpg" alt="FINIS Zoomers Gold short-blade training fins" loading="lazy" width="500" height="420"></a>
+    <a href="https://amzn.to/4yqW1AZ" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/fins-finis-zoomers-gold.jpg" alt="FINIS Zoomers Gold short-blade training fins" loading="lazy" width="500" height="420"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.5 · 3,433 reviews</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The fin that created the short-blade category and still the one we hand most swimmers first. The stubby blade keeps your kick rate high and your ankles working, it's comfortable enough for long sets, and it lasts for years. If you buy one pair of training fins, buy these.</p>
@@ -4903,7 +4921,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Great for triathletes and masters swimmers logging serious fin yardage who prioritize a blister-free fit. The open heel also makes them easy to get on and off with cold, pruny hands, which matters more than you'd think at 6 am.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">2</span></div>
-    <a href="https://amzn.to/4pjOq2U" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/fins-arena-powerfin-pro.jpg" alt="Arena Powerfin Pro open-heel training fins" loading="lazy" width="500" height="420"></a>
+    <a href="https://amzn.to/4pjOq2U" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/fins-arena-powerfin-pro.jpg" alt="Arena Powerfin Pro open-heel training fins" loading="lazy" width="500" height="420"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.6 · 2,079 reviews</span><span class="product-pick-tag">Best for Comfort &amp; Fit</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The open-heel pocket is the comfort winner for big yardage — no heel blisters, and easy on and off with cold, pruny hands. The short, stiff blade still delivers real propulsion without slowing your tempo. A masters and triathlon favorite for good reason.</p>
@@ -4915,7 +4933,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>For advanced swimmers with a genuine kick who want a fin that pushes hard underwater dolphin work, this is the pick. Beginners should earn their way up to these. Put a floppy-kneed novice in DMCs and they'll just make a bigger mess, faster.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">3</span></div>
-    <a href="https://amzn.to/4fC2S38" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/fins-dmc-elite.jpg" alt="DMC Elite training fins" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4fC2S38" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/fins-dmc-elite.jpg" alt="DMC Elite training fins" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">5.0 · 14 reviews</span><span class="product-pick-tag">Best for Serious Kickers</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The elite-deck fin. A slightly longer, angled blade rewards a strong, technically sound kick with serious propulsion for underwater dolphin work. The catch: it demands good mechanics and it's expensive. Advanced kickers will love it; beginners should earn their way up.</p>
@@ -4927,7 +4945,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you're not sure you'll use fins much or you're outfitting a kid who'll grow out of them by spring, start here and upgrade later if you get hooked.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">4</span></div>
-    <a href="https://amzn.to/4fkP8Za" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/fins-speedo-short-blade.jpg" alt="Speedo Short Blade training fin" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4fkP8Za" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/fins-speedo-short-blade.jpg" alt="Speedo Short Blade training fin" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.4 · 3,303 reviews</span><span class="product-pick-tag">Best Budget</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The core short-blade job for less money. Not as refined as the Zoomer or as plush as the Arena, but a reasonable, low-risk way to try fin work — or to outfit a kid who'll grow out of them by spring. Start here and upgrade if you get hooked.</p>
@@ -4939,7 +4957,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>These are training wheels, and that's fine, as long as you know it. Move to short blades once your kick has a pulse of its own. Don't let the long fins become permanent, or you'll build a kick that only works with them on.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">5</span></div>
-    <a href="https://amzn.to/3T3bze6" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/fins-finis-long-floating.jpg" alt="FINIS Long Floating Fins for beginners" loading="lazy" width="500" height="330"></a>
+    <a href="https://amzn.to/3T3bze6" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/fins-finis-long-floating.jpg" alt="FINIS Long Floating Fins for beginners" loading="lazy" width="500" height="330"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.5 · 11,123 reviews</span><span class="product-pick-tag">Best for Beginners</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The exception to the short-blade rule, and the fin nearly every swimmer starts on. The extra length and float give true beginners the propulsion and flotation to learn the kicking motion. Treat them as training wheels — useful, but move to short blades once your kick has a pulse of its own.</p>
@@ -5005,7 +5023,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>This is the one I recommend by default. If you want a pull buoy that just works and lasts for years of chlorine abuse, this is it. There's a reason it's the peanut you see floating in half the milk crates in America.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">1</span></div>
-    <a href="https://amzn.to/3REqM4T" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/buoy-finis-foam.jpg" alt="FINIS Foam Pull Buoy" loading="lazy" width="500" height="640"></a>
+    <a href="https://amzn.to/3REqM4T" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/buoy-finis-foam.jpg" alt="FINIS Foam Pull Buoy" loading="lazy" width="500" height="640"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 2,301 reviews</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The no-nonsense classic done right. Solid EVA foam, a comfortable contour, and buoyancy that suits most adult swimmers — it won't waterlog or crack, and it costs almost nothing. The peanut we recommend by default and the one you see in half the milk crates in America.</p>
@@ -5017,7 +5035,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Great for age-group programs, families, or anyone who's felt like a standard buoy sat wrong. Get the size right and the buoy disappears, which is exactly what you want.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">2</span></div>
-    <a href="https://amzn.to/4w6sHhL" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/buoy-tyr-pull-float.jpg" alt="TYR Junior and Standard Pull Float" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4w6sHhL" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/buoy-tyr-pull-float.jpg" alt="TYR Junior and Standard Pull Float" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 670 reviews</span><span class="product-pick-tag">Best for Size Options</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The one to buy when a standard buoy has always sat wrong. Clearly sized options let you match the float to your body, so it doesn't shove a smaller swimmer too high or leave a bigger swimmer's legs dragging. Get the size right and the buoy disappears.</p>
@@ -5029,7 +5047,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you just need a reliable buoy and don't care about anything fancy, this is the low-cost, no-regret pick. Nothing special, nothing wrong with it.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">3</span></div>
-    <a href="https://amzn.to/4ypMk5Q" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/buoy-speedo-team.jpg" alt="Speedo Team Pull Buoy" loading="lazy" width="500" height="380"></a>
+    <a href="https://amzn.to/4ypMk5Q" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/buoy-speedo-team.jpg" alt="Speedo Team Pull Buoy" loading="lazy" width="500" height="380"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.8 · 8,813 reviews</span><span class="product-pick-tag">Best Budget</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The bulk-bin workhorse — cheap, durable, and perfectly functional. It survives being thrown in a bag, stepped on, and left in a hot car all summer, which is why clubs buy it by the dozen. Nothing special, nothing wrong with it, and the no-regret budget pick.</p>
@@ -5041,7 +5059,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Worth the small premium if comfort has ever been your issue with a buoy. The better the buoy fits, the more you can relax your lower body, and a relaxed lower body is the whole point.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">4</span></div>
-    <a href="https://amzn.to/4f6u9L0" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/buoy-arena-freeflow.jpg" alt="Arena Freeflow Pull Buoy" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4f6u9L0" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/buoy-arena-freeflow.jpg" alt="Arena Freeflow Pull Buoy" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 994 reviews</span><span class="product-pick-tag">Best Ergonomic Shape</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A sculpted contour built to sit against the thighs without the death-grip squeeze. If standard peanut buoys have ever felt awkward or chafed, this is the fix — and the more the buoy fits, the more you can relax your lower body, which is the whole point. Worth the small premium.</p>
@@ -5053,7 +5071,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>For swimmers who like versatility, or who want to experiment with ankle-float work to expose body-position flaws, the Axis earns its slightly higher price. It's the Swiss Army knife of foam peanuts.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">5</span></div>
-    <a href="https://amzn.to/4fBgPOK" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/buoy-finis-axis.jpg" alt="FINIS Axis Buoy, a 2-in-1 pull buoy and ankle float" loading="lazy" width="500" height="490"></a>
+    <a href="https://amzn.to/4fBgPOK" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/buoy-finis-axis.jpg" alt="FINIS Axis Buoy, a 2-in-1 pull buoy and ankle float" loading="lazy" width="500" height="490"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.2 · 239 reviews</span><span class="product-pick-tag">Best 2-in-1 Tool</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The Swiss Army knife of foam peanuts. It works as a normal pull buoy, but the notched shape also doubles as an ankle float or an alignment tool. If you like versatility or want to experiment with ankle-float work to expose body-position flaws, it earns its slightly higher price.</p>
@@ -5118,7 +5136,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>For any swimmer serious about building a better catch, this is the pick. It's nearly impossible to develop bad habits with these on, because bad habits literally make the paddle fall away. I put technique-obsessed swimmers in these before anything else.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">1</span></div>
-    <a href="https://amzn.to/4wco2uK" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/paddle-finis-agility.jpg" alt="FINIS Agility strapless swim paddles" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4wco2uK" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/paddle-finis-agility.jpg" alt="FINIS Agility strapless swim paddles" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 3,037 reviews</span><span class="product-pick-tag">Best for Technique</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The smartest paddle on the market — no strap, just a thumb hole, so it only stays on if you keep constant pressure on the water with a proper catch. Go lazy and it falls off. A built-in cheat detector, and the first paddle we hand technique-obsessed swimmers.</p>
@@ -5130,7 +5148,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you want one pair of paddles for general strength and pull sets, this is a safe, reliable default for most masters and age-group swimmers. Nothing fancy, just a well-made workhorse.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">2</span></div>
-    <a href="https://amzn.to/4fEuOTW" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/paddle-speedo-tech.jpg" alt="Speedo Tech Paddle" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4fEuOTW" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/paddle-speedo-tech.jpg" alt="Speedo Tech Paddle" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.6 · 4,866 reviews</span><span class="product-pick-tag">Best All-Around</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The versatile everyday choice — a mid-size rectangular paddle with adjustable finger and wrist tubing. Big enough to build real strength, small enough not to instantly wreck your shoulders, and adjustable enough to grow with you. A safe, reliable default for most swimmers.</p>
@@ -5142,7 +5160,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>For experienced swimmers with solid technique who want to load the catch and build upper-body strength, these deliver. Just respect the size, and ramp up your paddle yardage slowly, because more surface area means more shoulder load.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">3</span></div>
-    <a href="https://amzn.to/4wKb72M" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/paddle-tyr-catalyst.jpg" alt="TYR Catalyst swim paddles" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4wKb72M" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/paddle-tyr-catalyst.jpg" alt="TYR Catalyst swim paddles" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.6 · 725 reviews</span><span class="product-pick-tag">Best for Strength Training</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A power-builder's paddle — clear size options, a contoured shape, and adjustable straps that hold securely for heavy pull sets with a buoy. For experienced swimmers with solid technique who want to load the catch. Respect the size and ramp your paddle yardage up slowly.</p>
@@ -5154,7 +5172,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Good for high-volume swimmers who want paddles that last and don't mind paying a little more for durability. Buy once, use for years.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">4</span></div>
-    <a href="https://amzn.to/4f6uXzw" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/paddle-arena-vortex.jpg" alt="Arena Vortex Elite finger paddle" loading="lazy" width="500" height="380"></a>
+    <a href="https://amzn.to/4f6uXzw" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/paddle-arena-vortex.jpg" alt="Arena Vortex Elite finger paddle" loading="lazy" width="500" height="380"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.4 · 2,691 reviews</span><span class="product-pick-tag">Best Build Quality</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> Built tough — durable plastic and reliable tubing that survive seasons of chlorine and daily life crammed in a wet gear bag. The shape encourages a good catch position. For high-volume swimmers who want paddles that last: buy once, use for years.</p>
@@ -5166,7 +5184,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>For swimmers fighting a crossover or a fishtail wiggle, this paddle is a targeted fix you can't get anywhere else. It's a one-trick tool, but it does that trick better than anything on the wall.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">5</span></div>
-    <a href="https://amzn.to/4vCuppL" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/paddle-finis-freestyler.jpg" alt="FINIS Freestyler paddle with skeg" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4vCuppL" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/paddle-finis-freestyler.jpg" alt="FINIS Freestyler paddle with skeg" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★★</span><span class="product-pick-rating">4.7 · 725 reviews</span><span class="product-pick-tag">Best for Fixing Crossover</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The specialist. Its elongated shape and bottom skeg act like a keel — cross over your centerline on entry and the paddle tracks crooked so you feel the error instantly. A one-trick tool, but for a crossover or a fishtail wiggle it does that trick better than anything on the wall.</p>
@@ -5224,7 +5242,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you want one cap for everyday training and you don't want to think about it, this is the answer.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">1</span></div>
-    <a href="https://amzn.to/3T7esdM" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/cap-speedo-silicone.jpg" alt="Speedo silicone swim cap" loading="lazy" width="500" height="420"></a>
+    <a href="https://amzn.to/3T7esdM" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/cap-speedo-silicone.jpg" alt="Speedo silicone swim cap" loading="lazy" width="500" height="420"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.2 · 29,956 reviews</span><span class="product-pick-tag">Best Overall</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The reliable default. Durable, comfortable, gentle on hair, and easy to pull on without the hair-yanking drama of latex. It shrugs off daily chlorine and doesn't split after a month. If you want one everyday training cap and no fuss, this is the answer.</p>
@@ -5236,7 +5254,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>If you've ever had a cap slowly slide off the back of your head one lap at a time, this is your fix. Worth every cent for the hassle it eliminates.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">2</span></div>
-    <a href="https://amzn.to/4hefU86" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/cap-tyr-long-hair.jpg" alt="TYR Long Hair silicone swim cap" loading="lazy" width="500" height="500"></a>
+    <a href="https://amzn.to/4hefU86" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/cap-tyr-long-hair.jpg" alt="TYR Long Hair silicone swim cap" loading="lazy" width="500" height="500"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.3 · 6,003 reviews</span><span class="product-pick-tag">Best for Long / Thick Hair</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A deeper, domed shape with extra room that finally ends the long-hair wrestling match — it holds more hair without the painful squeeze or the slow creep off the back of your head mid-set. If a standard cap has never quite fit, this is worth every cent for the hassle it eliminates.</p>
@@ -5248,7 +5266,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Great for the daily lap swimmer who wants a cap that lasts and doesn't want to replace it every few months. Buy it once and forget about it for a good long while.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">3</span></div>
-    <a href="https://amzn.to/4hfhSoH" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/cap-arena-classic.jpg" alt="Arena Classic silicone swim cap" loading="lazy" width="500" height="420"></a>
+    <a href="https://amzn.to/4hfhSoH" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/cap-arena-classic.jpg" alt="Arena Classic silicone swim cap" loading="lazy" width="500" height="420"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.2 · 25,264 reviews</span><span class="product-pick-tag">Best for Everyday Durability</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A tank. Thick, well-made silicone that resists tearing and survives seasons of daily chlorine. It runs a touch snugger for a secure fit. For the daily lap swimmer who doesn't want to replace a cap every few months: buy it once and forget about it for a good long while.</p>
@@ -5260,7 +5278,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Latex packs are the cheapest way to always have a spare, just know they grip hair more and won't last as long. For a bin of backups, they're perfectly fine.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">4</span></div>
-    <a href="https://amzn.to/4gHdHC8" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/cap-finis-team.jpg" alt="FINIS team swim cap in silicone or latex" loading="lazy" width="500" height="420"></a>
+    <a href="https://amzn.to/4gHdHC8" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/cap-finis-team.jpg" alt="FINIS team swim cap in silicone or latex" loading="lazy" width="500" height="420"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.1 · 100 reviews</span><span class="product-pick-tag">Best Budget &amp; Bulk</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> The smart buy for a team, a family, or anyone who loses caps constantly. Team packs in silicone or cheaper latex cover the basics without the per-cap premium. Latex is the cheapest way to always have a spare — it grips hair more and won't last as long, but for a bin of backups it's perfectly fine.</p>
@@ -5272,7 +5290,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <p>Save it for meets and hard race-pace sets. It's overkill for everyday laps, but on race day, every little bit of drag reduction counts, and this is where you find it.</p>
   <div class="product-pick">
     <div class="product-pick-badge"><span class="product-pick-rank">5</span></div>
-    <a href="https://amzn.to/4hgyKeR" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/cap-speedo-fastskin.jpg" alt="Speedo Fastskin dome racing cap" loading="lazy" width="500" height="420"></a>
+    <a href="https://amzn.to/4hgyKeR" class="product-pick-img" target="_blank" rel="nofollow sponsored noopener"><img src="/gear/cap-speedo-fastskin.jpg" alt="Speedo Fastskin dome racing cap" loading="lazy" width="500" height="420"></a>
     <div class="product-pick-body">
       <div class="product-pick-meta"><span class="product-pick-stars">★★★★☆</span><span class="product-pick-rating">4.0 · 82 reviews</span><span class="product-pick-tag">Best for Racing</span></div>
       <p class="product-pick-quote"><strong>Our take:</strong> A dome cap built for one job — reducing drag. The smooth silicone fits tighter and sleeker than a training cap to shave resistance at the surface, which is why you see it on the blocks at every big meet, often doubled over a first cap. Overkill for everyday laps; exactly right on race day.</p>
@@ -11504,6 +11522,9 @@ const SECTION_COLORS = {
 
 const PRINT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
 
+// Chevron for the mobile collapsible exercise/drill details.
+const EXD_CHEVRON_SVG = '<svg class="exd-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+
 // Original LANE FOUR rest-day mark: a hand-built crescent moon (recovery /
 // sleep) with two stylized "Z" sleep cues, replacing the bed emoji so the rest
 // card uses our own iconography in the brand teal.
@@ -11518,11 +11539,16 @@ function buildSetSectionsHtml(sections) {
     // descriptor text for every level; the effort is self-explanatory.
     const suppressSectionNote = /warm|cool/i.test(sec.name || '');
     const items = (sec.items || []).map(item => {
-      let h = `<div class="set-row">${formatCalLabel(escHtml(item.text))}</div>`;
+      const label = formatCalLabel(escHtml(item.text));
       const isEasy = /\beasy\b/i.test(item.text || '');
       const note = (suppressSectionNote || isEasy) ? '' : cleanNote(item.note);
-      if (note) h += `<div class="set-note">${escHtml(note)}</div>`;
-      return h;
+      if (!note) return `<div class="set-row">${label}</div>`;
+      // Lines with a descriptor collapse it under the line on mobile (the
+      // toggle is inert on desktop, where the note stays visible).
+      return `<div class="set-item exd-item">
+        <button type="button" class="exd-toggle" aria-expanded="false" onclick="toggleExDetail(this)"><span class="set-row">${label}</span>${EXD_CHEVRON_SVG}</button>
+        <div class="exd-detail"><div class="set-note">${escHtml(note)}</div></div>
+      </div>`;
     }).join('');
     html += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
@@ -11593,6 +11619,16 @@ function toggleFocusCue(btn) {
   const wrap = btn.closest('.focus-cue');
   if (!wrap) return;
   const open = wrap.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+// Mobile-only expand/collapse for per-exercise details (description + targets
+// on dryland rows, drill notes on swim set lines). On desktop the details are
+// always visible and the toggle is inert (pointer-events: none).
+function toggleExDetail(btn) {
+  const item = btn.closest('.exd-item');
+  if (!item) return;
+  const open = item.classList.toggle('open');
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
@@ -12176,11 +12212,26 @@ function buildDrylandSectionsHtml(sections) {
     const rows = (sec.items || []).map(item => {
       const ex = item.exercise || item.text || '';
       const noteText = cleanNote(item.note);
-      const note = noteText ? `<br/><span style="font-size:0.78rem; color:var(--gray-400);">${escHtml(noteText)}</span>` : '';
-      const muscles = Array.isArray(item.muscles) && item.muscles.length
-        ? item.muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(', ') : '';
+      const muscles = Array.isArray(item.muscles) ? item.muscles : [];
       const presc = item.prescription != null ? escHtml(String(item.prescription)) : '';
-      return `<tr><td><strong>${escHtml(ex)}</strong>${note}</td><td>${presc}</td><td>${muscles}</td></tr>`;
+      // Mobile: reps sit next to the exercise title as a pill, and the
+      // description + a labeled "Targets" group collapse under the title.
+      // Desktop keeps the three-column table (the toggle is inert, the
+      // description stays visible, and the targets render in their column).
+      const prescInline = presc ? `<span class="exd-presc-inline">${presc}</span>` : '';
+      const noteHtml = noteText ? `<p class="dl-ex-note">${escHtml(noteText)}</p>` : '';
+      const targetsHtml = muscles.length
+        ? `<div class="dl-ex-targets"><span class="dl-ex-targets-label">Targets</span>${muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join('')}</div>` : '';
+      const hasDetail = !!(noteHtml || targetsHtml);
+      const head = hasDetail
+        ? `<button type="button" class="exd-toggle" aria-expanded="false" onclick="toggleExDetail(this)"><strong>${escHtml(ex)}</strong>${prescInline}${EXD_CHEVRON_SVG}</button>`
+        : `<div class="exd-toggle exd-static"><strong>${escHtml(ex)}</strong>${prescInline}</div>`;
+      const musclesDesktop = muscles.map(m => `<span class="mtag">${escHtml(m)}</span>`).join(', ');
+      return `<tr class="exd-item">
+        <td class="dl-ex-cell">${head}${hasDetail ? `<div class="exd-detail">${noteHtml}${targetsHtml}</div>` : ''}</td>
+        <td class="dl-col-desktop">${presc}</td>
+        <td class="dl-col-desktop">${musclesDesktop}</td>
+      </tr>`;
     }).join('');
     html += `<div style="${divider}">
       <div class="set-block-header" style="background:${color};">
