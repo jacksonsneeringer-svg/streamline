@@ -6029,6 +6029,15 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </aside>
   <main class="dashboard-main">
 
+    <!-- Coach's note on phones: the fixed shark mascot (bottom of this file)
+         is hidden at mobile widths, so the same daily note renders here as an
+         inline card. Filled by renderSharkMobileCard; stays display:none on
+         desktop and for signed-out visitors. -->
+    <div id="shark-mobile-card">
+      <img class="shark-mobile-avatar" src="/shark-coach.png?v=4" alt="" aria-hidden="true">
+      <div class="shark-mobile-bubble" role="status"></div>
+    </div>
+
     <!-- ── Overview view ── -->
     <div id="dash-view-overview">
       <div id="dash-hero-banner" style="margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
@@ -13725,8 +13734,75 @@ async function handleNewsletterSubmit(event, source) {
     padding-bottom: 1px;
   }
   .shark-bubble-link:hover { opacity: 0.75; }
+  /* Phones: the fixed mascot would sit on top of the content, so it hides and
+     the coach's note re-homes as an inline card at the top of the My Training
+     content instead (#shark-mobile-card, in the page markup). */
   @media (max-width: 900px) {
     #shark-mascot { display: none !important; }
+  }
+
+  /* Mobile coach card: same daily note as the fixed bubble, rendered in the
+     page flow so it never covers content. JS toggles .show when there's a
+     note to show; the media query keeps it off at desktop widths where the
+     fixed mascot handles the note. */
+  #shark-mobile-card {
+    display: none;
+    align-items: flex-end;
+    gap: 0.7rem;
+    margin-bottom: 1.75rem;
+  }
+  @media (max-width: 900px) {
+    #shark-mobile-card.show { display: flex; }
+  }
+  #shark-mobile-card .shark-mobile-avatar {
+    flex: 0 0 auto;
+    width: 60px;
+    height: auto;
+  }
+  .shark-mobile-bubble {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    background: var(--white, #fff);
+    border: 2.5px solid var(--deep, #0a2540);
+    border-radius: 16px;
+    padding: 0.8rem 0.95rem 0.9rem;
+    box-shadow: 0 10px 26px rgba(10, 37, 64, 0.12);
+  }
+  /* Comic-book tail pointing down-left at the shark avatar, same outlined
+     two-triangle trick as the desktop bubble's tail. */
+  .shark-mobile-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: 7px;
+    left: -17px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 17px 15px 0;
+    border-color: transparent var(--deep, #0a2540) transparent transparent;
+  }
+  .shark-mobile-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: 11px;
+    left: -9px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 3px 10px 9px 0;
+    border-color: transparent var(--white, #fff) transparent transparent;
+  }
+  #shark-mobile-card.pop .shark-mobile-bubble {
+    transform-origin: 0 100%; /* grow out of the shark's mouth */
+    animation: shark-card-pop 0.45s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+  }
+  @keyframes shark-card-pop {
+    0%   { opacity: 0; transform: scale(0.9) translateY(6px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shark-mobile-card.pop .shark-mobile-bubble { animation-duration: 0.01s; }
   }
 
   /* Back-to-top button: mobile only (pages here run long). Hidden on desktop;
@@ -13951,7 +14027,50 @@ function scrollToTop() {
     } catch (e) { return null; }
   }
 
+  // Shared note picker: the same view + day always yields the same note, so
+  // the desktop bubble and the mobile card show identical content.
+  function currentSharkNote() {
+    const dayKey = sharkDayKey();
+    const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
+    const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
+    let article = entry.article || null;
+    if (currentView === 'swim') article = swimFocusArticle() || article;
+    if (!(article && SHARK_ARTICLES[article])) article = null;
+    return { label: KIND_LABELS[entry.kind] || KIND_LABELS.note, text: entry.text, article };
+  }
+
+  function sharkNoteHTML(note) {
+    return `
+      <button class="shark-bubble-close" type="button" aria-label="Hide the coach's note until tomorrow">×</button>
+      <p class="shark-bubble-label">${note.label}</p>
+      <p class="shark-bubble-text">${note.text}</p>
+      ${note.article ? `<a class="shark-bubble-link" href="#${note.article}" onclick="return navigate('${note.article}')">${SHARK_ARTICLES[note.article]} →</a>` : ''}`;
+  }
+
+  // Mobile companion to the fixed mascot: at phone widths the mascot is
+  // hidden, so the note renders as an inline card at the top of the My
+  // Training content instead. Same account gate, same daily note, same
+  // dismissed-for-the-day state as the desktop bubble.
+  function renderSharkMobileCard() {
+    const card = document.getElementById('shark-mobile-card');
+    if (!card) return;
+    const bubble = card.querySelector('.shark-mobile-bubble');
+    if (typeof getAccount !== 'function' || !getAccount() || bubbleDismissedToday()) {
+      card.classList.remove('show', 'pop');
+      bubble.innerHTML = '';
+      return;
+    }
+    bubble.innerHTML = sharkNoteHTML(currentSharkNote());
+    bubble.querySelector('.shark-bubble-close').addEventListener('click', dismissBubble);
+    card.classList.add('show');
+    // Replay the pop on each view visit, matching the desktop bubble.
+    card.classList.remove('pop');
+    void card.offsetWidth;
+    card.classList.add('pop');
+  }
+
   function renderSharkBubble() {
+    renderSharkMobileCard();
     const bubble = document.getElementById('shark-bubble');
     if (!bubble) return;
     // Coach's notes are for account holders; signed-out visitors get the
@@ -13974,18 +14093,7 @@ function scrollToTop() {
       return;
     }
     bubble.style.display = 'block';
-    const pool = SHARK_LINES[currentView] || SHARK_LINES.overview;
-    const entry = pool[sharkHash(currentView + '|' + dayKey) % pool.length];
-
-    let article = entry.article || null;
-    if (currentView === 'swim') article = swimFocusArticle() || article;
-    const label = KIND_LABELS[entry.kind] || KIND_LABELS.note;
-
-    bubble.innerHTML = `
-      <button class="shark-bubble-close" type="button" aria-label="Hide the coach's note until tomorrow">×</button>
-      <p class="shark-bubble-label">${label}</p>
-      <p class="shark-bubble-text">${entry.text}</p>
-      ${article && SHARK_ARTICLES[article] ? `<a class="shark-bubble-link" href="#${article}" onclick="return navigate('${article}')">${SHARK_ARTICLES[article]} →</a>` : ''}`;
+    bubble.innerHTML = sharkNoteHTML(currentSharkNote());
     bubble.querySelector('.shark-bubble-close').addEventListener('click', dismissBubble);
     lastRenderedKey = currentView + '|' + dayKey;
 
