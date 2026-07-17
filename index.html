@@ -9341,6 +9341,44 @@ function _drawShareCard(info) {
     const statGap = 158, valueAscent = 78, labelDrop = 44;
     const blockH = valueAscent + (stats.length - 1) * statGap + labelDrop + 12;
     const firstY = Math.round((titleBottom + footerTop) / 2 - blockH / 2 + valueAscent);
+
+    // White-border speech bubble around the stat block, its tail pointing at
+    // the shark so the numbers read as the coach calling out the results.
+    let statW = 0;
+    stats.forEach(s => {
+      ctx.font = '400 104px "DM Serif Display", Georgia, serif';
+      statW = Math.max(statW, ctx.measureText(s.v).width);
+      ctx.font = '700 26px "DM Sans", system-ui, sans-serif';
+      ctx.letterSpacing = '6px';
+      statW = Math.max(statW, ctx.measureText(s.l).width + 4);
+      ctx.letterSpacing = '0px';
+    });
+    const lastY = firstY + (stats.length - 1) * statGap;
+    const bx0 = PAD - 38, bx1 = PAD + statW + 42;
+    const by0 = Math.max(firstY - valueAscent - 30, titleBottom - 2);
+    const by1 = Math.min(lastY + labelDrop + 28, footerTop - 8);
+    const br = 30, bmid = (by0 + by1) / 2;
+    ctx.beginPath();
+    ctx.moveTo(bx0 + br, by0);
+    ctx.lineTo(bx1 - br, by0);
+    ctx.arcTo(bx1, by0, bx1, by0 + br, br);
+    ctx.lineTo(bx1, bmid - 36);
+    ctx.lineTo(bx1 + 64, bmid - 4);
+    ctx.lineTo(bx1, bmid + 30);
+    ctx.lineTo(bx1, by1 - br);
+    ctx.arcTo(bx1, by1, bx1 - br, by1, br);
+    ctx.lineTo(bx0 + br, by1);
+    ctx.arcTo(bx0, by1, bx0, by1 - br, br);
+    ctx.lineTo(bx0, by0 + br);
+    ctx.arcTo(bx0, by0, bx0 + br, by0, br);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(9,42,38,0.35)';
+    ctx.fill();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 5;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
     stats.forEach((s, i) => {
       const y = firstY + i * statGap;
       ctx.fillStyle = '#ffffff';
