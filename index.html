@@ -3007,7 +3007,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .swim-sidebar { width: 100%; position: static; }
 }
 /* Dryland exercise tables (daily page, My Training lift view, archive/favorite
-   detail modals): stacked, readable cards on mobile instead of the global
+   detail modals): stacked, readable rows on mobile instead of the global
    nowrap horizontal-scroll fallback (which pushes the exercise descriptions
    off-screen). */
 @media (max-width: 768px) {
@@ -3021,12 +3021,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     white-space: normal;
   }
   .ex-table.dryland-ex-table thead { display: none; }
-  .ex-table.dryland-ex-table tr {
-    border: 1px solid var(--gray-100);
-    border-radius: var(--r-md);
-    padding: 0.8rem 0.95rem;
-    margin-bottom: 0.55rem;
-  }
+  .ex-table.dryland-ex-table tr { margin-bottom: 1.05rem; }
   .ex-table.dryland-ex-table tr:last-child { margin-bottom: 0; }
   .ex-table.dryland-ex-table td {
     border: none !important;
