@@ -1,0 +1,54 @@
+# Manually-triggered maintenance job: delete every account from the
+# streamline-users DynamoDB table. This runs only when a human starts it from
+# the GitHub Actions UI and types the exact confirmation phrase, because it
+# permanently and irreversibly destroys all user accounts.
+#
+# Scope: streamline-users only. Training plans, sessions/tokens, newsletter
+# subscribers, and contact messages are left untouched.
+name: Purge all accounts
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type exactly: DELETE ALL ACCOUNTS'
+        required: true
+        default: ''
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  purge:
+    name: Purge streamline-users
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate confirmation phrase
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "DELETE ALL ACCOUNTS" ]; then
+            echo "::error::Confirmation phrase did not match. Type exactly: DELETE ALL ACCOUNTS"
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install boto3
+        run: pip install --quiet boto3
+
+      - name: Show accounts to be deleted (dry run)
+        run: python3 scripts/purge-accounts.py --dry-run
+
+      - name: Delete all accounts
+        env:
+          CONFIRM: DELETE ALL ACCOUNTS
+        run: python3 scripts/purge-accounts.py
