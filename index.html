@@ -8,22 +8,28 @@
        by scripts/prerender.mjs at deploy time, so each page ships its own
        title, description, canonical URL, social cards, and structured data.
        This block is the homepage's version. -->
-  <title>LANE FOUR | Daily Swim Sets, Dryland Workouts & Swim Training</title>
+  <title>LANE FOUR | Daily Swim Sets, Dryland & Training</title>
   <meta name="description" content="Daily programming, technique depth, and personalized plans for swimmers who want to understand what they're doing in the water, and systematically get better at it." />
   <link rel="canonical" href="https://winlanefour.com/" />
   <meta property="og:site_name" content="LANE FOUR" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://winlanefour.com/" />
-  <meta property="og:title" content="LANE FOUR | Daily Swim Sets, Dryland Workouts & Swim Training" />
+  <meta property="og:title" content="LANE FOUR | Daily Swim Sets, Dryland & Training" />
   <meta property="og:description" content="Daily programming, technique depth, and personalized plans for swimmers who want to understand what they're doing in the water, and systematically get better at it." />
   <meta property="og:image" content="https://winlanefour.com/swimmer2-bg.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="LANE FOUR | Daily Swim Sets, Dryland Workouts & Swim Training" />
+  <meta name="twitter:title" content="LANE FOUR | Daily Swim Sets, Dryland & Training" />
   <meta name="twitter:description" content="Daily programming, technique depth, and personalized plans for swimmers who want to understand what they're doing in the water, and systematically get better at it." />
   <meta name="twitter:image" content="https://winlanefour.com/swimmer2-bg.jpg" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"LANE FOUR","url":"https://winlanefour.com/"}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"LANE FOUR","url":"https://winlanefour.com/","logo":"https://winlanefour.com/email/lane-four-logo.png","description":"Daily swim sets, dryland workouts, and personalized training plans for competitive swimmers.","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://winlanefour.com/contact"}}</script>
   <!-- SEO:HEAD:END -->
+  <!-- Favicon: the LANE FOUR goggles mark. Lives outside the SEO:HEAD markers
+       so every prerendered route (scripts/prerender.mjs) ships it too. This is
+       what Google Search shows next to the result title. -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="mask-icon" href="/favicon.svg" color="#5ddbc9" />
+  <meta name="theme-color" content="#082622" />
   <!-- Fonts are self-hosted (see /fonts) so visitor IPs are never sent to
        Google Fonts; do not reintroduce fonts.googleapis.com links here. -->
   <link rel="stylesheet" href="/fonts/fonts.css" />
@@ -3366,7 +3372,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div class="hero-tag">
         Swim Sets • Dryland Workouts<br class="hero-tag-br"> • Nutrition Advice
       </div>
-      <h1 style="margin-bottom:1.4rem;">Train smarter.<br/><span style="white-space:nowrap;">Recover stronger.</span><br/>Race faster.</h1>
+      <h1 style="margin-bottom:1.4rem;">Swim the set.<br/>Hit the dryland.<br/><span style="white-space:nowrap;">Win <span style="color:var(--lap);">lane four</span>.</span></h1>
       <p class="hero-sub">All the best workouts, guidance, and gear to train smarter, swim faster while feeling and looking your best.</p>
       <div class="hero-cta">
         <a href="/get-started" class="btn btn-gold btn-lg" onclick="navigate('get-started')">Dive In</a>
@@ -7436,7 +7442,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 const SITE_ORIGIN = 'https://winlanefour.com';
 
 const PAGE_TITLES = {
-  'home': 'LANE FOUR | Daily Swim Sets, Dryland Workouts & Swim Training',
+  'home': 'LANE FOUR | Daily Swim Sets, Dryland & Training',
   'swim-sets': 'Daily Swim Sets for Every Level | LANE FOUR',
   'dryland-workouts': 'Daily Dryland Workouts for Swimmers | LANE FOUR',
   'set-archives': 'Swim Set Archives | LANE FOUR',
