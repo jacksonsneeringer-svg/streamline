@@ -2111,10 +2111,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   background: rgba(9,31,28,0.65);
   display: none;
   z-index: 3200;
-  overflow-y: auto;
-  padding: 2.5rem 1rem;
+  padding: 1.25rem 1rem;
 }
-.share-cel-overlay.open { display: block; }
+.share-cel-overlay.open { display: flex; align-items: center; justify-content: center; }
 .share-cel-modal {
   background: var(--white);
   border-radius: var(--r-xl);
@@ -2125,6 +2124,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   position: relative;
   box-shadow: var(--shadow-xl);
   text-align: center;
+  max-height: calc(100vh - 2.5rem);
+  max-height: calc(100dvh - 2.5rem);
+  overflow-y: auto;
   animation: shareCelPop 0.35s cubic-bezier(0.18, 1.25, 0.4, 1);
 }
 @keyframes shareCelPop {
@@ -2162,10 +2164,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 }
 .share-cel-card {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: min(38vh, 416px);
+  max-height: min(38svh, 416px);
   border-radius: var(--r-lg);
   box-shadow: 0 10px 30px rgba(13,79,71,0.28);
-  margin-bottom: 0.6rem;
+  margin: 0 auto 0.6rem;
 }
 .share-cel-download {
   background: none;
@@ -2221,8 +2226,15 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   transform: none;
 }
 @media (max-width: 520px) {
-  .share-cel-modal { padding: 1.75rem 1.25rem 1.5rem; }
-  .share-cel-title { font-size: 1.5rem; }
+  .share-cel-overlay { padding: 0.75rem; }
+  .share-cel-modal { padding: 1.25rem 1rem 1rem; max-height: calc(100vh - 1.5rem); max-height: calc(100dvh - 1.5rem); }
+  .share-cel-check { width: 44px; height: 44px; margin-bottom: 0.6rem; }
+  .share-cel-title { font-size: 1.35rem; }
+  .share-cel-sub { font-size: 0.85rem; margin-bottom: 0.9rem; }
+  .share-cel-card { max-height: 32vh; max-height: 32svh; }
+  .share-cel-download { margin-bottom: 0.9rem; }
+  .share-cel-btns { gap: 0.5rem; margin-bottom: 1rem; }
+  .share-cel-btn { width: 42px; height: 42px; }
 }
 .post-body {
   max-width: 860px;
@@ -9138,7 +9150,7 @@ function confirmPlanLog() {
 // points at the page the workout came from (/swim-sets, /dryland-workouts, or
 // /my-training) so friends land somewhere they can try the same session.
 
-let _shareCelInfo = null; // { kind, title, minutes, distance, link, message, cardUrl }
+let _shareCelInfo = null; // { kind, title, minutes, distance, link, message, cardUrl, cardPromise }
 
 function _shareCelLink(kind, source) {
   if (source === 'daily') return SITE_ORIGIN + (kind === 'swim' ? '/swim-sets' : '/dryland-workouts');
@@ -9427,15 +9439,45 @@ function _shareCardFile() {
   } catch (e) { return null; }
 }
 
+// Resolve with the card's File once the canvas has finished drawing — it
+// usually has by the time a share button is tapped, but a fast tap right
+// after logging shouldn't lose the image.
+function _shareCardFileReady() {
+  const info = _shareCelInfo;
+  if (!info) return Promise.resolve(null);
+  if (info.cardUrl) return Promise.resolve(_shareCardFile());
+  return (info.cardPromise || Promise.resolve()).then(function() {
+    return _shareCelInfo === info ? _shareCardFile() : null;
+  });
+}
+
+// True when this is a phone/tablet whose share sheet accepts our PNG — the
+// path that gets the card into Instagram, the Facebook composer, and
+// Messages directly. Desktop browsers (even ones that technically support
+// navigator.share) keep their web fallbacks, which work better there.
+function _shareSheetPreferred() {
+  const touch = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    || (/Mac/.test(navigator.userAgent) && navigator.maxTouchPoints > 1); // iPadOS reports itself as a Mac
+  if (!touch || !navigator.share || !navigator.canShare) return false;
+  try {
+    return navigator.canShare({ files: [new File([new Uint8Array(8)], 'lane-four-workout.png', { type: 'image/png' })] });
+  } catch (e) { return false; }
+}
+
 function downloadShareCard() {
   const info = _shareCelInfo;
-  if (!info || !info.cardUrl) return;
-  const a = document.createElement('a');
-  a.href = info.cardUrl;
-  a.download = 'lane-four-workout.png';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+  if (!info) return;
+  const save = function() {
+    if (!info.cardUrl) return;
+    const a = document.createElement('a');
+    a.href = info.cardUrl;
+    a.download = 'lane-four-workout.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+  if (info.cardUrl) save();
+  else (info.cardPromise || Promise.resolve()).then(function() { if (_shareCelInfo === info) save(); });
 }
 
 function _copyShareMessage(btn, doneTitle) {
@@ -9463,40 +9505,61 @@ function _copyShareMessage(btn, doneTitle) {
   } else fallback();
 }
 
+function _shareCelSmsFallback(info) {
+  window.location.href = 'sms:?&body=' + encodeURIComponent(info.message);
+}
+
+function _shareCelFbFallback(info) {
+  window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(info.link) + '&quote=' + encodeURIComponent(info.message),
+    '_blank', 'noopener,noreferrer,width=600,height=560');
+}
+
 function _shareCelTo(network, btn) {
   const info = _shareCelInfo;
   if (!info) return;
-  const file = _shareCardFile();
-  if (network === 'instagram') {
-    // Instagram has no web share intent. On phones the share sheet (which
-    // lists Instagram) gets the card + caption; on desktop we save the card
-    // and copy the caption so it can be posted by hand.
-    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], text: info.message }).catch(function() {});
-    } else {
+
+  if (network === 'x') {
+    window.open('https://x.com/intent/post?text=' + encodeURIComponent(info.message), '_blank', 'noopener,noreferrer,width=600,height=560');
+    return;
+  }
+
+  // Desktop (no file-capable share sheet): each network keeps its best
+  // browser-only path.
+  if (!_shareSheetPreferred()) {
+    if (network === 'facebook') { _shareCelFbFallback(info); return; }
+    if (network === 'messages') { _shareCelSmsFallback(info); return; }
+    if (network === 'instagram') {
+      // Instagram has no web intent — save the card and copy the caption so
+      // it can be posted by hand.
       downloadShareCard();
       _copyShareMessage(btn, 'Card saved & caption copied — post it on Instagram!');
+      return;
+    }
+    if (network === 'native') {
+      if (navigator.share) navigator.share({ text: info.message }).catch(function() {});
+      else _copyShareMessage(btn);
+      return;
     }
     return;
   }
-  if (network === 'messages') {
-    window.location.href = 'sms:?&body=' + encodeURIComponent(info.message);
-    return;
-  }
-  if (network === 'native') {
-    const withFile = file ? { text: info.message, files: [file] } : null;
-    if (withFile && navigator.canShare && navigator.canShare(withFile)) {
-      navigator.share(withFile).catch(function() {});
-    } else {
-      navigator.share({ text: info.message }).catch(function() {});
-    }
-    return;
-  }
-  const targets = {
-    x: 'https://x.com/intent/post?text=' + encodeURIComponent(info.message),
-    facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(info.link) + '&quote=' + encodeURIComponent(info.message),
-  };
-  if (targets[network]) window.open(targets[network], '_blank', 'noopener,noreferrer,width=600,height=560');
+
+  // Phones: hand the card + message straight to the OS share sheet, so
+  // Instagram receives the image, Facebook opens its post composer with the
+  // card attached, and Messages sends image + text in one go — no saving or
+  // attaching by hand. Instagram drops the text part of a share, so park the
+  // caption on the clipboard for pasting into the post.
+  if (network === 'instagram') _copyShareMessage(null);
+  _shareCardFileReady().then(function(file) {
+    if (_shareCelInfo !== info) return;
+    const payload = file ? { files: [file], text: info.message } : { text: info.message };
+    navigator.share(payload).catch(function(err) {
+      if (err && err.name === 'AbortError') return; // athlete closed the sheet
+      if (network === 'messages') { _shareCelSmsFallback(info); return; }
+      if (network === 'facebook') { _shareCelFbFallback(info); return; }
+      downloadShareCard();
+      _copyShareMessage(btn, 'Card saved & caption copied — post it by hand!');
+    });
+  });
 }
 
 const _SHARE_CEL_ICONS = {
@@ -9560,7 +9623,7 @@ function showShareCelebration(entry, source) {
   img.style.display = 'none';
   dl.style.display = 'none';
   overlay.classList.add('open');
-  _drawShareCard(info).then(function(url) {
+  info.cardPromise = _drawShareCard(info).then(function(url) {
     if (_shareCelInfo !== info) return; // popup was closed / reopened meanwhile
     info.cardUrl = url;
     img.src = url;
