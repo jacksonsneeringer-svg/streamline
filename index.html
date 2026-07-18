@@ -6283,7 +6283,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     </div>
     <div class="setup-steps">
       <div class="setup-step"><div class="step-num active" id="step-num-1">1</div><div class="step-info"><h4 class="active" id="step-label-1">Your Account</h4><p>Name &amp; login credentials</p></div></div>
-      <div class="setup-step"><div class="step-num" id="step-num-2">2</div><div class="step-info"><h4 id="step-label-2">Body Profile</h4><p>Age, height, weight, gender, skill</p></div></div>
+      <div class="setup-step"><div class="step-num" id="step-num-2">2</div><div class="step-info"><h4 id="step-label-2">Body Profile</h4><p>Username, age, height, weight, skill</p></div></div>
       <div class="setup-step"><div class="step-num" id="step-num-3">3</div><div class="step-info"><h4 id="step-label-3">Your Goals</h4><p>Training type, fitness &amp; swim goals</p></div></div>
       <div class="setup-step"><div class="step-num" id="step-num-4">4</div><div class="step-info"><h4 id="step-label-4">Focus</h4><p>Strokes and focus areas</p></div></div>
       <div class="setup-step"><div class="step-num" id="step-num-5">5</div><div class="step-info"><h4 id="step-label-5">Schedule &amp; Setup</h4><p>Times, gear, location, pool access</p></div></div>
@@ -6311,31 +6311,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
       </div>
     </div>
-    <!-- Shown right after Google sign-up for brand-new accounts: pick the name
-         the app greets you by, before the training-profile questions. -->
-    <div class="setup-step-content" id="step-username">
-      <div class="setup-step-header">
-        <span class="eyebrow">Almost there</span>
-        <h2>Choose your username</h2>
-        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">This is the name LANE FOUR will greet you by. You can change it anytime from your profile.</p>
-      </div>
-      <div class="setup-fields">
-        <div class="form-group">
-          <label class="form-label required-dot" for="gs-username-input">Username</label>
-          <input type="text" id="gs-username-input" class="form-input" maxlength="30" autocomplete="off" placeholder="e.g. Marlin"
-            oninput="updateUsernameCounter()"
-            onkeydown="if(event.key==='Enter'){event.preventDefault();saveGoogleUsername();}" />
-          <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.4rem;"><span id="gs-username-count">0</span>/30 characters</p>
-          <p id="gs-username-error" style="display:none; font-size:0.82rem; color:#c0392b; margin-top:0.4rem;"></p>
-        </div>
-      </div>
-      <div class="setup-nav" style="justify-content:flex-end;">
-        <button class="btn btn-gold" onclick="saveGoogleUsername()">Continue →</button>
-      </div>
-    </div>
     <div class="setup-step-content" id="step-2">
       <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
       <div class="setup-fields">
+        <div class="form-group"><label class="form-label required-dot" for="gs-username">Username</label><input type="text" id="gs-username" class="form-input" maxlength="30" autocomplete="off" placeholder="e.g. Marlin" /><p class="form-hint">The name LANE FOUR greets you by. You can change it anytime.</p></div>
         <div class="form-group"><label class="form-label required-dot">Age</label><input type="number" id="gs-dob" class="form-input" placeholder="25" min="1" max="120" inputmode="numeric" /></div>
         <div class="form-row">
           <div class="form-group"><label class="form-label required-dot">Height (in.)</label><div class="unit-input"><input type="number" id="gs-height" class="form-input" placeholder="70" min="48" max="96" /><span class="unit-label">in</span></div></div>
@@ -6672,20 +6651,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5ddbc9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-2a8 8 0 0 1 16 0v2"/></svg>
     </div>
     <div class="profile-fullname" id="profile-fullname">Your Name</div>
-    <!-- Inline username editor: change the display name without walking back
-         through the whole get-started flow. -->
-    <div id="username-edit" style="display:none; width:100%; max-width:360px; margin:-1.25rem auto 2rem; text-align:center;">
-      <input id="username-input" type="text" maxlength="30" autocomplete="off" placeholder="Username"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();saveUsername();}else if(event.key==='Escape'){cancelUsernameEdit();}"
-        style="width:100%; box-sizing:border-box; padding:0.6rem 0.85rem; font-size:0.95rem; color:#fff; background:#0d3330; border:1px solid rgba(93,219,201,0.4); border-radius:10px; text-align:center;" />
-      <p id="username-edit-msg" style="display:none; font-size:0.75rem; color:rgba(255,140,140,0.9); margin:0.5rem 0 0;"></p>
-      <div style="display:flex; gap:0.5rem; justify-content:center; margin-top:0.75rem;">
-        <button class="btn btn-sm" onclick="saveUsername()" style="background:#5ddbc9; color:#08201e; border:none; font-size:0.8rem;">Save</button>
-        <button class="btn btn-outline-light btn-sm" onclick="cancelUsernameEdit()" style="background:transparent; color:rgba(255,255,255,0.7); border-color:rgba(93,219,201,0.25); font-size:0.8rem;">Cancel</button>
-      </div>
-    </div>
-    <div id="username-edit-actions" style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem;">
-      <button class="btn btn-outline-light btn-sm" onclick="startUsernameEdit()" style="font-size:0.82rem; border-color:rgba(93,219,201,0.4); color:rgba(93,219,201,0.85);">Edit Username</button>
+    <!-- Editing your username lives inside the get-started flow (step 2) now,
+         reached through Edit Profile — no separate username editor. -->
+    <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem;">
       <button class="btn btn-outline-light btn-sm" onclick="editProfile()" style="font-size:0.82rem; border-color:rgba(93,219,201,0.4); color:rgba(93,219,201,0.85);">Edit Profile</button>
     </div>
     <div class="profile-card" id="profile-card">
@@ -10384,9 +10352,19 @@ async function handleGoogleCredential(response) {
     if (greeting && acct) greeting.textContent = 'Welcome, ' + acct.firstName + '!';
     const hasProfile = Object.keys(getProfile() || {}).length > 0;
     navigate('get-started', true);
-    // Brand-new accounts pick their username first; returning users already
-    // have one (and a profile) and skip straight to their training.
-    if (hasProfile) { navigate('my-training'); } else { showUsernameStep(); }
+    // Returning users already have a profile and skip straight to their
+    // training. Brand-new accounts start on step 2, where they pick a username
+    // (pre-filled from their Google name) alongside the rest of the body
+    // profile.
+    if (hasProfile) {
+      navigate('my-training');
+    } else {
+      goToStep(2);
+      setTimeout(() => {
+        const u = document.getElementById('gs-username');
+        if (u) u.value = (acct?.firstName || '').slice(0, USERNAME_MAX);
+      }, 80);
+    }
   } else {
     navigate('my-training');
   }
@@ -10745,6 +10723,25 @@ function setupProfile() {
 }
 
 function setupLater() {
+  // The username lives on step 2 now, so persist any change before bailing out
+  // of the rest of setup — otherwise skipping ahead would silently drop it.
+  const account = getAccount();
+  const username = (document.getElementById('gs-username')?.value || '').trim().slice(0, USERNAME_MAX);
+  if (account && username && username !== account.firstName) {
+    const updatedAccount = { ...account, firstName: username };
+    localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
+    const users = getUsers();
+    const key = (account.email || '').toLowerCase();
+    if (users[key]) {
+      users[key] = { ...users[key], firstName: username };
+      localStorage.setItem('streamline_users', JSON.stringify(users));
+    }
+    const sessionToken = localStorage.getItem('streamline_session');
+    if (apiBase() && sessionToken) {
+      authApi('profile', { token: sessionToken, firstName: username, lastName: updatedAccount.lastName || '' }).catch(() => {});
+    }
+    updateNavButton();
+  }
   const prev = _previousPage || 'home';
   navigate(prev);
 }
@@ -10973,10 +10970,6 @@ function renderProfilePage() {
   const nameEl = document.getElementById('profile-fullname');
   if (nameEl) nameEl.textContent = (account.firstName + ' ' + account.lastName).trim();
 
-  // Reset the username editor to its closed state on every render so a stale
-  // open form never lingers when the profile page is revisited.
-  cancelUsernameEdit();
-
   const card = document.getElementById('profile-card');
   if (!card) return;
 
@@ -10995,76 +10988,6 @@ function renderProfilePage() {
       </div>
     </div>`;
   }).join('');
-}
-
-// ── Inline username editing ─────────────────────────────────────────────────
-// The username is stored in the account's firstName (lastName stays empty).
-// This lets a signed-in athlete rename themselves directly from the profile
-// page instead of stepping through the whole get-started flow.
-
-function startUsernameEdit() {
-  const account = getAccount();
-  if (!account) return;
-  const editor  = document.getElementById('username-edit');
-  const actions = document.getElementById('username-edit-actions');
-  const input   = document.getElementById('username-input');
-  const msg     = document.getElementById('username-edit-msg');
-  if (!editor || !input) return;
-  if (msg) { msg.style.display = 'none'; msg.textContent = ''; }
-  input.value = account.firstName || '';
-  editor.style.display = 'block';
-  if (actions) actions.style.display = 'none';
-  setTimeout(() => { input.focus(); input.select(); }, 50);
-}
-
-function cancelUsernameEdit() {
-  const editor  = document.getElementById('username-edit');
-  const actions = document.getElementById('username-edit-actions');
-  const msg     = document.getElementById('username-edit-msg');
-  if (editor)  editor.style.display = 'none';
-  if (actions) actions.style.display = 'flex';
-  if (msg) { msg.style.display = 'none'; msg.textContent = ''; }
-}
-
-function usernameEditError(text) {
-  const msg = document.getElementById('username-edit-msg');
-  if (msg) { msg.textContent = text; msg.style.display = 'block'; }
-}
-
-// Persist a new username (stored in the account's firstName) to localStorage,
-// keep the local-fallback users record in sync, push it to the backend when
-// signed into the live API, and refresh the name shown around the app.
-function applyUsername(username) {
-  const account = getAccount();
-  if (!account) return;
-  const updatedAccount = { ...account, firstName: username };
-  localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
-
-  const users = getUsers();
-  const key = (account.email || '').toLowerCase();
-  if (users[key]) {
-    users[key] = { ...users[key], firstName: username };
-    localStorage.setItem('streamline_users', JSON.stringify(users));
-  }
-
-  const sessionToken = localStorage.getItem('streamline_session');
-  if (apiBase() && sessionToken) {
-    authApi('profile', { token: sessionToken, firstName: username, lastName: updatedAccount.lastName || '' }).catch(() => {});
-  }
-
-  updateNavButton();
-}
-
-function saveUsername() {
-  const account = getAccount();
-  if (!account) return;
-  const input = document.getElementById('username-input');
-  const username = (input?.value || '').trim().slice(0, USERNAME_MAX);
-  if (!username) { usernameEditError('Please enter a username.'); return; }
-  if (username === account.firstName) { cancelUsernameEdit(); return; }
-  applyUsername(username);
-  cancelUsernameEdit();
-  renderProfilePage();
 }
 
 function toggleProfileEdit(key) {
@@ -12820,55 +12743,6 @@ function goToStep(n) {
   const content = document.getElementById('page-get-started');
   if (content) content.scrollTop = 0;
   window.scrollTo(0, 0);
-}
-
-// ── New-account username step (shown after Google sign-up) ──────────────────
-
-function updateUsernameCounter() {
-  const input = document.getElementById('gs-username-input');
-  const count = document.getElementById('gs-username-count');
-  if (input && count) count.textContent = input.value.length;
-}
-
-function showUsernameStep() {
-  document.querySelectorAll('#page-get-started .setup-step-content').forEach(s => {
-    s.classList.toggle('active', s.id === 'step-username');
-  });
-  // Naming yourself completes "Your Account", so keep step 1 highlighted.
-  for (let i = 1; i <= 5; i++) {
-    const num = document.getElementById('step-num-' + i);
-    const lbl = document.getElementById('step-label-' + i);
-    if (num) { num.classList.toggle('active', i === 1); num.classList.remove('done'); }
-    if (lbl) lbl.classList.toggle('active', i === 1);
-  }
-  const fill = document.getElementById('progress-fill');
-  if (fill) fill.style.width = '20%';
-  const label = document.getElementById('progress-label');
-  if (label) label.textContent = 'Step 1 of 5';
-
-  const account = getAccount();
-  const input = document.getElementById('gs-username-input');
-  const err = document.getElementById('gs-username-error');
-  if (err) err.style.display = 'none';
-  if (input) {
-    input.value = (account?.firstName || '').slice(0, USERNAME_MAX);
-    updateUsernameCounter();
-    setTimeout(() => { input.focus(); input.select(); }, 60);
-  }
-  window.scrollTo(0, 0);
-}
-
-function saveGoogleUsername() {
-  const input = document.getElementById('gs-username-input');
-  const err = document.getElementById('gs-username-error');
-  const username = (input?.value || '').trim().slice(0, USERNAME_MAX);
-  if (!username) {
-    if (err) { err.textContent = 'Please enter a username to continue.'; err.style.display = 'block'; }
-    input?.focus();
-    return;
-  }
-  applyUsername(username);
-  goToStep(2);
 }
 
 function toggleSpeedTimes() {
