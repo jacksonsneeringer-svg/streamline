@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <!-- LANE FOUR goggles mark (square, for browser tabs and Google Search).
        Vector art matches the nav logo-mark in index.html. -->
-  <rect width="64" height="64" rx="14" fill="#082622"/>
   <g transform="translate(-1,23) scale(0.549)">
     <defs>
       <radialGradient id="fav-slg" cx="40%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a7a6e"/><stop offset="100%" stop-color="#091f1c"/></radialGradient>
