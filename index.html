@@ -8909,6 +8909,7 @@ function editProfile() {
     preselectChips('gs-fitness-goal-chips', profile.fitnessGoal);
     preselectChips('swim-goal-chips',       profile.swimGoal);
     if (profile.swimGoal) toggleSpeedTimes();
+    fillSpeedTimes(profile.swimTimes);
     preselectChips('gs-strokes-chips',      profile.strokeFocus);
     preselectChips('gs-muscle-chips',       profile.muscleFocus);
     preselectChips('gs-swim-days-chips',    profile.swimDays);
@@ -9924,6 +9925,30 @@ function deletePR(savedAt) {
   renderProgress();
 }
 
+// Mirrors the "current best" times entered on the profile form into the PR log
+// on the My Training page. Profile-sourced entries are tagged so re-saving the
+// profile updates the same PR (when the time changed) instead of piling up
+// duplicates; manually added PRs are never touched.
+function syncBestTimesToPRs(swimTimes) {
+  if (!Array.isArray(swimTimes) || !swimTimes.length) return;
+  const prs = getPRs();
+  const today = localISODate();
+  let changed = false;
+  let stamp = Date.now();
+  swimTimes.forEach(t => {
+    const best = (t && t.best || '').trim();
+    if (!best) return;
+    const existing = prs.find(p => p.source === 'profile' && p.event === t.event);
+    if (existing) {
+      if (existing.time !== best) { existing.time = best; existing.date = today; changed = true; }
+    } else {
+      prs.unshift({ event: t.event, time: best, date: today, savedAt: stamp++, source: 'profile' });
+      changed = true;
+    }
+  });
+  if (changed) savePRs(prs);
+}
+
 function prSectionHtml() {
   const prs = getPRs();
   const cards = prs.map(p => {
@@ -10830,7 +10855,41 @@ function collectProfileData() {
     locName:      _setupLocation ? _setupLocation.name : '',
     city:         _setupLocation ? _setupLocation.name : '', // plan generator compatibility
     gear:         getSelectedChips('gs-gear-chips'),
+    swimTimes:    collectSpeedTimes(),
   };
+}
+
+// Reads the "Current best times & goal times" grid on the setup / edit-profile
+// form. Each row is: event label <span>, then two inputs (current best, goal).
+// Only rows where the athlete typed something are returned.
+function collectSpeedTimes() {
+  const out = [];
+  document.querySelectorAll('#speed-times-rows > div').forEach(row => {
+    const label  = row.querySelector('span');
+    const inputs = row.querySelectorAll('input');
+    if (!label || inputs.length < 2) return;
+    const event = label.textContent.trim();
+    const best  = (inputs[0].value || '').trim();
+    const goal  = (inputs[1].value || '').trim();
+    if (best || goal) out.push({ event, best, goal });
+  });
+  return out;
+}
+
+// Prefills the times grid from a saved profile so editing preserves prior entries.
+function fillSpeedTimes(swimTimes) {
+  if (!Array.isArray(swimTimes) || !swimTimes.length) return;
+  const byEvent = {};
+  swimTimes.forEach(t => { if (t && t.event) byEvent[t.event] = t; });
+  document.querySelectorAll('#speed-times-rows > div').forEach(row => {
+    const label  = row.querySelector('span');
+    const inputs = row.querySelectorAll('input');
+    if (!label || inputs.length < 2) return;
+    const t = byEvent[label.textContent.trim()];
+    if (!t) return;
+    inputs[0].value = t.best || '';
+    inputs[1].value = t.goal || '';
+  });
 }
 
 // ── Setup-form location (browser permission) ────────────────────────────────
@@ -10935,6 +10994,9 @@ async function saveFullProfile() {
   const profile = collectProfileData();
   localStorage.setItem('streamline_profile', JSON.stringify(profile));
   syncProfileToServer();
+  // Any current-best times the athlete entered become PR-log entries on the
+  // My Training page.
+  syncBestTimesToPRs(profile.swimTimes);
   updateNavButton();
   renderProfilePage();
   navigate('profile');
@@ -10968,7 +11030,9 @@ function renderProfilePage() {
   if (!account) return;
 
   const nameEl = document.getElementById('profile-fullname');
-  if (nameEl) nameEl.textContent = (account.firstName + ' ' + account.lastName).trim();
+  // The account is identified by a single username (stored in firstName); we
+  // greet by that alone and never append a last name.
+  if (nameEl) nameEl.textContent = (account.firstName || '').trim();
 
   const card = document.getElementById('profile-card');
   if (!card) return;
