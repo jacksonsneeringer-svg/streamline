@@ -6311,6 +6311,28 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         </div>
       </div>
     </div>
+    <!-- Shown right after Google sign-up for brand-new accounts: pick the name
+         the app greets you by, before the training-profile questions. -->
+    <div class="setup-step-content" id="step-username">
+      <div class="setup-step-header">
+        <span class="eyebrow">Almost there</span>
+        <h2>Choose your username</h2>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">This is the name LANE FOUR will greet you by. You can change it anytime from your profile.</p>
+      </div>
+      <div class="setup-fields">
+        <div class="form-group">
+          <label class="form-label required-dot" for="gs-username-input">Username</label>
+          <input type="text" id="gs-username-input" class="form-input" maxlength="30" autocomplete="off" placeholder="e.g. Marlin"
+            oninput="updateUsernameCounter()"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();saveGoogleUsername();}" />
+          <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.4rem;"><span id="gs-username-count">0</span>/30 characters</p>
+          <p id="gs-username-error" style="display:none; font-size:0.82rem; color:#c0392b; margin-top:0.4rem;"></p>
+        </div>
+      </div>
+      <div class="setup-nav" style="justify-content:flex-end;">
+        <button class="btn btn-gold" onclick="saveGoogleUsername()">Continue →</button>
+      </div>
+    </div>
     <div class="setup-step-content" id="step-2">
       <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
       <div class="setup-fields">
@@ -6653,7 +6675,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <!-- Inline username editor: change the display name without walking back
          through the whole get-started flow. -->
     <div id="username-edit" style="display:none; width:100%; max-width:360px; margin:-1.25rem auto 2rem; text-align:center;">
-      <input id="username-input" type="text" maxlength="60" autocomplete="off" placeholder="Username"
+      <input id="username-input" type="text" maxlength="30" autocomplete="off" placeholder="Username"
         onkeydown="if(event.key==='Enter'){event.preventDefault();saveUsername();}else if(event.key==='Escape'){cancelUsernameEdit();}"
         style="width:100%; box-sizing:border-box; padding:0.6rem 0.85rem; font-size:0.95rem; color:#fff; background:#0d3330; border:1px solid rgba(93,219,201,0.4); border-radius:10px; text-align:center;" />
       <p id="username-edit-msg" style="display:none; font-size:0.75rem; color:rgba(255,140,140,0.9); margin:0.5rem 0 0;"></p>
@@ -10259,6 +10281,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // ── Account & Profile ──────────────────────────────────────────────────────
 
+// Usernames (stored in the account's firstName) are capped here and by the
+// input maxlength attributes; the server trims to a longer bound as a backstop.
+const USERNAME_MAX = 30;
+
 let _previousPage = 'home';
 
 function navAccountClick() {
@@ -10358,7 +10384,9 @@ async function handleGoogleCredential(response) {
     if (greeting && acct) greeting.textContent = 'Welcome, ' + acct.firstName + '!';
     const hasProfile = Object.keys(getProfile() || {}).length > 0;
     navigate('get-started', true);
-    if (hasProfile) { navigate('my-training'); } else { goToStep(2); }
+    // Brand-new accounts pick their username first; returning users already
+    // have one (and a profile) and skip straight to their training.
+    if (hasProfile) { navigate('my-training'); } else { showUsernameStep(); }
   } else {
     navigate('my-training');
   }
@@ -11003,20 +11031,15 @@ function usernameEditError(text) {
   if (msg) { msg.textContent = text; msg.style.display = 'block'; }
 }
 
-async function saveUsername() {
+// Persist a new username (stored in the account's firstName) to localStorage,
+// keep the local-fallback users record in sync, push it to the backend when
+// signed into the live API, and refresh the name shown around the app.
+function applyUsername(username) {
   const account = getAccount();
   if (!account) return;
-  const input = document.getElementById('username-input');
-  const username = (input?.value || '').trim().slice(0, 60);
-  if (!username) { usernameEditError('Please enter a username.'); return; }
-  if (username === account.firstName) { cancelUsernameEdit(); return; }
-
-  // Update the signed-in session locally first so the UI reflects the new name
-  // immediately (matches how saveFullProfile treats the account record).
   const updatedAccount = { ...account, firstName: username };
   localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
 
-  // Keep the local-fallback users record (used when there's no backend) in sync.
   const users = getUsers();
   const key = (account.email || '').toLowerCase();
   if (users[key]) {
@@ -11024,14 +11047,23 @@ async function saveUsername() {
     localStorage.setItem('streamline_users', JSON.stringify(users));
   }
 
-  // Persist to the backend when signed in against the live API.
   const sessionToken = localStorage.getItem('streamline_session');
   if (apiBase() && sessionToken) {
     authApi('profile', { token: sessionToken, firstName: username, lastName: updatedAccount.lastName || '' }).catch(() => {});
   }
 
-  cancelUsernameEdit();
   updateNavButton();
+}
+
+function saveUsername() {
+  const account = getAccount();
+  if (!account) return;
+  const input = document.getElementById('username-input');
+  const username = (input?.value || '').trim().slice(0, USERNAME_MAX);
+  if (!username) { usernameEditError('Please enter a username.'); return; }
+  if (username === account.firstName) { cancelUsernameEdit(); return; }
+  applyUsername(username);
+  cancelUsernameEdit();
   renderProfilePage();
 }
 
@@ -12788,6 +12820,55 @@ function goToStep(n) {
   const content = document.getElementById('page-get-started');
   if (content) content.scrollTop = 0;
   window.scrollTo(0, 0);
+}
+
+// ── New-account username step (shown after Google sign-up) ──────────────────
+
+function updateUsernameCounter() {
+  const input = document.getElementById('gs-username-input');
+  const count = document.getElementById('gs-username-count');
+  if (input && count) count.textContent = input.value.length;
+}
+
+function showUsernameStep() {
+  document.querySelectorAll('#page-get-started .setup-step-content').forEach(s => {
+    s.classList.toggle('active', s.id === 'step-username');
+  });
+  // Naming yourself completes "Your Account", so keep step 1 highlighted.
+  for (let i = 1; i <= 5; i++) {
+    const num = document.getElementById('step-num-' + i);
+    const lbl = document.getElementById('step-label-' + i);
+    if (num) { num.classList.toggle('active', i === 1); num.classList.remove('done'); }
+    if (lbl) lbl.classList.toggle('active', i === 1);
+  }
+  const fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = '20%';
+  const label = document.getElementById('progress-label');
+  if (label) label.textContent = 'Step 1 of 5';
+
+  const account = getAccount();
+  const input = document.getElementById('gs-username-input');
+  const err = document.getElementById('gs-username-error');
+  if (err) err.style.display = 'none';
+  if (input) {
+    input.value = (account?.firstName || '').slice(0, USERNAME_MAX);
+    updateUsernameCounter();
+    setTimeout(() => { input.focus(); input.select(); }, 60);
+  }
+  window.scrollTo(0, 0);
+}
+
+function saveGoogleUsername() {
+  const input = document.getElementById('gs-username-input');
+  const err = document.getElementById('gs-username-error');
+  const username = (input?.value || '').trim().slice(0, USERNAME_MAX);
+  if (!username) {
+    if (err) { err.textContent = 'Please enter a username to continue.'; err.style.display = 'block'; }
+    input?.focus();
+    return;
+  }
+  applyUsername(username);
+  goToStep(2);
 }
 
 function toggleSpeedTimes() {
