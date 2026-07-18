@@ -6234,7 +6234,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <a href="/get-started" class="btn btn-primary btn-sm signin-create-btn" onclick="navigate('get-started')">Create account</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <p style="font-size:0.92rem; color:var(--text-muted); margin:0; line-height:1.6;">Continue with Google to log in &mdash; or to create your account instantly. No password to set or remember.</p>
         <div id="google-signin-signin" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:center; min-height:44px;"></div>
         <p id="signin-message" style="display:none; font-size:0.86rem; margin:-0.25rem 0 0; color:#c0392b;"></p>
         <p id="google-signin-note" style="display:none; font-size:0.82rem; color:var(--text-muted); margin:0;"></p>
@@ -6301,11 +6300,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
           <a href="/sign-in" class="btn btn-outline-dark btn-sm setup-login-btn" onclick="return navigate('sign-in')">Log in</a>
         </div>
         <h2>Create your account</h2>
-        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Sign in with Google to get started &mdash; no password to set or remember.</p>
       </div>
       <div class="setup-fields">
         <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
-        <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6; margin:0;">We use your Google account only to sign you in. We never see your password and never post anything on your behalf. After this you'll set up your training profile.</p>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
           <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">By continuing with Google you agree to the <a href="/terms-of-use" onclick="navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="navigate('privacy-policy')">Privacy Policy</a>. This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
         </div>
@@ -7597,6 +7594,12 @@ function showPage(pageId, allowSetup) {
   if (pageId === 'profile') renderProfilePage();
   if (pageId === 'my-training') { updateTrainingPage(); showDashView('overview'); renderWorkoutLog(); }
   if (pageId === 'contact') { prefillContactForm(); ensureContactRecaptcha(); }
+  // A logged-out visitor arriving at the account-creation flow (via any
+  // "Create account" / "Get Started" button) should always start clean on
+  // step 1 — never with fields left prefilled from an earlier signed-in
+  // session (e.g. an Edit Profile visit). allowSetup marks the intentional
+  // post-signup / edit flows, which populate their own fields.
+  if (pageId === 'get-started' && !allowSetup && !getAccount()) resetGetStartedForm();
   if (pageId === 'sign-in' || pageId === 'get-started') ensureGoogleSignIn();
 }
 
@@ -12784,6 +12787,29 @@ function clearDrylandArchiveFilters() {
     if (el) el.value = '';
   });
   filterDrylandArchive();
+}
+
+// Wipe every field in the get-started flow back to its pristine default and
+// return to step 1. Used when a logged-out visitor opens account creation so
+// no data from a prior signed-in session (e.g. Edit Profile) is left behind.
+function resetGetStartedForm() {
+  const page = document.getElementById('page-get-started');
+  if (!page) return;
+  page.querySelectorAll('input').forEach(inp => {
+    if (inp.type === 'checkbox' || inp.type === 'radio') inp.checked = false;
+    else inp.value = '';
+  });
+  page.querySelectorAll('select').forEach(sel => { sel.selectedIndex = 0; });
+  // Clear every chip selection, then restore the one chip that ships selected
+  // by default (Freestyle in the stroke-focus group).
+  page.querySelectorAll('.chip').forEach(c => c.classList.remove('selected', 'active'));
+  const defaultStroke = page.querySelector('#gs-strokes-chips .chip');
+  if (defaultStroke) defaultStroke.classList.add('selected');
+  const speedPanel = document.getElementById('speed-times-panel');
+  if (speedPanel) speedPanel.style.display = 'none';
+  _setupLocation = null;
+  if (typeof setupLocationUI === 'function') setupLocationUI();
+  goToStep(1);
 }
 
 function goToStep(n) {
