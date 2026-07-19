@@ -12,7 +12,7 @@ Parameters:
 
   ResendApiKey:
     Type: String
-    Description: Resend API key used to send transactional email (welcome, password reset, contact)
+    Description: Resend API key used to send transactional email (welcome, contact)
     NoEcho: true
     Default: ""
 
@@ -562,8 +562,6 @@ Resources:
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
           GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
           SESSION_TTL = 30 * 24 * 3600  # 30 days
-          RESET_TTL = 3600              # 1 hour
-          ITERATIONS = 120000
 
           def send_email(source, to, subject, html=None, text=None, reply_to=None):
             payload = {'from': source, 'to': to if isinstance(to, list) else [to], 'subject': subject}
@@ -824,8 +822,8 @@ Resources:
             return resp(200, {'success': True})
 
           # ── Sign in with Google ──────────────────────────────────────────────
-          # Accounts created this way have no password: the passwordHash field is
-          # simply never set. Identity is proven by a Google ID token (a signed
+          # Google is the only way to authenticate; no passwords are ever stored.
+          # Identity is proven by a Google ID token (a signed
           # JWT) that the browser gets from Google Identity Services and posts
           # here. We hand that token to Google's tokeninfo endpoint, which does
           # the JWT signature / issuer / expiry checks; we then confirm the
@@ -880,11 +878,15 @@ Resources:
                            Payload=json.dumps({'email': email}).encode())
               except Exception as e:
                 print('welcome email invoke failed:', e)
-            elif sub and not user.get('googleSub'):
-              # An existing (password) account signs in with Google for the first
-              # time: link the Google identity so future logins match by sub too.
-              user['googleSub'] = sub
+            elif (sub and not user.get('googleSub')) or 'passwordHash' in user:
+              # An existing account signs in with Google: link the Google identity
+              # so future logins match by sub, and drain any legacy password hash
+              # left over from the old email/password login — we no longer store
+              # passwords of any kind.
+              if sub and not user.get('googleSub'):
+                user['googleSub'] = sub
               user['authProvider'] = user.get('authProvider') or 'google'
+              user.pop('passwordHash', None)
               try:
                 users.put_item(Item=user)
               except Exception as e:
@@ -2872,7 +2874,7 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/contact"
 
-  # Auth routes (signup/login/logout/me/profile/forgot/reset)
+  # Auth routes (google/logout/me/profile/favorites/training/delete)
   AuthIntegration:
     Type: AWS::ApiGatewayV2::Integration
     Properties:
