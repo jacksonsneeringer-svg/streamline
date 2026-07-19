@@ -147,6 +147,8 @@ Resources:
     Properties:
       TableName: streamline-contacts
       BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
@@ -165,6 +167,8 @@ Resources:
     Properties:
       TableName: streamline-subscribers
       BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
@@ -245,6 +249,8 @@ Resources:
     Properties:
       TableName: streamline-users
       BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
@@ -275,6 +281,8 @@ Resources:
     Properties:
       TableName: streamline-training-plans
       BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
@@ -2810,9 +2818,15 @@ Resources:
     Properties:
       Name: streamline-api
       ProtocolType: HTTP
+      # Restricted to the site's own origins. The API lives on a separate
+      # execute-api domain, so the browser needs CORS to call it — but only
+      # from winlanefour.com, never from any third-party site. API Gateway
+      # echoes the matching origin and overrides the "*" the Lambdas still
+      # send in their own responses.
       CorsConfiguration:
         AllowOrigins:
-          - "*"
+          - !Sub "https://${DomainName}"
+          - !Sub "https://www.${DomainName}"
         AllowMethods:
           - GET
           - POST
@@ -2827,6 +2841,12 @@ Resources:
       ApiId: !Ref HttpApi
       StageName: "$default"
       AutoDeploy: true
+      # Account-wide throttle so a single abusive client (credential-stuffing,
+      # scraping, or accidental loops) can't hammer the auth/search/plan routes.
+      # These are generous for real traffic but cap runaway request rates.
+      DefaultRouteSettings:
+        ThrottlingRateLimit: 50
+        ThrottlingBurstLimit: 100
 
   # Contact route
   ContactIntegration:
