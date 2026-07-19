@@ -887,6 +887,11 @@ Resources:
                 'createdAt': int(time.time() * 1000),
                 'profile': json.dumps({})
               }
+              # Record the age/terms attestation made at account creation (the
+              # user checked "I am at least 13 and agree to the Terms"). Stored as
+              # proof of the neutral age screen for COPPA.
+              if body.get('ageConfirmed'):
+                user['ageConfirmedAt'] = int(time.time() * 1000)
               users.put_item(Item=user)
               try:
                 lam.invoke(FunctionName='streamline-welcome-email', InvocationType='Event',

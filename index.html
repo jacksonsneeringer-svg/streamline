@@ -6261,9 +6261,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <h2>Create your account</h2>
       </div>
       <div class="setup-fields">
+        <label style="display:flex; gap:0.6rem; align-items:flex-start; font-size:0.86rem; color:var(--text-muted); line-height:1.55; cursor:pointer;">
+          <input type="checkbox" id="gs-age-confirm" onchange="if(this.checked){var m=document.getElementById('gs-age-confirm-msg'); if(m) m.style.display='none';}" style="margin-top:0.15rem; flex-shrink:0; width:1rem; height:1rem; cursor:pointer;" />
+          <span>I confirm I am at least 13 years old and agree to the <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="event.preventDefault(); navigate('privacy-policy')">Privacy Policy</a>.</span>
+        </label>
+        <p id="gs-age-confirm-msg" style="display:none; font-size:0.82rem; color:#c0392b; margin:-0.4rem 0 0;">Please confirm you are at least 13 years old to create an account.</p>
         <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
-          <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">By continuing with Google you agree to the <a href="/terms-of-use" onclick="navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="navigate('privacy-policy')">Privacy Policy</a>. This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
+          <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
         </div>
       </div>
     </div>
@@ -10301,9 +10306,18 @@ async function handleGoogleCredential(response) {
   const credential = response && response.credential;
   if (!credential) return;
   const onGetStarted = !!document.querySelector('#page-get-started.active');
+  // Account creation requires the age/terms confirmation. The checkbox only
+  // exists on the get-started (create account) step; returning users signing in
+  // elsewhere have already confirmed it at signup.
+  const ageBox = document.getElementById('gs-age-confirm');
+  if (onGetStarted && ageBox && !ageBox.checked) {
+    const msg = document.getElementById('gs-age-confirm-msg');
+    if (msg) msg.style.display = '';
+    return;
+  }
   if (apiBase()) {
     let r;
-    try { r = await authApi('google', { credential }); }
+    try { r = await authApi('google', { credential, ageConfirmed: onGetStarted ? true : undefined }); }
     catch (e) { googleAuthError('Could not reach the server. Please check your connection and try again.'); return; }
     if (!r.ok) { googleAuthError(r.data.error || 'Google sign-in failed. Please try again.'); return; }
     const mergedTraining = mergeLocalTraining(r.data);
@@ -12637,6 +12651,8 @@ function resetGetStartedForm() {
   if (speedPanel) speedPanel.style.display = 'none';
   _setupLocation = null;
   if (typeof setupLocationUI === 'function') setupLocationUI();
+  const ageMsg = document.getElementById('gs-age-confirm-msg');
+  if (ageMsg) ageMsg.style.display = 'none';
   goToStep(1);
 }
 
