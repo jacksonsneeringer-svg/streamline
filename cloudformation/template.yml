@@ -153,7 +153,9 @@ Resources:
     Type: AWS::CloudFront::ResponseHeadersPolicy
     Properties:
       ResponseHeadersPolicyConfig:
-        Name: !Sub "${DomainName}-security-headers"
+        # Name allows only alphanumerics, dashes, and underscores (no dots), so
+        # this is a static name rather than one derived from the domain.
+        Name: streamline-security-headers
         SecurityHeadersConfig:
           StrictTransportSecurity:
             AccessControlMaxAgeSec: 63072000
