@@ -8241,9 +8241,48 @@ function renderPlanMessage(html) {
   section.innerHTML = `<div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.5rem 1.75rem;">${html}</div>`;
 }
 
+// Point-of-use health acknowledgment. Before a plan (swim, dryland, nutrition)
+// is shown, the athlete must affirm they have read the disclaimer and assume the
+// risk. The acceptance is timestamped on the profile and synced to the server.
+function hasHealthAck() {
+  return !!(getProfile() || {}).healthAckAt;
+}
+
+function renderHealthAckGate(force) {
+  const section = document.getElementById('dash-plan-section');
+  if (!section) return;
+  section.style.display = '';
+  section.innerHTML = `
+    <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.75rem;">
+      <h3 style="color:var(--deep); font-size:1.05rem; font-weight:600; margin:0 0 0.6rem;">Before your plan: a quick health acknowledgment</h3>
+      <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.7; margin:0 0 0.85rem;">Your LANE FOUR swim, dryland, and nutrition plans are <strong>general fitness information, not medical advice</strong>. Swimming and exercise carry inherent risks, including injury and drowning. Please read the full <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Health &amp; Fitness Disclaimer</a>.</p>
+      <label style="display:flex; gap:0.6rem; align-items:flex-start; font-size:0.86rem; color:var(--text-muted); line-height:1.55; cursor:pointer; margin-bottom:0.9rem;">
+        <input type="checkbox" id="health-ack-box" onchange="var m=document.getElementById('health-ack-msg'); if(this.checked&&m) m.style.display='none';" style="margin-top:0.15rem; flex-shrink:0; width:1rem; height:1rem; cursor:pointer;" />
+        <span>I have read the disclaimer, I am healthy enough for exercise (or have my doctor's clearance), and I <strong>voluntarily assume all risk</strong> of following these plans.</span>
+      </label>
+      <p id="health-ack-msg" style="display:none; font-size:0.82rem; color:#c0392b; margin:-0.55rem 0 0.75rem;">Please check the box to continue.</p>
+      <button class="btn btn-gold btn-sm" onclick="acceptHealthAck(${force ? 'true' : 'false'})">I Understand &amp; Continue</button>
+    </div>`;
+}
+
+function acceptHealthAck(force) {
+  const box = document.getElementById('health-ack-box');
+  if (!box || !box.checked) {
+    const m = document.getElementById('health-ack-msg');
+    if (m) m.style.display = '';
+    return;
+  }
+  const profile = getProfile() || {};
+  profile.healthAckAt = Date.now();
+  localStorage.setItem('streamline_profile', JSON.stringify(profile));
+  if (typeof syncProfileToServer === 'function') syncProfileToServer();
+  loadTrainingPlan(!!force);
+}
+
 function loadTrainingPlan(force) {
   const section = document.getElementById('dash-plan-section');
   if (!section || !getAccount()) return;
+  if (!hasHealthAck()) { renderHealthAckGate(force); return; }
   clearTimeout(_planPollTimer);
   const token = localStorage.getItem('streamline_session');
   if (!apiBase() || !token) {
@@ -10707,6 +10746,8 @@ function collectProfileData() {
     NUTRITION_KEYS.forEach(k => { if (prev[k] != null && prev[k] !== '') data[k] = prev[k]; });
   }
   // (Minor: no nutrition keys are set, so any prior targets are dropped.)
+  // Preserve the point-of-use health acknowledgment across profile edits.
+  if (prev.healthAckAt) data.healthAckAt = prev.healthAckAt;
   return data;
 }
 
