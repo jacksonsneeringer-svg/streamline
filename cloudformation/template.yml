@@ -618,10 +618,12 @@ Resources:
               'createdAt': int(user.get('createdAt', 0))
             }
 
-          # Health data the site no longer collects. Scrubbed from every
-          # profile read and write so legacy values drain out of storage
-          # instead of lingering.
-          RETIRED_PROFILE_KEYS = ('injuries', 'injuryNotes', 'dietaryStyle', 'allergies', 'dietaryNotes')
+          # Fields the site no longer stores. Scrubbed from every profile read and
+          # write so legacy values drain out of storage instead of lingering:
+          #   - health data the site never collects (injuries, diet, allergies)
+          #   - location: now browser-provided and session-only, never persisted
+          RETIRED_PROFILE_KEYS = ('injuries', 'injuryNotes', 'dietaryStyle', 'allergies', 'dietaryNotes',
+                                  'locLat', 'locLon', 'locName', 'city')
 
           def scrub_profile(profile):
             if isinstance(profile, dict):

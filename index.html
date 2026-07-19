@@ -7985,8 +7985,26 @@ function showBriefingLocError(btn, text) {
   msg.textContent = text;
 }
 
-// "Allow Location Access" inside the daily briefing card: ask the browser,
-// save the result to the profile, and refresh the briefing.
+// Location is browser-provided and session-only: we never store coordinates in
+// the account profile or send them to our server. They live in sessionStorage
+// (cleared when the tab closes) purely so the daily briefing can fetch weather
+// directly from Open-Meteo. Re-requested each session.
+let _sessionGeo = null;
+function getSessionGeo() {
+  if (_sessionGeo) return _sessionGeo;
+  try { const s = sessionStorage.getItem('streamline_geo'); if (s) _sessionGeo = JSON.parse(s); } catch (e) {}
+  return _sessionGeo;
+}
+function setSessionGeo(geo) {
+  _sessionGeo = geo || null;
+  try {
+    if (geo) sessionStorage.setItem('streamline_geo', JSON.stringify(geo));
+    else sessionStorage.removeItem('streamline_geo');
+  } catch (e) {}
+}
+
+// "Allow Location Access" inside the daily briefing card: ask the browser, keep
+// the result in the session only, and refresh the briefing.
 async function briefingEnableLocation(btn) {
   // Location already blocked for this site? The browser won't re-prompt, so open
   // its location settings in a new tab instead of failing silently.
@@ -7999,11 +8017,7 @@ async function briefingEnableLocation(btn) {
   try {
     const { lat, lon } = await getBrowserLocation();
     const name = await reverseGeocodeName(lat, lon);
-    const profile = getProfile();
-    profile.locLat = lat; profile.locLon = lon; profile.locName = name;
-    if (name) profile.city = name; // keep the plan generator's city field in sync
-    localStorage.setItem('streamline_profile', JSON.stringify(profile));
-    syncProfileToServer();
+    setSessionGeo({ lat, lon, name });
     renderDailyBriefing();
   } catch (e) {
     if (btn) {
@@ -8141,44 +8155,34 @@ let _briefingCache = null; // { key, ts, geo, wx }
 async function renderDailyBriefing() {
   const el = document.getElementById('content-briefing');
   if (!el || !getAccount()) return;
-  const profile = getProfile();
-  const hasCoords = profile.locLat != null && profile.locLat !== '' && profile.locLon != null && profile.locLon !== '';
-  const loc = (profile.city || '').trim(); // legacy typed city/ZIP profiles
+  const geo = getSessionGeo();
+  const hasCoords = !!(geo && geo.lat != null && geo.lat !== '' && geo.lon != null && geo.lon !== '');
   const motiv = briefingMotivation();
 
-  if (!hasCoords && !loc) {
+  if (!hasCoords) {
     el.innerHTML = briefingCompose(
-      `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.75rem;">Allow location access and this briefing will show today's weather, your best outdoor swim window, and a safety check. Your browser will ask for permission first.</p>
+      `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.75rem;">Allow location access and this briefing will show today's weather, your best outdoor swim window, and a safety check. Your browser will ask for permission first. Your location stays in your browser and is never stored on our servers.</p>
        <button class="btn btn-outline-dark btn-sm" onclick="briefingEnableLocation(this)">Allow Location Access</button>`, motiv);
     return;
   }
 
   const today = localISODate();
-  const key = (hasCoords ? profile.locLat + ',' + profile.locLon : loc.toLowerCase()) + '|' + today;
+  const key = geo.lat + ',' + geo.lon + '|' + today;
 
   const useCache = (c) => c && c.key === key && (Date.now() - c.ts) < 30 * 60 * 1000 && c.geo && c.wx;
   if (useCache(_briefingCache)) { el.innerHTML = briefingCompose(briefingWeatherBlock(_briefingCache.geo, _briefingCache.wx), motiv); return; }
   try {
-    const ls = JSON.parse(localStorage.getItem('streamline_briefing_cache') || 'null');
+    const ls = JSON.parse(sessionStorage.getItem('streamline_briefing_cache') || 'null');
     if (useCache(ls)) { _briefingCache = ls; el.innerHTML = briefingCompose(briefingWeatherBlock(ls.geo, ls.wx), motiv); return; }
   } catch (e) { /* ignore */ }
 
   el.innerHTML = briefingCompose(
-    `<p style="font-size:0.85rem; color:var(--gray-400); margin:0;">Checking today's weather in ${escHtml(hasCoords ? (profile.locName || 'your area') : loc)}…</p>`, motiv);
+    `<p style="font-size:0.85rem; color:var(--gray-400); margin:0;">Checking today's weather in ${escHtml(geo.name || 'your area')}…</p>`, motiv);
 
   try {
-    const geo = hasCoords
-      ? { lat: Number(profile.locLat), lon: Number(profile.locLon), name: profile.locName || 'your area' }
-      : await geocodeLocation(loc);
-    if (!geo) {
-      el.innerHTML = briefingCompose(
-        `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.6rem;">We could not place your saved location on the map. Allow location access to update it.</p>
-         <button class="btn btn-outline-dark btn-sm" onclick="briefingEnableLocation(this)">Allow Location Access</button>`, motiv);
-      return;
-    }
     const wx = await fetchWeather(geo.lat, geo.lon);
     _briefingCache = { key, ts: Date.now(), geo, wx };
-    try { localStorage.setItem('streamline_briefing_cache', JSON.stringify(_briefingCache)); } catch (e) { /* quota */ }
+    try { sessionStorage.setItem('streamline_briefing_cache', JSON.stringify(_briefingCache)); } catch (e) { /* quota */ }
     el.innerHTML = briefingCompose(briefingWeatherBlock(geo, wx), motiv);
   } catch (e) {
     el.innerHTML = briefingCompose(
@@ -8879,17 +8883,11 @@ function editProfile() {
     const gymAccess  = document.getElementById('gs-gym-access');
     if (poolAccess) poolAccess.value = profile.poolAccess || '';
     if (gymAccess)  gymAccess.value  = profile.gymAccess  || '';
-    _setupLocation = (profile.locLat != null && profile.locLat !== '' && profile.locLon != null && profile.locLon !== '')
-      ? { lat: Number(profile.locLat), lon: Number(profile.locLon), name: profile.locName || profile.city || '' }
-      : null;
+    // Location is session-only and never stored on the profile; prefill from the
+    // current session's browser-provided location if one exists.
+    const _sg = getSessionGeo();
+    _setupLocation = (_sg && _sg.lat != null) ? { lat: _sg.lat, lon: _sg.lon, name: _sg.name || '' } : null;
     setupLocationUI();
-    // Migrate a legacy typed city/ZIP to coordinates so saving the edit
-    // doesn't lose the location.
-    if (!_setupLocation && (profile.city || '').trim()) {
-      geocodeLocation(profile.city).then(g => {
-        if (g && !_setupLocation) { _setupLocation = { lat: g.lat, lon: g.lon, name: g.name }; setupLocationUI(); }
-      }).catch(() => {});
-    }
 
     // Skip account step, go straight to body profile
     goToStep(2);
@@ -10633,10 +10631,9 @@ function collectProfileData() {
     workoutTime:  getSelectedChips('gs-workout-time-chips'),
     poolAccess:   document.getElementById('gs-pool-access')?.value || '',
     gymAccess:    document.getElementById('gs-gym-access')?.value || '',
-    locLat:       _setupLocation ? _setupLocation.lat : '',
-    locLon:       _setupLocation ? _setupLocation.lon : '',
-    locName:      _setupLocation ? _setupLocation.name : '',
-    city:         _setupLocation ? _setupLocation.name : '', // plan generator compatibility
+    // Location is intentionally NOT stored in the profile. It is browser-provided
+    // and session-only (see setSessionGeo); the daily briefing reads it from
+    // sessionStorage and it never reaches our server.
     gear:         getSelectedChips('gs-gear-chips'),
     swimTimes:    collectSpeedTimes(),
   };
@@ -10758,6 +10755,10 @@ async function saveFullProfile() {
     users[key] = { ...users[key], firstName: updatedAccount.firstName };
     localStorage.setItem('streamline_users', JSON.stringify(users));
   }
+
+  // If the athlete granted location during setup, keep it for THIS session only
+  // (never persisted to the profile or server) so the first briefing can render.
+  if (_setupLocation && _setupLocation.lat != null) setSessionGeo({ lat: _setupLocation.lat, lon: _setupLocation.lon, name: _setupLocation.name || '' });
 
   const profile = collectProfileData();
   localStorage.setItem('streamline_profile', JSON.stringify(profile));
