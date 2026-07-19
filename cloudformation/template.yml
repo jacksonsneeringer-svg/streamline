@@ -622,14 +622,27 @@ Resources:
           # write so legacy values drain out of storage instead of lingering:
           #   - health data the site never collects (injuries, diet, allergies)
           #   - location: now browser-provided and session-only, never persisted
+          #   - raw body metrics (age, height, weight, gender): entered only to
+          #     compute nutrition targets in the browser, then discarded
           RETIRED_PROFILE_KEYS = ('injuries', 'injuryNotes', 'dietaryStyle', 'allergies', 'dietaryNotes',
-                                  'locLat', 'locLon', 'locName', 'city')
+                                  'locLat', 'locLon', 'locName', 'city',
+                                  'age', 'height', 'weight', 'gender')
 
           def scrub_profile(profile):
-            if isinstance(profile, dict):
-              for k in RETIRED_PROFILE_KEYS:
-                profile.pop(k, None)
-            return profile if isinstance(profile, dict) else {}
+            if not isinstance(profile, dict):
+              return {}
+            # Migration: legacy profiles stored a raw age but no isAdult flag.
+            # Derive the flag from that age before the age is scrubbed, so existing
+            # adults stay classified as adults. (They will have no maintenance
+            # calories until they re-run setup, so nutrition simply waits for that.)
+            if 'isAdult' not in profile and profile.get('age') not in (None, ''):
+              try:
+                profile['isAdult'] = float(profile.get('age')) >= 18
+              except (TypeError, ValueError):
+                pass
+            for k in RETIRED_PROFILE_KEYS:
+              profile.pop(k, None)
+            return profile
 
           # COPPA: the Terms require users to be 13+. A profile reporting an
           # age under 13 is actual knowledge of an under-age user, so the
@@ -2509,12 +2522,29 @@ Resources:
             return _skills[name]
 
           DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-          # Deliberately excludes health data (injuries, dietary restrictions,
-          # allergies): the site no longer collects it anywhere, and it must
-          # not flow into prompts or the profile hash.
-          PROFILE_KEYS = ['age','height','weight','gender','skillLevel','trainingFor','fitnessGoal',
+          # Deliberately excludes raw body metrics (age, height, weight, gender):
+          # the site computes maintenance calories + macro targets in the browser
+          # and stores only those results plus an isAdult flag. Raw metrics, health
+          # data, and location are never collected here, must not flow into prompts
+          # or the profile hash. Nutrition (calorie/macro) output is adults-only.
+          PROFILE_KEYS = ['maintenanceCalories','proteinG','carbG','fatG','isAdult',
+                          'skillLevel','trainingFor','fitnessGoal',
                           'swimGoal','strokeFocus','muscleFocus','swimDays','drylandDays','workoutTime',
                           'poolAccess','gymAccess','gear']
+
+          def is_adult(profile):
+            # Nutrition is restricted to adults. New profiles carry an explicit
+            # isAdult flag; legacy profiles fall back to a stored age if present.
+            # Anything ambiguous is treated as a minor (no nutrition) — fail safe.
+            v = (profile or {}).get('isAdult')
+            if isinstance(v, bool):
+              return v
+            if isinstance(v, str) and v.strip():
+              return v.strip().lower() in ('true', '1', 'yes')
+            try:
+              return float((profile or {}).get('age') or 0) >= 18
+            except (TypeError, ValueError):
+              return False
 
           def resp(code, data):
             return {'statusCode': code, 'headers': CORS, 'body': json.dumps(data)}
@@ -2574,9 +2604,11 @@ Resources:
 
           Design the training week ONLY, no workout content yet, following the framework's Step 1 and Step 2 exactly: honor the athlete's available swim days and dryland days (never schedule a session on a day they don't have), the allocation heuristics for their level, the interference rules, the roughly 60/40 target-to-supporting stroke split, and youth/masters handling. Site constraint: at most one swim and one lift per day, no double swims. Every week includes at least one full rest day.
 
-          Then compute daily nutrition targets using standard sports-nutrition methodology: Mifflin-St Jeor BMR from age/height/weight/gender (height is in inches and weight in pounds; convert to metric first), an activity factor from the actual planned training hours this week, a calorie adjustment for the fitness goal (a moderate deficit only for fat-loss goals, a small surplus for muscle or weight gain, otherwise maintenance; NEVER a deficit for athletes under 18), protein 1.6 to 2.2 g per kg bodyweight, fat at least 20 percent of calories, remaining calories from carbs. Then split those targets into two one-day meal schedules (a training-day schedule and a rest-day schedule). Each meal is a SLOT, not a menu: give it a name, a realistic time of day anchored to the athlete's preferred workout time, a per-meal macro budget, and optionally one short note tying the slot to training. Do NOT write menus or name specific dishes; the athlete asks for a recipe for any slot on demand.
+          ADULTS ONLY — NUTRITION GATE: Nutrition is a feature for athletes 18 and older. If the profile field "isAdult" is not true, OR "maintenanceCalories" is missing or empty, the athlete is a minor or has not provided body metrics: you MUST return "nutrition":{} and "meals":{} with absolutely no calorie or macro numbers of any kind, and put nothing about calories, macros, weight, or dieting anywhere in the plan. This is a hard rule with no exceptions. Do NOT estimate, infer, or ask for the missing numbers.
 
-          Eating-disorder safety rail: this is nutrition for athletic performance, never for extreme restriction. Never set calories below the athlete's computed BMR, never build rapid-weight-loss or compensatory eat-less-because-you-trained-less schemes, and NEVER apply any deficit for athletes under 18. If the profile's goals contain language suggesting disordered eating (extreme calorie targets, punishing food rules, fear of eating, wanting to earn or burn off food), ignore that language, build the plan at maintenance, and use part of the rationale to gently encourage the athlete to talk with a parent, coach, doctor, or registered dietitian; free confidential support is available from the National Eating Disorders Association at nationaleatingdisorders.org or by calling or texting 988.
+          Otherwise (adult with maintenanceCalories present): do NOT compute calories from body measurements — they are not provided. Use the profile's precomputed daily MAINTENANCE targets: "maintenanceCalories" and the macro targets "proteinG", "carbG", "fatG". Set the day's calories relative to maintenance from the fitness goal: a moderate deficit (about 10 to 20 percent below maintenance) only for fat-loss goals, a small surplus (about 5 to 15 percent above) for muscle or weight gain, otherwise maintenance. Hold protein near the provided proteinG, keep fat at least 20 percent of calories, and scale carbs to fill the remaining calories. Then split the day's targets into two one-day meal schedules (a training-day schedule and a rest-day schedule). Each meal is a SLOT, not a menu: give it a name, a realistic time of day anchored to the athlete's preferred workout time, a per-meal macro budget, and optionally one short note tying the slot to training. Do NOT write menus or name specific dishes; the athlete asks for a recipe for any slot on demand.
+
+          Eating-disorder safety rail (adults): this is nutrition for athletic performance, never for extreme restriction. Never set calories below about 90 percent of the provided maintenanceCalories on any single day except a brief, intentional pre-meet context, never build rapid-weight-loss or compensatory eat-less-because-you-trained-less schemes. If the profile's goals contain language suggesting disordered eating (extreme calorie targets, punishing food rules, fear of eating, wanting to earn or burn off food), ignore that language, build the plan at maintenance, and use part of the rationale to gently encourage the athlete to talk with a coach, doctor, or registered dietitian; free confidential support is available from the National Eating Disorders Association at nationaleatingdisorders.org or by calling or texting 988.
 
           Return ONLY valid JSON, no preamble, no markdown, matching exactly:
           {"phase":"Base|Build|Peak|Taper|Deload","phaseLabel":"e.g. Build, Week 2 of 4","goalLine":"one line combining the swimming goal and fitness goal","phaseRoadmap":"one line, e.g. Rolling 4-week blocks: 3 progressive weeks then 1 deload week","rationale":"3-5 sentences spoken directly TO the athlete in second person, like a coach on deck giving their swimmer the rundown of the week before Monday practice: name the phase and what it means for them right now, walk through how their swims, lifts, and rest fit around each other, and tell them what you want them to focus on. Warm, direct coach voice; address the athlete as you and never describe them in third person (never their age, gender, or level as facts about them). No em dashes","nutrition":{"calories":N,"proteinG":N,"carbsG":N,"fatG":N,"restDayNote":"one short line, e.g. Rest days: same protein, drop carbs about 40 g"},"days":[{"day":"Monday","label":"Swim + Lift|Swim|Lift|Active Recovery|Rest","swim":{"focus":"freestyle|backstroke|breaststroke|butterfly|im|sprint|choice","secondary":"endurance|technique|speed|threshold|race prep|recovery","yards":N}or null,"lift":{"focus":"Core & Stability|Shoulder, Lat & Upper Back|Lower Body Power|Upper Body Strength|Mobility & Recovery|Full Body","minutes":N}or null,"recovery":"short description only for Active Recovery days, else null","timeLabel":"~1:20 total session time, or a dash for rest days","mealType":"training|rest"}],"meals":{"training":[{"name":"Breakfast","time":"7:00 AM","note":"short note tying the slot to training, e.g. eat 90 minutes before practice, or null","calories":N,"proteinG":N,"carbsG":N,"fatG":N}],"rest":[{"name":"Breakfast","time":"8:00 AM","note":null,"calories":N,"proteinG":N,"carbsG":N,"fatG":N}]}}
@@ -2625,6 +2657,9 @@ Resources:
           # Synchronous by design: one recipe is a small, fast generation that
           # fits inside the API Gateway window, so no async/poll round-trip.
           def recipe_request(user, profile, body):
+            # Nutrition, including recipes, is an adults-only (18+) feature.
+            if not is_adult(profile):
+              return resp(403, {'error': 'Nutrition guidance is available to members 18 and older.'})
             req = str(body.get('request') or '').strip()[:300]
             if not req:
               return resp(400, {'error': 'Tell me what kind of recipe you want.'})
@@ -2726,14 +2761,22 @@ Resources:
             with ThreadPoolExecutor(max_workers=4) as pool:
               list(pool.map(fill_day, days))
 
+            # Hard gate: nutrition (calories, macros, meal schedules) is an adults-
+            # only feature. For anyone under 18 we drop it entirely here, in code,
+            # regardless of what the model returned — the prompt is asked to omit
+            # it too, but this is the guarantee.
+            adult = is_adult(profile)
+            nutrition = (skeleton.get('nutrition') or {}) if adult else {}
+            meals = (skeleton.get('meals') or {}) if adult else {}
             return {
               'weekStart': ws, 'weekNumber': week_no, 'phase': phase,
               'phaseLabel': skeleton.get('phaseLabel') or phase,
               'goalLine': skeleton.get('goalLine') or '',
               'phaseRoadmap': skeleton.get('phaseRoadmap') or '',
               'rationale': skeleton.get('rationale') or '',
-              'nutrition': skeleton.get('nutrition') or {},
-              'meals': skeleton.get('meals') or {},
+              'nutrition': nutrition,
+              'meals': meals,
+              'nutritionRestricted': (None if adult else 'under18'),
               'days': days, 'level': level, 'liftCategory': cat,
               'generatedAt': now.isoformat()
             }

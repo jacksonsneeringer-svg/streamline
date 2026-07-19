@@ -6268,7 +6268,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       </div>
     </div>
     <div class="setup-step-content" id="step-2">
-      <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
+      <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your nutrition targets in your browser. We store only the resulting calorie and macro numbers — your age, height, weight, and gender are never saved to your account. Nutrition targets are available to members 18+.</p></div>
       <div class="setup-fields">
         <div class="form-group"><label class="form-label required-dot" for="gs-username">Username</label><input type="text" id="gs-username" class="form-input" maxlength="30" autocomplete="off" placeholder="e.g. Marlin" /><p class="form-hint">The name LANE FOUR greets you by. You can change it anytime.</p></div>
         <div class="form-group"><label class="form-label required-dot">Age</label><input type="number" id="gs-dob" class="form-input" placeholder="25" min="1" max="120" inputmode="numeric" /></div>
@@ -10614,20 +10614,56 @@ function getSelectedChips(containerId) {
     .map(c => c.textContent.trim()).filter(Boolean).join(', ');
 }
 
+// True only for a stated age of 18+. Nutrition (calorie/macro) features are
+// restricted to adults; minors get swim + dryland training only.
+function isAdultAge(ageYears) {
+  const a = parseFloat(ageYears);
+  return a >= 18 && a < 120;
+}
+
+// Compute daily maintenance calories + macro targets in the browser from the
+// athlete's body metrics (Mifflin-St Jeor BMR x an activity factor). Only these
+// RESULTS are stored — age, height, weight, and gender are never persisted.
+function computeNutritionTargets({ ageYears, heightIn, weightLb, gender, trainingDays }) {
+  const age = parseFloat(ageYears), hIn = parseFloat(heightIn), wLb = parseFloat(weightLb);
+  if (!(age > 0) || !(hIn > 0) || !(wLb > 0)) return null;
+  const kg = wLb * 0.453592, cm = hIn * 2.54;
+  const g = String(gender || '').toLowerCase();
+  const s = g === 'male' ? 5 : g === 'female' ? -161 : -78; // neutral midpoint otherwise
+  const bmr = 10 * kg + 6.25 * cm - 5 * age + s;
+  const d = Number(trainingDays) || 0;
+  const factor = d >= 6 ? 1.725 : d >= 4 ? 1.55 : d >= 1 ? 1.375 : 1.2;
+  const maintenanceCalories = Math.max(1200, Math.round(bmr * factor / 10) * 10);
+  const proteinG = Math.round(1.8 * kg);
+  const fatG = Math.round((0.25 * maintenanceCalories) / 9);
+  const carbG = Math.max(0, Math.round((maintenanceCalories - proteinG * 4 - fatG * 9) / 4));
+  return { maintenanceCalories, proteinG, carbG, fatG };
+}
+
+const NUTRITION_KEYS = ['maintenanceCalories', 'proteinG', 'carbG', 'fatG'];
+
 function collectProfileData() {
-  return {
-    age:          document.getElementById('gs-dob')?.value || '',
-    height:       document.getElementById('gs-height')?.value || '',
-    weight:       document.getElementById('gs-weight')?.value || '',
-    gender:       document.getElementById('gs-gender')?.value || '',
+  const prev = getProfile() || {};
+  const swimDays    = getSelectedChips('gs-swim-days-chips');
+  const drylandDays = getSelectedChips('gs-dryland-days-chips');
+  const dayTokens = new Set((swimDays + ',' + drylandDays).split(',').map(x => x.trim().toLowerCase()).filter(Boolean));
+
+  const ageRaw    = document.getElementById('gs-dob')?.value || '';
+  const heightRaw = document.getElementById('gs-height')?.value || '';
+  const weightRaw = document.getElementById('gs-weight')?.value || '';
+  const genderRaw = document.getElementById('gs-gender')?.value || '';
+  // If age wasn't re-entered on an edit, keep the prior adult determination.
+  const adult = ageRaw ? isAdultAge(ageRaw) : (prev.isAdult === true);
+
+  const data = {
     skillLevel:   getSelectedChips('gs-skill-chips'),
     trainingFor:  getSelectedChips('gs-training-for-chips'),
     fitnessGoal:  getSelectedChips('gs-fitness-goal-chips'),
     swimGoal:     getSelectedChips('swim-goal-chips'),
     strokeFocus:  getSelectedChips('gs-strokes-chips'),
     muscleFocus:  getSelectedChips('gs-muscle-chips'),
-    swimDays:     getSelectedChips('gs-swim-days-chips'),
-    drylandDays:  getSelectedChips('gs-dryland-days-chips'),
+    swimDays,
+    drylandDays,
     workoutTime:  getSelectedChips('gs-workout-time-chips'),
     poolAccess:   document.getElementById('gs-pool-access')?.value || '',
     gymAccess:    document.getElementById('gs-gym-access')?.value || '',
@@ -10636,7 +10672,24 @@ function collectProfileData() {
     // sessionStorage and it never reaches our server.
     gear:         getSelectedChips('gs-gear-chips'),
     swimTimes:    collectSpeedTimes(),
+    isAdult:      adult,
   };
+
+  // Nutrition targets: adults only, computed here and stored as results. Age,
+  // height, weight, and gender are never written to the profile. Minors get no
+  // nutrition numbers at all.
+  if (adult && ageRaw && heightRaw && weightRaw) {
+    const targets = computeNutritionTargets({
+      ageYears: ageRaw, heightIn: heightRaw, weightLb: weightRaw, gender: genderRaw,
+      trainingDays: dayTokens.size,
+    });
+    if (targets) Object.assign(data, targets);
+  } else if (adult) {
+    // Editing without re-entering metrics: preserve previously computed targets.
+    NUTRITION_KEYS.forEach(k => { if (prev[k] != null && prev[k] !== '') data[k] = prev[k]; });
+  }
+  // (Minor: no nutrition keys are set, so any prior targets are dropped.)
+  return data;
 }
 
 // Reads the "Current best times & goal times" grid on the setup / edit-profile
@@ -10773,11 +10826,10 @@ async function saveFullProfile() {
 
 // Profile page rendering & inline editing
 
+// Age, height, weight, and gender are deliberately absent: they are entered on
+// the setup form to compute nutrition targets, then discarded — never stored or
+// displayed. Location is browser-provided and session-only.
 const PROFILE_FIELDS = [
-  { key: 'age',         label: 'Age',                 type: 'number' },
-  { key: 'height',      label: 'Height (in)',         type: 'number' },
-  { key: 'weight',      label: 'Weight (lbs)',        type: 'number' },
-  { key: 'gender',      label: 'Gender',              type: 'select', options: ['Male','Female','Non-binary','Prefer not to say'] },
   { key: 'skillLevel',  label: 'Swim Skill Level',    type: 'select', options: ['Beginner: learning basics, building comfort','Intermediate: consistent technique, structured sets','Advanced: competitive background or high mileage','Pro: elite performance, high-volume training'] },
   { key: 'trainingFor', label: 'Training For',        type: 'text' },
   { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'text' },
@@ -10789,7 +10841,6 @@ const PROFILE_FIELDS = [
   { key: 'workoutTime', label: 'Workout Time',        type: 'text' },
   { key: 'poolAccess',  label: 'Pool Access',         type: 'select', options: ['Year-round access','Seasonal (outdoor, summer only)','Limited / occasional access','No pool access currently'] },
   { key: 'gymAccess',   label: 'Gym Access',          type: 'select', options: ['Year-round access','Seasonal access','Home gym','Limited / occasional access','No gym access'] },
-  { key: 'locName',     label: 'Location',            type: 'text' },
   { key: 'gear',        label: 'Gear Owned',          type: 'text' },
 ];
 
@@ -10806,9 +10857,20 @@ function renderProfilePage() {
   const card = document.getElementById('profile-card');
   if (!card) return;
 
+  // Nutrition summary from the stored (derived) targets — never from raw body
+  // metrics, which are not stored. Adults see their maintenance calories; minors
+  // see that nutrition is an 18+ feature.
+  let nutritionVal = '';
+  if (profile.isAdult === false) nutritionVal = 'Available to members 18+';
+  else if (profile.maintenanceCalories) {
+    nutritionVal = `~${Number(profile.maintenanceCalories).toLocaleString()} kcal/day maintenance`
+      + (profile.proteinG ? ` · P ${profile.proteinG} / C ${profile.carbG} / F ${profile.fatG} g` : '');
+  }
+
   const allFields = [
     { label: 'Email', val: account.email },
-    ...PROFILE_FIELDS.map(f => ({ label: f.label, val: profile[f.key] || '' }))
+    ...PROFILE_FIELDS.map(f => ({ label: f.label, val: profile[f.key] || '' })),
+    { label: 'Daily Nutrition Target', val: nutritionVal },
   ];
 
   card.innerHTML = allFields.map(({ label, val }) => {
