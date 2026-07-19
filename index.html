@@ -1576,18 +1576,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   color: var(--gray-400);
   line-height: 1.5;
 }
-.pw-field { position: relative; display: flex; }
-.pw-field .form-input { padding-right: 2.9rem; }
-.pw-toggle {
-  position: absolute; top: 50%; right: 0.5rem; transform: translateY(-50%);
-  display: flex; align-items: center; justify-content: center;
-  width: 2rem; height: 2rem; padding: 0; margin: 0;
-  background: none; border: none; cursor: pointer;
-  color: var(--gray-400); border-radius: var(--r-sm);
-  transition: color 0.15s;
-}
-.pw-toggle:hover { color: var(--teal); }
-.pw-toggle:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
 
@@ -6242,35 +6230,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   </div>
 </div><!-- end page-sign-in -->
 
-<!-- ══ RESET PASSWORD PAGE ══ -->
-<div class="page" id="page-reset-password">
-  <div style="min-height:100vh; background:var(--deep); background-image:var(--pattern-waves); display:flex; align-items:center; justify-content:center; padding:2rem;">
-    <div class="signin-card" style="background:var(--white); border-radius:var(--r-xl); padding:2.5rem 3rem; width:100%; max-width:440px; box-shadow:0 24px 64px rgba(0,0,0,0.3);">
-      <h2 class="signin-title" style="font-family:var(--font-display); font-size:2rem; color:var(--deep); font-weight:400; margin:0 0 0.75rem;">Reset password</h2>
-      <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 1.5rem;">Choose a new password for your account.</p>
-      <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <div class="form-group">
-          <label class="form-label">New Password</label>
-          <div class="pw-field">
-            <input type="password" id="reset-new-password" class="form-input" placeholder="8+ characters" maxlength="128" onkeydown="if(event.key==='Enter')submitPasswordReset()" />
-            <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Confirm New Password</label>
-          <div class="pw-field">
-            <input type="password" id="reset-confirm-password" class="form-input" placeholder="Repeat new password" maxlength="128" onkeydown="if(event.key==='Enter')submitPasswordReset()" />
-            <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePasswordVisibility(this)"></button>
-          </div>
-        </div>
-        <p id="reset-message" style="display:none; font-size:0.86rem; margin:-0.25rem 0 0; color:#c0392b;"></p>
-        <button class="btn btn-gold" style="width:100%; justify-content:center; font-size:1rem; padding:0.75rem 1.5rem;" onclick="submitPasswordReset()">Set New Password</button>
-        <a href="/sign-in" onclick="return navigate('sign-in')" style="font-size:0.86rem; color:var(--teal); text-align:center;">&larr; Back to log in</a>
-      </div>
-    </div>
-  </div>
-</div><!-- end page-reset-password -->
-
 <!-- ══ GET STARTED PAGE ══ -->
 <div class="page" id="page-get-started" style="background:var(--off-white); margin-top:calc(-1 * var(--nav-h));">
 <div class="setup-layout">
@@ -6281,7 +6240,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="color:rgba(255,255,255,0.6); font-size:0.84rem; margin-top:0.75rem; line-height:1.65;">The more we know about you, the more personalized your experience.</p>
     </div>
     <div class="setup-steps">
-      <div class="setup-step"><div class="step-num active" id="step-num-1">1</div><div class="step-info"><h4 class="active" id="step-label-1">Your Account</h4><p>Name &amp; login credentials</p></div></div>
+      <div class="setup-step"><div class="step-num active" id="step-num-1">1</div><div class="step-info"><h4 class="active" id="step-label-1">Your Account</h4><p>Sign in with Google</p></div></div>
       <div class="setup-step"><div class="step-num" id="step-num-2">2</div><div class="step-info"><h4 id="step-label-2">Body Profile</h4><p>Username, age, height, weight, skill</p></div></div>
       <div class="setup-step"><div class="step-num" id="step-num-3">3</div><div class="step-info"><h4 id="step-label-3">Your Goals</h4><p>Training type, fitness &amp; swim goals</p></div></div>
       <div class="setup-step"><div class="step-num" id="step-num-4">4</div><div class="step-info"><h4 id="step-label-4">Focus</h4><p>Strokes and focus areas</p></div></div>
@@ -6302,14 +6261,19 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <h2>Create your account</h2>
       </div>
       <div class="setup-fields">
+        <label style="display:flex; gap:0.6rem; align-items:flex-start; font-size:0.86rem; color:var(--text-muted); line-height:1.55; cursor:pointer;">
+          <input type="checkbox" id="gs-age-confirm" onchange="if(this.checked){var m=document.getElementById('gs-age-confirm-msg'); if(m) m.style.display='none';}" style="margin-top:0.15rem; flex-shrink:0; width:1rem; height:1rem; cursor:pointer;" />
+          <span>I confirm I am at least 13 years old and agree to the <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="event.preventDefault(); navigate('privacy-policy')">Privacy Policy</a>.</span>
+        </label>
+        <p id="gs-age-confirm-msg" style="display:none; font-size:0.82rem; color:#c0392b; margin:-0.4rem 0 0;">Please confirm you are at least 13 years old to create an account.</p>
         <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
-          <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">By continuing with Google you agree to the <a href="/terms-of-use" onclick="navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="navigate('privacy-policy')">Privacy Policy</a>. This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
+          <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
         </div>
       </div>
     </div>
     <div class="setup-step-content" id="step-2">
-      <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your training zones, nutritional targets, and workout intensity recommendations.</p></div>
+      <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your nutrition targets in your browser. We store only the resulting calorie and macro numbers — your age, height, weight, and gender are never saved to your account. Nutrition targets are available to members 18+.</p></div>
       <div class="setup-fields">
         <div class="form-group"><label class="form-label required-dot" for="gs-username">Username</label><input type="text" id="gs-username" class="form-input" maxlength="30" autocomplete="off" placeholder="e.g. Marlin" /><p class="form-hint">The name LANE FOUR greets you by. You can change it anytime.</p></div>
         <div class="form-group"><label class="form-label required-dot">Age</label><input type="number" id="gs-dob" class="form-input" placeholder="25" min="1" max="120" inputmode="numeric" /></div>
@@ -7082,13 +7046,13 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem; margin-top:0;">A. Information You Provide Directly</h3>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Account Registration:</strong> Username and email address. Your password is stored as a one-way cryptographic hash (PBKDF2 SHA-256). We cannot read your password in plain text.</li>
+        <li><strong>Account Registration:</strong> Username and email address. Authentication is handled entirely by <strong>Sign in with Google</strong>; LANE FOUR never receives, sees, or stores a password.</li>
         <li><strong>Body Profile (optional):</strong> Age, height, weight, and gender. This information is used solely to personalize your training recommendations.</li>
         <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, and race or distance goals, used to tailor your daily workouts.</li>
         <li><strong>Saved Favorites:</strong> Swim sets, dryland workouts, meals, and recipes you mark as favorites are saved to your account so they are available whenever you sign in, on any browser or device.</li>
         <li><strong>Contact Form Submissions:</strong> Name, email address, subject, message, and optional newsletter opt-in when you contact us.</li>
         <li><strong>Newsletter Subscription:</strong> Email address when you subscribe to The Fast Lane newsletter.</li>
-        <li><strong>Location (optional):</strong> If you grant your browser's location permission, we collect your approximate latitude and longitude, used solely to show local weather and outdoor training conditions in your daily briefing. Coordinates are sent to the Open-Meteo weather service to retrieve the forecast; no other personal information accompanies them. You can decline or revoke this permission at any time in your browser settings.</li>
+        <li><strong>Location (optional):</strong> If you grant your browser's location permission, your device obtains your approximate latitude and longitude and sends them <strong>directly from your browser</strong> to the Open-Meteo weather service to retrieve a local forecast for your daily briefing. <strong>LANE FOUR never receives, transmits, or stores your location</strong> — the coordinates are used only in your browser and are not part of your account. No other personal information accompanies them. You can decline or revoke this permission at any time in your browser settings.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">B. Information Collected Automatically</h3>
@@ -7109,8 +7073,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
         <li><strong>Protected Classification Characteristics:</strong> Age, gender; collected: Yes (if profile completed)</li>
         <li><strong>Internet / Network Activity:</strong> Pages visited, session data, server logs; collected: Yes</li>
         <li><strong>Inferences:</strong> Fitness level, training preferences, workout personalization profile; collected: Yes (if profile completed)</li>
-        <li><strong>Sensitive Personal Information:</strong> Account login credentials (email + password hash); health-related body characteristics (height, weight, age) if voluntarily provided; collected: Yes (for account holders)</li>
-        <li><strong>Geolocation Data:</strong> Approximate location (latitude/longitude) for local weather in your daily briefing; collected: Only if you grant your browser's location permission</li>
+        <li><strong>Sensitive Personal Information:</strong> Health-related body characteristics (height, weight, age) if voluntarily provided; collected: Yes (for account holders). We do not collect or store passwords — authentication is handled by Sign in with Google.</li>
+        <li><strong>Geolocation Data:</strong> Approximate location (latitude/longitude) is used in your browser to fetch local weather and is sent directly to Open-Meteo; collected/stored by LANE FOUR: No</li>
         <li><strong>Commercial information, biometric data, audio/visual data:</strong> Not collected</li>
       </ul>
 
@@ -7118,7 +7082,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li>Provide, operate, and personalize your training experience and daily workout plans</li>
         <li>Send The Fast Lane newsletter (only with your explicit consent)</li>
-        <li>Send transactional emails such as welcome messages and password reset links</li>
+        <li>Send transactional emails such as welcome messages</li>
         <li>Process and respond to contact form submissions</li>
         <li>Maintain your login session and account security</li>
         <li>Power AI-driven search and workout generation features</li>
@@ -7142,7 +7106,6 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li><strong>Account data:</strong> Retained while your account is active; deleted within 30 days of account deletion request</li>
         <li><strong>Session tokens:</strong> Automatically expire after 30 days of inactivity</li>
-        <li><strong>Password reset tokens:</strong> Automatically expire after 1 hour</li>
         <li><strong>Newsletter subscriptions:</strong> Retained until you unsubscribe</li>
         <li><strong>Contact form submissions:</strong> Retained for up to 1 year</li>
         <li><strong>Server log data (IP / traffic):</strong> Retained for up to 90 days</li>
@@ -7167,7 +7130,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1rem;">We do not sell personal information and do not share personal information for cross-context behavioral advertising. You do not need to opt out because we do not engage in these practices.</p>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Right to Limit Use of Sensitive Personal Information</h3>
-      <p style="margin-bottom:1rem;">We collect certain sensitive personal information (account credentials and optional health-related body characteristics such as age, height, and weight). We use this information only to provide the services you requested and for no secondary commercial purpose. You may request that we limit our use of your sensitive personal information to purposes necessary to provide the service.</p>
+      <p style="margin-bottom:1rem;">We collect certain sensitive personal information (optional health-related body characteristics such as age, height, and weight). We use this information only to provide the services you requested and for no secondary commercial purpose. You may request that we limit our use of your sensitive personal information to purposes necessary to provide the service.</p>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Right to Non-Discrimination</h3>
       <p style="margin-bottom:1rem;">We will not discriminate against you for exercising any of your rights under California law. We will not deny you services, charge different prices, or provide a different level of service because you exercised your privacy rights.</p>
@@ -7190,7 +7153,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1.5rem;">The Site is hosted in the United States, and any information you provide is transferred to and processed in the United States, which may not provide the same level of data protection as your home jurisdiction. We protect it as described in this policy regardless of where it is processed.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">10. Security</h2>
-      <p style="margin-bottom:1.5rem;">We implement industry-standard security measures to protect your personal information. Passwords are stored using a one-way cryptographic hash (PBKDF2 SHA-256) and are never stored in readable form. All data is transmitted over encrypted HTTPS connections. Our infrastructure is hosted on AWS with encryption at rest and in transit. However, no method of transmission or storage is 100% secure, and we cannot guarantee absolute security.</p>
+      <p style="margin-bottom:1.5rem;">We implement industry-standard security measures to protect your personal information. Authentication is delegated to Sign in with Google, so LANE FOUR never receives or stores a password. All data is transmitted over encrypted HTTPS connections. Our infrastructure is hosted on AWS with encryption at rest and in transit. However, no method of transmission or storage is 100% secure, and we cannot guarantee absolute security.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">11. Affiliate Links and Third-Party Sites</h2>
       <p style="margin-bottom:1.5rem;">The Site contains affiliate links to third-party products and services. If you click an affiliate link and make a purchase, we may receive a commission at no additional cost to you. We are not responsible for the privacy practices or content of third-party websites. When you leave LANE FOUR, we encourage you to review the privacy policy of any site you visit.</p>
@@ -7246,7 +7209,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <ul style="margin-bottom:1rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li>Provide accurate, current, and complete registration information</li>
         <li>Maintain and promptly update your account information</li>
-        <li>Keep your password confidential and not share it with any third party</li>
+        <li>Keep your Google account secure and not share access to it with any third party</li>
         <li>Accept full responsibility for all activity that occurs under your account</li>
         <li>Notify us immediately of any unauthorized access to your account</li>
       </ul>
@@ -7458,7 +7421,6 @@ const PAGE_TITLES = {
   'contact': 'Contact Us | LANE FOUR',
   'my-training': 'My Training | LANE FOUR',
   'sign-in': 'Log In | LANE FOUR',
-  'reset-password': 'Reset Password | LANE FOUR',
   'get-started': 'Create a Free Account | LANE FOUR',
   'account-created': 'Welcome | LANE FOUR',
   'profile': 'My Profile | LANE FOUR',
@@ -7483,7 +7445,6 @@ const PAGE_DESCRIPTIONS = {
   'contact': 'Get in touch with LANE FOUR — questions, feedback, article requests, or help with your account.',
   'my-training': 'Your personalized daily swim, dryland, and nutrition plan.',
   'sign-in': 'Log in to your LANE FOUR account.',
-  'reset-password': 'Reset your LANE FOUR account password.',
   'get-started': 'Create a free LANE FOUR account for personalized daily swim sets, dryland workouts, and meal plans.',
   'account-created': 'Your LANE FOUR account is ready.',
   'profile': 'Manage your LANE FOUR training profile.',
@@ -7496,7 +7457,7 @@ const PAGE_DESCRIPTIONS = {
 // Account, auth, and login-gated pages: served with <meta name="robots"
 // content="noindex"> and left out of sitemap.xml. The archives are here
 // because signed-out visitors (and Googlebot) only see the account gate.
-const NOINDEX_PAGES = ['my-training', 'sign-in', 'reset-password', 'get-started', 'account-created', 'profile', 'set-archives', 'dryland-archives'];
+const NOINDEX_PAGES = ['my-training', 'sign-in', 'get-started', 'account-created', 'profile', 'set-archives', 'dryland-archives'];
 
 function pagePath(pageId) { return pageId === 'home' ? '/' : '/' + pageId; }
 
@@ -8029,8 +7990,26 @@ function showBriefingLocError(btn, text) {
   msg.textContent = text;
 }
 
-// "Allow Location Access" inside the daily briefing card: ask the browser,
-// save the result to the profile, and refresh the briefing.
+// Location is browser-provided and session-only: we never store coordinates in
+// the account profile or send them to our server. They live in sessionStorage
+// (cleared when the tab closes) purely so the daily briefing can fetch weather
+// directly from Open-Meteo. Re-requested each session.
+let _sessionGeo = null;
+function getSessionGeo() {
+  if (_sessionGeo) return _sessionGeo;
+  try { const s = sessionStorage.getItem('streamline_geo'); if (s) _sessionGeo = JSON.parse(s); } catch (e) {}
+  return _sessionGeo;
+}
+function setSessionGeo(geo) {
+  _sessionGeo = geo || null;
+  try {
+    if (geo) sessionStorage.setItem('streamline_geo', JSON.stringify(geo));
+    else sessionStorage.removeItem('streamline_geo');
+  } catch (e) {}
+}
+
+// "Allow Location Access" inside the daily briefing card: ask the browser, keep
+// the result in the session only, and refresh the briefing.
 async function briefingEnableLocation(btn) {
   // Location already blocked for this site? The browser won't re-prompt, so open
   // its location settings in a new tab instead of failing silently.
@@ -8043,11 +8022,7 @@ async function briefingEnableLocation(btn) {
   try {
     const { lat, lon } = await getBrowserLocation();
     const name = await reverseGeocodeName(lat, lon);
-    const profile = getProfile();
-    profile.locLat = lat; profile.locLon = lon; profile.locName = name;
-    if (name) profile.city = name; // keep the plan generator's city field in sync
-    localStorage.setItem('streamline_profile', JSON.stringify(profile));
-    syncProfileToServer();
+    setSessionGeo({ lat, lon, name });
     renderDailyBriefing();
   } catch (e) {
     if (btn) {
@@ -8185,44 +8160,34 @@ let _briefingCache = null; // { key, ts, geo, wx }
 async function renderDailyBriefing() {
   const el = document.getElementById('content-briefing');
   if (!el || !getAccount()) return;
-  const profile = getProfile();
-  const hasCoords = profile.locLat != null && profile.locLat !== '' && profile.locLon != null && profile.locLon !== '';
-  const loc = (profile.city || '').trim(); // legacy typed city/ZIP profiles
+  const geo = getSessionGeo();
+  const hasCoords = !!(geo && geo.lat != null && geo.lat !== '' && geo.lon != null && geo.lon !== '');
   const motiv = briefingMotivation();
 
-  if (!hasCoords && !loc) {
+  if (!hasCoords) {
     el.innerHTML = briefingCompose(
-      `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.75rem;">Allow location access and this briefing will show today's weather, your best outdoor swim window, and a safety check. Your browser will ask for permission first.</p>
+      `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.75rem;">Allow location access and this briefing will show today's weather, your best outdoor swim window, and a safety check. Your browser will ask for permission first. Your location stays in your browser and is never stored on our servers.</p>
        <button class="btn btn-outline-dark btn-sm" onclick="briefingEnableLocation(this)">Allow Location Access</button>`, motiv);
     return;
   }
 
   const today = localISODate();
-  const key = (hasCoords ? profile.locLat + ',' + profile.locLon : loc.toLowerCase()) + '|' + today;
+  const key = geo.lat + ',' + geo.lon + '|' + today;
 
   const useCache = (c) => c && c.key === key && (Date.now() - c.ts) < 30 * 60 * 1000 && c.geo && c.wx;
   if (useCache(_briefingCache)) { el.innerHTML = briefingCompose(briefingWeatherBlock(_briefingCache.geo, _briefingCache.wx), motiv); return; }
   try {
-    const ls = JSON.parse(localStorage.getItem('streamline_briefing_cache') || 'null');
+    const ls = JSON.parse(sessionStorage.getItem('streamline_briefing_cache') || 'null');
     if (useCache(ls)) { _briefingCache = ls; el.innerHTML = briefingCompose(briefingWeatherBlock(ls.geo, ls.wx), motiv); return; }
   } catch (e) { /* ignore */ }
 
   el.innerHTML = briefingCompose(
-    `<p style="font-size:0.85rem; color:var(--gray-400); margin:0;">Checking today's weather in ${escHtml(hasCoords ? (profile.locName || 'your area') : loc)}…</p>`, motiv);
+    `<p style="font-size:0.85rem; color:var(--gray-400); margin:0;">Checking today's weather in ${escHtml(geo.name || 'your area')}…</p>`, motiv);
 
   try {
-    const geo = hasCoords
-      ? { lat: Number(profile.locLat), lon: Number(profile.locLon), name: profile.locName || 'your area' }
-      : await geocodeLocation(loc);
-    if (!geo) {
-      el.innerHTML = briefingCompose(
-        `<p style="font-size:0.85rem; color:var(--gray-400); line-height:1.5; margin:0 0 0.6rem;">We could not place your saved location on the map. Allow location access to update it.</p>
-         <button class="btn btn-outline-dark btn-sm" onclick="briefingEnableLocation(this)">Allow Location Access</button>`, motiv);
-      return;
-    }
     const wx = await fetchWeather(geo.lat, geo.lon);
     _briefingCache = { key, ts: Date.now(), geo, wx };
-    try { localStorage.setItem('streamline_briefing_cache', JSON.stringify(_briefingCache)); } catch (e) { /* quota */ }
+    try { sessionStorage.setItem('streamline_briefing_cache', JSON.stringify(_briefingCache)); } catch (e) { /* quota */ }
     el.innerHTML = briefingCompose(briefingWeatherBlock(geo, wx), motiv);
   } catch (e) {
     el.innerHTML = briefingCompose(
@@ -8879,9 +8844,7 @@ function editProfile() {
   // Pre-fill step 1 fields
   setTimeout(() => {
     const fn = document.getElementById('gs-username');
-    const em = document.getElementById('gs-email');
     if (fn) fn.value = account.firstName || '';
-    if (em) em.value = account.email || '';
 
     // Pre-fill step 2 fields
     const age = document.getElementById('gs-dob');
@@ -8925,17 +8888,11 @@ function editProfile() {
     const gymAccess  = document.getElementById('gs-gym-access');
     if (poolAccess) poolAccess.value = profile.poolAccess || '';
     if (gymAccess)  gymAccess.value  = profile.gymAccess  || '';
-    _setupLocation = (profile.locLat != null && profile.locLat !== '' && profile.locLon != null && profile.locLon !== '')
-      ? { lat: Number(profile.locLat), lon: Number(profile.locLon), name: profile.locName || profile.city || '' }
-      : null;
+    // Location is session-only and never stored on the profile; prefill from the
+    // current session's browser-provided location if one exists.
+    const _sg = getSessionGeo();
+    _setupLocation = (_sg && _sg.lat != null) ? { lat: _sg.lat, lon: _sg.lon, name: _sg.name || '' } : null;
     setupLocationUI();
-    // Migrate a legacy typed city/ZIP to coordinates so saving the edit
-    // doesn't lose the location.
-    if (!_setupLocation && (profile.city || '').trim()) {
-      geocodeLocation(profile.city).then(g => {
-        if (g && !_setupLocation) { _setupLocation = { lat: g.lat, lon: g.lon, name: g.name }; setupLocationUI(); }
-      }).catch(() => {});
-    }
 
     // Skip account step, go straight to body profile
     goToStep(2);
@@ -10090,7 +10047,7 @@ function clearArchiveFilters() {
 
 function routeFromLocation() {
   // Pages live at path URLs (/swim-sets). Legacy fragment URLs (#swim-sets,
-  // and links in already-sent emails like /#reset-password?token=...) still
+  // e.g. /#swim-sets from an older newsletter) still
   // route, then the address bar is rewritten to the canonical path so only
   // one URL form circulates. Queries may ride on either form:
   // ?setup=1 (welcome email) opens profile setup even when signed in.
@@ -10133,7 +10090,7 @@ function routeFromLocation() {
 }
 
 window.addEventListener('popstate', routeFromLocation);
-window.addEventListener('DOMContentLoaded', () => { routeFromLocation(); updateNavButton(); initPasswordToggles(); maybeShowWelcomeModal(); });
+window.addEventListener('DOMContentLoaded', () => { routeFromLocation(); updateNavButton(); maybeShowWelcomeModal(); });
 
 // ── First-visit welcome modal ───────────────────────────────────────────────
 // Signed-out visitors get a prompt to create a free account and join the
@@ -10150,7 +10107,7 @@ function maybeShowWelcomeModal() {
   } catch (e) { return; }
   // Don't interrupt someone already headed into the account/auth flow.
   const page = location.pathname.replace(/\/+$/, '').replace(/^\//, '').split('?')[0] || 'home';
-  if (['sign-in', 'get-started', 'reset-password', 'account-created'].includes(page)) return;
+  if (['sign-in', 'get-started', 'account-created'].includes(page)) return;
   setTimeout(() => {
     if (getAccount()) return;
     const overlay = document.getElementById('welcome-overlay');
@@ -10349,9 +10306,18 @@ async function handleGoogleCredential(response) {
   const credential = response && response.credential;
   if (!credential) return;
   const onGetStarted = !!document.querySelector('#page-get-started.active');
+  // Account creation requires the age/terms confirmation. The checkbox only
+  // exists on the get-started (create account) step; returning users signing in
+  // elsewhere have already confirmed it at signup.
+  const ageBox = document.getElementById('gs-age-confirm');
+  if (onGetStarted && ageBox && !ageBox.checked) {
+    const msg = document.getElementById('gs-age-confirm-msg');
+    if (msg) msg.style.display = '';
+    return;
+  }
   if (apiBase()) {
     let r;
-    try { r = await authApi('google', { credential }); }
+    try { r = await authApi('google', { credential, ageConfirmed: onGetStarted ? true : undefined }); }
     catch (e) { googleAuthError('Could not reach the server. Please check your connection and try again.'); return; }
     if (!r.ok) { googleAuthError(r.data.error || 'Google sign-in failed. Please try again.'); return; }
     const mergedTraining = mergeLocalTraining(r.data);
@@ -10524,147 +10490,12 @@ function saveUser(user) {
   localStorage.setItem('streamline_users', JSON.stringify(users));
 }
 
-async function hashPassword(password) {
-  if (window.crypto && crypto.subtle) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-  // crypto.subtle needs a secure context (https/localhost); prefix so it can never collide with a hex hash
-  return 'plain:' + password;
-}
-
-// ── Password visibility toggle (eye icon) ──────────────────────────────────
-const EYE_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
-const EYE_OFF_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
-
-function togglePasswordVisibility(btn) {
-  const input = btn.parentElement && btn.parentElement.querySelector('input');
-  if (!input) return;
-  const reveal = input.type === 'password';
-  input.type = reveal ? 'text' : 'password';
-  btn.innerHTML = reveal ? EYE_OFF_ICON : EYE_ICON;
-  btn.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
-}
-
-function initPasswordToggles() {
-  document.querySelectorAll('.pw-toggle').forEach(btn => {
-    if (!btn.innerHTML.trim()) btn.innerHTML = EYE_ICON;
-  });
-}
-
 function showSignInMessage(text, isError) {
   const el = document.getElementById('signin-message');
   if (!el) return;
   el.textContent = text;
   el.style.color = isError ? '#c0392b' : 'var(--teal)';
   el.style.display = text ? '' : 'none';
-}
-
-async function signIn() {
-  const email    = (document.getElementById('signin-email')?.value || '').trim();
-  const password = document.getElementById('signin-password')?.value || '';
-  if (!email || !password) { showSignInMessage('Please enter your email and password.', true); return; }
-
-  if (apiBase()) {
-    let r;
-    try { r = await authApi('login', { email, password }); }
-    catch (e) { showSignInMessage('Could not reach the server. Please check your connection and try again.', true); return; }
-    if (!r.ok) {
-      showSignInMessage(r.status === 401
-        ? 'That email and password don’t match. Please try again, or use “Forgot password?” to reset it.'
-        : (r.data.error || 'Something went wrong. Please try again.'), true);
-      return;
-    }
-    const mergedTraining = mergeLocalTraining(r.data);
-    setSession(r.data);
-    if (mergedTraining) syncTrainingToServer();
-  } else {
-    const user = getUsers()[email.toLowerCase()];
-    if (!user || user.passwordHash !== await hashPassword(password)) {
-      showSignInMessage('That email and password don’t match. Please try again, or use “Forgot password?” to reset it.', true);
-      return;
-    }
-    const { passwordHash, ...account } = user;
-    localStorage.setItem('streamline_account', JSON.stringify(account));
-  }
-
-  showSignInMessage('', false);
-  document.getElementById('signin-password').value = '';
-  updateNavButton();
-  navigate('my-training');
-}
-
-async function toggleForgotPassword() {
-  // With a backend, clicking "Forgot password?" emails a reset link straight
-  // away. Without one (local dev), fall back to resetting in place on this device.
-  if (apiBase()) {
-    await sendResetLink();
-    return;
-  }
-  const panel = document.getElementById('forgot-panel');
-  if (!panel) return;
-  const open = panel.style.display === 'none';
-  panel.style.display = open ? 'flex' : 'none';
-  if (open) document.getElementById('forgot-local-mode').style.display = 'flex';
-  showSignInMessage('', false);
-}
-
-async function sendResetLink() {
-  const email = (document.getElementById('signin-email')?.value || '').trim();
-  if (!email) { showSignInMessage('Enter your account email in the email field above first.', true); return; }
-  try { await authApi('forgot', { email }); }
-  catch (e) { showSignInMessage('Could not reach the server. Please check your connection and try again.', true); return; }
-  document.getElementById('forgot-panel').style.display = 'none';
-  showSignInMessage('If an account exists for that email, a reset link is on its way. Check your inbox.', false);
-}
-
-function showResetMessage(text, isError) {
-  const el = document.getElementById('reset-message');
-  if (!el) return;
-  el.textContent = text;
-  el.style.color = isError ? '#c0392b' : 'var(--teal)';
-  el.style.display = text ? '' : 'none';
-}
-
-async function submitPasswordReset() {
-  const pw      = document.getElementById('reset-new-password')?.value || '';
-  const confirm = document.getElementById('reset-confirm-password')?.value || '';
-  const token   = _hashQuery.get('token') || '';
-  if (!token) { showResetMessage('This reset link is invalid. Request a new one from the log in page.', true); return; }
-  if (pw.length < 8) { showResetMessage('Password must be at least 8 characters.', true); return; }
-  if (pw !== confirm) { showResetMessage('Passwords do not match.', true); return; }
-  if (!apiBase()) { showResetMessage('Reset links only work on the live site.', true); return; }
-  let r;
-  try { r = await authApi('reset', { token, password: pw }); }
-  catch (e) { showResetMessage('Could not reach the server. Please check your connection and try again.', true); return; }
-  if (!r.ok) { showResetMessage(r.data.error || 'This reset link is invalid or has expired. Please request a new one.', true); return; }
-  showResetMessage('Password updated! Taking you to log in…', false);
-  setTimeout(() => navigate('sign-in'), 1500);
-}
-
-async function resetPassword() {
-  const email   = (document.getElementById('signin-email')?.value || '').trim();
-  const pw      = document.getElementById('forgot-new-password')?.value || '';
-  const confirm = document.getElementById('forgot-confirm-password')?.value || '';
-
-  if (!email) { showSignInMessage('Enter your account email in the email field above first.', true); return; }
-  let user = getUsers()[email.toLowerCase()];
-  if (!user) {
-    // Accounts created before the registered-users store existed: let the
-    // currently saved account claim its record by matching email.
-    const account = getAccount();
-    if (account && (account.email || '').toLowerCase() === email.toLowerCase()) user = { ...account };
-  }
-  if (!user) { showSignInMessage('No account found with that email.', true); return; }
-  if (pw.length < 8) { showSignInMessage('New password must be at least 8 characters.', true); return; }
-  if (pw !== confirm) { showSignInMessage('New passwords do not match.', true); return; }
-
-  user.passwordHash = await hashPassword(pw);
-  saveUser(user);
-  document.getElementById('forgot-new-password').value = '';
-  document.getElementById('forgot-confirm-password').value = '';
-  document.getElementById('forgot-panel').style.display = 'none';
-  showSignInMessage('Password updated! You can now log in.', false);
 }
 
 function updateNavButton() {
@@ -10704,45 +10535,6 @@ function updateNavButton() {
     if (!cta.querySelector('a[href*="get-started"]')) return;
     cta.style.display = account ? 'none' : '';
   });
-}
-
-async function createAccount() {
-  // Accounts are identified by a single username. It's stored in firstName (which
-  // drives every greeting across the app); lastName is kept empty for compatibility.
-  const firstName = (document.getElementById('gs-username')?.value || '').trim();
-  const lastName  = '';
-  const email     = (document.getElementById('gs-email')?.value      || '').trim();
-  const password  = (document.getElementById('gs-password')?.value   || '');
-  const confirm   = (document.getElementById('gs-confirm-password')?.value || '');
-  const terms     = document.getElementById('gs-terms')?.checked;
-
-  if (!firstName || !email || !password) { alert('Please fill in all required fields.'); return; }
-  if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
-  if (password !== confirm) { alert('Passwords do not match.'); return; }
-  if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
-
-  if (apiBase()) {
-    let r;
-    try { r = await authApi('signup', { firstName, lastName, email, password }); }
-    catch (e) { alert('Could not reach the server. Please check your connection and try again.'); return; }
-    if (!r.ok) { alert(r.data.error || 'Could not create your account. Please try again.'); return; }
-    const mergedTraining = mergeLocalTraining(r.data);
-    setSession(r.data);
-    if (mergedTraining) syncTrainingToServer();
-  } else {
-    const account = { firstName, lastName, email, createdAt: Date.now() };
-    saveUser({ ...account, passwordHash: await hashPassword(password) });
-    localStorage.setItem('streamline_account', JSON.stringify(account));
-  }
-  _previousPage = localStorage.getItem('streamline_pre_signup_page') || _previousPage;
-
-  updateNavButton();
-
-  const greeting = document.getElementById('account-created-greeting');
-  if (greeting) greeting.textContent = 'Welcome, ' + firstName + '!';
-
-  navigate('get-started', true);
-  goToStep(2);
 }
 
 function setupProfile() {
@@ -10795,9 +10587,9 @@ function signOut() {
   navigate('home');
 }
 
-// Self-service account deletion (CCPA/CPRA right to delete). Password
-// re-entry is required server-side, so a stolen session token alone can't
-// destroy an account.
+// Self-service account deletion (CCPA/CPRA right to delete). Identity is proven
+// by the Google-issued session token; we require the user to type DELETE as a
+// deliberate, irreversible-action confirmation.
 async function deleteMyAccount() {
   const token = localStorage.getItem('streamline_session');
   if (!apiBase() || !token) {
@@ -10805,10 +10597,10 @@ async function deleteMyAccount() {
     return;
   }
   if (!confirm('Permanently delete your LANE FOUR account and all data tied to it (profile, training plans, sessions, newsletter subscription, contact messages)? This cannot be undone.')) return;
-  const password = prompt('To confirm, enter your account password:');
-  if (!password) return;
+  const typed = prompt('To confirm, type DELETE (in capitals):');
+  if (!typed || typed.trim().toUpperCase() !== 'DELETE') return;
   try {
-    const { ok, data } = await authApi('delete', { token, password });
+    const { ok, data } = await authApi('delete', { token });
     if (!ok) {
       alert(data.error || 'Could not delete the account. Please try again.');
       return;
@@ -10836,30 +10628,82 @@ function getSelectedChips(containerId) {
     .map(c => c.textContent.trim()).filter(Boolean).join(', ');
 }
 
+// True only for a stated age of 18+. Nutrition (calorie/macro) features are
+// restricted to adults; minors get swim + dryland training only.
+function isAdultAge(ageYears) {
+  const a = parseFloat(ageYears);
+  return a >= 18 && a < 120;
+}
+
+// Compute daily maintenance calories + macro targets in the browser from the
+// athlete's body metrics (Mifflin-St Jeor BMR x an activity factor). Only these
+// RESULTS are stored — age, height, weight, and gender are never persisted.
+function computeNutritionTargets({ ageYears, heightIn, weightLb, gender, trainingDays }) {
+  const age = parseFloat(ageYears), hIn = parseFloat(heightIn), wLb = parseFloat(weightLb);
+  if (!(age > 0) || !(hIn > 0) || !(wLb > 0)) return null;
+  const kg = wLb * 0.453592, cm = hIn * 2.54;
+  const g = String(gender || '').toLowerCase();
+  const s = g === 'male' ? 5 : g === 'female' ? -161 : -78; // neutral midpoint otherwise
+  const bmr = 10 * kg + 6.25 * cm - 5 * age + s;
+  const d = Number(trainingDays) || 0;
+  const factor = d >= 6 ? 1.725 : d >= 4 ? 1.55 : d >= 1 ? 1.375 : 1.2;
+  const maintenanceCalories = Math.max(1200, Math.round(bmr * factor / 10) * 10);
+  const proteinG = Math.round(1.8 * kg);
+  const fatG = Math.round((0.25 * maintenanceCalories) / 9);
+  const carbG = Math.max(0, Math.round((maintenanceCalories - proteinG * 4 - fatG * 9) / 4));
+  return { maintenanceCalories, proteinG, carbG, fatG };
+}
+
+const NUTRITION_KEYS = ['maintenanceCalories', 'proteinG', 'carbG', 'fatG'];
+
 function collectProfileData() {
-  return {
-    age:          document.getElementById('gs-dob')?.value || '',
-    height:       document.getElementById('gs-height')?.value || '',
-    weight:       document.getElementById('gs-weight')?.value || '',
-    gender:       document.getElementById('gs-gender')?.value || '',
+  const prev = getProfile() || {};
+  const swimDays    = getSelectedChips('gs-swim-days-chips');
+  const drylandDays = getSelectedChips('gs-dryland-days-chips');
+  const dayTokens = new Set((swimDays + ',' + drylandDays).split(',').map(x => x.trim().toLowerCase()).filter(Boolean));
+
+  const ageRaw    = document.getElementById('gs-dob')?.value || '';
+  const heightRaw = document.getElementById('gs-height')?.value || '';
+  const weightRaw = document.getElementById('gs-weight')?.value || '';
+  const genderRaw = document.getElementById('gs-gender')?.value || '';
+  // If age wasn't re-entered on an edit, keep the prior adult determination.
+  const adult = ageRaw ? isAdultAge(ageRaw) : (prev.isAdult === true);
+
+  const data = {
     skillLevel:   getSelectedChips('gs-skill-chips'),
     trainingFor:  getSelectedChips('gs-training-for-chips'),
     fitnessGoal:  getSelectedChips('gs-fitness-goal-chips'),
     swimGoal:     getSelectedChips('swim-goal-chips'),
     strokeFocus:  getSelectedChips('gs-strokes-chips'),
     muscleFocus:  getSelectedChips('gs-muscle-chips'),
-    swimDays:     getSelectedChips('gs-swim-days-chips'),
-    drylandDays:  getSelectedChips('gs-dryland-days-chips'),
+    swimDays,
+    drylandDays,
     workoutTime:  getSelectedChips('gs-workout-time-chips'),
     poolAccess:   document.getElementById('gs-pool-access')?.value || '',
     gymAccess:    document.getElementById('gs-gym-access')?.value || '',
-    locLat:       _setupLocation ? _setupLocation.lat : '',
-    locLon:       _setupLocation ? _setupLocation.lon : '',
-    locName:      _setupLocation ? _setupLocation.name : '',
-    city:         _setupLocation ? _setupLocation.name : '', // plan generator compatibility
+    // Location is intentionally NOT stored in the profile. It is browser-provided
+    // and session-only (see setSessionGeo); the daily briefing reads it from
+    // sessionStorage and it never reaches our server.
     gear:         getSelectedChips('gs-gear-chips'),
     swimTimes:    collectSpeedTimes(),
+    isAdult:      adult,
   };
+
+  // Nutrition targets: adults only, computed here and stored as results. Age,
+  // height, weight, and gender are never written to the profile. Minors get no
+  // nutrition numbers at all.
+  if (adult && ageRaw && heightRaw && weightRaw) {
+    const targets = computeNutritionTargets({
+      ageYears: ageRaw, heightIn: heightRaw, weightLb: weightRaw, gender: genderRaw,
+      trainingDays: dayTokens.size,
+    });
+    if (targets) Object.assign(data, targets);
+  } else if (adult) {
+    // Editing without re-entering metrics: preserve previously computed targets.
+    NUTRITION_KEYS.forEach(k => { if (prev[k] != null && prev[k] !== '') data[k] = prev[k]; });
+  }
+  // (Minor: no nutrition keys are set, so any prior targets are dropped.)
+  return data;
 }
 
 // Reads the "Current best times & goal times" grid on the setup / edit-profile
@@ -10951,48 +10795,37 @@ const UNDER_13_MSG = 'LANE FOUR is for swimmers 13 and older, so we can\'t save 
 async function saveFullProfile() {
   const existingAccount = getAccount();
   const firstName = (document.getElementById('gs-username')?.value || '').trim();
-  const lastName  = '';
-  const email     = (document.getElementById('gs-email')?.value      || '').trim();
-  const password  = (document.getElementById('gs-password')?.value   || '');
-  const confirm   = (document.getElementById('gs-confirm-password')?.value || '');
-  const terms     = document.getElementById('gs-terms')?.checked;
 
   if (ageBlockedUnder13(document.getElementById('gs-dob')?.value)) { alert(UNDER_13_MSG); return; }
 
-  if (existingAccount) {
-    // Editing existing profile: keep account credentials, just update name/email + profile data
-    const updatedAccount = { ...existingAccount, firstName: firstName || existingAccount.firstName, lastName: lastName || existingAccount.lastName, email: email || existingAccount.email };
-    localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
-    const sessionToken = localStorage.getItem('streamline_session');
-    if (apiBase() && sessionToken) {
-      authApi('profile', { token: sessionToken, firstName: updatedAccount.firstName, lastName: updatedAccount.lastName }).catch(() => {});
-    }
-    // Keep the registered-users record (used by local-fallback login) in sync with the new name/email
-    const users = getUsers();
-    const oldKey = (existingAccount.email || '').toLowerCase();
-    if (users[oldKey]) {
-      const rec = { ...users[oldKey], firstName: updatedAccount.firstName, lastName: updatedAccount.lastName, email: updatedAccount.email };
-      delete users[oldKey];
-      users[updatedAccount.email.toLowerCase()] = rec;
-      localStorage.setItem('streamline_users', JSON.stringify(users));
-    }
-  } else {
-    if (!firstName || !email || !password) { alert('Please fill in all required account fields (Step 1).'); return; }
-    if (password.length < 8) { alert('Password must be at least 8 characters.'); return; }
-    if (password !== confirm) { alert('Passwords do not match.'); return; }
-    if (!terms) { alert('Please agree to the Terms of Use and Privacy Policy.'); return; }
-    if (apiBase()) {
-      let r;
-      try { r = await authApi('signup', { firstName, lastName, email, password, profile: collectProfileData() }); }
-      catch (e) { alert('Could not reach the server. Please check your connection and try again.'); return; }
-      if (!r.ok) { alert(r.data.error || 'Could not create your account. Please try again.'); return; }
-      setSession(r.data);
-    } else {
-      const account = { firstName, lastName, email, createdAt: Date.now() };
-      saveUser({ ...account, passwordHash: await hashPassword(password) });
-      localStorage.setItem('streamline_account', JSON.stringify(account));
-    }
+  if (!existingAccount) {
+    // Accounts are created only by signing in with Google (Step 1). If we somehow
+    // reach the profile save without one, send the user back to do that first.
+    alert('Please continue with Google to create your account first (Step 1).');
+    navigate('get-started', true);
+    goToStep(1);
+    return;
   }
+
+  // Editing an existing (Google) account: identity comes from Google, so we only
+  // update the display username and the profile data.
+  const updatedAccount = { ...existingAccount, firstName: firstName || existingAccount.firstName };
+  localStorage.setItem('streamline_account', JSON.stringify(updatedAccount));
+  const sessionToken = localStorage.getItem('streamline_session');
+  if (apiBase() && sessionToken) {
+    authApi('profile', { token: sessionToken, firstName: updatedAccount.firstName, lastName: updatedAccount.lastName || '' }).catch(() => {});
+  }
+  // Keep the registered-users record (used by the local-dev Google fallback) in sync with the new name
+  const users = getUsers();
+  const key = (existingAccount.email || '').toLowerCase();
+  if (users[key]) {
+    users[key] = { ...users[key], firstName: updatedAccount.firstName };
+    localStorage.setItem('streamline_users', JSON.stringify(users));
+  }
+
+  // If the athlete granted location during setup, keep it for THIS session only
+  // (never persisted to the profile or server) so the first briefing can render.
+  if (_setupLocation && _setupLocation.lat != null) setSessionGeo({ lat: _setupLocation.lat, lon: _setupLocation.lon, name: _setupLocation.name || '' });
 
   const profile = collectProfileData();
   localStorage.setItem('streamline_profile', JSON.stringify(profile));
@@ -11007,11 +10840,10 @@ async function saveFullProfile() {
 
 // Profile page rendering & inline editing
 
+// Age, height, weight, and gender are deliberately absent: they are entered on
+// the setup form to compute nutrition targets, then discarded — never stored or
+// displayed. Location is browser-provided and session-only.
 const PROFILE_FIELDS = [
-  { key: 'age',         label: 'Age',                 type: 'number' },
-  { key: 'height',      label: 'Height (in)',         type: 'number' },
-  { key: 'weight',      label: 'Weight (lbs)',        type: 'number' },
-  { key: 'gender',      label: 'Gender',              type: 'select', options: ['Male','Female','Non-binary','Prefer not to say'] },
   { key: 'skillLevel',  label: 'Swim Skill Level',    type: 'select', options: ['Beginner: learning basics, building comfort','Intermediate: consistent technique, structured sets','Advanced: competitive background or high mileage','Pro: elite performance, high-volume training'] },
   { key: 'trainingFor', label: 'Training For',        type: 'text' },
   { key: 'fitnessGoal', label: 'Fitness Goal',        type: 'text' },
@@ -11023,7 +10855,6 @@ const PROFILE_FIELDS = [
   { key: 'workoutTime', label: 'Workout Time',        type: 'text' },
   { key: 'poolAccess',  label: 'Pool Access',         type: 'select', options: ['Year-round access','Seasonal (outdoor, summer only)','Limited / occasional access','No pool access currently'] },
   { key: 'gymAccess',   label: 'Gym Access',          type: 'select', options: ['Year-round access','Seasonal access','Home gym','Limited / occasional access','No gym access'] },
-  { key: 'locName',     label: 'Location',            type: 'text' },
   { key: 'gear',        label: 'Gear Owned',          type: 'text' },
 ];
 
@@ -11040,9 +10871,20 @@ function renderProfilePage() {
   const card = document.getElementById('profile-card');
   if (!card) return;
 
+  // Nutrition summary from the stored (derived) targets — never from raw body
+  // metrics, which are not stored. Adults see their maintenance calories; minors
+  // see that nutrition is an 18+ feature.
+  let nutritionVal = '';
+  if (profile.isAdult === false) nutritionVal = 'Available to members 18+';
+  else if (profile.maintenanceCalories) {
+    nutritionVal = `~${Number(profile.maintenanceCalories).toLocaleString()} kcal/day maintenance`
+      + (profile.proteinG ? ` · P ${profile.proteinG} / C ${profile.carbG} / F ${profile.fatG} g` : '');
+  }
+
   const allFields = [
     { label: 'Email', val: account.email },
-    ...PROFILE_FIELDS.map(f => ({ label: f.label, val: profile[f.key] || '' }))
+    ...PROFILE_FIELDS.map(f => ({ label: f.label, val: profile[f.key] || '' })),
+    { label: 'Daily Nutrition Target', val: nutritionVal },
   ];
 
   card.innerHTML = allFields.map(({ label, val }) => {
@@ -12809,6 +12651,8 @@ function resetGetStartedForm() {
   if (speedPanel) speedPanel.style.display = 'none';
   _setupLocation = null;
   if (typeof setupLocationUI === 'function') setupLocationUI();
+  const ageMsg = document.getElementById('gs-age-confirm-msg');
+  if (ageMsg) ageMsg.style.display = 'none';
   goToStep(1);
 }
 

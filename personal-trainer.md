@@ -38,12 +38,16 @@ replace that calendar with this athlete's plan.
 
 ## Step 1 — Read the Profile
 
-The site collects: age, height, weight, gender, swim skill level, general fitness
+The site collects: swim skill level, general fitness
 level, fitness goal, swimming goal, strokes and muscle groups to work on, days
-available to swim, days available to lift, gym access, and swim gear owned. The site
-deliberately does NOT collect injuries, dietary restrictions, or allergies (health
-data); if the athlete volunteers one in a request, honor it for that request, and
-always keep the general safety rules below.
+available to swim, days available to lift, gym access, and swim gear owned. For
+nutrition it provides pre-computed values only — `maintenanceCalories`, macro
+targets (`proteinG`, `carbG`, `fatG`), and an `isAdult` flag — calculated in the
+athlete's browser; the raw age, height, weight, and gender are **never** sent to
+you. The site deliberately does NOT collect injuries, dietary restrictions, or
+allergies (health data), and does not store or send location; if the athlete
+volunteers a restriction in a request, honor it for that request, and always keep
+the general safety rules below.
 
 Map it to working parameters:
 
@@ -56,7 +60,8 @@ Map it to working parameters:
 | Available swim/lift days | which days hold which sessions — never schedule a session on a day they don't have |
 | Target strokes / muscle groups | stroke focus assignments and dryland focus assignments |
 | Swim gear | which drills and set tools are usable (fins, snorkel, pullbuoy, paddles, kickboard) |
-| Age, height, weight, gender | nutrition math; youth and masters handling |
+| `maintenanceCalories`, `proteinG`, `carbG`, `fatG` | the nutrition anchors — adjust relative to these, never recompute from body metrics |
+| `isAdult` | nutrition gate: only `true` gets calories/macros/meals; otherwise produce no nutrition at all |
 
 If essential fields are missing, ask for them in one batched question — never one at
 a time. If a non-essential field is missing (e.g., gear), state a sensible assumption
@@ -143,14 +148,25 @@ Generate content by following each specialist skill with these parameter packs.
 ### → swim-nutrition (the fuel plan)
 
 Run nutrition **last**, after the training week is fixed, because the plan *is* the
-activity level:
+activity level.
 
-- **Activity input for the calculator:** derive from the planned week, not a guess. Prefer `--training-hours` computed from the actual schedule (sum the week's session times ÷ 7) — it's more honest than the named tiers. If using tiers instead, count hours, not sessions: ~2+ hrs/day → `doubles`; ~1.5 → `athlete`; ~1 → `active`; less → `moderate`. Session count overstates load when sessions are short (six 45-minute sessions is not "athlete"), and an inflated activity flag can wipe out a fat-loss client's entire deficit.
-- **Goal flag:** from the fitness goal (lose fat → `lose`, build muscle → `muscle`, gain weight → `gain`, performance/maintain → `maintain`).
+**Adults only (18+).** Nutrition is a hard-gated feature. If the profile's
+`isAdult` is not true, or `maintenanceCalories` is missing, produce **no**
+nutrition at all — no calories, no macros, no meal schedule, and nothing about
+weight or dieting anywhere in the plan. This is absolute and overrides every
+other instruction. Minors get the swim and dryland plan only.
+
+For adults, the site has **already computed the athlete's daily maintenance in
+the browser** and provides it on the profile as `maintenanceCalories` plus macro
+targets `proteinG`, `carbG`, `fatG`. The raw age/height/weight/gender are never
+sent to you — do **not** try to compute a BMR or ask for body measurements.
+
+- **Anchor to the provided maintenance.** Set the day's calories relative to `maintenanceCalories` from the goal: fat loss → a modest deficit (~10–20% below); muscle or weight gain → a lean surplus (~5–15% above); performance/maintain → maintenance.
+- **Macros:** hold protein near the provided `proteinG`, keep fat at roughly a quarter of calories (never below ~20%), and let carbs fill the rest, scaling them up on the hardest training days and down on rest days.
 - **Meal anchoring:** anchor pre/post-training meals to the user's actual session times and days.
-- **Day types:** the daily targets are built for full training days. On rest days, note it simply: same protein, drop carbs ~15–20% (roughly one training-window snack), don't chase precision. On double days, shift extra carbs into the between-session window.
+- **Day types:** targets are built for full training days. On rest days: same protein, drop carbs ~15–20%, don't chase precision. On double days, shift extra carbs into the between-session window.
 - Assume the athlete is following the full swim + dryland plan — that's the load the numbers fuel.
-- All swim-nutrition rules stand: run the calculator (don't do arithmetic by hand), read its reference files for anything quantitative, honor any restriction the athlete volunteers in a request, youth/RED-S safeguards override everything.
+- Honor any restriction the athlete volunteers in a request; RED-S and eating-disorder safeguards override everything.
 
 #### Diet Modes — cut, maintenance, bulk
 
@@ -175,7 +191,7 @@ When the athlete has a meet, race, or open-water event coming up, the taper carr
 
 - **Trigger:** any dated meet or race in the plan, for any athlete who is racing (not just weight-focused clients).
 - **Timing:** the final 2–3 days before the event, layered on top of the taper's reduced training volume.
-- **How:** raise carbohydrate intake toward the upper end swim-nutrition allows for the bodyweight, hold protein steady, and pull fat down slightly to make room. Favor familiar, easy-to-digest carbs; race week is not the time for new foods or fiber experiments.
+- **How:** raise carbohydrate intake well above the athlete's usual training-day carbs (bringing total calories to around maintenance or slightly above), hold protein steady, and pull fat down slightly to make room. Favor familiar, easy-to-digest carbs; race week is not the time for new foods or fiber experiments.
 - **A cut pauses for the meet.** If a fat-loss client is racing, suspend the deficit for the carb-load days and return to it after the event. Racing flat to protect a deficit is a bad trade.
 - Note the carb-load days on the week table and in the day's Coach's Note so the athlete sees why the food changed.
 
@@ -233,7 +249,7 @@ sample day as the alternative.
 ## Safety and Judgment
 
 - **Injuries (when the athlete volunteers one):** program around, never through. Shoulder issues → no overhead pressing, cut fly volume, bias kick and technique work, double the rotator-cuff care. Knee issues → no plyometrics, swap breaststroke kick for flutter/dolphin, no deep squatting. Back issues → no loaded spinal flexion, emphasize core stability. Pain during any exercise = stop, substitute, and if it persists, see a professional. Say this once, plainly.
-- **Youth (under 18):** growth comes first. No aggressive calorie deficits ever (swim-nutrition's youth rules override any fitness goal), lower dryland loading (bodyweight-biased), more rest, and the tone stays encouraging.
+- **Youth (under 18):** growth comes first, and **nutrition is off entirely** — an under-18 athlete (`isAdult` not true) gets the swim and dryland plan with no calories, macros, or meals at all. On the training side: lower dryland loading (bodyweight-biased), more rest, and the tone stays encouraging.
 - **Masters (40+):** more recovery between hard days, mobility is load-bearing, progression is slower — and that's the plan working, not a concession.
 - **Mismatched goals:** if the fitness goal fights the swimming goal (e.g., "drop 20 lb" + "peak for a meet in 3 weeks"), say so like a coach would, pick the priority with the user, and sequence the other for after.
 - **Reassess every 2–3 weeks:** weight trend, how sets feel, whether lifts progress. The plan is a living document; invite the user to come back with results and update it.
