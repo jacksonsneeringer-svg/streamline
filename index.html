@@ -2616,7 +2616,10 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .logo-top-row { gap: 7px; }
   .nav-actions { gap: 0.5rem; margin-left: 0.5rem; }
   .nav-inner { padding: 0 1rem; }
-  .footer-inner { grid-template-columns: 1fr; width: 92%; }
+  /* Keep the Content/Information link lists side by side (two columns) on
+     small phones instead of stacking into a single tall column; the
+     newsletter still spans the full width via the rule above. */
+  .footer-inner { grid-template-columns: 1fr 1fr; width: 92%; gap: 1.5rem 1.25rem; }
   .footer-bottom { width: 92%; }
   section { padding: 3.5rem 0; }
   .section-header { margin-bottom: 2.5rem; }
@@ -3028,9 +3031,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   .ex-table.dryland-ex-table td.dl-col-desktop { display: none; }
 
   /* Collapsible exercise details: tappable header with the reps pill and a
-     chevron; description + targets expand underneath. */
-  .exd-toggle { pointer-events: auto; cursor: pointer; }
+     chevron; description + targets expand underneath. The header wraps so a
+     long reps pill drops to its own second line instead of squishing the
+     exercise title or overflowing off the screen. */
+  .exd-toggle { pointer-events: auto; cursor: pointer; flex-wrap: wrap; row-gap: 0.35rem; }
   .exd-toggle.exd-static { pointer-events: none; cursor: default; }
+  /* Title keeps at least half the row so the reps pill wraps below it rather
+     than crushing the workout name into a narrow, unreadable column. */
+  .exd-toggle > strong { flex: 1 1 auto; min-width: 55%; }
   .exd-chevron { display: block; }
   .exd-presc-inline { display: inline-block; font-size: 0.76rem; font-weight: 600; color: var(--teal); background: var(--lap-pale); border-radius: 999px; padding: 0.16rem 0.6rem; white-space: nowrap; flex-shrink: 0; }
   .exd-detail { display: none; }
