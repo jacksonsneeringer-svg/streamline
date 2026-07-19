@@ -126,6 +126,7 @@ Resources:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # CachingOptimized
+          ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy
           Compress: true
           FunctionAssociations:
             - EventType: viewer-request
@@ -139,6 +140,53 @@ Resources:
             ResponsePagePath: /index.html
         HttpVersion: http2and3
         PriceClass: PriceClass_100
+
+  # Security headers applied to every response from the site's edge. The standard
+  # headers (HSTS, nosniff, frame-deny, referrer, permissions) are ENFORCED. The
+  # Content-Security-Policy is shipped Report-Only first because the site is
+  # inline-heavy (inline handlers/scripts/styles) and loads Google Sign-In,
+  # Open-Meteo, and Google images — enforcing an imperfect allowlist would break
+  # login or weather. After deploying, watch the browser console for CSP
+  # violations; once clean, switch the header name below from
+  # "Content-Security-Policy-Report-Only" to "Content-Security-Policy" to enforce.
+  SecurityHeadersPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: !Sub "${DomainName}-security-headers"
+        SecurityHeadersConfig:
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 63072000
+            IncludeSubdomains: true
+            Preload: false
+            Override: true
+          ContentTypeOptions:
+            Override: true
+          FrameOptions:
+            FrameOption: DENY
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+        CustomHeadersConfig:
+          Items:
+            - Header: Permissions-Policy
+              Value: "geolocation=(self), camera=(), microphone=(), payment=(), usb=()"
+              Override: true
+            - Header: Content-Security-Policy-Report-Only
+              Override: true
+              Value: !Sub >-
+                default-src 'self';
+                script-src 'self' 'unsafe-inline' https://accounts.google.com https://www.gstatic.com https://www.google.com;
+                style-src 'self' 'unsafe-inline' https://accounts.google.com https://www.gstatic.com;
+                img-src 'self' data: https://images.pexels.com https://img.youtube.com https://*.googleusercontent.com https://*.gstatic.com;
+                font-src 'self' data:;
+                connect-src 'self' https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.bigdatacloud.net https://api.zippopotam.us https://accounts.google.com https://oauth2.googleapis.com;
+                frame-src https://accounts.google.com https://www.google.com https://www.youtube.com;
+                frame-ancestors 'none';
+                base-uri 'self';
+                form-action 'self' https://accounts.google.com;
+                object-src 'none'
 
   # ─── DYNAMODB ──────────────────────────────────────────────────────────────
 
@@ -561,7 +609,7 @@ Resources:
           EMAIL_FROM = os.environ.get('EMAIL_FROM', 'LANE FOUR <noreply@winlanefour.com>')
           RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
           GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
-          SESSION_TTL = 30 * 24 * 3600  # 30 days
+          SESSION_TTL = 7 * 24 * 3600  # 7 days (re-auth via Google is one click)
 
           def send_email(source, to, subject, html=None, text=None, reply_to=None):
             payload = {'from': source, 'to': to if isinstance(to, list) else [to], 'subject': subject}
