@@ -694,15 +694,15 @@ Resources:
               profile.pop(k, None)
             return profile
 
-          # COPPA: the Terms require users to be 13+. A profile reporting an
-          # age under 13 is actual knowledge of an under-age user, so the
-          # write is refused and nothing is stored.
-          UNDER_13_ERROR = 'LANE FOUR is for swimmers 13 and older, so we can\'t save this profile. If this age was a typo, correct it and try again.'
+          # The Terms require users to be 18+. A profile reporting an age under
+          # 18 is actual knowledge of an under-age user, so the write is refused
+          # and nothing is stored. (This also satisfies COPPA, whose floor is 13.)
+          UNDER_18_ERROR = 'LANE FOUR is for swimmers 18 and older, so we can\'t save this profile. If this age was a typo, correct it and try again.'
 
-          def reports_under_13(profile):
+          def reports_under_18(profile):
             try:
               age = float(str((profile or {}).get('age') or '').strip())
-              return 0 < age < 13
+              return 0 < age < 18
             except (TypeError, ValueError):
               return False
 
@@ -830,8 +830,8 @@ Resources:
             if not user:
               return resp(401, {'error': 'Session expired. Please log in again.'})
             if isinstance(body.get('profile'), dict):
-              if reports_under_13(body['profile']):
-                return resp(400, {'error': UNDER_13_ERROR})
+              if reports_under_18(body['profile']):
+                return resp(400, {'error': UNDER_18_ERROR})
               user['profile'] = json.dumps(scrub_profile(body['profile']))
             if clean_name(body.get('firstName')):
               user['firstName'] = clean_name(body.get('firstName'))
@@ -938,8 +938,8 @@ Resources:
                 'profile': json.dumps({})
               }
               # Record the age/terms attestation made at account creation (the
-              # user checked "I am at least 13 and agree to the Terms"). Stored as
-              # proof of the neutral age screen for COPPA.
+              # user checked "I am at least 18 and agree to the Terms"). Stored as
+              # proof of the age screen.
               if body.get('ageConfirmed'):
                 user['ageConfirmedAt'] = int(time.time() * 1000)
               users.put_item(Item=user)
