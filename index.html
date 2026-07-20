@@ -2956,6 +2956,16 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 .fav-icon-btn:hover { border-color: #d9a441; color: #d9a441; }
 .fav-icon-btn.is-fav { color: #d9a441; border-color: #d9a441; background: rgba(217,164,65,0.1); }
 .fav-star { color: #d9a441; }
+/* Copy-link (share) buttons on archive cards + the set detail modal. Grabbing
+   the URL here gives a stable, shareable link to a single set — handy as the
+   destination for a Pinterest pin. */
+.copy-link-btn { background: none; border: 1px solid var(--gray-200); border-radius: var(--r-sm); width: 34px; height: 34px; color: var(--gray-400); cursor: pointer; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; padding: 0; }
+.copy-link-btn:hover { border-color: var(--teal); color: var(--teal); }
+.copy-link-btn.copied { color: var(--teal); border-color: var(--teal); background: rgba(93,219,201,0.12); }
+.copy-link-btn svg { width: 16px; height: 16px; }
+.archive-copy-detail .cl-ico { display: inline-flex; vertical-align: -3px; margin-right: 0.3rem; }
+.archive-copy-detail .cl-ico svg { width: 15px; height: 15px; }
+.archive-copy-detail.copied { color: var(--teal); border-color: var(--teal); }
 /* Account-required lock card (gated archives + favorites) */
 .auth-lock-card { text-align: center; padding: 3rem 2rem; background: var(--white); border: 1px dashed var(--gray-200); border-radius: var(--r-xl); max-width: 540px; margin: 1rem auto; }
 .auth-lock-card svg { margin-bottom: 1rem; }
@@ -7647,7 +7657,13 @@ function showPage(pageId, allowSetup) {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
   // Trigger dynamic content loading when relevant pages are shown
-  if (pageId === 'set-archives') { if (applyArchiveAuthGate()) { loadArchives(); refreshAllFavButtons(); } }
+  if (pageId === 'set-archives') {
+    // A /set-archives?set=<id> deep link (e.g. a Pinterest pin) pops that set
+    // open. Consume the param once so later in-page visits don't re-open it.
+    const sharedSetId = _hashQuery.get('set');
+    if (sharedSetId) { _hashQuery.delete('set'); openSharedArchiveSet(sharedSetId); }
+    else if (applyArchiveAuthGate()) { loadArchives(); refreshAllFavButtons(); }
+  }
   if (pageId === 'dryland-archives') { if (applyDrylandArchiveAuthGate()) { loadDrylandArchives(); refreshAllFavButtons(); } }
   if (pageId === 'swim-sets') { updateProfileLevelDot(); showSwimLevel(profileSwimLevelId() || 'beginner'); refreshAllFavButtons(); }
   if (pageId === 'dryland-workouts') initLiftPage();
@@ -12026,6 +12042,7 @@ function archiveCardHtml(set) {
       </div>
       <div class="archive-card-actions">
         <button class="btn btn-outline-dark btn-sm" onclick="openArchivedSet('${escHtml(id)}')">View Set</button>
+        ${archiveCardCopyBtnHtml(id)}
         ${favoriteIconButtonHtml(id)}
       </div>
     </div>`;
@@ -12041,6 +12058,112 @@ function openArchivedSet(id) {
     if (set.level && set.level !== 'all') showSwimLevel(set.level);
     return;
   }
+  renderSetDetail(set);
+}
+
+// ── Shareable set links (Pinterest pins etc.) ────────────────────────────────
+// Every archived set has a stable id (level-date, or inj-* for the static
+// injury/mobility sets), so it can be linked to directly. A pin's destination
+// URL is just /set-archives?set=<id>; landing on it pops that set open (see the
+// set-archives branch in showPage). Ids that don't resolve to an archive row
+// (plan-day sets, recipes, lifts) are not shareable this way.
+function isShareableArchiveSetId(id) {
+  return typeof id === 'string' &&
+    (/^(beginner|intermediate|advanced|pro|all)-\d{4}-\d{2}-\d{2}$/.test(id) || /^inj-/.test(id));
+}
+
+function archiveSetShareUrl(id) {
+  // location.origin is winlanefour.com in production (localhost while testing),
+  // so the copied link always points at the site the visitor is already on.
+  return location.origin + '/set-archives?set=' + encodeURIComponent(id);
+}
+
+// Icon-only copy button for archive cards; icon + label for the detail modal.
+function archiveCardCopyBtnHtml(id) {
+  return `<button type="button" class="copy-link-btn" title="Copy link to this set" aria-label="Copy link to this set" onclick="return copyArchiveSetLink('${escHtml(id)}', this)">${_SHARE_ICONS.copy}</button>`;
+}
+function archiveDetailCopyBtnHtml(id) {
+  return `<button type="button" class="btn btn-outline-dark btn-sm archive-copy-detail" title="Copy link to this set" onclick="return copyArchiveSetLink('${escHtml(id)}', this)"><span class="cl-ico">${_SHARE_ICONS.copy}</span>Copy Link</button>`;
+}
+
+// Copy a set's shareable URL to the clipboard, mirroring the article share bar's
+// button feedback (swap to a check + "Copied!", then restore).
+function copyArchiveSetLink(id, btn) {
+  const url = archiveSetShareUrl(id);
+  const hasLabel = btn && btn.classList.contains('archive-copy-detail');
+  const confirmCopy = function() {
+    if (!btn) return;
+    if (!btn.dataset.clPrev) btn.dataset.clPrev = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = hasLabel ? `<span class="cl-ico">${_SHARE_ICONS.check}</span>Copied!` : _SHARE_ICONS.check;
+    btn.title = 'Link copied!';
+    clearTimeout(btn._clTimer);
+    btn._clTimer = setTimeout(function() {
+      btn.classList.remove('copied');
+      if (btn.dataset.clPrev) { btn.innerHTML = btn.dataset.clPrev; delete btn.dataset.clPrev; }
+      btn.title = 'Copy link to this set';
+    }, 1800);
+  };
+  const fallback = function() {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.cssText = 'position:fixed; opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    try { if (document.execCommand('copy')) confirmCopy(); } catch (e) {}
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(confirmCopy, fallback);
+  } else {
+    fallback();
+  }
+  return false;
+}
+
+// Make sure a single set's full data is in _archiveSets without rendering the
+// whole archive. Used for shared links so a signed-out visitor can preview just
+// the linked set while the rest of the archive stays gated. Checks the static
+// injury sets first, then falls back to the archive API.
+async function ensureArchiveSetLoaded(id) {
+  if (_archiveSets[id] && _archiveSets[id].sections) return _archiveSets[id];
+  const inj = INJURY_SETS.find(s => s.setId === id);
+  if (inj) { _archiveSets[id] = inj; return inj; }
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) return _archiveSets[id] || null;
+  try {
+    const res = await fetch(`${apiUrl}/archives`);
+    if (!res.ok) return _archiveSets[id] || null;
+    const { items } = await res.json();
+    (items || []).forEach(item => {
+      const set = archiveItemToSet(item);
+      if (set.setId && !_archiveSets[set.setId]) _archiveSets[set.setId] = set;
+    });
+  } catch (e) {}
+  return _archiveSets[id] || null;
+}
+
+// Entry point for /set-archives?set=<id> deep links (e.g. a Pinterest pin).
+// Signed-in visitors get the full archive with the set popped open on top.
+// Signed-out visitors see just the linked set as a free preview, with the
+// account prompt behind it for the rest of the library.
+async function openSharedArchiveSet(id) {
+  if (getAccount()) {
+    applyArchiveAuthGate();
+    await loadArchives();
+    refreshAllFavButtons();
+  } else {
+    const lock = document.getElementById('archive-auth-lock');
+    const content = document.getElementById('archive-content');
+    if (content) content.style.display = 'none';
+    if (lock) {
+      lock.style.display = '';
+      lock.innerHTML = authLockHtml('You’re viewing a shared swim set. Create a free account or log in to browse and filter every set in the archive.');
+    }
+    await ensureArchiveSetLoaded(id);
+  }
+  const set = _archiveSets[id];
+  if (!set || !set.sections || !set.sections.length) return;
   renderSetDetail(set);
 }
 
@@ -12076,8 +12199,9 @@ function swimSetMarkup(data) {
         ${focusCueHtml}
       </div>
       <div class="set-action-btns no-print" style="display:flex; flex-direction:column; gap:0.5rem; flex-shrink:0; align-items:flex-end;">
-        <div style="display:flex; gap:0.5rem;">
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:flex-end;">
           ${favoriteButtonHtml(id)}
+          ${isShareableArchiveSetId(id) ? archiveDetailCopyBtnHtml(id) : ''}
           <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
         </div>
         ${dailyLogButtonHtml('swim', id)}
