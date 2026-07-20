@@ -6271,9 +6271,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <div class="setup-fields">
         <label style="display:flex; gap:0.6rem; align-items:flex-start; font-size:0.86rem; color:var(--text-muted); line-height:1.55; cursor:pointer;">
           <input type="checkbox" id="gs-age-confirm" onchange="if(this.checked){var m=document.getElementById('gs-age-confirm-msg'); if(m) m.style.display='none';}" style="margin-top:0.15rem; flex-shrink:0; width:1rem; height:1rem; cursor:pointer;" />
-          <span>I confirm I am at least 13 years old and agree to the <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="event.preventDefault(); navigate('privacy-policy')">Privacy Policy</a>.</span>
+          <span>I confirm I am at least 18 years old and agree to the <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Terms of Use</a> and <a href="/privacy-policy" onclick="event.preventDefault(); navigate('privacy-policy')">Privacy Policy</a>.</span>
         </label>
-        <p id="gs-age-confirm-msg" style="display:none; font-size:0.82rem; color:#c0392b; margin:-0.4rem 0 0;">Please confirm you are at least 13 years old to create an account.</p>
+        <p id="gs-age-confirm-msg" style="display:none; font-size:0.82rem; color:#c0392b; margin:-0.4rem 0 0;">Please confirm you are at least 18 years old to create an account.</p>
         <div id="google-signin-getstarted" class="google-btn-slot" data-gsi-text="continue_with" style="display:flex; justify-content:flex-start; min-height:44px;"></div>
         <div style="background:var(--gray-50); border:1px solid var(--gray-100); border-radius:var(--r-md); padding:1rem 1.25rem;">
           <span style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">This platform provides general fitness guidance and is not a substitute for advice from a licensed medical or nutrition professional.</span>
@@ -6281,7 +6281,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       </div>
     </div>
     <div class="setup-step-content" id="step-2">
-      <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your nutrition targets in your browser. We store only the resulting calorie and macro numbers — your age, height, weight, and gender are never saved to your account. Nutrition targets are available to members 18+.</p></div>
+      <div class="setup-step-header"><span class="eyebrow">Step 2 of 5</span><h2>Your body profile</h2><p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.5rem;">Used to calculate your nutrition targets in your browser. We store only the resulting calorie and macro numbers — your age, height, weight, and gender are never saved to your account or sent to our servers.</p></div>
       <div class="setup-fields">
         <div class="form-group"><label class="form-label required-dot" for="gs-username">Username</label><input type="text" id="gs-username" class="form-input" maxlength="30" autocomplete="off" placeholder="e.g. Marlin" /><p class="form-hint">The name LANE FOUR greets you by. You can change it anytime.</p></div>
         <div class="form-group"><label class="form-label required-dot">Age</label><input type="number" id="gs-dob" class="form-input" placeholder="25" min="1" max="120" inputmode="numeric" /></div>
@@ -7041,14 +7041,14 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="container">
     <span class="eyebrow" style="color:var(--pool-100);">Legal</span>
     <h1>Privacy Policy</h1>
-    <p class="sub">Last updated: July 13, 2026</p>
+    <p class="sub">Last updated: July 20, 2026</p>
   </div>
 </div>
 <section style="background:var(--white); padding:2.5rem 0 5rem;">
   <div class="container" style="max-width:1060px; padding:0 2rem 0 0.25rem;">
     <div style="max-width:760px; font-size:0.95rem; line-height:1.85; color:var(--text-muted);">
 
-      <p style="margin-bottom:1.5rem;">LANE FOUR is operated by ronaldricomedia of San Francisco, California ("LANE FOUR," "we," "our," or "us"), which operates the website at winlanefour.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you use the Site, and describes your rights under applicable law, including the California Consumer Privacy Act (CCPA) and the California Privacy Rights Act (CPRA).</p>
+      <p style="margin-bottom:1.5rem;">LANE FOUR ("LANE FOUR," "we," "our," or "us") operates the website at winlanefour.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you use the Site, and describes your rights under applicable law, including the California Consumer Privacy Act (CCPA) and the California Privacy Rights Act (CPRA). The Site is intended only for adults 18 and older.</p>
 
       <p style="margin-bottom:1.5rem;"><strong>Not a healthcare provider; HIPAA does not apply.</strong> LANE FOUR is a fitness-information service, not a healthcare provider. We are not a "covered entity" or "business associate" under the Health Insurance Portability and Accountability Act (HIPAA), and the fitness information you provide (such as the numbers used to estimate your nutrition targets) is not "protected health information" regulated by HIPAA. We also do not use your personal information or training profile to train AI models.</p>
 
@@ -7056,36 +7056,34 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem; margin-top:0;">A. Information You Provide Directly</h3>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Account Registration:</strong> Username and email address. Authentication is handled entirely by <strong>Sign in with Google</strong>; LANE FOUR never receives, sees, or stores a password.</li>
-        <li><strong>Body Profile (optional):</strong> Age, height, weight, and gender. This information is used solely to personalize your training recommendations.</li>
-        <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, and race or distance goals, used to tailor your daily workouts.</li>
+        <li><strong>Account Registration:</strong> A display username and your email address. Authentication is handled entirely by <strong>Sign in with Google</strong>; LANE FOUR never receives, sees, or stores a password.</li>
+        <li><strong>Body Profile (optional):</strong> Your age, height, weight, and gender. <strong>These raw values are used entirely within your browser</strong> to calculate your nutrition targets and are <strong>not sent to or stored on our servers or in your account.</strong> The only things saved from this step are the resulting calorie and macro numbers and a single flag indicating whether you are an adult (18 or older). If you later edit these fields, we re-run the same in-browser calculation.</li>
+        <li><strong>Training Preferences (optional):</strong> Fitness goals, preferred swim strokes, training type preferences, gear and pool access, available training days, and race or distance goals, used to tailor your daily workouts. These are saved to your account.</li>
         <li><strong>Saved Favorites:</strong> Swim sets, dryland workouts, meals, and recipes you mark as favorites are saved to your account so they are available whenever you sign in, on any browser or device.</li>
         <li><strong>Contact Form Submissions:</strong> Name, email address, subject, message, and optional newsletter opt-in when you contact us.</li>
         <li><strong>Newsletter Subscription:</strong> Email address when you subscribe to The Fast Lane newsletter.</li>
-        <li><strong>Location (optional):</strong> If you grant your browser's location permission, your device obtains your approximate latitude and longitude and sends them <strong>directly from your browser</strong> to the Open-Meteo weather service to retrieve a local forecast for your daily briefing. <strong>LANE FOUR never receives, transmits, or stores your location</strong> — the coordinates are used only in your browser and are not part of your account. No other personal information accompanies them. You can decline or revoke this permission at any time in your browser settings.</li>
+        <li><strong>Location (optional):</strong> The daily briefing can show your local weather. You may either grant your browser's location permission (which gives your device your approximate latitude and longitude) or type a city name or US ZIP code. To turn that into a forecast, your browser sends this information <strong>directly from your device</strong> to third-party services: the <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">Open-Meteo</a> weather and geocoding APIs (for the forecast and to look up city coordinates), <a href="https://www.bigdatacloud.com/privacy-policy" target="_blank" rel="noopener">BigDataCloud</a> (to convert coordinates into a nearby place name), and <a href="https://www.zippopotam.us/" target="_blank" rel="noopener">Zippopotam.us</a> (to convert a US ZIP code into coordinates). <strong>LANE FOUR itself never receives or stores your location</strong> — it is used only in your browser and is not part of your account. You can decline or revoke browser location permission at any time in your browser settings, or simply not enter a location.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">B. Information Collected Automatically</h3>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Log Data:</strong> IP address, browser type, device type, operating system, and pages visited, collected automatically by our servers when you use the Site.</li>
+        <li><strong>Server Log Data:</strong> When you use features that call our servers (signing in, generating or loading a plan, searching, submitting the contact form, or subscribing to the newsletter), our infrastructure automatically logs your IP address and basic technical request data such as a timestamp, the endpoint requested, and your browser's user-agent string. <strong>We do not run page-view analytics and do not build browsing profiles.</strong></li>
         <li><strong>Session Tokens:</strong> A unique identifier saved in your browser's local storage for up to 7 days to keep you signed in to your account.</li>
-        <li><strong>Browser Local Storage:</strong> Site preferences and your training data (such as workout logs, plus a local copy of your saved favorites) saved in your browser's local storage on your own device. We do not use this data for advertising or cross-site tracking.</li>
+        <li><strong>Browser Local Storage:</strong> Site preferences and your training data (such as workout logs and a local copy of your saved favorites) saved in your browser's local storage on your own device. We do not use this data for advertising or cross-site tracking.</li>
       </ul>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">C. Information Processed by AI Systems</h3>
-      <p style="margin-bottom:1.5rem;">When you use the Site's search feature or when our system generates your personalized daily workout plan, your search queries and training profile information may be processed by an AI model (Amazon Bedrock / Anthropic Claude) to generate results. This processing occurs within AWS infrastructure under Amazon's data processing policies. We do not use this data to train AI models.</p>
+      <p style="margin-bottom:1.5rem;">When you use the Site's search feature or when our system generates your personalized daily workout plan, your search queries and training-preference information may be processed by an AI model (Amazon Bedrock, running Anthropic's Claude) to generate results. This processing occurs within AWS infrastructure under Amazon's data-processing policies. We do not use this data to train AI models.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">2. Categories of Personal Information (CCPA)</h2>
-      <p style="margin-bottom:0.75rem;">The following categories of personal information may be collected about California residents:</p>
+      <p style="margin-bottom:0.75rem;">The following categories of personal information may be collected and stored about California residents:</p>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Identifiers:</strong> Name, email address, IP address, session token; collected: Yes</li>
-        <li><strong>Personal Records:</strong> Name, age, height, weight; collected: Yes (if profile completed)</li>
-        <li><strong>Protected Classification Characteristics:</strong> Age, gender; collected: Yes (if profile completed)</li>
-        <li><strong>Internet / Network Activity:</strong> Pages visited, session data, server logs; collected: Yes</li>
-        <li><strong>Inferences:</strong> Fitness level, training preferences, workout personalization profile; collected: Yes (if profile completed)</li>
-        <li><strong>Sensitive Personal Information:</strong> Health-related body characteristics (height, weight, age) if voluntarily provided; collected: Yes (for account holders). We do not collect or store passwords — authentication is handled by Sign in with Google.</li>
-        <li><strong>Geolocation Data:</strong> Approximate location (latitude/longitude) is used in your browser to fetch local weather and is sent directly to Open-Meteo; collected/stored by LANE FOUR: No</li>
-        <li><strong>Commercial information, biometric data, audio/visual data:</strong> Not collected</li>
+        <li><strong>Identifiers:</strong> Display username, email address, IP address, session token; stored: Yes</li>
+        <li><strong>Internet / Network Activity:</strong> Session data and server request logs; stored: Yes</li>
+        <li><strong>Inferences / Preferences:</strong> Fitness goals, training preferences, and the computed nutrition targets (calorie and macro numbers) that make up your workout-personalization profile, plus a flag indicating whether you are an adult (18+); stored: Yes (if profile completed)</li>
+        <li><strong>Body metrics (age, height, weight, gender):</strong> Used only within your browser to compute nutrition targets and then discarded; <strong>collected/stored by LANE FOUR: No.</strong> Only the resulting calorie/macro numbers and the adult flag are stored.</li>
+        <li><strong>Geolocation Data:</strong> Approximate location, city name, or US ZIP code is used within your browser to fetch local weather from third-party services (see Section 1.A); <strong>collected/stored by LANE FOUR: No.</strong></li>
+        <li><strong>Passwords, commercial information, biometric data, audio/visual data:</strong> Not collected. Authentication is handled by Sign in with Google, so we never receive or store a password.</li>
       </ul>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">3. How We Use Your Information</h2>
@@ -7104,25 +7102,27 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:0.75rem;"><strong>We do not sell, rent, or trade your personal information to any third party. We do not share personal information for cross-context behavioral advertising.</strong></p>
       <p style="margin-bottom:0.75rem;">We may share information in limited circumstances:</p>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Infrastructure Service Providers:</strong> Amazon Web Services (AWS) provides our hosting, database storage (DynamoDB), and AI processing (Bedrock) infrastructure. Resend, Inc. delivers our email (welcome messages, password resets, contact-form notifications, and the newsletter) and processes the name and email address needed to send each message. Google provides the reCAPTCHA spam-prevention service on our contact page (see Section 5). Each processes data on our behalf under contractual data protection obligations and their own privacy policies.</li>
+        <li><strong>Infrastructure Service Providers:</strong> Amazon Web Services (AWS) provides our hosting, database storage (DynamoDB), and AI processing (Amazon Bedrock). Resend, Inc. delivers our email (welcome messages, contact-form notifications, and the newsletter) and processes the name and email address needed to send each message. Google provides Sign in with Google (authentication) and the reCAPTCHA spam-prevention service on our contact page (see Section 5). Each processes data on our behalf under contractual data-protection obligations and its own privacy policy.</li>
+        <li><strong>Location and Weather Services (contacted directly by your browser):</strong> If you use the local-weather feature, your browser sends your coordinates, city name, or US ZIP code directly to Open-Meteo, BigDataCloud, and/or Zippopotam.us as described in Section 1.A. These are contacted from your device, not from our servers, and are governed by their own privacy policies.</li>
+        <li><strong>Third-Party Media (loaded by your browser):</strong> Some blog and content pages display images hosted by <a href="https://www.pexels.com/privacy-policy/" target="_blank" rel="noopener">Pexels</a> and video thumbnails hosted by YouTube (Google). When such a page loads, your browser requests the image or thumbnail directly from those providers, which receive your IP address and browser information in order to serve the file. We do not embed autoplay players, and no video plays unless you click through to YouTube.</li>
         <li><strong>Legal Compliance:</strong> When required by law, court order, subpoena, or government request, or when we believe disclosure is necessary to protect our rights, your safety, or the safety of others.</li>
         <li><strong>Business Transfer:</strong> In the event of a merger, acquisition, or sale of assets, your information may transfer to the acquiring entity, subject to the same protections described in this policy.</li>
       </ul>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">5. Cookies and Tracking Technologies</h2>
-      <p style="margin-bottom:1.5rem;"><strong>LANE FOUR does not set cookies of its own.</strong> We use your browser's local storage solely to keep you signed in to your account and to save your site preferences and training data on your own device. We do not use any advertising, remarketing, analytics tracking, or cross-site tracking technologies. Clearing your browser's site data will sign you out and remove locally saved preferences. <strong>One exception:</strong> the contact page uses Google reCAPTCHA to prevent spam. reCAPTCHA loads only on that page and may set Google cookies and collect device and usage information to distinguish humans from bots, under the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a>. No other page loads any Google resource.</p>
+      <p style="margin-bottom:1.5rem;"><strong>LANE FOUR does not set advertising or analytics cookies of its own.</strong> We use your browser's local storage solely to keep you signed in to your account and to save your site preferences and training data on your own device. We do not use any advertising, remarketing, analytics, or cross-site tracking technologies. Clearing your browser's site data will sign you out and remove locally saved preferences. Two things to note: (1) the contact page loads Google reCAPTCHA to prevent spam, which may set Google cookies and collect device and usage information to distinguish humans from bots, under the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a>; and (2) as described in Section 4, pages that display Pexels images or YouTube video thumbnails cause your browser to contact those providers to load the media. These third parties may use their own cookies or logging as described in their privacy policies.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">6. Data Retention</h2>
       <ul style="margin-bottom:1.5rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
         <li><strong>Account data:</strong> Retained while your account is active; deleted within 30 days of account deletion request</li>
         <li><strong>Session tokens:</strong> Automatically expire after 7 days</li>
         <li><strong>Newsletter subscriptions:</strong> Retained until you unsubscribe</li>
-        <li><strong>Contact form submissions:</strong> Retained for up to 1 year</li>
-        <li><strong>Server log data (IP / traffic):</strong> Retained for up to 90 days</li>
+        <li><strong>Contact form submissions:</strong> Retained for up to 1 year, then automatically deleted</li>
+        <li><strong>Server log data (IP / request logs):</strong> Retained only as long as needed for security, debugging, and abuse prevention, and then deleted</li>
       </ul>
 
-      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">7. Children's Privacy</h2>
-      <p style="margin-bottom:1.5rem;">LANE FOUR is intended for users who are at least 13 years old. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child under 13 has provided personal information to us without your consent, please contact us immediately and we will delete that data as quickly as practicable. In accordance with the Children's Online Privacy Protection Act (COPPA), we will remove any such information upon discovery. Users between 13 and 17 must have parental or guardian consent before using the Site.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">7. Children's and Minors' Privacy</h2>
+      <p style="margin-bottom:1.5rem;">LANE FOUR is intended <strong>only for adults who are at least 18 years old</strong>. The Site is not directed to children or minors, and we do not knowingly collect personal information from anyone under 18. If you believe a person under 18 has created an account or otherwise provided personal information to us, please contact us and we will delete that information as quickly as practicable. In accordance with the Children's Online Privacy Protection Act (COPPA), we will also remove any information we discover we have collected from a child under 13.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">8. Your California Privacy Rights</h2>
       <p style="margin-bottom:0.75rem;">If you are a California resident, you have the following rights under the California Consumer Privacy Act (CCPA) and the California Privacy Rights Act (CPRA):</p>
@@ -7140,7 +7140,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:1rem;">We do not sell personal information and do not share personal information for cross-context behavioral advertising. You do not need to opt out because we do not engage in these practices.</p>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Right to Limit Use of Sensitive Personal Information</h3>
-      <p style="margin-bottom:1rem;">We collect certain sensitive personal information (optional health-related body characteristics such as age, height, and weight). We use this information only to provide the services you requested and for no secondary commercial purpose. You may request that we limit our use of your sensitive personal information to purposes necessary to provide the service.</p>
+      <p style="margin-bottom:1rem;">We do not store the raw health-related body characteristics you may enter (age, height, weight, gender) — those are processed only within your browser and discarded (see Section 1.A). The nutrition targets computed from them are used only to provide the services you requested and for no secondary commercial purpose. To the extent any information we store is treated as sensitive personal information, you may request that we limit our use of it to purposes necessary to provide the service.</p>
 
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Right to Non-Discrimination</h3>
       <p style="margin-bottom:1rem;">We will not discriminate against you for exercising any of your rights under California law. We will not deny you services, charge different prices, or provide a different level of service because you exercised your privacy rights.</p>
@@ -7153,9 +7153,9 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Legal Bases for Processing</h3>
       <p style="margin-bottom:0.75rem;">We process your personal information only where we have a legal basis to do so under the EU and UK General Data Protection Regulation (GDPR):</p>
       <ul style="margin-bottom:1rem; padding-left:1.5rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <li><strong>Performance of a contract:</strong> account data, profile data, and training data, processed to provide the services you sign up for.</li>
-        <li><strong>Consent:</strong> the newsletter (you subscribe explicitly and can withdraw at any time via the unsubscribe link in every issue) and optional profile fields such as age, height, and weight.</li>
-        <li><strong>Legitimate interests:</strong> log data and spam prevention (including reCAPTCHA on the contact page), processed to keep the Site secure and operational.</li>
+        <li><strong>Performance of a contract:</strong> account data, training preferences, and the computed nutrition targets, processed to provide the services you sign up for.</li>
+        <li><strong>Consent:</strong> the newsletter (you subscribe explicitly and can withdraw at any time via the unsubscribe link in every issue) and the optional body-profile step you choose to complete.</li>
+        <li><strong>Legitimate interests:</strong> server log data and spam prevention (including reCAPTCHA on the contact page), processed to keep the Site secure and operational.</li>
       </ul>
       <h3 style="font-size:1.1rem; color:var(--deep); margin-bottom:0.5rem;">Your Rights</h3>
       <p style="margin-bottom:0.75rem;">You have the right to access, rectify, or erase your personal information; to restrict or object to its processing; to receive it in a portable format; and to withdraw consent at any time (without affecting the lawfulness of processing before withdrawal). Account holders can exercise erasure instantly with the "Delete Account &amp; Data" button on their profile page; for anything else, contact us using the details in the "Contact" section below and we will respond within one month. You also have the right to lodge a complaint with your local data protection supervisory authority.</p>
@@ -7189,7 +7189,7 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
   <div class="container">
     <span class="eyebrow" style="color:var(--pool-100);">Legal</span>
     <h1>Terms of Use</h1>
-    <p class="sub">Last updated: July 13, 2026</p>
+    <p class="sub">Last updated: July 20, 2026</p>
   </div>
 </div>
 <section style="background:var(--white); padding:2.5rem 0 5rem;">
@@ -7197,11 +7197,11 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
     <div style="max-width:760px; font-size:0.95rem; line-height:1.85; color:var(--text-muted);">
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">1. Agreement to Terms</h2>
-      <p style="margin-bottom:1rem;">These Terms of Use ("Terms") constitute a legally binding agreement between you and ronaldricomedia of San Francisco, California, the operator of LANE FOUR ("LANE FOUR," "we," "us," or "our"), governing your access to and use of the website at winlanefour.com and all related content, features, and services (collectively, the "Site"). By accessing or using the Site, you confirm that you have read, understood, and agree to be bound by these Terms. <strong>If you do not agree, you must discontinue use of the Site immediately.</strong></p>
+      <p style="margin-bottom:1rem;">These Terms of Use ("Terms") constitute a legally binding agreement between you and LANE FOUR ("LANE FOUR," "we," "us," or "our"), governing your access to and use of the website at winlanefour.com and all related content, features, and services (collectively, the "Site"). By accessing or using the Site, you confirm that you have read, understood, and agree to be bound by these Terms. <strong>If you do not agree, you must discontinue use of the Site immediately.</strong></p>
       <p style="margin-bottom:1.5rem;">We reserve the right to modify these Terms at any time. Changes take effect when posted, indicated by an updated "Last updated" date. Your continued use of the Site after changes are posted constitutes acceptance. It is your responsibility to review these Terms periodically.</p>
 
-      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">2. Age Requirement</h2>
-      <p style="margin-bottom:1.5rem;">The Site is intended for users who are at least 13 years of age. Persons under 13 are not permitted to register or use the Site. If you are between 13 and 17 years old, you must have the permission of and be supervised by a parent or legal guardian, who must read and agree to these Terms on your behalf. By using the Site, you represent that you meet the applicable age requirement. In accordance with the Children's Online Privacy Protection Act (COPPA), if we discover we have collected information from a child under 13 without verifiable parental consent, we will delete that information as quickly as practicable.</p>
+      <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">2. Age Requirement (18+)</h2>
+      <p style="margin-bottom:1.5rem;"><strong>The Site is intended only for adults who are at least 18 years of age.</strong> Persons under 18 are not permitted to register for an account, complete a training profile, or otherwise use the Site. By accessing or using the Site, you represent and warrant that you are at least 18 years old. We do not knowingly collect personal information from anyone under 18; if we learn that a user is under 18, we may suspend or delete the account and any associated information. If you are under 18, do not use the Site. This requirement is in addition to, and does not limit, our obligations under the Children's Online Privacy Protection Act (COPPA) regarding children under 13.</p>
 
       <h2 style="font-size:1.3rem; color:var(--deep); margin-bottom:0.75rem;">3. Intellectual Property Rights</h2>
       <p style="margin-bottom:1rem;">All content on the Site, including but not limited to workout plans, training sets, articles, technique tutorials, coaching notes, nutrition guidance, design elements, logos, graphics, software, and code (collectively, "Content"), is the proprietary property of LANE FOUR or its licensors and is protected by United States and international copyright, trademark, and intellectual property laws.</p>
@@ -7229,6 +7229,8 @@ body.blog-edit-mode [contenteditable="true"]:focus { outline-color: var(--teal);
       <p style="margin-bottom:0.75rem;"><strong>PLEASE READ THIS SECTION CAREFULLY.</strong></p>
       <p style="margin-bottom:1rem;">The workouts, training plans, dryland exercises, nutrition guidance, technique tutorials, and all other health- or fitness-related content on LANE FOUR are provided for <strong>general informational and educational purposes only</strong>. This content does <strong>not</strong> constitute medical advice, diagnosis, treatment, or a substitute for consultation with a licensed physician, sports medicine professional, or certified swimming coach.</p>
       <p style="margin-bottom:1rem;">Swimming and exercise carry inherent risks of injury, including but not limited to muscle strains, overuse injuries, and drowning. <strong>Always consult a qualified healthcare provider before beginning any new exercise, training, or dietary program.</strong> This is especially important if you have any pre-existing medical conditions, physical limitations, or health concerns.</p>
+
+      <p style="margin-bottom:1rem;"><strong>We encourage you to work with a qualified coach or trainer.</strong> LANE FOUR delivers its plans online and cannot watch you swim, check your technique, or respond to how your body is handling the work. For any of these programs, we strongly encourage you to train under the guidance of a qualified swim coach, personal trainer, or other fitness professional who can supervise your form, adjust the program to your individual needs and limitations, and help you progress safely. You should never swim alone; always train in a supervised or lifeguarded setting.</p>
       <p style="margin-bottom:1rem;">You acknowledge that swimming and exercise carry inherent and unavoidable risks, and you <strong>voluntarily assume all such risks</strong>, known and unknown, arising from your use of the Site and its content. To the fullest extent permitted by law, you <strong>release, waive, and discharge LANE FOUR and its operators, employees, and agents from any and all claims, demands, causes of action, damages, or liabilities</strong> for any injury, illness, death, or health complication arising from your use of any workout, training plan, dryland exercise, technique instruction, or nutrition guidance on this Site, and you <strong>covenant not to sue</strong> LANE FOUR for any such claim.</p>
       <p style="margin-bottom:1rem;"><strong>Not a medical provider.</strong> LANE FOUR is a fitness-information service, not a healthcare provider. Using the Site does not create a physician-patient, dietitian-client, coach-athlete, or any other professional or fiduciary relationship, and nothing on the Site is medical, nutritional, or other professional advice. LANE FOUR is <strong>not a "covered entity" or "business associate" under the Health Insurance Portability and Accountability Act (HIPAA)</strong>, and the fitness information you provide is not "protected health information" and is not regulated by HIPAA.</p>
       <p style="margin-bottom:1.5rem;"><strong>No guarantee of results.</strong> Individual results vary. We do not promise any particular fitness, performance, weight, body-composition, or health outcome from following any content on the Site.</p>
@@ -8263,7 +8265,7 @@ function renderHealthAckGate(force) {
   section.innerHTML = `
     <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:var(--r-xl); padding:1.75rem;">
       <h3 style="color:var(--deep); font-size:1.05rem; font-weight:600; margin:0 0 0.6rem;">Before your plan: a quick health acknowledgment</h3>
-      <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.7; margin:0 0 0.85rem;">Your LANE FOUR swim, dryland, and nutrition plans are <strong>general fitness information, not medical advice</strong>. Swimming and exercise carry inherent risks, including injury and drowning. Please read the full <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Health &amp; Fitness Disclaimer</a>.</p>
+      <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.7; margin:0 0 0.85rem;">Your LANE FOUR swim, dryland, and nutrition plans are <strong>general fitness information, not medical advice</strong>. Swimming and exercise carry inherent risks, including injury and drowning. We encourage you to work with a qualified coach or trainer who can supervise your technique and adapt any program to you, and to never swim alone. Please read the full <a href="/terms-of-use" onclick="event.preventDefault(); navigate('terms-of-use')">Health &amp; Fitness Disclaimer</a>.</p>
       <label style="display:flex; gap:0.6rem; align-items:flex-start; font-size:0.86rem; color:var(--text-muted); line-height:1.55; cursor:pointer; margin-bottom:0.9rem;">
         <input type="checkbox" id="health-ack-box" onchange="var m=document.getElementById('health-ack-msg'); if(this.checked&&m) m.style.display='none';" style="margin-top:0.15rem; flex-shrink:0; width:1rem; height:1rem; cursor:pointer;" />
         <span>I have read the disclaimer, I am healthy enough for exercise (or have my doctor's clearance), and I <strong>voluntarily assume all risk</strong> of following these plans.</span>
@@ -10836,20 +10838,20 @@ async function requestSetupLocation() {
   }
 }
 
-// COPPA: the Terms require users to be 13 or older, and a profile reporting
-// an age under 13 is actual knowledge of an under-age user. The server
-// refuses these too; this is the friendly early check.
-function ageBlockedUnder13(age) {
+// The Terms require users to be 18 or older, and a profile reporting an age
+// under 18 is actual knowledge of an under-age user. The server refuses these
+// too; this is the friendly early check.
+function ageBlockedUnder18(age) {
   const a = parseFloat(age);
-  return a > 0 && a < 13;
+  return a > 0 && a < 18;
 }
-const UNDER_13_MSG = 'LANE FOUR is for swimmers 13 and older, so we can\'t save this profile. If the age was a typo, please correct it and try again.';
+const UNDER_18_MSG = 'LANE FOUR is for swimmers 18 and older, so we can\'t save this profile. If the age was a typo, please correct it and try again.';
 
 async function saveFullProfile() {
   const existingAccount = getAccount();
   const firstName = (document.getElementById('gs-username')?.value || '').trim();
 
-  if (ageBlockedUnder13(document.getElementById('gs-dob')?.value)) { alert(UNDER_13_MSG); return; }
+  if (ageBlockedUnder18(document.getElementById('gs-dob')?.value)) { alert(UNDER_18_MSG); return; }
 
   if (!existingAccount) {
     // Accounts are created only by signing in with Google (Step 1). If we somehow
@@ -10974,7 +10976,7 @@ function closeProfileEdit(key) {
 }
 
 function saveProfileField(key, value) {
-  if (key === 'age' && ageBlockedUnder13(value)) { alert(UNDER_13_MSG); return; }
+  if (key === 'age' && ageBlockedUnder18(value)) { alert(UNDER_18_MSG); return; }
   const profile = getProfile();
   profile[key] = value;
   localStorage.setItem('streamline_profile', JSON.stringify(profile));
