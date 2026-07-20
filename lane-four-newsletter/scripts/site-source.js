@@ -74,8 +74,12 @@ function slugify(str) {
 
 // ---- Blog posts (from the inline `const BLOG_POSTS = [ ... ];` literal) ----
 
-// Walk from the opening '[' to its matching ']', respecting string literals so
-// SVG paths or prose containing brackets don't end the array early.
+// Walk from the opening '[' to its matching ']', respecting string literals AND
+// comments so brackets/apostrophes inside SVG paths, prose, or the `//` and
+// `/* */` comments that annotate the array don't end it early or desync the
+// bracket count. (An unescaped apostrophe in a comment — e.g. "the article's
+// go-to meal" — used to be read as a string delimiter, swallowing everything
+// up to the next quote and overshooting the array's real end.)
 function extractArrayLiteral(html, marker) {
   const at = html.indexOf(marker);
   if (at === -1) throw new Error(`Could not find "${marker}" in the site HTML.`);
@@ -89,6 +93,18 @@ function extractArrayLiteral(html, marker) {
     if (quote) {
       if (c === '\\') { i++; continue; }
       if (c === quote) quote = null;
+      continue;
+    }
+    if (c === '/' && html[i + 1] === '/') {
+      const nl = html.indexOf('\n', i + 2);
+      if (nl === -1) break;
+      i = nl; // loop's i++ moves past the newline
+      continue;
+    }
+    if (c === '/' && html[i + 1] === '*') {
+      const close = html.indexOf('*/', i + 2);
+      if (close === -1) break;
+      i = close + 1; // loop's i++ moves past the '/'
       continue;
     }
     if (c === "'" || c === '"' || c === '`') { quote = c; continue; }
