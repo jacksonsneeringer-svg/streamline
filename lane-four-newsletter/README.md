@@ -212,3 +212,44 @@ into `public/newsletter-images/` so the email isn't hotlinking a third party.
 If the `BLOG_POSTS` shape in `index.html` ever changes, update `getBlogPosts()`
 in `site-source.js` to match.
 
+**Every image URL in the email must be absolute.** An inbox renders the HTML
+with no base URL, so a root-relative `src="/newsletter-images/foo.jpeg"`
+resolves to nothing and the photo silently fails to load — which is exactly how
+the blog hero images went missing from sent issues while still looking fine in
+a browser sitting on the site. `fetch-blog-posts.js` writes an absolute
+`hostedImageUrl` alongside the site-relative `localImagePath`, and
+`absoluteUrl()` in `render-newsletter.js` is the backstop: it prefixes
+`PUBLIC_BASE` onto anything that isn't already `http(s):`/`data:`/`cid:`, for
+blog, gear, and athlete photos alike. Anything new that emits an `<img>` should
+go through it too.
+
+## How the issue renders on a phone
+
+The template is a **fluid-hybrid** ("spongy") layout, not a fixed 640px table.
+That distinction is the whole difference between the issue looking the same
+everywhere and looking half-size in some apps: a client that can't fit a 640px
+document into a ~390px viewport (iOS Mail, the Gmail app) responds by
+shrink-to-fit scaling the entire message to ~60%, so a 21px heading lands at
+~13px, while webmail that lays out at device width shows the same email at full
+size. Rather than being scaled down to fit, the issue stops being 640px wide on
+a phone:
+
+- the card is `width:100%` with `max-width:640px`, wrapped in an Outlook-only
+  ghost table that holds the 640px there (Outlook ignores `max-width`);
+- multi-column blocks (the swim set / lift pair) are `inline-block` with a
+  `max-width`, so they reflow to one column when the screen can't hold two —
+  no media query involved in the reflow itself;
+- the `@media (max-width:640px)` block in the template `<head>` is the polish
+  pass — 18px gutters, full-bleed card, taller hero art, the "+ Add to
+  Calendar" pill hidden — **not** what the layout depends on. Clients that drop
+  `<style>` entirely (the Gmail app on a non-Gmail account) still render at
+  device width, which is the part that matters.
+
+The practical rule when editing the template: **nothing may have a hard minimum
+width that overflows a 320px screen.** Fixed pixel widths on images, and
+`white-space:nowrap` on anything longer than a word or two, are what quietly
+re-break this — one nowrap 130px pill in the calendar rows was enough to set
+the minimum width of the entire email. To check, render an issue and open it in
+a browser at 320px wide, once as-is and once with the `<style>` block stripped:
+`document.documentElement.scrollWidth` must equal the viewport width in both.
+

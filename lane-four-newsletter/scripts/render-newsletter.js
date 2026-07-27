@@ -30,6 +30,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { PUBLIC_BASE } = require('./site-source');
 
 const ROOT = path.join(__dirname, '..');
 const TEMPLATE_PATH = path.join(ROOT, 'templates', 'newsletter-template.html');
@@ -58,6 +59,17 @@ function escapeHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+// Every URL that reaches the email has to be absolute. A mail client renders
+// the HTML with no base URL, so a root-relative src like
+// "/newsletter-images/foo.jpeg" resolves to nothing and the image silently
+// fails to load — which is exactly how the blog hero photos went missing.
+function absoluteUrl(url) {
+  const value = String(url == null ? '' : url).trim();
+  if (!value) return '';
+  if (/^(https?:|data:|cid:)/i.test(value)) return value;
+  return `${PUBLIC_BASE}/${value.replace(/^\/+/, '')}`;
 }
 
 function requireJson(filePath, label) {
@@ -172,12 +184,12 @@ function renderAthletePhotoCredit(credit) {
 // ---- Gear ----
 function renderGearHeroCard(item) {
   return `<tr>
-<td style="padding:12px 32px 12px 32px;">
+<td class="px" style="padding:12px 32px 12px 32px;">
 <a href="${item.url}" target="_blank" rel="sponsored noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F6FAF7; border:1px solid #E3EEE7; border-radius:10px;">
 <tr>
 <td width="76" valign="top" style="padding:18px 0 18px 20px;">
-<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" width="60" height="60" style="display:block; width:60px; height:60px; object-fit:cover; border-radius:8px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
+<img src="${escapeHtml(absoluteUrl(item.imageUrl))}" alt="${escapeHtml(item.name)}" width="60" height="60" style="display:block; width:60px; height:60px; object-fit:cover; border-radius:8px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
 </td>
 <td style="padding:18px 20px 18px 14px;">
 <span style="display:inline-block; background-color:#5FE0CC; color:#0E2E28; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:10px; letter-spacing:1px; padding:4px 10px; border-radius:14px; text-transform:uppercase;">Gear of the Week</span>
@@ -195,7 +207,7 @@ function renderGearRow(item, isLast) {
   const border = isLast ? '' : ' border-bottom:1px solid #E3EEE7;';
   return `<tr>
 <td width="52" valign="top" style="padding:10px 12px 10px 0;${border}">
-<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" width="40" height="40" style="display:block; width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
+<img src="${escapeHtml(absoluteUrl(item.imageUrl))}" alt="${escapeHtml(item.name)}" width="40" height="40" style="display:block; width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
 </td>
 <td style="padding:10px 0;${border}">
 <div><span style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#0E2E28; line-height:1.55;"><a href="${item.url}" target="_blank" rel="sponsored noopener" style="color:#0E2E28; text-decoration:underline;"><strong>${escapeHtml(item.name)}</strong></a>: <span style="color:#4B6259;">${item.description}</span></span></div>
@@ -207,7 +219,11 @@ function renderGearRow(item, isLast) {
 function renderBlogCard(post, { isFirst, isLast }) {
   const category = post.category || 'Blog';
   const gradient = CATEGORY_GRADIENTS[category] || CATEGORY_GRADIENTS.Guides;
-  const imageSrc = post.localImagePath || post.imageUrl || '';
+  // hostedImageUrl is the rehosted copy on winlanefour.com (external heroes),
+  // localImagePath is its site-relative form, imageUrl the original source.
+  // absoluteUrl() is what guarantees whichever one we land on is loadable from
+  // an inbox rather than a browser sitting on the site.
+  const imageSrc = absoluteUrl(post.hostedImageUrl || post.localImagePath || post.imageUrl || '');
   const title = escapeHtml(post.title);
   const summary = escapeHtml(truncate(post.summary, 220));
   const date = formatDate(post.date);
@@ -223,12 +239,12 @@ function renderBlogCard(post, { isFirst, isLast }) {
     : 'padding:16px 0 18px 0; border-bottom:1px solid #E3EEE7;';
 
   return `<tr>
-<td style="padding:${outerPadding};">
+<td class="px" style="padding:${outerPadding};">
 <a href="${url}" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td style="background-color:#12332C; background-image:${gradient}; padding:0; text-align:center; line-height:0; border-radius:8px; overflow:hidden;">
-<img src="${escapeHtml(imageSrc)}" alt="${title}" width="100%" height="130" style="display:block; width:100%; height:130px; object-fit:cover; border:0;" onerror="this.style.display='none';">
+<img src="${escapeHtml(imageSrc)}" alt="${title}" width="576" height="130" class="blog-img" style="display:block; width:100%; max-width:100%; height:130px; object-fit:cover; border:0;">
 </td>
 </tr>
 <tr>
@@ -259,7 +275,7 @@ function renderEventRow(event, isLast) {
   const border = isLast ? '' : ' style="border-bottom:1px solid #E3EEE7;"';
   const topPadding = isLast ? '0 32px 8px 32px' : '12px 32px 0 32px';
   return `<tr>
-<td style="padding:${topPadding};">
+<td class="px" style="padding:${topPadding};">
 <a href="${event.calendarUrl}" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"${border}>
 <tr>
@@ -273,8 +289,13 @@ function renderEventRow(event, isLast) {
 <div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:15.5px; color:#0E2E28;">${escapeHtml(event.name)}</div>
 <div style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#4B6259; margin-top:2px;">${event.location}</div>
 </td>
-<td align="right" valign="middle" style="padding:14px 0; white-space:nowrap;">
-<span style="display:inline-block; border:1px solid #BFE6DC; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:600; font-size:9.5px; letter-spacing:0.5px; padding:5px 10px; border-radius:14px; text-transform:uppercase;">+ Add to Calendar</span>
+<!-- Deliberately NOT white-space:nowrap: as one unbreakable 130px block this
+     pill was the widest thing in the issue and set the whole email's minimum
+     width, which is what pushed a phone-sized viewport into shrink-to-fit.
+     It's hidden outright on mobile (.cal-cta) where the media query lands,
+     and allowed to wrap rather than overflow where it doesn't. -->
+<td align="right" valign="middle" class="cal-cta" style="padding:14px 0;">
+<span style="display:inline-block; border:1px solid #BFE6DC; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:600; font-size:9.5px; line-height:1.4; letter-spacing:0.5px; padding:5px 10px; border-radius:14px; text-transform:uppercase;">+ Add to Calendar</span>
 </td>
 </tr>
 </table>
@@ -317,7 +338,7 @@ function main() {
     '{{HERO_HEADING}}': escapeHtml(draft.heroHeading),
     '{{HERO_TEASER}}': draft.heroTeaser,
     '{{NEWS_ITEMS}}': renderNewsItems(draft.newsItems),
-    '{{ATHLETE_PHOTO_URL}}': escapeHtml(draft.athlete.photoUrl),
+    '{{ATHLETE_PHOTO_URL}}': escapeHtml(absoluteUrl(draft.athlete.photoUrl)),
     '{{ATHLETE_NAME}}': escapeHtml(draft.athlete.name),
     '{{ATHLETE_BADGES}}': renderAthleteBadges(draft.athlete.badges),
     '{{ATHLETE_BIO}}': renderAthleteBio(draft.athlete.bio),
