@@ -7879,7 +7879,13 @@ function showPage(pageId, allowSetup) {
     if (sharedSetId) { _hashQuery.delete('set'); openSharedArchiveSet(sharedSetId); }
     else if (applyArchiveAuthGate()) { loadArchives(); refreshAllFavButtons(); }
   }
-  if (pageId === 'dryland-archives') { if (applyDrylandArchiveAuthGate()) { loadDrylandArchives(); refreshAllFavButtons(); } }
+  if (pageId === 'dryland-archives') {
+    // A /dryland-archives?workout=<id> deep link pops that workout open. Consume
+    // the param once so later in-page visits don't re-open it.
+    const sharedWorkoutId = _hashQuery.get('workout');
+    if (sharedWorkoutId) { _hashQuery.delete('workout'); openSharedDrylandWorkout(sharedWorkoutId); }
+    else if (applyDrylandArchiveAuthGate()) { loadDrylandArchives(); refreshAllFavButtons(); }
+  }
   if (pageId === 'swim-sets') { updateProfileLevelDot(); showSwimLevel(profileSwimLevelId() || 'beginner'); refreshAllFavButtons(); }
   if (pageId === 'dryland-workouts') initLiftPage();
   if (pageId === 'profile') renderProfilePage();
@@ -12276,15 +12282,20 @@ function openArchivedSet(id) {
   renderSetDetail(set);
 }
 
-// ── Shareable set links (Pinterest pins etc.) ────────────────────────────────
-// Every archived set has a stable id (level-date, or inj-* for the static
-// injury/mobility sets), so it can be linked to directly. A pin's destination
-// URL is just /set-archives?set=<id>; landing on it pops that set open (see the
-// set-archives branch in showPage). Ids that don't resolve to an archive row
-// (plan-day sets, recipes, lifts) are not shareable this way.
+// ── Shareable set / workout links (Pinterest pins etc.) ──────────────────────
+// Every archived swim set has a stable id (level-date, or inj-* for the static
+// injury/mobility sets) and every archived dryland workout has one too
+// (category-date), so either can be linked to directly. A pin's destination URL
+// is just /set-archives?set=<id> or /dryland-archives?workout=<id>; landing on
+// it pops that set/workout open (see the archive branches in showPage). Ids that
+// don't resolve to an archive row (plan-day sets, recipes) aren't shareable.
 function isShareableArchiveSetId(id) {
   return typeof id === 'string' &&
     (/^(beginner|intermediate|advanced|pro|all)-\d{4}-\d{2}-\d{2}$/.test(id) || /^inj-/.test(id));
+}
+
+function isShareableDrylandWorkoutId(id) {
+  return typeof id === 'string' && /^(bodyweight|freeweights|commercial)-\d{4}-\d{2}-\d{2}$/.test(id);
 }
 
 function archiveSetShareUrl(id) {
@@ -12293,22 +12304,35 @@ function archiveSetShareUrl(id) {
   return location.origin + '/set-archives?set=' + encodeURIComponent(id);
 }
 
-// Icon-only copy button for archive cards; icon + label for the detail modal.
-function archiveCardCopyBtnHtml(id) {
-  return `<button type="button" class="copy-link-btn" title="Copy link to this set" aria-label="Copy link to this set" onclick="return copyArchiveSetLink('${escHtml(id)}', this)">${_SHARE_ICONS.copy}</button>`;
-}
-function archiveDetailCopyBtnHtml(id) {
-  return `<button type="button" class="btn btn-outline-dark btn-sm archive-copy-detail" title="Copy link to this set" onclick="return copyArchiveSetLink('${escHtml(id)}', this)"><span class="cl-ico">${_SHARE_ICONS.copy}</span>Copy Link</button>`;
+function drylandWorkoutShareUrl(id) {
+  return location.origin + '/dryland-archives?workout=' + encodeURIComponent(id);
 }
 
-// Copy a set's shareable URL to the clipboard, mirroring the article share bar's
-// button feedback (swap to a check + "Copied!", then restore).
-function copyArchiveSetLink(id, btn) {
-  const url = archiveSetShareUrl(id);
+// The share URL for any archive id, whichever archive it belongs to.
+function archiveShareUrl(id) {
+  return isShareableDrylandWorkoutId(id) ? drylandWorkoutShareUrl(id) : archiveSetShareUrl(id);
+}
+
+// Icon-only copy button for archive cards; icon + label for the detail modal.
+// `noun` is 'set' for swim sets, 'workout' for dryland.
+function archiveCardCopyBtnHtml(id, noun) {
+  const label = 'Copy link to this ' + (noun || 'set');
+  return `<button type="button" class="copy-link-btn" title="${label}" aria-label="${label}" onclick="return copyArchiveShareLink('${escHtml(id)}', this)">${_SHARE_ICONS.copy}</button>`;
+}
+function archiveDetailCopyBtnHtml(id, noun) {
+  const label = 'Copy link to this ' + (noun || 'set');
+  return `<button type="button" class="btn btn-outline-dark btn-sm archive-copy-detail" title="${label}" onclick="return copyArchiveShareLink('${escHtml(id)}', this)"><span class="cl-ico">${_SHARE_ICONS.copy}</span>Copy Link</button>`;
+}
+
+// Copy a set's or workout's shareable URL to the clipboard, mirroring the
+// article share bar's button feedback (swap to a check + "Copied!", then restore).
+function copyArchiveShareLink(id, btn) {
+  const url = archiveShareUrl(id);
   const hasLabel = btn && btn.classList.contains('archive-copy-detail');
   const confirmCopy = function() {
     if (!btn) return;
     if (!btn.dataset.clPrev) btn.dataset.clPrev = btn.innerHTML;
+    if (!btn.dataset.clTitle) btn.dataset.clTitle = btn.title;
     btn.classList.add('copied');
     btn.innerHTML = hasLabel ? `<span class="cl-ico">${_SHARE_ICONS.check}</span>Copied!` : _SHARE_ICONS.check;
     btn.title = 'Link copied!';
@@ -12316,7 +12340,8 @@ function copyArchiveSetLink(id, btn) {
     btn._clTimer = setTimeout(function() {
       btn.classList.remove('copied');
       if (btn.dataset.clPrev) { btn.innerHTML = btn.dataset.clPrev; delete btn.dataset.clPrev; }
-      btn.title = 'Copy link to this set';
+      btn.title = btn.dataset.clTitle || 'Copy link to this set';
+      delete btn.dataset.clTitle;
     }, 1800);
   };
   const fallback = function() {
@@ -13002,6 +13027,7 @@ function drylandArchiveCardHtml(set) {
       </div>
       <div class="archive-card-actions">
         <button class="btn btn-outline-dark btn-sm" onclick="openArchivedDryland('${escHtml(id)}')">View Workout</button>
+        ${archiveCardCopyBtnHtml(id, 'workout')}
         ${favoriteIconButtonHtml(id)}
       </div>
     </div>`;
@@ -13023,6 +13049,52 @@ function openArchivedDryland(id) {
   const overlay = document.getElementById('set-detail-overlay');
   if (overlay) { overlay.scrollTop = 0; overlay.classList.add('open'); }
   document.body.style.overflow = 'hidden';
+}
+
+// Make sure a single workout's full data is in _archiveSets without rendering
+// the whole archive. Used for shared links so a signed-out visitor can preview
+// just the linked workout while the rest of the archive stays gated. Mirrors
+// ensureArchiveSetLoaded on the swim side.
+async function ensureDrylandWorkoutLoaded(id) {
+  const cached = _archiveSets[id];
+  if (cached && cached.workoutData && (cached.workoutData.sections || []).length) return cached;
+  const apiUrl = (window.STREAMLINE_API_URL || '');
+  if (!apiUrl) return cached || null;
+  try {
+    const res = await fetch(`${apiUrl}/dryland-archives`);
+    if (!res.ok) return _archiveSets[id] || null;
+    const { items } = await res.json();
+    (items || []).forEach(item => {
+      const set = drylandArchiveItemToWorkout(item);
+      if (set.setId && !_archiveSets[set.setId]) _archiveSets[set.setId] = set;
+    });
+  } catch (e) {}
+  return _archiveSets[id] || null;
+}
+
+// Entry point for /dryland-archives?workout=<id> deep links (e.g. a Pinterest
+// pin). Signed-in visitors get the full archive with the workout popped open on
+// top. Signed-out visitors see just the linked workout as a free preview, with
+// the account prompt behind it for the rest of the library.
+async function openSharedDrylandWorkout(id) {
+  if (getAccount()) {
+    applyDrylandArchiveAuthGate();
+    await loadDrylandArchives();
+    refreshAllFavButtons();
+  } else {
+    const lock = document.getElementById('dryland-archive-auth-lock');
+    const content = document.getElementById('dryland-archive-content');
+    if (content) content.style.display = 'none';
+    if (lock) {
+      lock.style.display = '';
+      lock.innerHTML = authLockHtml('You’re viewing a shared dryland workout. Create a free account or log in to browse and filter every workout in the archive.');
+    }
+    await ensureDrylandWorkoutLoaded(id);
+  }
+  const set = _archiveSets[id];
+  const data = set && set.workoutData;
+  if (!data || !((data.sections || []).length)) return;
+  openArchivedDryland(id);
 }
 
 // Printable dryland markup used by the archived-workout detail modal and the
@@ -13061,8 +13133,9 @@ function drylandWorkoutMarkup(set) {
         ${focusCueHtml}
       </div>
       <div class="set-action-btns no-print" style="display:flex; flex-direction:column; gap:0.5rem; flex-shrink:0; align-items:flex-end;">
-        <div style="display:flex; gap:0.5rem;">
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:flex-end;">
           ${favoriteButtonHtml(id)}
+          ${isShareableDrylandWorkoutId(id) ? archiveDetailCopyBtnHtml(id, 'workout') : ''}
           <button onclick="window.print()" class="btn btn-outline-dark btn-sm">${PRINT_SVG} Print</button>
         </div>
         ${data.isRestDay ? '' : dailyLogButtonHtml('dryland', id)}
