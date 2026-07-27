@@ -61,6 +61,38 @@
           "date": "2026-08-12"
         }
       ]
+    },
+    {
+      "date": "2026-07-27",
+      "athleteOfWeek": "Cameron McEvoy",
+      "inTheWaterTopics": [
+        "australia-shatter-mens-4x200-free-commonwealth-games-record-guy-and-taylor-split-144-low",
+        "15-year-old-kennedy-brooks-swim-to-two-wins-on-final-night-of-ncsas",
+        "2026-commonwealth-games-day-4-prelims-live-recap",
+        "cas-confirms-two-year-ban-of-former-president-of-mexican-swimming-federation-kiril-todorov"
+      ],
+      "blogPosts": [
+        "https://winlanefour.com/protect-dyed-hair-swimming",
+        "https://winlanefour.com/flip-turn-mistakes"
+      ],
+      "events": [
+        {
+          "name": "USMS Summer National Championship",
+          "date": "2026-08-05",
+          "displayMonth": "AUG",
+          "displayDay": "5-9",
+          "location": "Details at usms.org",
+          "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=USMS%20Summer%20National%20Championship&dates=20260805/20260810&details=https%3A%2F%2Fwww.usms.org&location=Details%20at%20usms.org"
+        },
+        {
+          "name": "Pan Pacific Championships",
+          "date": "2026-08-12",
+          "displayMonth": "AUG",
+          "displayDay": "12-17",
+          "location": "Details at worldaquatics.com",
+          "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pan%20Pacific%20Championships&dates=20260812/20260818&details=https%3A%2F%2Fwww.worldaquatics.com&location=Details%20at%20worldaquatics.com"
+        }
+      ]
     }
   ]
 }

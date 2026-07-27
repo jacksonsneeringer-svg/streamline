@@ -1,0 +1,84 @@
+{
+  "date": "2026-07-27",
+  "issueDateLabel": "July 27, 2026",
+  "subject": "Commonwealth Games records fall + Kennedy Brooks at 15",
+  "preheader": "Australia rewrote the record books. A teenager stole the show at NCSAs. Monday set is live.",
+  "heroHeading": "Good morning swimmers and happy Monday",
+  "heroTeaser": "Australia just shattered a Commonwealth Games record in the 4x200 free, and the race came down to one blistering anchor leg you have to read about.",
+  "outroLine": "That's the week in the water. Happy swimming,",
+  "workout": {
+    "dateLabel": "Mon, Jul 27 &middot; distance freestyle in the pool, rotational core on land",
+    "swimSet": {
+      "title": "Today's Swim Set",
+      "description": "A 3,000-yard aerobic freestyle builder focused on rotation, catch timing, and holding your stroke form exactly when fatigue wants to take it away."
+    },
+    "lift": {
+      "title": "Today's Lift",
+      "description": "Rotational core and anti-rotation stability work built for freestyle and backstroke swimmers who want a stronger, steadier body position in the water."
+    }
+  },
+  "newsItems": [
+    {
+      "topicSlug": "australia-shatter-mens-4x200-free-commonwealth-games-record-guy-and-taylor-split-144-low",
+      "icon": "medal",
+      "title": "Australia breaks 4x200 free Commonwealth record",
+      "body": "<strong>Australia</strong> won gold in the men's 4x200 free relay with a new Commonwealth Games record of 7:01.67. <strong>Kai Taylor</strong> anchored with a 1:44.10 to overtake <strong>England</strong>'s <strong>Max Litchfield</strong> at the wall, while <strong>James Guy</strong> threw down the fastest split in the field at 1:44.03 on the third leg for England's silver.",
+      "url": "https://swimswam.com/australia-shatter-mens-4x200-free-commonwealth-games-record-guy-and-taylor-split-144-low/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "15-year-old-kennedy-brooks-swim-to-two-wins-on-final-night-of-ncsas",
+      "icon": "trend",
+      "title": "15-year-old Kennedy Brooks wins twice at NCSAs",
+      "body": "<strong>Kennedy Brooks</strong>, just 15 years old, closed out the NCSAs with a double on the final night, winning the 50 back in 28.82 and the 50 free in 26.05. That 50 free was a 0.76-second personal drop, which at any age is a big deal.",
+      "url": "https://swimswam.com/15-year-old-kennedy-brooks-swim-to-two-wins-on-final-night-of-ncsas/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "2026-commonwealth-games-day-4-prelims-live-recap",
+      "icon": "doc",
+      "title": "Day 4 prelims: O'Callaghan, Scott, Southam roll on",
+      "body": "<strong>Mollie O'Callaghan</strong>, <strong>Duncan Scott</strong>, and <strong>Flynn Southam</strong> all carried momentum into the latter half of the 2026 <strong>Commonwealth Games</strong> through Day 4 prelims. The Games are hitting their stride with some of the top names in the sport still with finals to go.",
+      "url": "https://swimswam.com/2026-commonwealth-games-day-4-prelims-live-recap/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "cas-confirms-two-year-ban-of-former-president-of-mexican-swimming-federation-kiril-todorov",
+      "icon": "globe",
+      "title": "CAS upholds two-year ban on Mexican federation ex-president",
+      "body": "The <strong>Court of Arbitration for Sport</strong> confirmed a two-year ban on <strong>Kiril Todorov</strong>, former president of the <strong>Mexican Swimming Federation</strong>. Todorov will remain ineligible until October 28, 2026.",
+      "url": "https://swimswam.com/cas-confirms-two-year-ban-of-former-president-of-mexican-swimming-federation-kiril-todorov/",
+      "source": "SwimSwam"
+    }
+  ],
+  "athlete": {
+    "name": "Cameron McEvoy",
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Kazan_2015_-_McEvoy_and_Guy_200m_freestyle_semi.JPG/330px-Kazan_2015_-_McEvoy_and_Guy_200m_freestyle_semi.JPG",
+    "photoCredit": "Photo: Voltmetro, CC BY-SA 4.0, via Wikimedia Commons",
+    "badges": [
+      "World Record 50m free",
+      "Olympic Gold 4x100 free relay",
+      "Commonwealth Games medalist",
+      "Australian national champion"
+    ],
+    "bio": "Cameron McEvoy is an Australian competitive swimmer, born on 13 May 1994 on the Gold Coast. He learned to swim at age five and began training at age seven with the Miami Swimming Club. He has represented Australia at four Olympic Games, spanning from 2012 through 2024, with his main event shifting over time from the 100 m freestyle to the 50 m freestyle.\n\nMcEvoy is the reigning Olympic champion in the men's 50 m freestyle and the first Australian man to win an Olympic medal in that event. He holds the world record in the long course 50 m freestyle. His other achievements include a silver medal at the 2015 World Championships in the 100 m freestyle, world titles in the 50 m freestyle in 2023 and 2025, and multiple Commonwealth Games medals."
+  },
+  "events": [
+    {
+      "name": "USMS Summer National Championship",
+      "date": "2026-08-05",
+      "displayMonth": "AUG",
+      "displayDay": "5-9",
+      "location": "Details at usms.org",
+      "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=USMS%20Summer%20National%20Championship&dates=20260805/20260810&details=https%3A%2F%2Fwww.usms.org&location=Details%20at%20usms.org"
+    },
+    {
+      "name": "Pan Pacific Championships",
+      "date": "2026-08-12",
+      "displayMonth": "AUG",
+      "displayDay": "12-17",
+      "location": "Details at worldaquatics.com",
+      "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pan%20Pacific%20Championships&dates=20260812/20260818&details=https%3A%2F%2Fwww.worldaquatics.com&location=Details%20at%20worldaquatics.com"
+    }
+  ]
+}
