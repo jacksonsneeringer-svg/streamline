@@ -3,29 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <title>LANE FOUR Weekly Digest</title>
 <!-- No remote font links: email clients ignore them, and the copy published
      to the winlanefour.com/issues archive must not send visitor IPs to Google
      Fonts. Every font-family below falls back to Georgia/Arial. -->
+
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+
+<!-- ===== Mobile rendering =====
+     The issue used to be laid out on a rigid 640px table. Nothing about that
+     is legible on a phone: iOS Mail (and every other client that can't fit a
+     640px document into a ~390px viewport) responds by shrink-to-fit scaling
+     the WHOLE message to ~60%, so 21px headings land at ~13px and the reader
+     is pinching to zoom, while webmail that lays out at device width shows
+     the same email at full size. That's the entire gap between the two.
+
+     The fix is to stop being 640px wide on a phone rather than to be scaled
+     down to fit. The shell below is a fluid-hybrid ("spongy") layout:
+       - the card is width:100% with max-width:640px, so it fills a phone and
+         still caps at 640px on desktop, with an Outlook-only ghost table
+         holding the 640px there (Outlook ignores max-width);
+       - multi-column blocks are inline-block with a max-width, so they reflow
+         to one column when the screen can't hold two — no media query needed;
+       - the media query below is the polish pass (tighter gutters, bigger
+         hero art, full-bleed cards), not the thing the layout depends on.
+     Clients that drop <style> entirely still get the fluid layout and render
+     at device width, which is the part that matters. -->
+<style type="text/css">
+  /* Never let a client scale our type up or down on its own. */
+  html, body { margin:0 !important; padding:0 !important; width:100% !important; }
+  body, table, td, div, p, a, span, h1, h2 {
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
+  table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; border-collapse:collapse; }
+  img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+  /* Stop iOS/Gmail from auto-linking dates and addresses in their own blue. */
+  a[x-apple-data-detectors], .unstyled-auto-detected a {
+    color:inherit !important; text-decoration:none !important; font-size:inherit !important;
+    font-family:inherit !important; font-weight:inherit !important; line-height:inherit !important;
+  }
+
+  @media only screen and (max-width:640px) {
+    /* Full-bleed card: on a phone the rounded outer margin just steals width
+       from the content, which is what pushed the layout over the viewport. */
+    .shell { padding:0 !important; }
+    .container { width:100% !important; max-width:100% !important; border-radius:0 !important; }
+    /* 32px gutters cost 64px of a 390px screen. 18px reads the same and
+       leaves the copy room to set at full size. */
+    .px { padding-left:18px !important; padding-right:18px !important; }
+    .nav { padding-right:0 !important; }
+    .nav-date { padding-right:18px !important; }
+    /* Stacked columns take the full width instead of sitting at their
+       desktop max-width. */
+    .stack { display:block !important; width:100% !important; max-width:100% !important; }
+    .stack-a { padding:0 0 12px 0 !important; }
+    .stack-b { padding:0 !important; }
+    /* Art gets bigger, not smaller, when the layout stops being scaled down. */
+    .blog-img { height:176px !important; }
+    .hero-shark { width:96px !important; }
+    .hero-shark img { max-width:96px !important; }
+    .athlete-card { padding:22px 18px !important; }
+    /* The "+ Add to Calendar" pill is a nowrap block that forces the event row
+       wider than a phone; the whole row is already a link to the same place. */
+    .cal-cta { display:none !important; }
+  }
+</style>
 </head>
 <body style="margin:0; padding:0; background-color:#EDF3EE; font-family:'Inter', Arial, sans-serif;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#EDF3EE; background-image:radial-gradient(#16383214 1px, transparent 1px); background-size:14px 14px; padding:28px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="shell" style="background-color:#EDF3EE; background-image:radial-gradient(#16383214 1px, transparent 1px); background-size:14px 14px; padding:28px 0;">
 <tr>
 <td align="center">
-<table role="presentation" width="640" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 2px 10px rgba(14,46,40,0.10);">
+<!--[if mso]>
+<table role="presentation" width="640" cellpadding="0" cellspacing="0"><tr><td>
+<![endif]-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="container" style="width:100%; max-width:640px; background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 2px 10px rgba(14,46,40,0.10);">
 
 <!-- TOP NAV BAR -->
+<!-- The logo is fluid (width:100% capped at its natural 350px) rather than a
+     fixed 88px-tall image: at 350px + the date pill it was the single widest
+     thing in the email, and on a phone it alone guaranteed the document
+     overflowed the viewport and got scaled down. -->
 <tr>
-<td style="background-color:#125A4E; padding:16px 32px 16px 0;">
+<td class="nav" style="background-color:#125A4E; padding:16px 32px 16px 0;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td valign="middle" style="padding:0;">
 <!-- ===== LANE FOUR logo (real asset, cropped left/right, rounded corners, flush against the true left edge) ===== -->
-<div style="overflow:hidden; display:inline-block; line-height:0; border-radius:48px;">
-<img src="https://winlanefour.com/email/lanefour-logo-dark.png" alt="LANE FOUR — Train for the Fast Lane" height="88" style="display:block; height:88px; width:auto; border:0; margin:0 -10px 0 -10px; clip-path:inset(0 6% 0 6%);">
+<div style="overflow:hidden; display:block; line-height:0; border-radius:48px;">
+<img src="https://winlanefour.com/email/lanefour-logo-dark.png" alt="LANE FOUR — Train for the Fast Lane" width="350" style="display:block; width:100%; max-width:350px; height:auto; border:0; margin:0 -10px 0 -10px; clip-path:inset(0 6% 0 6%);">
 </div>
 </td>
-<td align="right" valign="middle" style="padding-right:32px;">
+<td align="right" valign="middle" class="nav-date" style="padding-right:32px;">
 <span style="display:inline-block; background-color:#5FE0CC; color:#0E2E28; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:8px 14px; border-radius:20px; text-transform:uppercase;">July 27, 2026</span>
 </td>
 </tr>
@@ -42,8 +118,8 @@
      position:relative; Outlook drops the tail and rounded corners but still
      shows the bordered box beside the shark. -->
 <tr>
-<td style="padding:30px 32px 22px 32px; text-align:center;">
-<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+<td class="px" style="padding:30px 32px 22px 32px; text-align:center;">
+<table role="presentation" cellpadding="0" cellspacing="0" align="center" width="100%" style="margin:0 auto; max-width:576px;">
 <tr>
 <td valign="middle" style="padding:0;">
 <div style="background-color:#ffffff; border:2px solid #0E2E28; border-radius:16px; padding:16px 20px; text-align:left;">
@@ -56,8 +132,8 @@
 <div style="position:absolute; top:2px; left:0; width:0; height:0; border-style:solid; border-width:10px 0 10px 15px; border-color:transparent transparent transparent #ffffff;"></div>
 </div>
 </td>
-<td width="120" valign="middle" style="padding:0;">
-<img src="https://winlanefour.com/shark-coach.png" alt="LANE FOUR shark coach" width="112" style="display:block; width:112px; height:auto; border:0;">
+<td width="120" valign="middle" class="hero-shark" style="padding:0;">
+<img src="https://winlanefour.com/shark-coach.png" alt="LANE FOUR shark coach" width="112" style="display:block; width:100%; max-width:112px; height:auto; border:0;">
 </td>
 </tr>
 </table>
@@ -68,14 +144,14 @@
 
 <!-- DIVIDER: hero to In the Water This Week -->
 <tr>
-<td style="padding:0 32px;">
+<td class="px" style="padding:0 32px;">
 <div style="border-top:3px solid #BFE6DC;"></div>
 </td>
 </tr>
 
 <!-- WORLD UPDATES -->
 <tr>
-<td style="padding:8px 32px 4px 32px;">
+<td class="px" style="padding:8px 32px 4px 32px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding-bottom:14px;">
 <span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">In the Water This Week</span>
 </td></tr></table>
@@ -84,7 +160,7 @@
 
 <!-- World updates: divider-separated list, no card backgrounds -->
 <tr>
-<td style="padding:0 32px 20px 32px;">
+<td class="px" style="padding:0 32px 20px 32px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td width="56" valign="top" style="padding:14px 0 14px 0; border-bottom:1px solid #E3EEE7;">
@@ -136,10 +212,10 @@
 
 <!-- ATHLETE OF THE WEEK -->
 <tr>
-<td style="padding:20px 32px 8px 32px;">
+<td class="px" style="padding:20px 32px 8px 32px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#0E2E28; border-radius:12px;">
 <tr>
-<td style="padding:28px 28px 24px 28px;">
+<td class="athlete-card" style="padding:28px 28px 24px 28px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
 <tr>
 <td width="84" valign="top">
@@ -180,13 +256,13 @@
 
 <!-- GEAR -->
 <tr>
-<td style="padding:24px 32px 4px 32px;">
+<td class="px" style="padding:24px 32px 4px 32px;">
 <span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">Gear Drops &amp; Swim Tech</span>
 </td>
 </tr>
 
 <tr>
-<td style="padding:12px 32px 12px 32px;">
+<td class="px" style="padding:12px 32px 12px 32px;">
 <a href="https://winlanefour.com/best-swim-paddles#pick-finis-freestyler" target="_blank" rel="sponsored noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F6FAF7; border:1px solid #E3EEE7; border-radius:10px;">
 <tr>
@@ -205,7 +281,7 @@
 </tr>
 
 <tr>
-<td style="padding:0 32px 4px 32px;">
+<td class="px" style="padding:0 32px 4px 32px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td width="52" valign="top" style="padding:10px 12px 10px 0; border-bottom:1px solid #E3EEE7;">
@@ -237,12 +313,19 @@
 
 <!-- SEE TODAY'S WORKOUT -->
 <tr>
-<td style="padding:24px 32px 24px 32px;">
+<td class="px" style="padding:24px 32px 24px 32px;">
 <span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">See Today's Workout</span>
 <div style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#4B6259; margin-top:8px;">Mon, Jul 27 &middot; distance freestyle in the pool, rotational core on land</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;">
-<tr>
-<td width="50%" valign="top" style="padding-right:8px;">
+<!-- Fluid-hybrid two-up: each card is an inline-block that wants the full
+     width but caps at 288px, so the pair sits side by side while the row can
+     hold 576px and drops to one card per line the moment it can't — no media
+     query needed for the reflow itself. The mso ghost table keeps Outlook,
+     which ignores inline-block and max-width, on its original two cells. -->
+<div style="margin-top:14px; font-size:0; line-height:0; text-align:left;">
+<!--[if mso]>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="50%" valign="top" style="padding-right:8px;">
+<![endif]-->
+<div class="stack stack-a" style="display:inline-block; vertical-align:top; width:100%; max-width:288px; box-sizing:border-box; padding-right:8px;">
 <a href="https://winlanefour.com/#swim-sets" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border:1px solid #E3EEE7; border-radius:10px;">
 <tr>
@@ -257,8 +340,11 @@
 </tr>
 </table>
 </a>
-</td>
-<td width="50%" valign="top" style="padding-left:8px;">
+</div><!--
+--><!--[if mso]>
+</td><td width="50%" valign="top" style="padding-left:8px;">
+<![endif]-->
+<div class="stack stack-b" style="display:inline-block; vertical-align:top; width:100%; max-width:288px; box-sizing:border-box; padding-left:8px;">
 <a href="https://winlanefour.com/#dryland-workouts" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border:1px solid #E3EEE7; border-radius:10px;">
 <tr>
@@ -273,26 +359,28 @@
 </tr>
 </table>
 </a>
-</td>
-</tr>
-</table>
+</div>
+<!--[if mso]>
+</td></tr></table>
+<![endif]-->
+</div>
 </td>
 </tr>
 
 <!-- FROM THE BLOG -->
 <tr>
-<td style="padding:24px 32px 4px 32px;">
+<td class="px" style="padding:24px 32px 4px 32px;">
 <span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">From the Blog This Week</span>
 </td>
 </tr>
 
 <tr>
-<td style="padding:12px 32px 0px 32px;">
+<td class="px" style="padding:12px 32px 0px 32px;">
 <a href="https://winlanefour.com/protect-dyed-hair-swimming" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td style="background-color:#12332C; background-image:linear-gradient(135deg,#1E7F70,#0E2E28); padding:0; text-align:center; line-height:0; border-radius:8px; overflow:hidden;">
-<img src="/newsletter-images/how-to-protect-dyed-hair-while-swimming-without-giving-up-the-pool.jpeg" alt="How to Protect Dyed Hair While Swimming (Without Giving Up the Pool)" width="100%" height="130" style="display:block; width:100%; height:130px; object-fit:cover; border:0;" onerror="this.style.display='none';">
+<img src="https://winlanefour.com/newsletter-images/how-to-protect-dyed-hair-while-swimming-without-giving-up-the-pool.jpeg" alt="How to Protect Dyed Hair While Swimming (Without Giving Up the Pool)" width="576" height="130" class="blog-img" style="display:block; width:100%; max-width:100%; height:130px; object-fit:cover; border:0;">
 </td>
 </tr>
 <tr>
@@ -309,12 +397,12 @@
 </tr>
 
 <tr>
-<td style="padding:0px 32px 8px 32px;">
+<td class="px" style="padding:0px 32px 8px 32px;">
 <a href="https://winlanefour.com/flip-turn-mistakes" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td style="background-color:#12332C; background-image:linear-gradient(135deg,#1E7F70,#12332C); padding:0; text-align:center; line-height:0; border-radius:8px; overflow:hidden;">
-<img src="/newsletter-images/7-common-flip-turn-mistakes-and-how-to-fix-them.jpeg" alt="7 Common Flip Turn Mistakes (And How to Fix Them)" width="100%" height="130" style="display:block; width:100%; height:130px; object-fit:cover; border:0;" onerror="this.style.display='none';">
+<img src="https://winlanefour.com/newsletter-images/7-common-flip-turn-mistakes-and-how-to-fix-them.jpeg" alt="7 Common Flip Turn Mistakes (And How to Fix Them)" width="576" height="130" class="blog-img" style="display:block; width:100%; max-width:100%; height:130px; object-fit:cover; border:0;">
 </td>
 </tr>
 <tr>
@@ -332,13 +420,13 @@
 
 <!-- EVENTS -->
 <tr>
-<td style="padding:24px 32px 4px 32px;">
+<td class="px" style="padding:24px 32px 4px 32px;">
 <span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">Next Up on the Calendar</span>
 </td>
 </tr>
 
 <tr>
-<td style="padding:12px 32px 0 32px;">
+<td class="px" style="padding:12px 32px 0 32px;">
 <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=USMS%20Summer%20National%20Championship&dates=20260805/20260810&details=https%3A%2F%2Fwww.usms.org&location=Details%20at%20usms.org" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #E3EEE7;">
 <tr>
@@ -352,8 +440,13 @@
 <div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:15.5px; color:#0E2E28;">USMS Summer National Championship</div>
 <div style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#4B6259; margin-top:2px;">Details at usms.org</div>
 </td>
-<td align="right" valign="middle" style="padding:14px 0; white-space:nowrap;">
-<span style="display:inline-block; border:1px solid #BFE6DC; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:600; font-size:9.5px; letter-spacing:0.5px; padding:5px 10px; border-radius:14px; text-transform:uppercase;">+ Add to Calendar</span>
+<!-- Deliberately NOT white-space:nowrap: as one unbreakable 130px block this
+     pill was the widest thing in the issue and set the whole email's minimum
+     width, which is what pushed a phone-sized viewport into shrink-to-fit.
+     It's hidden outright on mobile (.cal-cta) where the media query lands,
+     and allowed to wrap rather than overflow where it doesn't. -->
+<td align="right" valign="middle" class="cal-cta" style="padding:14px 0;">
+<span style="display:inline-block; border:1px solid #BFE6DC; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:600; font-size:9.5px; line-height:1.4; letter-spacing:0.5px; padding:5px 10px; border-radius:14px; text-transform:uppercase;">+ Add to Calendar</span>
 </td>
 </tr>
 </table>
@@ -362,7 +455,7 @@
 </tr>
 
 <tr>
-<td style="padding:0 32px 8px 32px;">
+<td class="px" style="padding:0 32px 8px 32px;">
 <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pan%20Pacific%20Championships&dates=20260812/20260818&details=https%3A%2F%2Fwww.worldaquatics.com&location=Details%20at%20worldaquatics.com" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
@@ -376,8 +469,13 @@
 <div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:15.5px; color:#0E2E28;">Pan Pacific Championships</div>
 <div style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#4B6259; margin-top:2px;">Details at worldaquatics.com</div>
 </td>
-<td align="right" valign="middle" style="padding:14px 0; white-space:nowrap;">
-<span style="display:inline-block; border:1px solid #BFE6DC; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:600; font-size:9.5px; letter-spacing:0.5px; padding:5px 10px; border-radius:14px; text-transform:uppercase;">+ Add to Calendar</span>
+<!-- Deliberately NOT white-space:nowrap: as one unbreakable 130px block this
+     pill was the widest thing in the issue and set the whole email's minimum
+     width, which is what pushed a phone-sized viewport into shrink-to-fit.
+     It's hidden outright on mobile (.cal-cta) where the media query lands,
+     and allowed to wrap rather than overflow where it doesn't. -->
+<td align="right" valign="middle" class="cal-cta" style="padding:14px 0;">
+<span style="display:inline-block; border:1px solid #BFE6DC; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:600; font-size:9.5px; line-height:1.4; letter-spacing:0.5px; padding:5px 10px; border-radius:14px; text-transform:uppercase;">+ Add to Calendar</span>
 </td>
 </tr>
 </table>
@@ -387,7 +485,7 @@
 
 <!-- OUTRO -->
 <tr>
-<td style="padding:28px 32px 8px 32px; text-align:center;">
+<td class="px" style="padding:28px 32px 8px 32px; text-align:center;">
 <svg width="120" height="14" viewBox="0 0 120 14" fill="none" style="margin-bottom:16px;"><path d="M2 7c6-8 14-8 20 0s14 8 20 0 14-8 20 0 14 8 20 0 14-8 20 0 14 8 16 0" stroke="#BFE6DC" stroke-width="2" stroke-linecap="round"/></svg>
 <p style="font-family:'Inter',Arial,sans-serif; font-size:14px; color:#4B6259; line-height:1.6; margin:0 0 6px 0;">That's the week in the water. Happy swimming,</p>
 <p style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:15px; color:#0E2E28; margin:0;">LANE FOUR</p>
@@ -396,7 +494,7 @@
 
 <!-- FOOTER -->
 <tr>
-<td style="background-color:#125A4E; padding:22px 32px 4px 32px; text-align:center; margin-top:20px;">
+<td class="px" style="background-color:#125A4E; padding:22px 32px 4px 32px; text-align:center; margin-top:20px;">
 <p style="font-family:'Inter',Arial,sans-serif; font-size:11.5px; color:#E3F3EF; margin:0 0 18px 0;">LANE FOUR &nbsp;•&nbsp; Train for the Fast Lane &nbsp;•&nbsp; winlanefour.com</p>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(255,255,255,0.25);">
 <tr><td style="padding:16px 4px 20px 4px;">
@@ -421,6 +519,9 @@
 </tr>
 
 </table>
+<!--[if mso]>
+</td></tr></table>
+<![endif]-->
 </td>
 </tr>
 </table>

@@ -23,7 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadHistory, usedBlogPosts } = require('./newsletter-dedup');
-const { getBlogPosts, PUBLIC_BASE } = require('./site-source');
+const { getBlogPosts, PUBLIC_BASE, publicUrl } = require('./site-source');
 
 const ROOT = path.join(__dirname, '..');
 const DAYS_WINDOW = 7;
@@ -122,6 +122,7 @@ async function main() {
   const enriched = [];
   for (const post of picks) {
     let localImagePath = null;
+    let hostedImageUrl = null;
     // Site-hosted images already live on winlanefour.com, so reference them
     // directly; only rehost external hero images (e.g. Pexels) under
     // /newsletter-images so the email isn't hotlinking a third party.
@@ -132,6 +133,11 @@ async function main() {
         const filename = `${slugify(post.title)}${ext}`;
         await downloadImage(post.heroImage, path.join(IMAGE_DIR, filename));
         localImagePath = `/newsletter-images/${filename}`;
+        // The email has no base URL, so a root-relative src never resolves in
+        // a mail client — every hero image must be an absolute URL on the
+        // site (the workflow uploads this folder to /newsletter-images before
+        // the send, so the URL is live by the time the issue goes out).
+        hostedImageUrl = publicUrl(localImagePath);
       } catch (err) {
         console.warn(`Could not download image for "${post.title}": ${err.message}`);
       }
@@ -145,6 +151,7 @@ async function main() {
       summary: post.excerpt,
       imageUrl: post.heroImage,
       localImagePath,
+      hostedImageUrl,
       url: post.url,
     });
   }
