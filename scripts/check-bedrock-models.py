@@ -31,7 +31,7 @@ import sys
 import boto3
 from botocore.exceptions import ClientError
 
-# Mirrors the GeneratorModelIds default in cloudformation/template.yml, plus the
+# Mirrors the GeneratorModels mapping in cloudformation/template.yml, plus the
 # Claude 3 Haiku ID the search Lambda uses (an older model that still supports
 # on-demand throughput, so it needs no inference profile) and the undated Haiku
 # spellings, which are listed deliberately: they belong to Anthropic's newer

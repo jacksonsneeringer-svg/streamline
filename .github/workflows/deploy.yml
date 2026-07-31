@@ -73,6 +73,13 @@ jobs:
           # so the stack's default and the client stay in sync.
           GOOGLE_CLIENT_ID='${{ secrets.GOOGLE_CLIENT_ID }}'
           [ -z "$GOOGLE_CLIENT_ID" ] && GOOGLE_CLIENT_ID='999928080923-q8e138qp4asjtm9bjl3gl9fgg3lp7dj3.apps.googleusercontent.com'
+          # NOTE: every template parameter NOT listed in --parameter-overrides
+          # below is sent to CloudFormation as UsePreviousValue=true, so its
+          # Default in template.yml only ever applies on the stack's first
+          # create. Editing a Default later changes nothing on the live stack.
+          # Values that must track the template (e.g. the Bedrock model list)
+          # belong in the template body — see the GeneratorModels mapping — not
+          # in a parameter Default.
           aws cloudformation deploy \
             --template-file cloudformation/template.yml \
             --s3-bucket ${{ env.ARTIFACTS_BUCKET }} \
