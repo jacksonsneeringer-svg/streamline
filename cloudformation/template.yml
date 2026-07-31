@@ -33,23 +33,34 @@ Parameters:
     Description: Google OAuth 2.0 Web client ID used to verify "Sign in with Google" credentials server-side. This is a public value (also rendered into the client). Empty disables Google sign-in.
     Default: "999928080923-q8e138qp4asjtm9bjl3gl9fgg3lp7dj3.apps.googleusercontent.com"
 
-  GeneratorModelIds:
-    Type: String
-    Description: >-
-      Ordered, comma-separated Bedrock model IDs for the daily swim-set and
-      dryland generators. The first ID this account can actually invoke wins;
-      IDs the account has no model access to (or that do not exist) are skipped.
-      Keep a model you are known to have access to last so a model-access gap
-      degrades the output instead of leaving the site with no plan for the day.
+Mappings:
 
-      Note the ID scheme: the bedrock-runtime InvokeModel API these generators
-      call wants the dated foundation-model ID ("...-20251001-v1:0") for models
-      released through 2025, prefixed with an inference-profile region ("us." /
-      "global.") for models that do not support on-demand throughput. The
-      undated form ("anthropic.claude-haiku-4-5") belongs to Anthropic's newer
-      first-party Bedrock client and is rejected here with a ValidationException.
-      Sonnet 4.6 is undated because newer models dropped the date suffix.
-    Default: "us.anthropic.claude-haiku-4-5-20251001-v1:0,global.anthropic.claude-haiku-4-5-20251001-v1:0,anthropic.claude-haiku-4-5-20251001-v1:0,us.anthropic.claude-sonnet-4-6"
+  # Ordered, comma-separated Bedrock model IDs for the daily swim-set and
+  # dryland generators. The first ID this account can actually invoke wins;
+  # IDs the account has no model access to (or that do not exist) are skipped.
+  # Keep a model you are known to have access to last so a model-access gap
+  # degrades the output instead of leaving the site with no plan for the day.
+  #
+  # This is a Mapping and deliberately NOT a stack Parameter. `aws
+  # cloudformation deploy` (.github/workflows/deploy.yml) sends
+  # UsePreviousValue=true for every template parameter it is not handed an
+  # explicit override for, so a Parameter's Default is only ever read when the
+  # stack is first created — editing it afterwards changes the template and
+  # nothing else. That is precisely how the earlier switch to Haiku 4.5 looked
+  # committed while every run kept resolving to the Sonnet fallback: the stack
+  # was still holding the first-deployed candidate list. A Mapping is part of
+  # the template body, so it ships on every deploy. Change the model here.
+  #
+  # Note the ID scheme: the bedrock-runtime InvokeModel API these generators
+  # call wants the dated foundation-model ID ("...-20251001-v1:0") for models
+  # released through 2025, prefixed with an inference-profile region ("us." /
+  # "global.") for models that do not support on-demand throughput. The undated
+  # form ("anthropic.claude-haiku-4-5") belongs to Anthropic's newer
+  # first-party Bedrock client and is rejected here with a ValidationException.
+  # Sonnet 4.6 is undated because newer models dropped the date suffix.
+  GeneratorModels:
+    Bedrock:
+      Ids: "us.anthropic.claude-haiku-4-5-20251001-v1:0,global.anthropic.claude-haiku-4-5-20251001-v1:0,anthropic.claude-haiku-4-5-20251001-v1:0,us.anthropic.claude-sonnet-4-6"
 
 Resources:
 
@@ -1912,7 +1923,7 @@ Resources:
       Environment:
         Variables:
           SKILL_URL: !Sub "https://${DomainName}/swim-sets.md"
-          MODEL_IDS: !Ref GeneratorModelIds
+          MODEL_IDS: !FindInMap [GeneratorModels, Bedrock, Ids]
       Code:
         ZipFile: |
           import json, os, time, boto3, uuid, urllib.request
@@ -1980,8 +1991,8 @@ Resources:
           Sections in order: Warm-Up, Pre-Main, Main Set, optional Post-Main, Cool-Down. totalYards must equal the sum of the section yards and fall within the {level} range. Keep beginner notation plain (use "rest :30" rather than pace-clock sendoffs).
           IMPORTANT writing rule for ALL descriptor text (every item "note" and the "focusCue"): NEVER use em dashes or en dashes (— or –). Item notes must be purely informational about how to perform the swim, with zero coaching or motivational language."""
 
-          # MODEL_IDS is an ordered candidate list (see the GeneratorModelIds
-          # stack parameter). The first ID this account can actually invoke wins
+          # MODEL_IDS is an ordered candidate list (see the GeneratorModels
+          # mapping above). The first ID this account can actually invoke wins
           # and is cached for the life of the container, so switching models is a
           # parameter change rather than a code change, and a model the account
           # has no Bedrock model access to costs one failed call instead of the
@@ -2225,7 +2236,7 @@ Resources:
       Environment:
         Variables:
           SKILL_URL: !Sub "https://${DomainName}/dryland.md"
-          MODEL_IDS: !Ref GeneratorModelIds
+          MODEL_IDS: !FindInMap [GeneratorModels, Bedrock, Ids]
       Code:
         ZipFile: |
           import json, os, time, boto3, urllib.request
@@ -2298,7 +2309,7 @@ Resources:
           IMPORTANT writing rule for ALL descriptor text (every item "note", the "focusCue" and the "coachNote"): NEVER use em dashes or en dashes (— or –). Item notes must be purely informational about how to perform the movement, with zero coaching or motivational language."""
 
           # Same model-resolution scheme as streamline-generate-sets: MODEL_IDS is
-          # an ordered candidate list (the GeneratorModelIds stack parameter), the
+          # an ordered candidate list (the GeneratorModels mapping above), the
           # first ID this account can invoke wins, and it is cached for the life
           # of the container. Newer models are inference-profile-only (use the
           # 'us.' cross-region profile ID, this Lambda runs in us-east-1), and
