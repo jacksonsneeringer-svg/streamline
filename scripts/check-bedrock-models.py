@@ -33,12 +33,18 @@ from botocore.exceptions import ClientError
 
 # Mirrors the GeneratorModelIds default in cloudformation/template.yml, plus the
 # Claude 3 Haiku ID the search Lambda uses (an older model that still supports
-# on-demand throughput, so it needs no inference profile).
+# on-demand throughput, so it needs no inference profile) and the undated Haiku
+# spellings, which are listed deliberately: they belong to Anthropic's newer
+# first-party Bedrock client, not to the bedrock-runtime InvokeModel API called
+# here, so probing them shows the ValidationException side by side with the
+# dated ID that works.
 DEFAULT_CANDIDATES = [
+    "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "anthropic.claude-haiku-4-5-20251001-v1:0",
     "us.anthropic.claude-haiku-4-5",
     "anthropic.claude-haiku-4-5",
     "us.anthropic.claude-sonnet-4-6",
-    "anthropic.claude-sonnet-4-6",
     "anthropic.claude-3-haiku-20240307-v1:0",
 ]
 

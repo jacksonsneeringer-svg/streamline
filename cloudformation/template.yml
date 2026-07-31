@@ -41,7 +41,15 @@ Parameters:
       IDs the account has no model access to (or that do not exist) are skipped.
       Keep a model you are known to have access to last so a model-access gap
       degrades the output instead of leaving the site with no plan for the day.
-    Default: "us.anthropic.claude-haiku-4-5,anthropic.claude-haiku-4-5,us.anthropic.claude-sonnet-4-6"
+
+      Note the ID scheme: the bedrock-runtime InvokeModel API these generators
+      call wants the dated foundation-model ID ("...-20251001-v1:0") for models
+      released through 2025, prefixed with an inference-profile region ("us." /
+      "global.") for models that do not support on-demand throughput. The
+      undated form ("anthropic.claude-haiku-4-5") belongs to Anthropic's newer
+      first-party Bedrock client and is rejected here with a ValidationException.
+      Sonnet 4.6 is undated because newer models dropped the date suffix.
+    Default: "us.anthropic.claude-haiku-4-5-20251001-v1:0,global.anthropic.claude-haiku-4-5-20251001-v1:0,anthropic.claude-haiku-4-5-20251001-v1:0,us.anthropic.claude-sonnet-4-6"
 
 Resources:
 
