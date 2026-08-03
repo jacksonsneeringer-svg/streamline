@@ -1,67 +1,67 @@
 {
-  "date": "2026-07-27",
-  "issueDateLabel": "July 27, 2026",
-  "subject": "Commonwealth Games records fall + Kennedy Brooks at 15",
-  "preheader": "Australia rewrote the record books. A teenager stole the show at NCSAs. Monday set is live.",
+  "date": "2026-08-03",
+  "issueDateLabel": "August 3, 2026",
+  "subject": "Dressel is back, Marchand is hurting, and a 17-year-old just made history",
+  "preheader": "Plus a 10-year-old breaking NAG records and today's aerobic freestyle set.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Australia just shattered a Commonwealth Games record in the 4x200 free, and the race came down to one blistering anchor leg you have to read about.",
+  "heroTeaser": "Caeleb Dressel had the kind of meet at US Nationals that makes you remember exactly why you fell in love with this sport.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Jul 27 &middot; distance freestyle in the pool, rotational core on land",
+    "dateLabel": "Mon, Aug 3 &middot; Distance freestyle in the pool, rotational core on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,000-yard aerobic freestyle builder focused on rotation, catch timing, and holding your stroke form exactly when fatigue wants to take it away."
+      "description": "A 3,000-yard aerobic freestyle builder where every interval has a specific focal cue -- your job is to stay present and steady, not just survive the yardage."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "Rotational core and anti-rotation stability work built for freestyle and backstroke swimmers who want a stronger, steadier body position in the water."
+      "description": "A rotational core and anti-rotation stability session targeting the mid-body control that drives both freestyle and backstroke efficiency."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "australia-shatter-mens-4x200-free-commonwealth-games-record-guy-and-taylor-split-144-low",
-      "icon": "medal",
-      "title": "Australia breaks 4x200 free Commonwealth record",
-      "body": "<strong>Australia</strong> won gold in the men's 4x200 free relay with a new Commonwealth Games record of 7:01.67. <strong>Kai Taylor</strong> anchored with a 1:44.10 to overtake <strong>England</strong>'s <strong>Max Litchfield</strong> at the wall, while <strong>James Guy</strong> threw down the fastest split in the field at 1:44.03 on the third leg for England's silver.",
-      "url": "https://swimswam.com/australia-shatter-mens-4x200-free-commonwealth-games-record-guy-and-taylor-split-144-low/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "15-year-old-kennedy-brooks-swim-to-two-wins-on-final-night-of-ncsas",
+      "topicSlug": "caeleb-dressel-reflects-on-us-nats-previews-training-stint-with-herbie-behm-full-interview",
       "icon": "trend",
-      "title": "15-year-old Kennedy Brooks wins twice at NCSAs",
-      "body": "<strong>Kennedy Brooks</strong>, just 15 years old, closed out the NCSAs with a double on the final night, winning the 50 back in 28.82 and the 50 free in 26.05. That 50 free was a 0.76-second personal drop, which at any age is a big deal.",
-      "url": "https://swimswam.com/15-year-old-kennedy-brooks-swim-to-two-wins-on-final-night-of-ncsas/",
+      "title": "Dressel delivers at US Nationals -- and he's not done yet",
+      "body": "<strong>Caeleb Dressel</strong> turned heads at US Nationals in Irvine with a 21.3/47.7 in the 50 and 100 free and a 22.8/50.4 in the 50 and 100 fly. In a full interview with <strong>SwimSwam</strong>, he reflected on the meet and previewed an upcoming training stint with <strong>Herbie Behm</strong> -- a pairing worth keeping an eye on.",
+      "url": "https://swimswam.com/caeleb-dressel-reflects-on-us-nats-previews-training-stint-with-herbie-behm-full-interview/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "2026-commonwealth-games-day-4-prelims-live-recap",
+      "topicSlug": "leon-marchand-reinjures-hip-adductor-in-training-camp-raises-doubts-for-400-im-at-euro-champs",
       "icon": "doc",
-      "title": "Day 4 prelims: O'Callaghan, Scott, Southam roll on",
-      "body": "<strong>Mollie O'Callaghan</strong>, <strong>Duncan Scott</strong>, and <strong>Flynn Southam</strong> all carried momentum into the latter half of the 2026 <strong>Commonwealth Games</strong> through Day 4 prelims. The Games are hitting their stride with some of the top names in the sport still with finals to go.",
-      "url": "https://swimswam.com/2026-commonwealth-games-day-4-prelims-live-recap/",
+      "title": "Marchand's hip flares up again before Euro Champs",
+      "body": "<strong>Leon Marchand</strong> has re-aggravated the same hip adductor injury that cut his French Nationals short, and he's now facing uncertainty about whether he'll contest the 400 IM at the <strong>2026 European Championships</strong>. He says the call will be last-minute -- which is not the position anyone wants to be in heading into a major championship.",
+      "url": "https://swimswam.com/leon-marchand-reinjures-hip-adductor-in-training-camp-raises-doubts-for-400-im-at-euro-champs/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "cas-confirms-two-year-ban-of-former-president-of-mexican-swimming-federation-kiril-todorov",
-      "icon": "globe",
-      "title": "CAS upholds two-year ban on Mexican federation ex-president",
-      "body": "The <strong>Court of Arbitration for Sport</strong> confirmed a two-year ban on <strong>Kiril Todorov</strong>, former president of the <strong>Mexican Swimming Federation</strong>. Todorov will remain ineligible until October 28, 2026.",
-      "url": "https://swimswam.com/cas-confirms-two-year-ban-of-former-president-of-mexican-swimming-federation-kiril-todorov/",
+      "topicSlug": "liberty-clark-takes-17-18-50-free-nag-from-claire-curzan-with-24-28-performance",
+      "icon": "medal",
+      "title": "17-year-old Liberty Clark rewrites the record books",
+      "body": "<strong>Liberty Clark</strong> clocked a 24.28 in the 50 free at <strong>2026 US Nationals</strong> to claim the 17-18 National Age Group record, taking it from <strong>Claire Curzan</strong>. It's her first long course NAG and her third overall -- and she's still 17.",
+      "url": "https://swimswam.com/liberty-clark-takes-17-18-50-free-nag-from-claire-curzan-with-24-28-performance/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "gabe-brown-downs-a-pair-of-10-under-lcm-nag-records-at-central-zone-14u-championships",
+      "icon": "medal",
+      "title": "A 10-year-old just closed out his age group in historic fashion",
+      "body": "<strong>Gabriel Brown</strong> broke two long-course National Age Group records in the 10-and-under division at the <strong>Central Zone 14&U Championships</strong> in Evansville -- a remarkable send-off to the youngest age group in the sport. Remember the name.",
+      "url": "https://swimswam.com/gabe-brown-downs-a-pair-of-10-under-lcm-nag-records-at-central-zone-14u-championships/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Cameron McEvoy",
-    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Kazan_2015_-_McEvoy_and_Guy_200m_freestyle_semi.JPG/330px-Kazan_2015_-_McEvoy_and_Guy_200m_freestyle_semi.JPG",
-    "photoCredit": "Photo: Voltmetro, CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Alex Walsh",
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Alex_Walsh_Tokyo_Olympics.jpg/330px-Alex_Walsh_Tokyo_Olympics.jpg",
+    "photoCredit": "Photo: Walsh Family, CC BY 2.5, via Wikimedia Commons",
     "badges": [
-      "World Record 50m free",
-      "Olympic Gold 4x100 free relay",
-      "Commonwealth Games medalist",
-      "Australian national champion"
+      "2x Olympic Medalist",
+      "World Championship Gold",
+      "400 IM contender",
+      "Pan Pacs 2026"
     ],
-    "bio": "Cameron McEvoy is an Australian competitive swimmer, born on 13 May 1994 on the Gold Coast. He learned to swim at age five and began training at age seven with the Miami Swimming Club. He has represented Australia at four Olympic Games, spanning from 2012 through 2024, with his main event shifting over time from the 100 m freestyle to the 50 m freestyle.\n\nMcEvoy is the reigning Olympic champion in the men's 50 m freestyle and the first Australian man to win an Olympic medal in that event. He holds the world record in the long course 50 m freestyle. His other achievements include a silver medal at the 2015 World Championships in the 100 m freestyle, world titles in the 50 m freestyle in 2023 and 2025, and multiple Commonwealth Games medals."
+    "bio": "Alex Walsh is an American competitive swimmer born on July 31, 2001, in Nashville, Tennessee. Known for her versatility across all four strokes, she excelled in medley events from a young age, setting national age group records at 12 and leading her high school team to multiple state and national championships. She competed for the University of Virginia from 2020 to 2025.\n\nWalsh's competitive achievements include three gold medals at the 2019 Pan American Games and a silver medal at the 2020 Olympic Games in the 200 m individual medley. She won 29 total medals across five NCAA Championships, including 23 golds, helping Virginia claim five team national titles. At the 2022 World Championships she won three golds, and she earned additional medals at multiple short course and long course World Championships through 2025."
   },
   "events": [
     {
