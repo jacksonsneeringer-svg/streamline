@@ -13031,6 +13031,21 @@ function drylandArchiveItemToWorkout(item) {
   };
 }
 
+// Content signature for an archived workout: the set of movements it prescribes,
+// scoped to its equipment category. Mirrors the contentHash the dryland
+// generator writes and the archive Lambda dedupes on, so two sessions built from
+// the same movements count as the same workout even when the title differs.
+function drylandWorkoutSignature(set) {
+  const data = set.workoutData || {};
+  const names = [];
+  (data.sections || []).forEach(sec => ((sec || {}).items || []).forEach(it => {
+    const n = String((it || {}).exercise || '').toLowerCase().trim().replace(/\s+/g, ' ');
+    if (n && names.indexOf(n) === -1) names.push(n);
+  }));
+  if (!names.length) return '';
+  return (set.level || '') + '|' + names.sort().join('|');
+}
+
 function renderDrylandArchiveCards(items) {
   const containers = {
     bodyweight: document.getElementById('dryland-archive-cards-bodyweight'),
@@ -13039,9 +13054,20 @@ function renderDrylandArchiveCards(items) {
   };
   Object.values(containers).forEach(c => { if (c) c.innerHTML = ''; });
 
-  // Dedupe so the same workout never appears twice: by workoutId, and by
-  // (category, date) so only one workout shows per category per day even if
-  // older duplicate rows are still in the archive. Newest day first.
+  // Dedupe so the same workout never appears twice: by workoutId, by
+  // (category, date) so only one workout shows per category per day, and by
+  // content so a session that was archived again on a later week only shows
+  // once. The archive Lambda deletes these rows on read; this keeps them off
+  // the page in the meantime. Oldest copy wins, matching the Lambda, so the
+  // surviving card doesn't move once the repeats are gone.
+  const firstBySig = new Map();
+  items.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).forEach(item => {
+    const set = drylandArchiveItemToWorkout(item);
+    if (set.isRestDay) return;
+    const sig = drylandWorkoutSignature(set);
+    if (sig && !firstBySig.has(sig)) firstBySig.set(sig, set.setId);
+  });
+
   const seen = new Set();
   const seenDay = new Set();
   items.slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).forEach(item => {
@@ -13058,6 +13084,8 @@ function renderDrylandArchiveCards(items) {
       if (seenDay.has(dayKey)) return;
       seenDay.add(dayKey);
     }
+    const sig = drylandWorkoutSignature(set);
+    if (sig && firstBySig.get(sig) !== set.setId) return;
     const c = containers[set.level];
     if (c) c.insertAdjacentHTML('beforeend', drylandArchiveCardHtml(set));
   });
