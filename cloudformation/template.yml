@@ -1926,7 +1926,8 @@ Resources:
           MODEL_IDS: !FindInMap [GeneratorModels, Bedrock, Ids]
       Code:
         ZipFile: |
-          import json, os, time, boto3, uuid, urllib.request
+          import json, os, time, hashlib, boto3, uuid, urllib.request
+          from boto3.dynamodb.conditions import Attr
           from botocore.exceptions import ClientError
           from datetime import datetime, timezone
           from zoneinfo import ZoneInfo
@@ -1940,6 +1941,104 @@ Resources:
           dynamo = boto3.resource('dynamodb')
           daily_tbl = dynamo.Table('streamline-daily-sets')
           arch_tbl = dynamo.Table('streamline-set-archives')
+
+          # ── Duplicate detection ───────────────────────────────────────────────
+          # The stroke focus repeats on the same weekday every week, so the model
+          # will happily write the same practice again and again and the archive
+          # fills with copies. Two sets are "the same set" when they prescribe the
+          # same whiteboard lines: titles and notes get reworded run to run, the
+          # swims are what actually make a practice. The fingerprint below is
+          # stored on every archived row (contentHash) and recomputed for legacy
+          # rows, and GetArchivesFunction uses the identical formula so both sides
+          # agree on what counts as a duplicate.
+
+          def _norm(s):
+            return ' '.join(str(s or '').lower().split())
+
+          def set_lines(data):
+            lines = []
+            for sec in (data.get('sections') or []):
+              for it in ((sec or {}).get('items') or []):
+                t = _norm((it or {}).get('text'))
+                if t and t not in lines:
+                  lines.append(t)
+            return lines
+
+          def content_hash(level, data):
+            if isinstance(data, str):
+              try:
+                data = json.loads(data)
+              except Exception:
+                return ''
+            if not isinstance(data, dict):
+              return ''
+            lines = set_lines(data)
+            if not lines:
+              return ''
+            basis = _norm(level) + '|' + '|'.join(sorted(lines))
+            return hashlib.sha256(basis.encode('utf-8')).hexdigest()
+
+          def archived_sets(level):
+            # Every set already archived for this level, newest first.
+            kw = {
+              'ProjectionExpression': 'setId,#lv,#dt,title,strokeFocus,contentHash,setData',
+              'ExpressionAttributeNames': {'#lv': 'level', '#dt': 'date'},
+              'FilterExpression': Attr('level').eq(level),
+            }
+            rows = []
+            try:
+              r = arch_tbl.scan(**kw)
+              rows += r['Items']
+              while 'LastEvaluatedKey' in r:
+                r = arch_tbl.scan(ExclusiveStartKey=r['LastEvaluatedKey'], **kw)
+                rows += r['Items']
+            except Exception as ex:
+              # A failed lookup must not take the day's sets down: fall through
+              # with no history (worst case we archive a repeat we could have caught).
+              print('archive history scan failed for %s: %s' % (level, ex))
+              return []
+            out = []
+            for it in rows:
+              data = it.get('setData')
+              if isinstance(data, str):
+                try:
+                  data = json.loads(data)
+                except Exception:
+                  data = {}
+              data = data if isinstance(data, dict) else {}
+              out.append({
+                'setId': it.get('setId', ''),
+                'date': it.get('date', ''),
+                'title': it.get('title', '') or data.get('title', ''),
+                'strokeFocus': it.get('strokeFocus', '') or data.get('strokeFocus', ''),
+                'hash': it.get('contentHash') or content_hash(level, data),
+                'lines': set_lines(data),
+              })
+            out.sort(key=lambda x: x['date'], reverse=True)
+            return out
+
+          # How many past practices to show the model, and how many whiteboard
+          # lines of each. Same-stroke sets (the ones that actually repeat) first.
+          HISTORY_SHOWN = 12
+          HISTORY_LINES = 10
+          # Extra generation attempts when the model hands back a set that is
+          # already in the archive.
+          RETRIES_ON_DUPLICATE = 2
+
+          def history_block(history, stroke):
+            if not history:
+              return 'Nothing has been archived for this level yet, so any well-programmed practice is new.'
+            same = [h for h in history if h['strokeFocus'] == stroke]
+            rest = [h for h in history if h['strokeFocus'] != stroke]
+            shown = (same + rest)[:HISTORY_SHOWN]
+            lines = []
+            for h in shown:
+              body = ' / '.join(h['lines'][:HISTORY_LINES]) or 'no swims recorded'
+              lines.append('- %s | %s: %s' % (h['date'], h['title'] or 'Untitled', body))
+            return ('=== ALREADY ARCHIVED FOR THIS LEVEL (do not repeat) ===\n'
+                    + '\n'.join(lines)
+                    + '\n=== END ARCHIVE ===\n'
+                    + 'Today\'s practice must be new work, not a rerun: keep the day\'s stroke focus, the level\'s volume and the required structure, but write different swims from the ones listed above (different distances, rep counts, intervals, set shapes or drill choices). Reusing a standard warm-up or cool-down is fine; reusing a whole practice is not.')
 
           # The swim-sets.md skill is the single source of truth for how daily
           # sets are programmed. It is fetched from the live site and injected
@@ -1983,6 +2082,8 @@ Resources:
           {framework}
 
           Today is {day}. Stroke focus for the day: {focus}. Write the set for the {level} level only, aiming for ~{yards} yards.
+
+          {history}
 
           Use the swim-sets framework above as your single source of truth: apply the {level} level's volume range, intervals, technique emphasis and coaching tone; honor the day's stroke focus, the single-swim distance caps, the warm-up / cool-down standards, the stroke-specific drill library (use the Pre-Main for day-stroke drills), and the set-design principles. Choose a sensible secondary focus (endurance, technique, speed/threshold, race prep, or recovery) as the framework describes, and reflect it in the title. On Saturday include a Dives block. Main sets must have internal structure (descending, build, pyramid, broken, neg split, odds/evens) — not flat repeats.
 
@@ -2071,28 +2172,47 @@ Resources:
                   framework = '=== SWIM-SETS SKILL (programming framework) ===\n' + skill + '\n=== END SKILL ==='
                 else:
                   framework = 'Level guidance (skill unavailable): ' + notes
-                p = PROMPT.format(framework=framework, day=now.strftime('%A'), focus=focus, level=level, yards=yards)
-                raw = invoke(p)
-                s = raw.find('{'); e = raw.rfind('}') + 1
-                data = json.loads(raw[s:e])
                 # Deterministic setId (level + service day) so re-running the
                 # generator for a given day overwrites that day's archived set
                 # rather than creating a duplicate: exactly one set is archived
                 # per level per day.
                 sid = '%s-%s' % (level, date_str)
+                # Past practices for this level, so the model can be told what not
+                # to write again. Today's own row is excluded: a re-run that
+                # reproduces it is an identical overwrite, not a duplicate.
+                history = [h for h in archived_sets(level) if h['setId'] != sid]
+                by_hash = {h['hash']: h for h in history if h['hash']}
+                p = PROMPT.format(framework=framework, day=now.strftime('%A'), focus=focus, level=level, yards=yards, history=history_block(history, STROKE[dow]))
+                dupe_of = None
+                for attempt in range(RETRIES_ON_DUPLICATE + 1):
+                  raw = invoke(p if attempt == 0 else p + '\n\nThe last practice you returned repeated an archived set exactly (%s, "%s"). Write a genuinely different practice for the same stroke focus: change the swims, not just the wording.' % (dupe_of['date'], dupe_of['title']))
+                  s = raw.find('{'); e = raw.rfind('}') + 1
+                  data = json.loads(raw[s:e])
+                  h = content_hash(level, data)
+                  dupe_of = by_hash.get(h) if h else None
+                  if not dupe_of:
+                    break
+                  print('duplicate set for %s: matches %s (%s)' % (level, dupe_of['setId'], dupe_of['title']))
                 data.update({'date': date_str, 'level': level, 'setId': sid})
                 daily_tbl.put_item(Item={'level': level, 'setData': json.dumps(data), 'date': date_str, 'generatedAt': now.isoformat()})
-                arch_tbl.put_item(Item={
-                  'setId': sid, 'level': level, 'date': date_str,
-                  'title': data.get('title', ''), 'totalYards': data.get('totalYards', yards),
-                  'estimatedMinutes': data.get('estimatedMinutes', 0),
-                  'strokeFocus': data.get('strokeFocus', STROKE[dow]),
-                  'intensity': data.get('intensity', 'aerobic'),
-                  'setType': data.get('setType', 'endurance'),
-                  'distanceCategory': data.get('distanceCategory', 'mid'),
-                  'setData': json.dumps(data), 'generatedAt': now.isoformat()
-                })
-                results.append({'level': level, 'status': 'ok'})
+                # A set already in the archive is not archived again: today's page
+                # still shows it, the archive just keeps the one copy it has.
+                if dupe_of:
+                  print('not archiving %s for %s: duplicate of %s' % (level, date_str, dupe_of['setId']))
+                  results.append({'level': level, 'status': 'ok', 'archived': False, 'reason': 'duplicate of ' + dupe_of['setId']})
+                else:
+                  arch_tbl.put_item(Item={
+                    'setId': sid, 'level': level, 'date': date_str,
+                    'title': data.get('title', ''), 'totalYards': data.get('totalYards', yards),
+                    'estimatedMinutes': data.get('estimatedMinutes', 0),
+                    'strokeFocus': data.get('strokeFocus', STROKE[dow]),
+                    'intensity': data.get('intensity', 'aerobic'),
+                    'setType': data.get('setType', 'endurance'),
+                    'distanceCategory': data.get('distanceCategory', 'mid'),
+                    'contentHash': content_hash(level, data),
+                    'setData': json.dumps(data), 'generatedAt': now.isoformat()
+                  })
+                  results.append({'level': level, 'status': 'ok', 'archived': True})
               except Exception as ex:
                 print('generate failed for %s: %s' % (level, ex))
                 results.append({'level': level, 'status': 'error', 'error': str(ex)})
@@ -2158,7 +2278,7 @@ Resources:
       Timeout: 30
       Code:
         ZipFile: |
-          import json, boto3, decimal
+          import json, hashlib, boto3, decimal
           from boto3.dynamodb.conditions import Attr
           dynamo = boto3.resource('dynamodb')
           tbl = dynamo.Table('streamline-set-archives')
@@ -2167,6 +2287,33 @@ Resources:
             if isinstance(o, decimal.Decimal):
               return int(o) if o % 1 == 0 else float(o)
             raise TypeError
+
+          # Same fingerprint the generator writes as contentHash: a practice is
+          # identified by the whiteboard lines it prescribes, within its level.
+          # Recomputed here for rows archived before contentHash existed, so the
+          # back catalogue of repeats gets cleaned out on the next read.
+          def _norm(s):
+            return ' '.join(str(s or '').lower().split())
+
+          def content_hash(level, data):
+            if isinstance(data, str):
+              try:
+                data = json.loads(data)
+              except Exception:
+                return ''
+            if not isinstance(data, dict):
+              return ''
+            lines = []
+            for sec in (data.get('sections') or []):
+              for it in ((sec or {}).get('items') or []):
+                t = _norm((it or {}).get('text'))
+                if t and t not in lines:
+                  lines.append(t)
+            if not lines:
+              return ''
+            basis = _norm(level) + '|' + '|'.join(sorted(lines))
+            return hashlib.sha256(basis.encode('utf-8')).hexdigest()
+
           def handler(event, context):
             if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
               return {'statusCode':200,'headers':CORS,'body':''}
@@ -2181,7 +2328,7 @@ Resources:
             if ins: add(Attr('intensity').eq(ins))
             if st: add(Attr('setType').eq(st))
             if ds: add(Attr('distanceCategory').eq(ds))
-            proj = 'setId,#lv,#dt,title,totalYards,estimatedMinutes,strokeFocus,intensity,setType,distanceCategory,setData'
+            proj = 'setId,#lv,#dt,title,totalYards,estimatedMinutes,strokeFocus,intensity,setType,distanceCategory,contentHash,setData'
             kw = {'ProjectionExpression':proj,'ExpressionAttributeNames':{'#lv':'level','#dt':'date'}}
             if fe: kw['FilterExpression'] = fe
             try:
@@ -2191,21 +2338,29 @@ Resources:
               while 'LastEvaluatedKey' in r:
                 r = tbl.scan(**kw, ExclusiveStartKey=r['LastEvaluatedKey'])
                 items += r['Items']
-              # Only one set should be archived per level per day. Older runs
-              # used a random setId, so re-generations left duplicate rows for
-              # the same (level, date). Keep one per (level, date) and delete
-              # the rest from the table so the archive self-heals.
+              # Only one set should be archived per level per day, and each
+              # practice only once ever. Older runs used a random setId, so
+              # re-generations left duplicate rows for the same (level, date);
+              # and because the stroke focus comes around every week, the
+              # generator used to re-archive the same swims on a later date too.
+              # Keep one per (level, date) and one per practice, oldest copy
+              # wins, and delete the rest so the archive self-heals on read.
+              items.sort(key=lambda x: x.get('date',''))
               kept, dupes = [], []
-              seen = {}
+              seen, hashes = {}, {}
               for it in items:
                 key = (it.get('level',''), it.get('date',''))
                 if not key[0] or not key[1]:
                   kept.append(it); continue
                 if key in seen:
-                  dupes.append(it)
-                else:
-                  seen[key] = True
-                  kept.append(it)
+                  dupes.append(it); continue
+                h = it.get('contentHash') or content_hash(key[0], it.get('setData'))
+                if h and h in hashes:
+                  dupes.append(it); continue
+                if h:
+                  hashes[h] = True
+                seen[key] = True
+                kept.append(it)
               if dupes:
                 try:
                   with tbl.batch_writer() as bw:
@@ -2239,7 +2394,8 @@ Resources:
           MODEL_IDS: !FindInMap [GeneratorModels, Bedrock, Ids]
       Code:
         ZipFile: |
-          import json, os, time, boto3, urllib.request
+          import json, os, time, hashlib, boto3, urllib.request
+          from boto3.dynamodb.conditions import Attr
           from botocore.exceptions import ClientError
           from datetime import datetime
           from zoneinfo import ZoneInfo
@@ -2253,6 +2409,104 @@ Resources:
           dynamo = boto3.resource('dynamodb')
           daily_tbl = dynamo.Table('streamline-daily-dryland')
           arch_tbl = dynamo.Table('streamline-dryland-archives')
+
+          # ── Duplicate detection ───────────────────────────────────────────────
+          # A day's focus repeats every week, so the model happily writes the same
+          # session again and again and the archive fills with copies. Two sessions
+          # are "the same workout" when they prescribe the same set of movements:
+          # titles, notes and rep schemes get reworded run to run, the exercise
+          # list is what actually makes a workout. The fingerprint below is stored
+          # on every archived row (contentHash) and recomputed for legacy rows, and
+          # GetDrylandArchivesFunction uses the identical formula so both sides
+          # agree on what counts as a duplicate.
+
+          def _norm(s):
+            return ' '.join(str(s or '').lower().split())
+
+          def exercise_names(data):
+            names = []
+            for sec in (data.get('sections') or []):
+              for it in ((sec or {}).get('items') or []):
+                n = _norm((it or {}).get('exercise'))
+                if n and n not in names:
+                  names.append(n)
+            return names
+
+          def content_hash(category, data):
+            if isinstance(data, str):
+              try:
+                data = json.loads(data)
+              except Exception:
+                return ''
+            if not isinstance(data, dict):
+              return ''
+            names = exercise_names(data)
+            if not names:
+              return ''
+            basis = _norm(category) + '|' + '|'.join(sorted(names))
+            return hashlib.sha256(basis.encode('utf-8')).hexdigest()
+
+          def archived_workouts(category):
+            # Every workout already archived for this category, newest first.
+            kw = {
+              'ProjectionExpression': 'workoutId,category,#dt,title,trainingFocus,contentHash,workoutData',
+              'ExpressionAttributeNames': {'#dt': 'date'},
+              'FilterExpression': Attr('category').eq(category),
+            }
+            rows = []
+            try:
+              r = arch_tbl.scan(**kw)
+              rows += r['Items']
+              while 'LastEvaluatedKey' in r:
+                r = arch_tbl.scan(ExclusiveStartKey=r['LastEvaluatedKey'], **kw)
+                rows += r['Items']
+            except Exception as ex:
+              # A failed lookup must not take the day's dryland down: fall through
+              # with no history (worst case we archive a repeat we could have caught).
+              print('archive history scan failed for %s: %s' % (category, ex))
+              return []
+            out = []
+            for it in rows:
+              data = it.get('workoutData')
+              if isinstance(data, str):
+                try:
+                  data = json.loads(data)
+                except Exception:
+                  data = {}
+              data = data if isinstance(data, dict) else {}
+              out.append({
+                'workoutId': it.get('workoutId', ''),
+                'date': it.get('date', ''),
+                'title': it.get('title', '') or data.get('title', ''),
+                'trainingFocus': it.get('trainingFocus', '') or data.get('trainingFocus', ''),
+                'hash': it.get('contentHash') or content_hash(category, data),
+                'exercises': exercise_names(data),
+              })
+            out.sort(key=lambda x: x['date'], reverse=True)
+            return out
+
+          # How many past sessions to show the model, and how many exercises of
+          # each. Same-focus sessions (the ones that actually repeat) come first.
+          HISTORY_SHOWN = 12
+          HISTORY_EXERCISES = 10
+          # Extra generation attempts when the model hands back a workout that is
+          # already in the archive.
+          RETRIES_ON_DUPLICATE = 2
+
+          def history_block(history, focus):
+            if not history:
+              return 'Nothing has been archived for this category yet, so any well-programmed session is new.'
+            same = [h for h in history if h['trainingFocus'] == focus]
+            rest = [h for h in history if h['trainingFocus'] != focus]
+            shown = (same + rest)[:HISTORY_SHOWN]
+            lines = []
+            for h in shown:
+              ex = ', '.join(h['exercises'][:HISTORY_EXERCISES]) or 'no movements recorded'
+              lines.append('- %s | %s: %s' % (h['date'], h['title'] or 'Untitled', ex))
+            return ('=== ALREADY ARCHIVED FOR THIS CATEGORY (do not repeat) ===\n'
+                    + '\n'.join(lines)
+                    + '\n=== END ARCHIVE ===\n'
+                    + 'Today\'s session must be new work, not a rerun: keep the day\'s focus, stroke emphasis and structure, but choose a different combination of movements from the ones listed above (different variations, implements, angles, tempos or block themes). Repeating one or two staple warm-up or shoulder-health movements is fine; repeating a whole session is not.')
 
           # dryland.md (the swim-dryland skill) is the single source of truth for
           # how dryland sessions are programmed. It is fetched from the live site
@@ -2300,6 +2554,8 @@ Resources:
           {framework}
 
           Today is {day}. Training focus: {focus}. Stroke emphasis: {stroke}. Primary muscle groups: {muscles}. Write the session for the {cat_label} category ({equipment}), about {minutes} minutes total.
+
+          {history}
 
           Use the dryland framework above as your single source of truth: honor the day's training focus, stroke emphasis and primary muscle groups; follow the Workout Duration & Structure split for a {minutes}-minute session (warm-up / main work / cool-down); apply the day's required movement rules (e.g. Monday's anti-rotation + rotational core blocks; Tuesday's roughly 2:1 pull-to-press ratio with a mandatory shoulder-health movement; Wednesday plyometrics-first with full rest then strength; Thursday compound-first heavier pressing and pulling with face pulls/external rotation included; Friday restorative mobility only, no loading); and pull stroke-specific movements from the library for the {stroke} emphasis. Select exercises that fit the {cat_label} equipment ONLY — never prescribe equipment this category does not have.
 
@@ -2400,6 +2656,10 @@ Resources:
             results = []
             for cat, cat_label, equipment in CATEGORIES:
               try:
+                # Deterministic workoutId (category + service day) so re-running the
+                # generator overwrites that day's row rather than duplicating it.
+                wid = '%s-%s' % (cat, date_str)
+                dupe_of = None
                 if is_rest:
                   data = rest_day(dow)
                 else:
@@ -2407,27 +2667,43 @@ Resources:
                     framework = '=== SWIM-DRYLAND SKILL (programming framework) ===\n' + skill + '\n=== END SKILL ==='
                   else:
                     framework = 'Schedule guidance (skill unavailable): focus %s, stroke %s, muscles %s.' % (focus, stroke, muscles)
-                  p = PROMPT.format(framework=framework, day=day_name, focus=focus, stroke=stroke, muscles=muscles, cat_label=cat_label, equipment=equipment, minutes=MINUTES)
-                  raw = invoke(p)
-                  s = raw.find('{'); e = raw.rfind('}') + 1
-                  data = json.loads(raw[s:e])
-                  data['isRestDay'] = False
-                # Deterministic workoutId (category + service day) so re-running the
-                # generator overwrites that day's row rather than duplicating it.
-                wid = '%s-%s' % (cat, date_str)
+                  # Past sessions for this category, so the model can be told what
+                  # not to write again. Today's own row is excluded: a re-run that
+                  # reproduces it is an identical overwrite, not a duplicate.
+                  history = [h for h in archived_workouts(cat) if h['workoutId'] != wid]
+                  by_hash = {h['hash']: h for h in history if h['hash']}
+                  p = PROMPT.format(framework=framework, day=day_name, focus=focus, stroke=stroke, muscles=muscles, cat_label=cat_label, equipment=equipment, minutes=MINUTES, history=history_block(history, focus))
+                  for attempt in range(RETRIES_ON_DUPLICATE + 1):
+                    raw = invoke(p if attempt == 0 else p + '\n\nThe last workout you returned repeated an archived session exactly (%s, "%s"). Write a genuinely different session for the same focus: change the main-work movements, not just the wording.' % (dupe_of['date'], dupe_of['title']))
+                    s = raw.find('{'); e = raw.rfind('}') + 1
+                    data = json.loads(raw[s:e])
+                    data['isRestDay'] = False
+                    h = content_hash(cat, data)
+                    dupe_of = by_hash.get(h) if h else None
+                    if not dupe_of:
+                      break
+                    print('duplicate workout for %s: matches %s (%s)' % (cat, dupe_of['workoutId'], dupe_of['title']))
                 data.update({'date': date_str, 'category': cat, 'workoutId': wid, 'day': day_name})
                 daily_tbl.put_item(Item={'category': cat, 'workoutData': json.dumps(data), 'date': date_str, 'generatedAt': now.isoformat()})
                 # Saturday/Sunday rest days still appear on the daily page, but
                 # they are not workouts so they are never written to the archive.
-                if not bool(data.get('isRestDay', is_rest)):
+                # Neither is a workout that is already in the archive: today's page
+                # still shows it, the archive just keeps the one copy it has.
+                if bool(data.get('isRestDay', is_rest)):
+                  results.append({'category': cat, 'status': 'ok', 'archived': False, 'reason': 'rest day'})
+                elif dupe_of:
+                  print('not archiving %s for %s: duplicate of %s' % (cat, date_str, dupe_of['workoutId']))
+                  results.append({'category': cat, 'status': 'ok', 'archived': False, 'reason': 'duplicate of ' + dupe_of['workoutId']})
+                else:
                   arch_tbl.put_item(Item={
                     'workoutId': wid, 'category': cat, 'date': date_str, 'day': day_name,
                     'title': data.get('title', ''), 'trainingFocus': data.get('trainingFocus', focus),
                     'strokeEmphasis': data.get('strokeEmphasis', stroke), 'intensity': data.get('intensity', intensity),
                     'estimatedMinutes': data.get('estimatedMinutes', MINUTES), 'isRestDay': False,
+                    'contentHash': content_hash(cat, data),
                     'workoutData': json.dumps(data), 'generatedAt': now.isoformat()
                   })
-                results.append({'category': cat, 'status': 'ok'})
+                  results.append({'category': cat, 'status': 'ok', 'archived': True})
               except Exception as ex:
                 print('generate dryland failed for %s: %s' % (cat, ex))
                 results.append({'category': cat, 'status': 'error', 'error': str(ex)})
@@ -2487,7 +2763,7 @@ Resources:
       Timeout: 30
       Code:
         ZipFile: |
-          import json, boto3, decimal
+          import json, hashlib, boto3, decimal
           from boto3.dynamodb.conditions import Attr
           dynamo = boto3.resource('dynamodb')
           tbl = dynamo.Table('streamline-dryland-archives')
@@ -2496,6 +2772,33 @@ Resources:
             if isinstance(o, decimal.Decimal):
               return int(o) if o % 1 == 0 else float(o)
             raise TypeError
+
+          # Same fingerprint the generator writes as contentHash: a workout is
+          # identified by the set of movements it prescribes, within its category.
+          # Recomputed here for rows archived before contentHash existed, so the
+          # back catalogue of repeats gets cleaned out on the next read.
+          def _norm(s):
+            return ' '.join(str(s or '').lower().split())
+
+          def content_hash(category, data):
+            if isinstance(data, str):
+              try:
+                data = json.loads(data)
+              except Exception:
+                return ''
+            if not isinstance(data, dict):
+              return ''
+            names = []
+            for sec in (data.get('sections') or []):
+              for it in ((sec or {}).get('items') or []):
+                n = _norm((it or {}).get('exercise'))
+                if n and n not in names:
+                  names.append(n)
+            if not names:
+              return ''
+            basis = _norm(category) + '|' + '|'.join(sorted(names))
+            return hashlib.sha256(basis.encode('utf-8')).hexdigest()
+
           def handler(event, context):
             if (event.get('requestContext') or {}).get('http', {}).get('method') == 'OPTIONS':
               return {'statusCode':200,'headers':CORS,'body':''}
@@ -2509,7 +2812,7 @@ Resources:
             if fo: add(Attr('trainingFocus').eq(fo))
             if sk: add(Attr('strokeEmphasis').eq(sk))
             if ins: add(Attr('intensity').eq(ins))
-            proj = 'workoutId,category,#dt,#dy,title,trainingFocus,strokeEmphasis,intensity,estimatedMinutes,isRestDay,workoutData'
+            proj = 'workoutId,category,#dt,#dy,title,trainingFocus,strokeEmphasis,intensity,estimatedMinutes,isRestDay,contentHash,workoutData'
             kw = {'ProjectionExpression':proj,'ExpressionAttributeNames':{'#dt':'date','#dy':'day'}}
             if fe: kw['FilterExpression'] = fe
             try:
@@ -2519,10 +2822,14 @@ Resources:
               while 'LastEvaluatedKey' in r:
                 r = tbl.scan(**kw, ExclusiveStartKey=r['LastEvaluatedKey'])
                 items += r['Items']
-              # One workout per category per day. Keep one per (category, date),
-              # and drop Saturday/Sunday rest days entirely (they are not workouts).
-              # Duplicates and rest-day rows are deleted so the archive self-heals.
-              kept, dupes, seen = [], [], {}
+              # One workout per category per day, and each workout only once ever.
+              # Rest-day rows are dropped entirely (they are not workouts), as are
+              # repeats of a session already archived on an earlier day: the day's
+              # focus comes around every week, so the generator used to re-archive
+              # the same movements over and over. Oldest copy wins, everything else
+              # is deleted, so the archive self-heals on read.
+              items.sort(key=lambda x: x.get('date',''))
+              kept, dupes, seen, hashes = [], [], {}, {}
               for it in items:
                 if it.get('isRestDay'):
                   dupes.append(it); continue
@@ -2530,9 +2837,13 @@ Resources:
                 if not key[0] or not key[1]:
                   kept.append(it); continue
                 if key in seen:
-                  dupes.append(it)
-                else:
-                  seen[key] = True; kept.append(it)
+                  dupes.append(it); continue
+                h = it.get('contentHash') or content_hash(key[0], it.get('workoutData'))
+                if h and h in hashes:
+                  dupes.append(it); continue
+                if h:
+                  hashes[h] = True
+                seen[key] = True; kept.append(it)
               if dupes:
                 try:
                   with tbl.batch_writer() as bw:
