@@ -12269,6 +12269,20 @@ function archiveItemToSet(item) {
   return set;
 }
 
+// Content signature for an archived set: the whiteboard lines it prescribes,
+// scoped to its level. Mirrors the contentHash the set generator writes and the
+// archive Lambda dedupes on, so two practices built from the same swims count as
+// the same set even when the title differs.
+function archiveSetSignature(set) {
+  const lines = [];
+  (set.sections || []).forEach(sec => ((sec || {}).items || []).forEach(it => {
+    const t = String((it || {}).text || '').toLowerCase().trim().replace(/\s+/g, ' ');
+    if (t && lines.indexOf(t) === -1) lines.push(t);
+  }));
+  if (!lines.length) return '';
+  return (set.level || '') + '|' + lines.sort().join('|');
+}
+
 function renderArchiveCards(items) {
   const containers = {
     beginner: document.getElementById('archive-cards-beginner'),
@@ -12280,8 +12294,18 @@ function renderArchiveCards(items) {
 
   // Dedupe by setId so the same set never appears twice (e.g. if the API
   // returns duplicates). Injury setIds are reserved by the static section.
-  // Also dedupe by level+date so only one set shows per level per day even
-  // if older duplicate rows (with distinct setIds) are still in the archive.
+  // Also dedupe by level+date so only one set shows per level per day, and by
+  // content so a practice that was archived again on a later week only shows
+  // once. The archive Lambda deletes those rows on read; this keeps them off
+  // the page in the meantime. Oldest copy wins, matching the Lambda, so the
+  // surviving card doesn't move once the repeats are gone.
+  const firstBySig = new Map();
+  items.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).forEach(item => {
+    const set = archiveItemToSet(item);
+    const sig = archiveSetSignature(set);
+    if (sig && !firstBySig.has(sig)) firstBySig.set(sig, set.setId);
+  });
+
   const seen = new Set(INJURY_SETS.map(s => s.setId));
   const seenDay = new Set();
   items.forEach(item => {
@@ -12295,6 +12319,8 @@ function renderArchiveCards(items) {
       if (seenDay.has(dayKey)) return;
       seenDay.add(dayKey);
     }
+    const sig = archiveSetSignature(set);
+    if (sig && firstBySig.get(sig) !== set.setId) return;
     const c = containers[set.level];
     if (c) c.insertAdjacentHTML('beforeend', archiveCardHtml(set));
   });
