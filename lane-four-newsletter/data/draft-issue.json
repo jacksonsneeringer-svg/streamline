@@ -1,77 +1,69 @@
 {
-  "date": "2026-08-03",
-  "issueDateLabel": "August 3, 2026",
-  "subject": "Dressel is back, Marchand is hurting, and a 17-year-old just made history",
-  "preheader": "Plus a 10-year-old breaking NAG records and today's aerobic freestyle set.",
+  "date": "2026-08-10",
+  "issueDateLabel": "August 10, 2026",
+  "subject": "Steenbergen rewrites the record books in prelims",
+  "preheader": "Plus Pan Pacs is loading up, a 13-year-old stuns Utah, and your Monday threshold set.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Caeleb Dressel had the kind of meet at US Nationals that makes you remember exactly why you fell in love with this sport.",
+  "heroTeaser": "Marrit Steenbergen walked into European Championships prelims and walked out with a continental record — and the week is just getting started.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Aug 3 &middot; Distance freestyle in the pool, rotational core on land",
+    "dateLabel": "Mon, Aug 10 &middot; distance freestyle threshold in the pool, oblique rotation core on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,000-yard aerobic freestyle builder where every interval has a specific focal cue -- your job is to stay present and steady, not just survive the yardage."
+      "description": "A 3,000-yard descending threshold freestyle set where you lock in your stroke count early and push each block to a pace that is genuinely uncomfortable by the final rep."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A rotational core and anti-rotation stability session targeting the mid-body control that drives both freestyle and backstroke efficiency."
+      "description": "An oblique-led rotation and anti-extension core session targeting the stability demands of freestyle and backstroke."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "caeleb-dressel-reflects-on-us-nats-previews-training-stint-with-herbie-behm-full-interview",
+      "topicSlug": "marrit-steenbergen-breaks-european-championships-record-with-52-62-100-free-during-prelims",
+      "icon": "medal",
+      "title": "Steenbergen breaks Euros 100 free record — in prelims",
+      "body": "<strong>Marrit Steenbergen</strong> clocked a 52.62 in the 100 freestyle to shave 0.05 off the previous <strong>European Championships</strong> record, claiming the top seed out of the morning session. Doing it in heats, not the final, is the kind of statement that sets a tone for an entire meet.",
+      "url": "https://swimswam.com/marrit-steenbergen-breaks-european-championships-record-with-52-62-100-free-during-prelims/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "2026-pan-pacific-championship-previews-team-usa-looking-to-cap-off-speedy-summer-on-home-soil",
+      "icon": "globe",
+      "title": "Pan Pacs preview: USA looks to close a historic summer",
+      "body": "<strong>Team USA</strong> heads into the 2026 Pan Pacific Championships riding serious momentum, with <strong>Gretchen Walsh</strong> entering as the world record holder in two events. It could be a fitting exclamation point on what has already been a remarkable summer of American swimming.",
+      "url": "https://swimswam.com/2026-pan-pacific-championship-previews-team-usa-looking-to-cap-off-speedy-summer-on-home-soil/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "2026-european-championships-preview-in-the-pool-of-the-world-champion-grousset-surrounded-in-50-fly",
       "icon": "trend",
-      "title": "Dressel delivers at US Nationals -- and he's not done yet",
-      "body": "<strong>Caeleb Dressel</strong> turned heads at US Nationals in Irvine with a 21.3/47.7 in the 50 and 100 free and a 22.8/50.4 in the 50 and 100 fly. In a full interview with <strong>SwimSwam</strong>, he reflected on the meet and previewed an upcoming training stint with <strong>Herbie Behm</strong> -- a pairing worth keeping an eye on.",
-      "url": "https://swimswam.com/caeleb-dressel-reflects-on-us-nats-previews-training-stint-with-herbie-behm-full-interview/",
+      "title": "Grousset faces a tough title defense in the 50 fly",
+      "body": "World Champion <strong>Maxime Grousset</strong> returns to competition after a disrupted training cycle caused by a foot injury, stepping into the 50 butterfly against rivals who have been getting faster in his absence. Defending a world title under those conditions is a storyline worth watching all week.",
+      "url": "https://swimswam.com/2026-european-championships-preview-in-the-pool-of-the-world-champion-grousset-surrounded-in-50-fly/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "leon-marchand-reinjures-hip-adductor-in-training-camp-raises-doubts-for-400-im-at-euro-champs",
+      "topicSlug": "13-year-old-jett-hatchard-swims-205-69-200-back-at-2026-utah-senior-championships",
       "icon": "doc",
-      "title": "Marchand's hip flares up again before Euro Champs",
-      "body": "<strong>Leon Marchand</strong> has re-aggravated the same hip adductor injury that cut his French Nationals short, and he's now facing uncertainty about whether he'll contest the 400 IM at the <strong>2026 European Championships</strong>. He says the call will be last-minute -- which is not the position anyone wants to be in heading into a major championship.",
-      "url": "https://swimswam.com/leon-marchand-reinjures-hip-adductor-in-training-camp-raises-doubts-for-400-im-at-euro-champs/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "liberty-clark-takes-17-18-50-free-nag-from-claire-curzan-with-24-28-performance",
-      "icon": "medal",
-      "title": "17-year-old Liberty Clark rewrites the record books",
-      "body": "<strong>Liberty Clark</strong> clocked a 24.28 in the 50 free at <strong>2026 US Nationals</strong> to claim the 17-18 National Age Group record, taking it from <strong>Claire Curzan</strong>. It's her first long course NAG and her third overall -- and she's still 17.",
-      "url": "https://swimswam.com/liberty-clark-takes-17-18-50-free-nag-from-claire-curzan-with-24-28-performance/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "gabe-brown-downs-a-pair-of-10-under-lcm-nag-records-at-central-zone-14u-championships",
-      "icon": "medal",
-      "title": "A 10-year-old just closed out his age group in historic fashion",
-      "body": "<strong>Gabriel Brown</strong> broke two long-course National Age Group records in the 10-and-under division at the <strong>Central Zone 14&U Championships</strong> in Evansville -- a remarkable send-off to the youngest age group in the sport. Remember the name.",
-      "url": "https://swimswam.com/gabe-brown-downs-a-pair-of-10-under-lcm-nag-records-at-central-zone-14u-championships/",
+      "title": "13-year-old drops 3 seconds, cracks all-time age group list",
+      "body": "<strong>Jett Hatchard</strong>, just 13 years old, swam a 2:05.69 in the 200 backstroke at the <strong>2026 Utah Senior Championships</strong>, dropping three seconds from his personal best and moving to No. 25 all-time in the boys 13-14 age group. Keep that name somewhere you can find it later.",
+      "url": "https://swimswam.com/13-year-old-jett-hatchard-swims-205-69-200-back-at-2026-utah-senior-championships/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Alex Walsh",
-    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Alex_Walsh_Tokyo_Olympics.jpg/330px-Alex_Walsh_Tokyo_Olympics.jpg",
-    "photoCredit": "Photo: Walsh Family, CC BY 2.5, via Wikimedia Commons",
+    "name": "Leon Marchand",
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/L%C3%A9on_Marchand%2C_2023_Pac-12_Championships%2C_400_yard_individual_medley_preliminaries_-_3_March_2023_%28cropped%29.jpg/330px-L%C3%A9on_Marchand%2C_2023_Pac-12_Championships%2C_400_yard_individual_medley_preliminaries_-_3_March_2023_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Tanis Coralee Leonhardi, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "2x Olympic Medalist",
-      "World Championship Gold",
-      "400 IM contender",
-      "Pan Pacs 2026"
+      "4x Olympic Gold",
+      "World Champion",
+      "World Record Holder",
+      "French Swimmer of the Year"
     ],
-    "bio": "Alex Walsh is an American competitive swimmer born on July 31, 2001, in Nashville, Tennessee. Known for her versatility across all four strokes, she excelled in medley events from a young age, setting national age group records at 12 and leading her high school team to multiple state and national championships. She competed for the University of Virginia from 2020 to 2025.\n\nWalsh's competitive achievements include three gold medals at the 2019 Pan American Games and a silver medal at the 2020 Olympic Games in the 200 m individual medley. She won 29 total medals across five NCAA Championships, including 23 golds, helping Virginia claim five team national titles. At the 2022 World Championships she won three golds, and she earned additional medals at multiple short course and long course World Championships through 2025."
+    "bio": "Leon Marchand is a French competitive swimmer born on 17 May 2002 in Toulouse, France. He is the son of former medley swimmers Xavier Marchand and Céline Bonnet. He began swimming at age six, later moved to the United States to train with coach Bob Bowman, and swam for Arizona State University while majoring in computer science.\n\nMarchand holds world records in the long course 200 and 400 metres individual medley and the short course 200 metres individual medley. At the 2024 Summer Olympics, he won four individual gold medals in the 200 metre medley, 400 metre medley, 200 metre butterfly, and 200 metre breaststroke, becoming the fourth swimmer in Olympic history to achieve that feat at a single Games. He also won multiple NCAA titles across three championships."
   },
   "events": [
-    {
-      "name": "USMS Summer National Championship",
-      "date": "2026-08-05",
-      "displayMonth": "AUG",
-      "displayDay": "5-9",
-      "location": "Details at usms.org",
-      "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=USMS%20Summer%20National%20Championship&dates=20260805/20260810&details=https%3A%2F%2Fwww.usms.org&location=Details%20at%20usms.org"
-    },
     {
       "name": "Pan Pacific Championships",
       "date": "2026-08-12",

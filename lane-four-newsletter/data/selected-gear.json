@@ -1,10 +1,17 @@
 [
   {
-    "slug": "tyr-long-hair",
-    "name": "TYR Long Hair silicone swim cap",
-    "url": "https://winlanefour.com/best-swim-caps#pick-tyr-long-hair",
-    "imageUrl": "https://winlanefour.com/gear/cap-tyr-long-hair.jpg",
-    "description": "A deeper, domed shape with extra room that finally ends the long-hair wrestling match — it holds more hair without the painful squeeze or the slow creep off the back of your head mid-set. If a standard cap has never quite fit, this is…"
+    "slug": "arena-freeflow",
+    "name": "Arena Freeflow Pull Buoy",
+    "url": "https://winlanefour.com/best-pull-buoys#pick-arena-freeflow",
+    "imageUrl": "https://winlanefour.com/gear/buoy-arena-freeflow.jpg",
+    "description": "A sculpted contour built to sit against the thighs without the death-grip squeeze. If standard peanut buoys have ever felt awkward or chafed, this is the fix — and the more the buoy fits, the more you can relax your lower body, which is…"
+  },
+  {
+    "slug": "speedo-silicone",
+    "name": "Speedo silicone swim cap",
+    "url": "https://winlanefour.com/best-swim-caps#pick-speedo-silicone",
+    "imageUrl": "https://winlanefour.com/gear/cap-speedo-silicone.jpg",
+    "description": "The reliable default. Durable, comfortable, gentle on hair, and easy to pull on without the hair-yanking drama of latex."
   },
   {
     "slug": "tyr-catalyst",
@@ -14,17 +21,10 @@
     "description": "A power-builder's paddle — clear size options, a contoured shape, and adjustable straps that hold securely for heavy pull sets with a buoy. For experienced swimmers with solid technique who want to load the catch."
   },
   {
-    "slug": "speedo-fastskin",
-    "name": "Speedo Fastskin dome racing cap",
-    "url": "https://winlanefour.com/best-swim-caps#pick-speedo-fastskin",
-    "imageUrl": "https://winlanefour.com/gear/cap-speedo-fastskin.jpg",
-    "description": "A dome cap built for one job — reducing drag. The smooth silicone fits tighter and sleeker than a training cap to shave resistance at the surface, which is why you see it on the blocks at every big meet, often doubled over a first cap."
-  },
-  {
-    "slug": "finis-axis",
-    "name": "FINIS Axis Buoy, a 2-in-1 pull buoy and ankle float",
-    "url": "https://winlanefour.com/best-pull-buoys#pick-finis-axis",
-    "imageUrl": "https://winlanefour.com/gear/buoy-finis-axis.jpg",
-    "description": "The Swiss Army knife of foam peanuts. It works as a normal pull buoy, but the notched shape also doubles as an ankle float or an alignment tool."
+    "slug": "finis-team",
+    "name": "FINIS team swim cap in silicone or latex",
+    "url": "https://winlanefour.com/best-swim-caps#pick-finis-team",
+    "imageUrl": "https://winlanefour.com/gear/cap-finis-team.jpg",
+    "description": "The smart buy for a team, a family, or anyone who loses caps constantly. Team packs in silicone or cheaper latex cover the basics without the per-cap premium."
   }
 ]
