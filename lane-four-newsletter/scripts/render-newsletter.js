@@ -13,7 +13,10 @@
  *                                       Hand-authored each week by an editor,
  *                                       then locked in by check-no-repeats.js.
  *   data/selected-gear.json          - written by select-gear-items.js
- *   data/newsletter-blog-picks.json  - written by fetch-blog-posts.js
+ *   data/newsletter-blog-picks.json  - written by fetch-blog-posts.js. May be
+ *                                       empty in a week with nothing new to
+ *                                       link; the blog section is then omitted
+ *                                       and the rest of the issue still ships.
  *
  * Gear cards intentionally carry NO star ratings: we have no lawful source
  * for third-party ratings (scraping retailer pages violates their terms, and
@@ -270,6 +273,25 @@ function renderBlogCards(posts) {
     .join('\n\n');
 }
 
+const BLOG_HEADING_ROW = `<tr>
+<td class="px" style="padding:24px 32px 4px 32px;">
+<span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">From the Blog This Week</span>
+</td>
+</tr>`;
+
+// "From the Blog This Week" is the only OPTIONAL section in the issue, so it
+// owns its own heading rather than having it hardcoded in the template.
+// fetch-blog-posts.js takes only posts from the last 7 days that have never
+// been featured before, and deliberately does NOT reach further back — a week
+// with nothing new to link is a normal outcome, not a failure. When that
+// happens the section is dropped entirely (heading included, so there's no
+// badge sitting over empty space) and the issue still goes out on its news,
+// athlete, gear, workout and calendar sections.
+function renderBlogSection(posts) {
+  if (!posts.length) return '';
+  return `${BLOG_HEADING_ROW}\n\n${renderBlogCards(posts)}`;
+}
+
 // ---- Calendar events ----
 function renderEventRow(event, isLast) {
   const border = isLast ? '' : ' style="border-bottom:1px solid #E3EEE7;"';
@@ -322,13 +344,24 @@ function main() {
     'Run `npm run fetch:blog` first to pick this week\'s blog posts.'
   );
 
+  // Gear is fatal when empty: it's read from the static `.product-pick` blocks
+  // in the site's own gear articles, which don't change week to week and aren't
+  // deduped, so an empty file means the selector broke rather than "nothing
+  // qualified this week".
   if (!gearItems.length) {
     console.error('data/selected-gear.json is empty, nothing to render for gear.');
     process.exit(1);
   }
+  // An empty blog selection is NOT fatal. It used to exit 1 here, which took
+  // the whole weekly run down with it — the render is upstream of the publish
+  // and send steps, so a quiet publishing week meant subscribers got no issue
+  // at all rather than an issue without a blog section. Warn loudly and omit
+  // the section instead.
   if (!blogPosts.length) {
-    console.error('data/newsletter-blog-picks.json is empty, nothing to render for the blog section.');
-    process.exit(1);
+    console.warn(
+      'data/newsletter-blog-picks.json is empty — no new, never-featured posts ' +
+      'this week. Rendering the issue without the "From the Blog This Week" section.'
+    );
   }
 
   let html = fs.readFileSync(TEMPLATE_PATH, 'utf8');
@@ -358,7 +391,7 @@ function main() {
     '{{SWIM_SET_DESC}}': escapeHtml(draft.workout.swimSet.description),
     '{{LIFT_TITLE}}': escapeHtml(draft.workout.lift.title),
     '{{LIFT_DESC}}': escapeHtml(draft.workout.lift.description),
-    '{{BLOG_CARDS}}': renderBlogCards(blogPosts),
+    '{{BLOG_SECTION}}': renderBlogSection(blogPosts),
     '{{EVENT_ROWS}}': renderEventRows(draft.events),
     '{{OUTRO_LINE}}': escapeHtml(draft.outroLine || "That's the week in the water. Happy swimming,"),
     '{{COPYRIGHT_YEAR}}': String(new Date(draft.date || Date.now()).getFullYear()),
