@@ -12,11 +12,17 @@ candidate works, and they fail in ways that look identical from the site's side:
     string with a "us." prefix.
   * The agreement. A third-party model needs a foundation-model agreement on
     the account. Bedrock creates one automatically on first invoke, but only
-    when the calling role holds aws-marketplace:Subscribe -- the Lambda
-    execution role deliberately does not, so the agreement has to be created
-    out of band. Until it exists a correctly spelled ID fails with
-    AccessDeniedException. (The console's "Model access" page is gone; access
-    is automatic now, gated on Marketplace permissions instead.)
+    when the calling role holds aws-marketplace:ViewSubscriptions and
+    aws-marketplace:Subscribe -- the Lambda execution role grants both, so the
+    generators enable a new model by asking for it. Until the agreement exists
+    a correctly spelled ID fails with AccessDeniedException, and it keeps
+    failing for a minute or two after the subscribe is triggered. (The
+    console's "Model access" page is gone; access is automatic now, gated on
+    those Marketplace permissions instead.)
+
+    Note that this script uses YOUR credentials, not the Lambda role's. If the
+    identity you run it as has no Marketplace permissions, a model the site can
+    enable for itself still reports AccessDeniedException here.
 
 This script answers both by making a real one-token invoke_model call against
 each candidate, which is the only check that proves access end to end.
@@ -105,8 +111,15 @@ def main():
             print("  %s %s\n             %s" % (mark, model_id, detail))
 
     if not usable:
-        print("\nNo candidate is invokable. Create the foundation-model agreement")
-        print("from an identity with AWS Marketplace permissions, then re-run:")
+        print("\nNo candidate is invokable.")
+        print()
+        print("If the denials mention AWS Marketplace, the identity being used has no")
+        print("permission to enable the model. The Lambda execution role in")
+        print("cloudformation/template.yml holds aws-marketplace:ViewSubscriptions and")
+        print("aws-marketplace:Subscribe for this, so deploying the stack and letting a")
+        print("generator run is usually the fix; subscribing is asynchronous, so give it")
+        print("two minutes before judging the result. To create the agreement by hand")
+        print("instead, from an identity with Marketplace permissions:")
         print()
         print("  aws bedrock list-foundation-model-agreement-offers \\")
         print("    --model-id anthropic.claude-haiku-4-5-20251001-v1:0 --region %s" % args.region)
