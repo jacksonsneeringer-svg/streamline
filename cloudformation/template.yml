@@ -47,11 +47,15 @@ Mappings:
   # Sonnet sets while the template said Haiku. Failing loudly is the point.
   #
   # The consequence: Haiku 4.5 needs a foundation-model agreement on the
-  # account before this ships, or every generation fails. Bedrock enables
-  # models automatically on first invoke, but only when the *calling* role
-  # holds aws-marketplace:Subscribe — the Lambda execution role deliberately
-  # does not, so the agreement has to be created once out of band. See
-  # scripts/check-bedrock-models.py to confirm before deploying.
+  # account, or every generation fails. Bedrock creates that agreement itself
+  # on the first invoke, but only when the *calling* role holds
+  # aws-marketplace:Subscribe — which the Lambda execution role now does (see
+  # LambdaExecutionRole), so switching the list to a model the account has
+  # never used enables it on first use instead of failing forever. Subscribing
+  # is asynchronous, so that first call can still come back
+  # AccessDeniedException while it settles; the generators pause and re-walk
+  # the candidate list once for exactly that window. Run
+  # scripts/check-bedrock-models.py to confirm a model resolves.
   #
   # This is a Mapping and deliberately NOT a stack Parameter. `aws
   # cloudformation deploy` (.github/workflows/deploy.yml) sends
@@ -424,6 +428,30 @@ Resources:
               - Effect: Allow
                 Action:
                   - bedrock:InvokeModel
+                Resource: "*"
+              # Bedrock has no console "Model access" page any more: a
+              # third-party model is enabled by an AWS Marketplace subscription
+              # that Bedrock creates by itself on the first InvokeModel call,
+              # but only when the *calling* role is allowed to act on
+              # Marketplace. Without these two actions a correctly spelled
+              # model ID still fails with AccessDeniedException ("not
+              # authorized to perform the required AWS Marketplace actions
+              # (aws-marketplace:ViewSubscriptions, aws-marketplace:Subscribe)
+              # to enable access to this model"), which is exactly what took
+              # the daily generators down when they moved to Haiku 4.5.
+              #
+              # Marketplace actions carry no resource ARNs (the only lever is
+              # an aws-marketplace:ProductId condition, and Bedrock does not
+              # publish per-model product IDs), so Resource has to be "*".
+              # Subscribe is the action that can start incurring charges, and
+              # it is bounded by the bedrock:InvokeModel statement above: the
+              # role can only ever subscribe to a model it is about to invoke.
+              # Unsubscribe is deliberately NOT granted, so this role can turn
+              # a model on and never off.
+              - Effect: Allow
+                Action:
+                  - aws-marketplace:ViewSubscriptions
+                  - aws-marketplace:Subscribe
                 Resource: "*"
               - Effect: Allow
                 Action:
@@ -1933,7 +1961,10 @@ Resources:
       Runtime: python3.12
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Timeout: 300
+      # 300s covered the generation itself; the extra two minutes is headroom
+      # for the one SUBSCRIBE_WAIT pause the model resolution can take while
+      # Bedrock finishes enabling a model the account has not used before.
+      Timeout: 420
       Environment:
         Variables:
           SKILL_URL: !Sub "https://${DomainName}/swim-sets.md"
@@ -2119,11 +2150,12 @@ Resources:
           # inference profile that contains this model"), so a cross-region
           # profile ID ('us.' / 'global.' prefix) is tried first. Separately, a
           # third-party model needs a foundation-model agreement on the account;
-          # Bedrock creates one automatically on first invoke, but only if the
-          # calling role holds aws-marketplace:Subscribe, which this Lambda's
-          # role does not. Without it the ID is spelled correctly and still
-          # fails with AccessDeniedException. Both look identical from the
-          # site's side, which is why they fall through to the next candidate.
+          # Bedrock creates one on first invoke now that this Lambda's role
+          # holds aws-marketplace:Subscribe, but the subscription takes a minute
+          # or two to settle and the ID is denied until it does. The first is
+          # permanent and the second clears itself, so an AccessDeniedException
+          # that names Marketplace earns one more pass over the whole candidate
+          # list (see invoke) rather than being written off like a bad ID.
           MODEL_IDS = [m.strip() for m in os.environ.get('MODEL_IDS', 'us.anthropic.claude-haiku-4-5-20251001-v1:0').split(',') if m.strip()]
 
           # "This model ID is unusable on this account" — a wrong or
@@ -2154,25 +2186,54 @@ Resources:
                 print('bedrock %s on %s, retrying in %ds' % (code, model_id, 2 ** i))
                 time.sleep(2 ** i)
 
+          # How long to wait before re-walking the candidate list when a model
+          # was denied because Bedrock is still creating its Marketplace
+          # subscription. The API's own advice is "try again after 2 minutes";
+          # the invoke that triggered the subscribe already burned some of that.
+          SUBSCRIBE_WAIT = 90
+
+          def _subscribing(code, ex):
+            # A denial raised while Bedrock enables the model, as opposed to one
+            # that will never clear. Matched on the message because both arrive
+            # as AccessDeniedException with no distinguishing error code.
+            return code == 'AccessDeniedException' and 'marketplace' in str(ex).lower()
+
           def invoke(prompt):
             # Once a model has answered, stay on it: a throttle or a timeout must
             # not silently demote the generator to a fallback model mid-run.
             if 'id' in _model:
               return _invoke_with_retry(_model['id'], prompt)
-            skipped = []
-            for model_id in MODEL_IDS:
-              try:
-                out = _invoke_with_retry(model_id, prompt)
-              except ClientError as ex:
-                code = ex.response.get('Error', {}).get('Code', '')
-                if code not in UNUSABLE:
-                  raise
-                print('MODEL_UNUSABLE %s: %s: %s' % (model_id, code, ex))
-                skipped.append('%s (%s)' % (model_id, code))
-                continue
-              _model['id'] = model_id
-              print('MODEL_RESOLVED %s' % model_id)
-              return out
+            # At most two passes. The first invoke of a model this account has
+            # never used is what makes Bedrock create the Marketplace
+            # subscription, and it is denied while that is in flight, so a list
+            # that is entirely new models fails on pass one and works on pass
+            # two. Without the second pass, adopting a model always costs a
+            # day's plan; with it, it costs SUBSCRIBE_WAIT seconds. Candidates
+            # that failed for any other reason are simply retried and skipped
+            # again, so the pass is only ever entered when it can help.
+            for attempt in range(2):
+              # Reset per pass: the RuntimeError below should report why the
+              # last pass failed, not list every candidate twice.
+              skipped = []
+              subscribing = False
+              for model_id in MODEL_IDS:
+                try:
+                  out = _invoke_with_retry(model_id, prompt)
+                except ClientError as ex:
+                  code = ex.response.get('Error', {}).get('Code', '')
+                  if code not in UNUSABLE:
+                    raise
+                  print('MODEL_UNUSABLE %s: %s: %s' % (model_id, code, ex))
+                  skipped.append('%s (%s)' % (model_id, code))
+                  subscribing = subscribing or _subscribing(code, ex)
+                  continue
+                _model['id'] = model_id
+                print('MODEL_RESOLVED %s' % model_id)
+                return out
+              if attempt or not subscribing:
+                break
+              print('MODEL_SUBSCRIBING: Bedrock is still enabling a candidate, retrying the list in %ds' % SUBSCRIBE_WAIT)
+              time.sleep(SUBSCRIBE_WAIT)
             raise RuntimeError('no usable Bedrock model: %s' % '; '.join(skipped))
 
           def handler(event, context):
@@ -2403,7 +2464,10 @@ Resources:
       Runtime: python3.12
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Timeout: 300
+      # 300s covered the generation itself; the extra two minutes is headroom
+      # for the one SUBSCRIBE_WAIT pause the model resolution can take while
+      # Bedrock finishes enabling a model the account has not used before.
+      Timeout: 420
       Environment:
         Variables:
           SKILL_URL: !Sub "https://${DomainName}/dryland.md"
@@ -2585,11 +2649,13 @@ Resources:
           # first ID this account can invoke wins, and it is cached for the life
           # of the container. Some models are inference-profile-only (use the
           # 'us.' cross-region profile ID, this Lambda runs in us-east-1), and a
-          # third-party model without a foundation-model agreement on the
-          # account is denied even when the ID is spelled correctly. Both cases
-          # fall through to the next candidate. Note the candidates are now all
-          # Haiku 4.5, so exhausting them takes the day's dryland down rather
-          # than quietly serving a different model.
+          # third-party model whose Marketplace subscription has not finished
+          # being created is denied even when the ID is spelled correctly. Both
+          # cases fall through to the next candidate; the second one also earns
+          # a second pass, since it clears itself within a couple of minutes.
+          # Note the candidates are now all Haiku 4.5, so exhausting them takes
+          # the day's dryland down rather than quietly serving a different
+          # model.
           MODEL_IDS = [m.strip() for m in os.environ.get('MODEL_IDS', 'us.anthropic.claude-haiku-4-5-20251001-v1:0').split(',') if m.strip()]
 
           # Errors meaning "this model ID is unusable on this account". Anything
@@ -2613,25 +2679,54 @@ Resources:
                 print('bedrock %s on %s, retrying in %ds' % (code, model_id, 2 ** i))
                 time.sleep(2 ** i)
 
+          # How long to wait before re-walking the candidate list when a model
+          # was denied because Bedrock is still creating its Marketplace
+          # subscription. The API's own advice is "try again after 2 minutes";
+          # the invoke that triggered the subscribe already burned some of that.
+          SUBSCRIBE_WAIT = 90
+
+          def _subscribing(code, ex):
+            # A denial raised while Bedrock enables the model, as opposed to one
+            # that will never clear. Matched on the message because both arrive
+            # as AccessDeniedException with no distinguishing error code.
+            return code == 'AccessDeniedException' and 'marketplace' in str(ex).lower()
+
           def invoke(prompt):
             # Once a model has answered, stay on it: a throttle or a timeout must
             # not silently demote the generator to a fallback model mid-run.
             if 'id' in _model:
               return _invoke_with_retry(_model['id'], prompt)
-            skipped = []
-            for model_id in MODEL_IDS:
-              try:
-                out = _invoke_with_retry(model_id, prompt)
-              except ClientError as ex:
-                code = ex.response.get('Error', {}).get('Code', '')
-                if code not in UNUSABLE:
-                  raise
-                print('MODEL_UNUSABLE %s: %s: %s' % (model_id, code, ex))
-                skipped.append('%s (%s)' % (model_id, code))
-                continue
-              _model['id'] = model_id
-              print('MODEL_RESOLVED %s' % model_id)
-              return out
+            # At most two passes. The first invoke of a model this account has
+            # never used is what makes Bedrock create the Marketplace
+            # subscription, and it is denied while that is in flight, so a list
+            # that is entirely new models fails on pass one and works on pass
+            # two. Without the second pass, adopting a model always costs a
+            # day's plan; with it, it costs SUBSCRIBE_WAIT seconds. Candidates
+            # that failed for any other reason are simply retried and skipped
+            # again, so the pass is only ever entered when it can help.
+            for attempt in range(2):
+              # Reset per pass: the RuntimeError below should report why the
+              # last pass failed, not list every candidate twice.
+              skipped = []
+              subscribing = False
+              for model_id in MODEL_IDS:
+                try:
+                  out = _invoke_with_retry(model_id, prompt)
+                except ClientError as ex:
+                  code = ex.response.get('Error', {}).get('Code', '')
+                  if code not in UNUSABLE:
+                    raise
+                  print('MODEL_UNUSABLE %s: %s: %s' % (model_id, code, ex))
+                  skipped.append('%s (%s)' % (model_id, code))
+                  subscribing = subscribing or _subscribing(code, ex)
+                  continue
+                _model['id'] = model_id
+                print('MODEL_RESOLVED %s' % model_id)
+                return out
+              if attempt or not subscribing:
+                break
+              print('MODEL_SUBSCRIBING: Bedrock is still enabling a candidate, retrying the list in %ds' % SUBSCRIBE_WAIT)
+              time.sleep(SUBSCRIBE_WAIT)
             raise RuntimeError('no usable Bedrock model: %s' % '; '.join(skipped))
 
           def rest_day(dow):
