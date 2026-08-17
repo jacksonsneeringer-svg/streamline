@@ -2,17 +2,21 @@
 """Report which Bedrock model IDs this AWS account can actually invoke.
 
 The daily swim-set and dryland generators pick their model from an ordered
-candidate list (the GeneratorModelIds stack parameter, surfaced to the Lambdas
-as MODEL_IDS). Two independent things decide whether a candidate works, and
-they fail in ways that look identical from the site's side:
+candidate list (the GeneratorModels mapping in cloudformation/template.yml,
+surfaced to the Lambdas as MODEL_IDS). Two independent things decide whether a
+candidate works, and they fail in ways that look identical from the site's side:
 
-  * The ID form. Newer Claude models are inference-profile-only on Bedrock, so
+  * The ID form. Some Claude models are inference-profile-only on Bedrock, so
     the bare foundation-model ID is rejected with a ValidationException telling
     you to use an inference profile. The US cross-region profile ID is the same
     string with a "us." prefix.
-  * Model access. Bedrock grants access per foundation model, per region, in
-    the console (Bedrock > Model access). An ID that is spelled correctly but
-    not granted fails with AccessDeniedException.
+  * The agreement. A third-party model needs a foundation-model agreement on
+    the account. Bedrock creates one automatically on first invoke, but only
+    when the calling role holds aws-marketplace:Subscribe -- the Lambda
+    execution role deliberately does not, so the agreement has to be created
+    out of band. Until it exists a correctly spelled ID fails with
+    AccessDeniedException. (The console's "Model access" page is gone; access
+    is automatic now, gated on Marketplace permissions instead.)
 
 This script answers both by making a real one-token invoke_model call against
 each candidate, which is the only check that proves access end to end.
@@ -31,13 +35,17 @@ import sys
 import boto3
 from botocore.exceptions import ClientError
 
-# Mirrors the GeneratorModels mapping in cloudformation/template.yml, plus the
-# Claude 3 Haiku ID the search Lambda uses (an older model that still supports
-# on-demand throughput, so it needs no inference profile) and the undated Haiku
-# spellings, which are listed deliberately: they belong to Anthropic's newer
-# first-party Bedrock client, not to the bedrock-runtime InvokeModel API called
-# here, so probing them shows the ValidationException side by side with the
-# dated ID that works.
+# The first three mirror the GeneratorModels mapping in
+# cloudformation/template.yml -- the daily swim-set and dryland generators now
+# run only on Haiku 4.5, so those three are the ones that matter. The rest are
+# probed for contrast: Sonnet 4.6 is no longer a generator candidate but still
+# serves streamline-newsletter-compose and streamline-training-plan, so it is
+# worth confirming it still resolves; Claude 3 Haiku is what the search Lambda
+# uses (an older model that still supports on-demand throughput, so it needs no
+# inference profile); and the undated Haiku spellings belong to Anthropic's
+# newer first-party Bedrock client rather than the bedrock-runtime InvokeModel
+# API called here, so probing them shows the ValidationException side by side
+# with the dated ID that works.
 DEFAULT_CANDIDATES = [
     "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "global.anthropic.claude-haiku-4-5-20251001-v1:0",
@@ -97,8 +105,16 @@ def main():
             print("  %s %s\n             %s" % (mark, model_id, detail))
 
     if not usable:
-        print("\nNo candidate is invokable. Grant model access in the Bedrock console")
-        print("(Bedrock > Model access) for the region above, then re-run.")
+        print("\nNo candidate is invokable. Create the foundation-model agreement")
+        print("from an identity with AWS Marketplace permissions, then re-run:")
+        print()
+        print("  aws bedrock list-foundation-model-agreement-offers \\")
+        print("    --model-id anthropic.claude-haiku-4-5-20251001-v1:0 --region %s" % args.region)
+        print("  aws bedrock create-foundation-model-agreement \\")
+        print("    --model-id anthropic.claude-haiku-4-5-20251001-v1:0 \\")
+        print("    --offer-token <offerToken> --region %s" % args.region)
+        print("  aws bedrock get-foundation-model-availability \\")
+        print("    --model-id anthropic.claude-haiku-4-5-20251001-v1:0 --region %s" % args.region)
         return 1
 
     print("\nUsable, in candidate order: %s" % ", ".join(usable))

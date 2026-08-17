@@ -37,9 +37,21 @@ Mappings:
 
   # Ordered, comma-separated Bedrock model IDs for the daily swim-set and
   # dryland generators. The first ID this account can actually invoke wins;
-  # IDs the account has no model access to (or that do not exist) are skipped.
-  # Keep a model you are known to have access to last so a model-access gap
-  # degrades the output instead of leaving the site with no plan for the day.
+  # IDs the account has no agreement for (or that do not exist) are skipped.
+  #
+  # Every candidate is Haiku 4.5 in a different addressing form, so there is no
+  # longer a cross-model fallback: if none of the three is invokable the run
+  # raises and the day has no plan. That is deliberate. The previous list ended
+  # in Sonnet 4.6, which meant an unusable Haiku ID degraded silently to Sonnet
+  # instead of failing — and that is exactly how the site spent a week serving
+  # Sonnet sets while the template said Haiku. Failing loudly is the point.
+  #
+  # The consequence: Haiku 4.5 needs a foundation-model agreement on the
+  # account before this ships, or every generation fails. Bedrock enables
+  # models automatically on first invoke, but only when the *calling* role
+  # holds aws-marketplace:Subscribe — the Lambda execution role deliberately
+  # does not, so the agreement has to be created once out of band. See
+  # scripts/check-bedrock-models.py to confirm before deploying.
   #
   # This is a Mapping and deliberately NOT a stack Parameter. `aws
   # cloudformation deploy` (.github/workflows/deploy.yml) sends
@@ -57,10 +69,12 @@ Mappings:
   # "global.") for models that do not support on-demand throughput. The undated
   # form ("anthropic.claude-haiku-4-5") belongs to Anthropic's newer
   # first-party Bedrock client and is rejected here with a ValidationException.
-  # Sonnet 4.6 is undated because newer models dropped the date suffix.
+  # The three candidates below are the US profile, the global profile, and the
+  # bare foundation-model ID — tried in that order because Haiku 4.5 may be
+  # inference-profile-only, in which case the bare form alone would fail.
   GeneratorModels:
     Bedrock:
-      Ids: "us.anthropic.claude-haiku-4-5-20251001-v1:0,global.anthropic.claude-haiku-4-5-20251001-v1:0,anthropic.claude-haiku-4-5-20251001-v1:0,us.anthropic.claude-sonnet-4-6"
+      Ids: "us.anthropic.claude-haiku-4-5-20251001-v1:0,global.anthropic.claude-haiku-4-5-20251001-v1:0,anthropic.claude-haiku-4-5-20251001-v1:0"
 
 Resources:
 
@@ -2099,16 +2113,18 @@ Resources:
           # has no Bedrock model access to costs one failed call instead of the
           # whole day's generation.
           #
-          # Two things make a Bedrock model ID unusable here. Newer models are
-          # inference-profile-only: the bare ID 'anthropic.claude-sonnet-4-6' is
-          # rejected with on-demand throughput ("Retry your request with the ID or
-          # ARN of an inference profile that contains this model"), so the US
-          # cross-region profile ID ('us.' prefix) is used instead. Separately,
-          # model access is granted per foundation model in the Bedrock console:
-          # an ID that is spelled correctly but not granted fails with
-          # AccessDeniedException. Both look identical from the site's side (no
-          # sets), which is why they are handled by falling through, not raising.
-          MODEL_IDS = [m.strip() for m in os.environ.get('MODEL_IDS', 'us.anthropic.claude-sonnet-4-6').split(',') if m.strip()]
+          # Two things make a Bedrock model ID unusable here. Some models are
+          # inference-profile-only: the bare foundation-model ID is rejected for
+          # on-demand throughput ("Retry your request with the ID or ARN of an
+          # inference profile that contains this model"), so a cross-region
+          # profile ID ('us.' / 'global.' prefix) is tried first. Separately, a
+          # third-party model needs a foundation-model agreement on the account;
+          # Bedrock creates one automatically on first invoke, but only if the
+          # calling role holds aws-marketplace:Subscribe, which this Lambda's
+          # role does not. Without it the ID is spelled correctly and still
+          # fails with AccessDeniedException. Both look identical from the
+          # site's side, which is why they fall through to the next candidate.
+          MODEL_IDS = [m.strip() for m in os.environ.get('MODEL_IDS', 'us.anthropic.claude-haiku-4-5-20251001-v1:0').split(',') if m.strip()]
 
           # "This model ID is unusable on this account" — a wrong or
           # profile-only ID, model access not granted, or an ID absent from this
@@ -2567,12 +2583,14 @@ Resources:
           # Same model-resolution scheme as streamline-generate-sets: MODEL_IDS is
           # an ordered candidate list (the GeneratorModels mapping above), the
           # first ID this account can invoke wins, and it is cached for the life
-          # of the container. Newer models are inference-profile-only (use the
-          # 'us.' cross-region profile ID, this Lambda runs in us-east-1), and
-          # Bedrock model access is granted per model in the console, so a
-          # correctly spelled ID can still be denied. Both cases fall through to
-          # the next candidate instead of taking the day's dryland down.
-          MODEL_IDS = [m.strip() for m in os.environ.get('MODEL_IDS', 'us.anthropic.claude-sonnet-4-6').split(',') if m.strip()]
+          # of the container. Some models are inference-profile-only (use the
+          # 'us.' cross-region profile ID, this Lambda runs in us-east-1), and a
+          # third-party model without a foundation-model agreement on the
+          # account is denied even when the ID is spelled correctly. Both cases
+          # fall through to the next candidate. Note the candidates are now all
+          # Haiku 4.5, so exhausting them takes the day's dryland down rather
+          # than quietly serving a different model.
+          MODEL_IDS = [m.strip() for m in os.environ.get('MODEL_IDS', 'us.anthropic.claude-haiku-4-5-20251001-v1:0').split(',') if m.strip()]
 
           # Errors meaning "this model ID is unusable on this account". Anything
           # else (throttling, timeout, 5xx) is transient: retry the same model.
