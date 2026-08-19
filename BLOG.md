@@ -21,7 +21,11 @@ Once a post is in `BLOG_POSTS`, the pipeline in the `DOMContentLoaded` handler
 3. **Dates** — the formatted `date` is written into every card (home, blog,
    "continue reading") and into the article header, so all locations match.
 4. **Hero image** — if the post has a `heroImage`, it is shown on the post's
-   cards and as a banner at the top of the article, above the headline.
+   cards and as a banner at the top of the article, above the headline. The
+   photo is only painted onto a card once it has actually loaded, so a hero URL
+   that 404s (a dead Pexels link, say) leaves the card's gradient-and-icon
+   placeholder in place instead of an empty box, and the article's hero banner
+   is dropped rather than left as a broken image.
 5. **Share bar** — every article gets a "Share this article" row below the
    body: X, Facebook, LinkedIn, email, copy-link, and (on devices that support
    it) the native share sheet. Buttons share the post's canonical URL
