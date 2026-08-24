@@ -1,76 +1,67 @@
 {
-  "date": "2026-08-10",
-  "issueDateLabel": "August 10, 2026",
-  "subject": "Steenbergen rewrites the record books in prelims",
-  "preheader": "Plus Pan Pacs is loading up, a 13-year-old stuns Utah, and your Monday threshold set.",
+  "date": "2026-08-24",
+  "issueDateLabel": "August 24, 2026",
+  "subject": "Bobby Finke is engaged + LA 2028 is selling out",
+  "preheader": "Plus the Mediterranean Games are underway and Texas is loaded for 2027.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Marrit Steenbergen walked into European Championships prelims and walked out with a continental record — and the week is just getting started.",
+  "heroTeaser": "Bobby Finke just got down on one knee in Rome, and we have all the details on the distance king's big news.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Aug 10 &middot; distance freestyle threshold in the pool, oblique rotation core on land",
+    "dateLabel": "Mon, Aug 24 &middot; freestyle endurance in the pool, core and stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,000-yard descending threshold freestyle set where you lock in your stroke count early and push each block to a pace that is genuinely uncomfortable by the final rep."
+      "description": "A 3,050-yard aerobic builder built around longer freestyle repeats with controlled rest, designed to sharpen your breathing rhythm and hold your line as fatigue sets in."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "An oblique-led rotation and anti-extension core session targeting the stability demands of freestyle and backstroke."
+      "description": "A rotational power and anti-rotation stability session targeting the core muscles that matter most for freestyle and backstroke body position."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "marrit-steenbergen-breaks-european-championships-record-with-52-62-100-free-during-prelims",
+      "topicSlug": "bobby-finke-announces-engagement-to-fellow-florida-alum-ellie-zweifel-in-rome",
       "icon": "medal",
-      "title": "Steenbergen breaks Euros 100 free record — in prelims",
-      "body": "<strong>Marrit Steenbergen</strong> clocked a 52.62 in the 100 freestyle to shave 0.05 off the previous <strong>European Championships</strong> record, claiming the top seed out of the morning session. Doing it in heats, not the final, is the kind of statement that sets a tone for an entire meet.",
-      "url": "https://swimswam.com/marrit-steenbergen-breaks-european-championships-record-with-52-62-100-free-during-prelims/",
+      "title": "Finke pops the question in Rome",
+      "body": "Two-time Olympic champion <strong>Bobby Finke</strong> announced his engagement to longtime partner <strong>Ellie Zweifel</strong>, a fellow <strong>University of Florida</strong> alum. The couple shared the news from Rome, which is a pretty solid place to say yes.",
+      "url": "https://swimswam.com/bobby-finke-announces-engagement-to-fellow-florida-alum-ellie-zweifel-in-rome/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "2026-pan-pacific-championship-previews-team-usa-looking-to-cap-off-speedy-summer-on-home-soil",
+      "topicSlug": "siskos-pilato-mancini-claim-day-1-golds-at-2026-mediterranean-games",
       "icon": "globe",
-      "title": "Pan Pacs preview: USA looks to close a historic summer",
-      "body": "<strong>Team USA</strong> heads into the 2026 Pan Pacific Championships riding serious momentum, with <strong>Gretchen Walsh</strong> entering as the world record holder in two events. It could be a fitting exclamation point on what has already been a remarkable summer of American swimming.",
-      "url": "https://swimswam.com/2026-pan-pacific-championship-previews-team-usa-looking-to-cap-off-speedy-summer-on-home-soil/",
+      "title": "Mediterranean Games kicks off with three golds",
+      "body": "<strong>Apostolos Siskos</strong> of Greece opened the <strong>2026 Mediterranean Games</strong> with a win in the 200 backstroke, clocking 1:55.95 on Day 1. <strong>Pilato</strong> and <strong>Mancini</strong> also topped the podium to give the host region a strong start.",
+      "url": "https://swimswam.com/siskos-pilato-mancini-claim-day-1-golds-at-2026-mediterranean-games/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "2026-european-championships-preview-in-the-pool-of-the-world-champion-grousset-surrounded-in-50-fly",
+      "topicSlug": "2028-los-angeles-olympics-finish-drop-2-with-over-6-million-tickets-sold",
       "icon": "trend",
-      "title": "Grousset faces a tough title defense in the 50 fly",
-      "body": "World Champion <strong>Maxime Grousset</strong> returns to competition after a disrupted training cycle caused by a foot injury, stepping into the 50 butterfly against rivals who have been getting faster in his absence. Defending a world title under those conditions is a storyline worth watching all week.",
-      "url": "https://swimswam.com/2026-european-championships-preview-in-the-pool-of-the-world-champion-grousset-surrounded-in-50-fly/",
+      "title": "LA 2028 tickets are going fast",
+      "body": "The <strong>2028 Los Angeles Olympics</strong> has already moved past 6 million tickets sold, and the next chance to buy won't come until early 2027. If you were thinking about going, that window is tighter than it looks.",
+      "url": "https://swimswam.com/2028-los-angeles-olympics-finish-drop-2-with-over-6-million-tickets-sold/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "13-year-old-jett-hatchard-swims-205-69-200-back-at-2026-utah-senior-championships",
+      "topicSlug": "reigning-champion-texas-men-return-most-points-for-2027-ncaa-season",
       "icon": "doc",
-      "title": "13-year-old drops 3 seconds, cracks all-time age group list",
-      "body": "<strong>Jett Hatchard</strong>, just 13 years old, swam a 2:05.69 in the 200 backstroke at the <strong>2026 Utah Senior Championships</strong>, dropping three seconds from his personal best and moving to No. 25 all-time in the boys 13-14 age group. Keep that name somewhere you can find it later.",
-      "url": "https://swimswam.com/13-year-old-jett-hatchard-swims-205-69-200-back-at-2026-utah-senior-championships/",
+      "title": "Texas is loaded and coming back for more",
+      "body": "The <strong>Texas Longhorns</strong> men's team, two-time reigning <strong>NCAA Division I</strong> champions, are returning the most points of any program heading into the 2027 season. A three-peat is very much on the table.",
+      "url": "https://swimswam.com/reigning-champion-texas-men-return-most-points-for-2027-ncaa-season/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Leon Marchand",
-    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/L%C3%A9on_Marchand%2C_2023_Pac-12_Championships%2C_400_yard_individual_medley_preliminaries_-_3_March_2023_%28cropped%29.jpg/330px-L%C3%A9on_Marchand%2C_2023_Pac-12_Championships%2C_400_yard_individual_medley_preliminaries_-_3_March_2023_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Tanis Coralee Leonhardi, CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Thomas Ceccon",
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/2018-10-10_Swimming_Boys%27_50m_Freestyle_Final_at_2018_Summer_Youth_Olympics_by_Sandro_Halank%E2%80%93016_%28cropped%29.jpg/330px-2018-10-10_Swimming_Boys%27_50m_Freestyle_Final_at_2018_Summer_Youth_Olympics_by_Sandro_Halank%E2%80%93016_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Sandro Halank , Wikimedia Commons, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "4x Olympic Gold",
-      "World Champion",
+      "Olympic Gold Medalist",
       "World Record Holder",
-      "French Swimmer of the Year"
+      "World Champion",
+      "100m Backstroke Specialist"
     ],
-    "bio": "Leon Marchand is a French competitive swimmer born on 17 May 2002 in Toulouse, France. He is the son of former medley swimmers Xavier Marchand and Céline Bonnet. He began swimming at age six, later moved to the United States to train with coach Bob Bowman, and swam for Arizona State University while majoring in computer science.\n\nMarchand holds world records in the long course 200 and 400 metres individual medley and the short course 200 metres individual medley. At the 2024 Summer Olympics, he won four individual gold medals in the 200 metre medley, 400 metre medley, 200 metre butterfly, and 200 metre breaststroke, becoming the fourth swimmer in Olympic history to achieve that feat at a single Games. He also won multiple NCAA titles across three championships."
+    "bio": "Thomas Ceccon is an Italian competitive swimmer, born on 27 January 2001 in Thiene, in the province of Vicenza, Italy. He trains under coach Alberto Burlina for Gruppo Sportivo Fiamme Oro and has held the Italian record in the long course 100 metre backstroke since December 2020.\n\nCeccon is the 2024 Olympic champion and current world record holder in the 100 metre backstroke, having set the world record at the 2022 World Aquatics Championships with a time of 51.60 seconds. He has won four Olympic medals in total, along with three World Championship titles and four European Championship titles in long course competition."
   },
-  "events": [
-    {
-      "name": "Pan Pacific Championships",
-      "date": "2026-08-12",
-      "displayMonth": "AUG",
-      "displayDay": "12-17",
-      "location": "Details at worldaquatics.com",
-      "calendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pan%20Pacific%20Championships&dates=20260812/20260818&details=https%3A%2F%2Fwww.worldaquatics.com&location=Details%20at%20worldaquatics.com"
-    }
-  ]
+  "events": []
 }
