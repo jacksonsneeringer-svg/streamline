@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>LANE FOUR Weekly Digest</title>
+<!-- No remote font links: email clients ignore them, and the copy published
+     to the winlanefour.com/issues archive must not send visitor IPs to Google
+     Fonts. Every font-family below falls back to Georgia/Arial. -->
+
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+
+<!-- ===== Mobile rendering =====
+     The issue used to be laid out on a rigid 640px table. Nothing about that
+     is legible on a phone: iOS Mail (and every other client that can't fit a
+     640px document into a ~390px viewport) responds by shrink-to-fit scaling
+     the WHOLE message to ~60%, so 21px headings land at ~13px and the reader
+     is pinching to zoom, while webmail that lays out at device width shows
+     the same email at full size. That's the entire gap between the two.
+
+     The fix is to stop being 640px wide on a phone rather than to be scaled
+     down to fit. The shell below is a fluid-hybrid ("spongy") layout:
+       - the card is width:100% with max-width:640px, so it fills a phone and
+         still caps at 640px on desktop, with an Outlook-only ghost table
+         holding the 640px there (Outlook ignores max-width);
+       - multi-column blocks are inline-block with a max-width, so they reflow
+         to one column when the screen can't hold two — no media query needed;
+       - the media query below is the polish pass (tighter gutters, bigger
+         hero art, full-bleed cards), not the thing the layout depends on.
+     Clients that drop <style> entirely still get the fluid layout and render
+     at device width, which is the part that matters. -->
+<style type="text/css">
+  /* Never let a client scale our type up or down on its own. */
+  html, body { margin:0 !important; padding:0 !important; width:100% !important; }
+  body, table, td, div, p, a, span, h1, h2 {
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
+  table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; border-collapse:collapse; }
+  img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+  /* Stop iOS/Gmail from auto-linking dates and addresses in their own blue. */
+  a[x-apple-data-detectors], .unstyled-auto-detected a {
+    color:inherit !important; text-decoration:none !important; font-size:inherit !important;
+    font-family:inherit !important; font-weight:inherit !important; line-height:inherit !important;
+  }
+
+  @media only screen and (max-width:640px) {
+    /* Full-bleed card: on a phone the rounded outer margin just steals width
+       from the content, which is what pushed the layout over the viewport. */
+    .shell { padding:0 !important; }
+    .container { width:100% !important; max-width:100% !important; border-radius:0 !important; }
+    /* 32px gutters cost 64px of a 390px screen. 18px reads the same and
+       leaves the copy room to set at full size. */
+    .px { padding-left:18px !important; padding-right:18px !important; }
+    .nav { padding-right:0 !important; }
+    .nav-date { padding-right:18px !important; }
+    /* Stacked columns take the full width instead of sitting at their
+       desktop max-width. */
+    .stack { display:block !important; width:100% !important; max-width:100% !important; }
+    .stack-a { padding:0 0 12px 0 !important; }
+    .stack-b { padding:0 !important; }
+    /* Art gets bigger, not smaller, when the layout stops being scaled down. */
+    .blog-img { height:176px !important; }
+    .hero-shark { width:96px !important; }
+    .hero-shark img { max-width:96px !important; }
+    .athlete-card { padding:22px 18px !important; }
+    /* The "+ Add to Calendar" pill is a nowrap block that forces the event row
+       wider than a phone; the whole row is already a link to the same place. */
+    .cal-cta { display:none !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#EDF3EE; font-family:'Inter', Arial, sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="shell" style="background-color:#EDF3EE; background-image:radial-gradient(#16383214 1px, transparent 1px); background-size:14px 14px; padding:28px 0;">
+<tr>
+<td align="center">
+<!--[if mso]>
+<table role="presentation" width="640" cellpadding="0" cellspacing="0"><tr><td>
+<![endif]-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="container" style="width:100%; max-width:640px; background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 2px 10px rgba(14,46,40,0.10);">
+
+<!-- TOP NAV BAR -->
+<!-- The logo is fluid (width:100% capped at its natural 350px) rather than a
+     fixed 88px-tall image: at 350px + the date pill it was the single widest
+     thing in the email, and on a phone it alone guaranteed the document
+     overflowed the viewport and got scaled down. -->
+<tr>
+<td class="nav" style="background-color:#125A4E; padding:16px 32px 16px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="middle" style="padding:0;">
+<!-- ===== LANE FOUR logo (real asset, cropped left/right, rounded corners, flush against the true left edge) ===== -->
+<div style="overflow:hidden; display:block; line-height:0; border-radius:48px;">
+<img src="https://winlanefour.com/email/lanefour-logo-dark.png" alt="LANE FOUR — Train for the Fast Lane" width="350" style="display:block; width:100%; max-width:350px; height:auto; border:0; margin:0 -10px 0 -10px; clip-path:inset(0 6% 0 6%);">
+</div>
+</td>
+<td align="right" valign="middle" class="nav-date" style="padding-right:32px;">
+<span style="display:inline-block; background-color:#5FE0CC; color:#0E2E28; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:8px 14px; border-radius:20px; text-transform:uppercase;">August 31, 2026</span>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- HERO -->
+<!-- The LANE FOUR shark coach greets readers: the hero heading rides in a white
+     speech bubble (dark-teal border and text) with the tail pointing right at
+     the shark, who stands on the right, so it reads as the coach saying the
+     words. shark-coach.png ships at the site root, so it's linked absolutely.
+     The outlined tail is two stacked triangles (teal under, white over) via
+     position:relative; Outlook drops the tail and rounded corners but still
+     shows the bordered box beside the shark. -->
+<tr>
+<td class="px" style="padding:30px 32px 22px 32px; text-align:center;">
+<table role="presentation" cellpadding="0" cellspacing="0" align="center" width="100%" style="margin:0 auto; max-width:576px;">
+<tr>
+<td valign="middle" style="padding:0;">
+<div style="background-color:#ffffff; border:2px solid #0E2E28; border-radius:16px; padding:16px 20px; text-align:left;">
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:800; font-size:21px; color:#0E2E28; line-height:1.3;">Good morning swimmers and happy Monday</div>
+</div>
+</td>
+<td width="18" valign="middle" style="font-size:0; line-height:0; padding:0;">
+<div style="position:relative; width:18px; height:24px; margin-left:-2px;">
+<div style="position:absolute; top:0; left:0; width:0; height:0; border-style:solid; border-width:12px 0 12px 18px; border-color:transparent transparent transparent #0E2E28;"></div>
+<div style="position:absolute; top:2px; left:0; width:0; height:0; border-style:solid; border-width:10px 0 10px 15px; border-color:transparent transparent transparent #ffffff;"></div>
+</div>
+</td>
+<td width="120" valign="middle" class="hero-shark" style="padding:0;">
+<img src="https://winlanefour.com/shark-coach.png" alt="LANE FOUR shark coach" width="112" style="display:block; width:100%; max-width:112px; height:auto; border:0;">
+</td>
+</tr>
+</table>
+<div style="border-top:2px solid #BFE6DC; width:56px; margin:20px auto 14px;"></div>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:14.5px; color:#4B6259; line-height:1.6; margin:0 auto; max-width:460px;">Leon Marchand may not stop at butterfly and IM -- there's real talk about him racing freestyle at LA28, and the implications are wild.</p>
+</td>
+</tr>
+
+<!-- DIVIDER: hero to In the Water This Week -->
+<tr>
+<td class="px" style="padding:0 32px;">
+<div style="border-top:3px solid #BFE6DC;"></div>
+</td>
+</tr>
+
+<!-- WORLD UPDATES -->
+<tr>
+<td class="px" style="padding:8px 32px 4px 32px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding-bottom:14px;">
+<span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">In the Water This Week</span>
+</td></tr></table>
+</td>
+</tr>
+
+<!-- World updates: divider-separated list, no card backgrounds -->
+<tr>
+<td class="px" style="padding:0 32px 20px 32px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="56" valign="top" style="padding:14px 0 14px 0; border-bottom:1px solid #E3EEE7;">
+<table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:9px; width:40px; height:40px; text-align:center; vertical-align:middle;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-top:10px;"><path d="M4 20 10 12 14 15 20 6" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6h6v6" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</td></tr></table>
+</td>
+<td valign="top" style="padding:14px 0 14px 12px; border-bottom:1px solid #E3EEE7;">
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;"><a href="https://swimswam.com/marchands-freestyle-potential-us-pros-relocating-isls-return-swimswam-breakdown/" target="_blank" rel="noopener" style="color:#0E2E28; text-decoration:none;">Marchand freestyle, ISL return, and a pro training shake-up</a></div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;"><strong>Leon Marchand</strong> competing in freestyle at <strong>LA28</strong> is now a genuine conversation -- and it is not the only big storyline brewing. <strong>US pros</strong> are reportedly seeking new training bases, and the <strong>International Swimming League</strong> is on its way back. <span style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#7C8B85;">(via <a href="https://swimswam.com/marchands-freestyle-potential-us-pros-relocating-isls-return-swimswam-breakdown/" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">SwimSwam</a>)</span></div>
+</td>
+</tr>
+<tr>
+<td width="56" valign="top" style="padding:14px 0 14px 0; border-bottom:1px solid #E3EEE7;">
+<table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:9px; width:40px; height:40px; text-align:center; vertical-align:middle;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-top:10px;"><path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0V4Z" stroke="#2C8C79" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 6H3a3 3 0 0 0 3 5M18 6h3a3 3 0 0 1-3 5" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/></svg>
+</td></tr></table>
+</td>
+<td valign="top" style="padding:14px 0 14px 12px; border-bottom:1px solid #E3EEE7;">
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;"><a href="https://swimswam.com/2026-para-pan-pacific-championships-day-2-recap/" target="_blank" rel="noopener" style="color:#0E2E28; text-decoration:none;">More world records fall at Para Pan Pacs</a></div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;">Day 2 of the <strong>2026 Para Pan Pacific Championships</strong> in Walnut delivered two more World Records, adding to the pair that dropped on Day 1. A stack of <strong>American Records</strong> also went down, making it one of the more electric early-week performances of the year. <span style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#7C8B85;">(via <a href="https://swimswam.com/2026-para-pan-pacific-championships-day-2-recap/" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">SwimSwam</a>)</span></div>
+</td>
+</tr>
+<tr>
+<td width="56" valign="top" style="padding:14px 0 14px 0; border-bottom:1px solid #E3EEE7;">
+<table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:9px; width:40px; height:40px; text-align:center; vertical-align:middle;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-top:10px;"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#2C8C79" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12h6M9 16h6M9 8h3" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/></svg>
+</td></tr></table>
+</td>
+<td valign="top" style="padding:14px 0 14px 12px; border-bottom:1px solid #E3EEE7;">
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;"><a href="https://swimswam.com/swim-coach-tracy-slusser-opens-up-about-motherhood-coaching-and-the-myth-that-you-cant-have-both/" target="_blank" rel="noopener" style="color:#0E2E28; text-decoration:none;">One coach's honest take on motherhood and the pool deck</a></div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;"><strong>Tracy Slusser</strong> is speaking openly about how swimming's coaching culture has historically forced women to choose between having a family and having a career. It is a candid, worthwhile read for anyone who cares about who is building this sport from the inside. <span style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#7C8B85;">(via <a href="https://swimswam.com/swim-coach-tracy-slusser-opens-up-about-motherhood-coaching-and-the-myth-that-you-cant-have-both/" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">SwimSwam</a>)</span></div>
+</td>
+</tr>
+<tr>
+<td width="56" valign="top" style="padding:14px 0 0 0;">
+<table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:9px; width:40px; height:40px; text-align:center; vertical-align:middle;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-top:10px;"><circle cx="12" cy="12" r="9" stroke="#2C8C79" stroke-width="1.8"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18" stroke="#2C8C79" stroke-width="1.6"/></svg>
+</td></tr></table>
+</td>
+<td valign="top" style="padding:14px 0 0 12px;">
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin-bottom:4px;"><a href="https://swimswam.com/2024-olympian-josh-matheny-announces-departure-from-indiana/" target="_blank" rel="noopener" style="color:#0E2E28; text-decoration:none;">Olympian Josh Matheny leaves Indiana, weighs his options</a></div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.55;"><strong>Josh Matheny</strong>, who competed at the <strong>2024 Olympics</strong>, has announced he is departing <strong>Indiana</strong> and will spend the coming weeks talking with teams across the country. He is looking for a training environment that fits his next two years. <span style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#7C8B85;">(via <a href="https://swimswam.com/2024-olympian-josh-matheny-announces-departure-from-indiana/" target="_blank" rel="noopener" style="color:#2C8C79; text-decoration:underline;">SwimSwam</a>)</span></div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- ATHLETE OF THE WEEK -->
+<tr>
+<td class="px" style="padding:20px 32px 8px 32px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#0E2E28; border-radius:12px;">
+<tr>
+<td class="athlete-card" style="padding:28px 28px 24px 28px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+<tr>
+<td width="84" valign="top">
+<table cellpadding="0" cellspacing="0"><tr><td style="width:80px; height:80px; border-radius:50%; background-color:#5FE0CC; background-image:linear-gradient(160deg,#5FE0CC,#125A4E); text-align:center; vertical-align:middle; border:2px solid rgba(255,255,255,0.35); overflow:hidden;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/2018-10-07_Swimming_Boys%27_400_m_Freestyle_Final_at_2018_Summer_Youth_Olympics_%28Martin_Rulsch%29_45.jpg/330px-2018-10-07_Swimming_Boys%27_400_m_Freestyle_Final_at_2018_Summer_Youth_Olympics_%28Martin_Rulsch%29_45.jpg?utm_source=en.wikipedia.org&amp;utm_campaign=api&amp;utm_content=thumbnail" alt="Kristof Milak" width="80" height="80" style="display:block; width:80px; height:80px; object-fit:cover; border-radius:50%; border:0;" onerror="this.style.display='none';">
+</td></tr></table>
+</td>
+<td valign="middle" style="padding-left:16px;">
+<span style="display:inline-block; background-color:#5FE0CC; color:#0E2E28; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:10.5px; letter-spacing:1.5px; padding:5px 12px; border-radius:16px; text-transform:uppercase; margin-bottom:10px;">Athlete of the Week</span>
+<h2 style="font-family:'Playfair Display',Georgia,serif; font-weight:800; font-size:24px; color:#ffffff; margin:10px 0 0 0;">Kristof Milak</h2>
+</td>
+</tr>
+</table>
+
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+<tr>
+<td style="padding:4px 6px 4px 0;"><span style="display:inline-block; background-color:rgba(95,224,204,0.12); border:1px solid #2C6357; color:#5FE0CC; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; padding:5px 10px; border-radius:14px;">Olympic Champion</span></td>
+<td style="padding:4px 6px 4px 0;"><span style="display:inline-block; background-color:rgba(95,224,204,0.12); border:1px solid #2C6357; color:#5FE0CC; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; padding:5px 10px; border-radius:14px;">World Record Holder</span></td>
+</tr>
+<tr>
+<td style="padding:4px 6px 4px 0;"><span style="display:inline-block; background-color:rgba(95,224,204,0.12); border:1px solid #2C6357; color:#5FE0CC; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; padding:5px 10px; border-radius:14px;">200m Butterfly Specialist</span></td>
+<td style="padding:4px 6px 4px 0;"><span style="display:inline-block; background-color:rgba(95,224,204,0.12); border:1px solid #2C6357; color:#5FE0CC; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; padding:5px 10px; border-radius:14px;">World Championship Gold</span></td>
+</tr>
+</table>
+
+<!-- Two paragraphs (who they are; their competitive achievements), each wrapped
+     in its own styled <p> by renderAthleteBio(). -->
+<p style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#C7DAD3; line-height:1.65; margin:0 0 10px 0;">Kristóf Milák is a Hungarian professional swimmer, born on 20 February 2000. He competes primarily in butterfly events and has established himself as one of the world's leading swimmers in the discipline, holding the world record in the long course 200 metre butterfly and the European record in the long course 100 metre butterfly.</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#C7DAD3; line-height:1.65; margin:0;">At the 2020 Summer Olympics, Milák won gold in the 200 metre butterfly and silver in the 100 metre butterfly. He has won three gold medals and one silver at the World Aquatics Championships, three gold medals at the European Aquatics Championships, and three gold medals at the 2018 Summer Youth Olympics.</p>
+<!-- Wikimedia photo attribution (author + license); rendered empty when the
+     issue has no photo. Required by the photo's Creative Commons license. -->
+<p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#7FA398; line-height:1.5; margin:10px 0 0 0;">Photo: Martin Rulsch , Wikimedia Commons, CC BY-SA 4.0, via Wikimedia Commons</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- GEAR -->
+<tr>
+<td class="px" style="padding:24px 32px 4px 32px;">
+<span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">Gear Drops &amp; Swim Tech</span>
+</td>
+</tr>
+
+<tr>
+<td class="px" style="padding:12px 32px 12px 32px;">
+<a href="https://winlanefour.com/best-swim-paddles#pick-arena-vortex" target="_blank" rel="sponsored noopener" style="text-decoration:none; display:block;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F6FAF7; border:1px solid #E3EEE7; border-radius:10px;">
+<tr>
+<td width="76" valign="top" style="padding:18px 0 18px 20px;">
+<img src="https://winlanefour.com/gear/paddle-arena-vortex.jpg" alt="Arena Vortex Elite finger paddle" width="60" height="60" style="display:block; width:60px; height:60px; object-fit:cover; border-radius:8px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
+</td>
+<td style="padding:18px 20px 18px 14px;">
+<span style="display:inline-block; background-color:#5FE0CC; color:#0E2E28; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:10px; letter-spacing:1px; padding:4px 10px; border-radius:14px; text-transform:uppercase;">Gear of the Week</span>
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:17px; color:#0E2E28; margin:10px 0 8px 0;">Arena Vortex Elite finger paddle</div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#4B6259; line-height:1.6;">Built tough — durable plastic and reliable tubing that survive seasons of chlorine and daily life crammed in a wet gear bag. The shape encourages a good catch position.</div>
+</td>
+</tr>
+</table>
+</a>
+</td>
+</tr>
+
+<tr>
+<td class="px" style="padding:0 32px 4px 32px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="52" valign="top" style="padding:10px 12px 10px 0; border-bottom:1px solid #E3EEE7;">
+<img src="https://winlanefour.com/gear/buoy-finis-axis.jpg" alt="FINIS Axis Buoy, a 2-in-1 pull buoy and ankle float" width="40" height="40" style="display:block; width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
+</td>
+<td style="padding:10px 0; border-bottom:1px solid #E3EEE7;">
+<div><span style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#0E2E28; line-height:1.55;"><a href="https://winlanefour.com/best-pull-buoys#pick-finis-axis" target="_blank" rel="sponsored noopener" style="color:#0E2E28; text-decoration:underline;"><strong>FINIS Axis Buoy, a 2-in-1 pull buoy and ankle float</strong></a>: <span style="color:#4B6259;">The Swiss Army knife of foam peanuts. It works as a normal pull buoy, but the notched shape also doubles as an ankle float or an alignment tool.</span></span></div>
+</td>
+</tr>
+<tr>
+<td width="52" valign="top" style="padding:10px 12px 10px 0; border-bottom:1px solid #E3EEE7;">
+<img src="https://winlanefour.com/gear/cap-speedo-silicone.jpg" alt="Speedo silicone swim cap" width="40" height="40" style="display:block; width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
+</td>
+<td style="padding:10px 0; border-bottom:1px solid #E3EEE7;">
+<div><span style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#0E2E28; line-height:1.55;"><a href="https://winlanefour.com/best-swim-caps#pick-speedo-silicone" target="_blank" rel="sponsored noopener" style="color:#0E2E28; text-decoration:underline;"><strong>Speedo silicone swim cap</strong></a>: <span style="color:#4B6259;">The reliable default. Durable, comfortable, gentle on hair, and easy to pull on without the hair-yanking drama of latex.</span></span></div>
+</td>
+</tr>
+<tr>
+<td width="52" valign="top" style="padding:10px 12px 10px 0;">
+<img src="https://winlanefour.com/gear/snorkel-finis-swimmers.jpg" alt="FINIS Swimmer's Snorkel" width="40" height="40" style="display:block; width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #E3EEE7;" onerror="this.style.display='none';">
+</td>
+<td style="padding:10px 0;">
+<div><span style="font-family:'Inter',Arial,sans-serif; font-size:13.5px; color:#0E2E28; line-height:1.55;"><a href="https://winlanefour.com/best-swim-snorkels#pick-finis-swimmers-snorkel" target="_blank" rel="sponsored noopener" style="color:#0E2E28; text-decoration:underline;"><strong>FINIS Swimmer's Snorkel</strong></a>: <span style="color:#4B6259;">The one we hand to first-timers and never worry about again. It doesn't leak, it stays put on flip turns, and the purge valve clears without a fight, so you can focus on technique instead of the tube.</span></span></div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- SEE TODAY'S WORKOUT -->
+<tr>
+<td class="px" style="padding:24px 32px 24px 32px;">
+<span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">See Today's Workout</span>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#4B6259; margin-top:8px;">Mon, Aug 31 &middot; Distance freestyle threshold in the pool, rotational core stability on land</div>
+<!-- Fluid-hybrid two-up: each card is an inline-block that wants the full
+     width but caps at 288px, so the pair sits side by side while the row can
+     hold 576px and drops to one card per line the moment it can't — no media
+     query needed for the reflow itself. The mso ghost table keeps Outlook,
+     which ignores inline-block and max-width, on its original two cells. -->
+<div style="margin-top:14px; font-size:0; line-height:0; text-align:left;">
+<!--[if mso]>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="50%" valign="top" style="padding-right:8px;">
+<![endif]-->
+<div class="stack stack-a" style="display:inline-block; vertical-align:top; width:100%; max-width:288px; box-sizing:border-box; padding-right:8px;">
+<a href="https://winlanefour.com/#swim-sets" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border:1px solid #E3EEE7; border-radius:10px;">
+<tr>
+<td style="padding:14px 16px;">
+<table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:8px; width:34px; height:34px; text-align:center; vertical-align:middle;">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="margin-top:8.5px;"><path d="M3 9c1.7-2.3 3.4-2.3 5.1 0s3.4 2.3 5.1 0 3.4-2.3 5.1 0 3.4 2.3 5.1 0" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/><path d="M3 15c1.7-2.3 3.4-2.3 5.1 0s3.4 2.3 5.1 0 3.4-2.3 5.1 0 3.4 2.3 5.1 0" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/></svg>
+</td></tr></table>
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:14px; color:#0E2E28; margin:10px 0 4px 0;">Today's Swim Set</div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#4B6259; line-height:1.5; margin-bottom:10px;">A 3,050-yard aerobic threshold session built around sustained distance freestyle repeats that train your body to hold power deep into fatigue.</div>
+<span style="display:inline-block; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:10.5px; letter-spacing:0.5px; text-transform:uppercase;">View Today's Set &rarr;</span>
+</td>
+</tr>
+</table>
+</a>
+</div><!--
+--><!--[if mso]>
+</td><td width="50%" valign="top" style="padding-left:8px;">
+<![endif]-->
+<div class="stack stack-b" style="display:inline-block; vertical-align:top; width:100%; max-width:288px; box-sizing:border-box; padding-left:8px;">
+<a href="https://winlanefour.com/#dryland-workouts" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border:1px solid #E3EEE7; border-radius:10px;">
+<tr>
+<td style="padding:14px 16px;">
+<table cellpadding="0" cellspacing="0"><tr><td style="background-color:#E3F5F0; border-radius:8px; width:34px; height:34px; text-align:center; vertical-align:middle;">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="margin-top:8.5px;"><line x1="7" y1="4" x2="7" y2="20" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/><line x1="17" y1="4" x2="17" y2="20" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/><line x1="7" y1="9.5" x2="17" y2="9.5" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/><line x1="7" y1="14.5" x2="17" y2="14.5" stroke="#2C8C79" stroke-width="1.8" stroke-linecap="round"/></svg>
+</td></tr></table>
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:14px; color:#0E2E28; margin:10px 0 4px 0;">Today's Lift</div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#4B6259; line-height:1.5; margin-bottom:10px;">A rotational power and anti-rotation stability workout targeting the core demands of freestyle and backstroke -- the kind of work that pays off at the wall.</div>
+<span style="display:inline-block; color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:10.5px; letter-spacing:0.5px; text-transform:uppercase;">View Today's Lift &rarr;</span>
+</td>
+</tr>
+</table>
+</a>
+</div>
+<!--[if mso]>
+</td></tr></table>
+<![endif]-->
+</div>
+</td>
+</tr>
+
+<!-- FROM THE BLOG -->
+<!-- Heading included in the placeholder, not written out here: this is the one
+     optional section. A week where nothing new was published yields no picks,
+     and the section is then omitted whole rather than leaving a "From the Blog
+     This Week" badge over empty space. See renderBlogSection(). -->
+<tr>
+<td class="px" style="padding:24px 32px 4px 32px;">
+<span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">From the Blog This Week</span>
+</td>
+</tr>
+
+<tr>
+<td class="px" style="padding:12px 32px 8px 32px;">
+<a href="https://winlanefour.com/fast-food-for-athletes" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td style="background-color:#12332C; background-image:linear-gradient(135deg,#5FE0CC,#12332C); padding:0; text-align:center; line-height:0; border-radius:8px; overflow:hidden;">
+<img src="https://winlanefour.com/newsletter-images/fast-food-for-athletes-how-to-order-smart-on-the-road.jpeg" alt="Fast Food for Athletes: How to Order Smart on the Road" width="576" height="130" class="blog-img" style="display:block; width:100%; max-width:100%; height:130px; object-fit:cover; border:0;">
+</td>
+</tr>
+<tr>
+<td style="padding:16px 0 0 0;">
+<span style="color:#2C8C79; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:9.5px; letter-spacing:1px; text-transform:uppercase;">Nutrition</span>
+<span style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8FA69C; margin-left:8px;">Aug 30, 2026 &middot; 6 min read</span>
+<div style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:16px; color:#0E2E28; margin:9px 0 6px 0;">Fast Food for Athletes: How to Order Smart on the Road</div>
+<div style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#4B6259; line-height:1.55;">How to order at the drive-thru without wrecking your fueling: what to look for on any fast food menu, smart picks at the usual chains, and the pre-race vs. post-race rule.</div>
+</td>
+</tr>
+</table>
+</a>
+</td>
+</tr>
+
+<!-- EVENTS -->
+<tr>
+<td class="px" style="padding:24px 32px 4px 32px;">
+<span style="display:inline-block; background-color:#E3F5F0; font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:#2C8C79; text-transform:uppercase; padding:6px 14px; border-radius:20px;">Next Up on the Calendar</span>
+</td>
+</tr>
+
+
+
+<!-- OUTRO -->
+<tr>
+<td class="px" style="padding:28px 32px 8px 32px; text-align:center;">
+<svg width="120" height="14" viewBox="0 0 120 14" fill="none" style="margin-bottom:16px;"><path d="M2 7c6-8 14-8 20 0s14 8 20 0 14-8 20 0 14 8 20 0 14-8 20 0 14 8 16 0" stroke="#BFE6DC" stroke-width="2" stroke-linecap="round"/></svg>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:14px; color:#4B6259; line-height:1.6; margin:0 0 6px 0;">That's the week in the water. Happy swimming,</p>
+<p style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:15px; color:#0E2E28; margin:0;">LANE FOUR</p>
+</td>
+</tr>
+
+<!-- FOOTER -->
+<tr>
+<td class="px" style="background-color:#125A4E; padding:22px 32px 4px 32px; text-align:center; margin-top:20px;">
+<p style="font-family:'Inter',Arial,sans-serif; font-size:11.5px; color:#E3F3EF; margin:0 0 18px 0;">LANE FOUR &nbsp;•&nbsp; Train for the Fast Lane &nbsp;•&nbsp; winlanefour.com</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(255,255,255,0.25);">
+<tr><td style="padding:16px 4px 20px 4px;">
+<p style="font-family:'Inter',Arial,sans-serif; font-size:11.5px; font-weight:700; color:#ffffff; margin:0 0 8px 0;">LANE FOUR Weekly Digest</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#CFE9E2; line-height:1.6; margin:0 0 8px 0; max-width:520px; margin-left:auto; margin-right:auto;">LANE FOUR is a free training platform with daily swim sets, dryland workouts, and technique guidance built around what your training actually demands. <strong>Affiliate disclosure:</strong> some links in this newsletter are affiliate links, if you purchase through one, we may earn a small commission at no additional cost to you. <strong>Health disclaimer:</strong> the workouts and nutrition content in this newsletter are for general informational purposes only, consult a qualified healthcare professional before beginning any new exercise or dietary program.</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#CFE9E2; line-height:1.6; margin:0 0 8px 0; max-width:520px; margin-left:auto; margin-right:auto;">Athletes featured are covered editorially and do not endorse LANE FOUR or any product shown.</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:10px; color:#CFE9E2; margin:0 0 6px 0;">&copy; 2026 LANE FOUR. All rights reserved.</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:10px; margin:0 0 8px 0;">
+<a href="https://winlanefour.com/privacy-policy" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Privacy Policy</a>
+<a href="https://winlanefour.com/terms-of-use" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Terms of Use</a>
+<!-- {{UNSUBSCRIBE_URL}} is intentionally NOT replaced at render time: the
+     newsletter-send Lambda swaps in each recipient's one-click unsubscribe
+     link at send time, and the workflow substitutes a site link in the copy
+     published to the web archive. -->
+<a href="{{UNSUBSCRIBE_URL}}" style="color:#ffffff; text-decoration:underline; margin:0 6px;">Unsubscribe</a>
+</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:9.5px; color:#CFE9E2; margin:0 0 6px 0;">You are receiving this email because you created a LANE FOUR account or subscribed at winlanefour.com.</p>
+<p style="font-family:'Inter',Arial,sans-serif; font-size:9.5px; color:#CFE9E2; margin:0;">ronaldricomedia, 1875 Mission St Ste 103 #302, San Francisco, CA 94103</p>
+</td></tr>
+</table>
+</td>
+</tr>
+
+</table>
+<!--[if mso]>
+</td></tr></table>
+<![endif]-->
+</td>
+</tr>
+</table>
+</body>
+</html>

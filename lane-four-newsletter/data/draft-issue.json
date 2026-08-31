@@ -1,67 +1,67 @@
 {
-  "date": "2026-08-24",
-  "issueDateLabel": "August 24, 2026",
-  "subject": "Bobby Finke is engaged + LA 2028 is selling out",
-  "preheader": "Plus the Mediterranean Games are underway and Texas is loaded for 2027.",
+  "date": "2026-08-31",
+  "issueDateLabel": "August 31, 2026",
+  "subject": "ISL is back, Marchand goes freestyle & more",
+  "preheader": "Plus: para-swimming world records, a coach story worth reading, and today's threshold set.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Bobby Finke just got down on one knee in Rome, and we have all the details on the distance king's big news.",
+  "heroTeaser": "Leon Marchand may not stop at butterfly and IM -- there's real talk about him racing freestyle at LA28, and the implications are wild.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Aug 24 &middot; freestyle endurance in the pool, core and stability on land",
+    "dateLabel": "Mon, Aug 31 &middot; Distance freestyle threshold in the pool, rotational core stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard aerobic builder built around longer freestyle repeats with controlled rest, designed to sharpen your breathing rhythm and hold your line as fatigue sets in."
+      "description": "A 3,050-yard aerobic threshold session built around sustained distance freestyle repeats that train your body to hold power deep into fatigue."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A rotational power and anti-rotation stability session targeting the core muscles that matter most for freestyle and backstroke body position."
+      "description": "A rotational power and anti-rotation stability workout targeting the core demands of freestyle and backstroke -- the kind of work that pays off at the wall."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "bobby-finke-announces-engagement-to-fellow-florida-alum-ellie-zweifel-in-rome",
-      "icon": "medal",
-      "title": "Finke pops the question in Rome",
-      "body": "Two-time Olympic champion <strong>Bobby Finke</strong> announced his engagement to longtime partner <strong>Ellie Zweifel</strong>, a fellow <strong>University of Florida</strong> alum. The couple shared the news from Rome, which is a pretty solid place to say yes.",
-      "url": "https://swimswam.com/bobby-finke-announces-engagement-to-fellow-florida-alum-ellie-zweifel-in-rome/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "siskos-pilato-mancini-claim-day-1-golds-at-2026-mediterranean-games",
-      "icon": "globe",
-      "title": "Mediterranean Games kicks off with three golds",
-      "body": "<strong>Apostolos Siskos</strong> of Greece opened the <strong>2026 Mediterranean Games</strong> with a win in the 200 backstroke, clocking 1:55.95 on Day 1. <strong>Pilato</strong> and <strong>Mancini</strong> also topped the podium to give the host region a strong start.",
-      "url": "https://swimswam.com/siskos-pilato-mancini-claim-day-1-golds-at-2026-mediterranean-games/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "2028-los-angeles-olympics-finish-drop-2-with-over-6-million-tickets-sold",
+      "topicSlug": "marchands-freestyle-potential-us-pros-relocating-isls-return-swimswam-breakdown",
       "icon": "trend",
-      "title": "LA 2028 tickets are going fast",
-      "body": "The <strong>2028 Los Angeles Olympics</strong> has already moved past 6 million tickets sold, and the next chance to buy won't come until early 2027. If you were thinking about going, that window is tighter than it looks.",
-      "url": "https://swimswam.com/2028-los-angeles-olympics-finish-drop-2-with-over-6-million-tickets-sold/",
+      "title": "Marchand freestyle, ISL return, and a pro training shake-up",
+      "body": "<strong>Leon Marchand</strong> competing in freestyle at <strong>LA28</strong> is now a genuine conversation -- and it is not the only big storyline brewing. <strong>US pros</strong> are reportedly seeking new training bases, and the <strong>International Swimming League</strong> is on its way back.",
+      "url": "https://swimswam.com/marchands-freestyle-potential-us-pros-relocating-isls-return-swimswam-breakdown/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "reigning-champion-texas-men-return-most-points-for-2027-ncaa-season",
+      "topicSlug": "2026-para-pan-pacific-championships-day-2-recap",
+      "icon": "medal",
+      "title": "More world records fall at Para Pan Pacs",
+      "body": "Day 2 of the <strong>2026 Para Pan Pacific Championships</strong> in Walnut delivered two more World Records, adding to the pair that dropped on Day 1. A stack of <strong>American Records</strong> also went down, making it one of the more electric early-week performances of the year.",
+      "url": "https://swimswam.com/2026-para-pan-pacific-championships-day-2-recap/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "swim-coach-tracy-slusser-opens-up-about-motherhood-coaching-and-the-myth-that-you-cant-have-both",
       "icon": "doc",
-      "title": "Texas is loaded and coming back for more",
-      "body": "The <strong>Texas Longhorns</strong> men's team, two-time reigning <strong>NCAA Division I</strong> champions, are returning the most points of any program heading into the 2027 season. A three-peat is very much on the table.",
-      "url": "https://swimswam.com/reigning-champion-texas-men-return-most-points-for-2027-ncaa-season/",
+      "title": "One coach's honest take on motherhood and the pool deck",
+      "body": "<strong>Tracy Slusser</strong> is speaking openly about how swimming's coaching culture has historically forced women to choose between having a family and having a career. It is a candid, worthwhile read for anyone who cares about who is building this sport from the inside.",
+      "url": "https://swimswam.com/swim-coach-tracy-slusser-opens-up-about-motherhood-coaching-and-the-myth-that-you-cant-have-both/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "2024-olympian-josh-matheny-announces-departure-from-indiana",
+      "icon": "globe",
+      "title": "Olympian Josh Matheny leaves Indiana, weighs his options",
+      "body": "<strong>Josh Matheny</strong>, who competed at the <strong>2024 Olympics</strong>, has announced he is departing <strong>Indiana</strong> and will spend the coming weeks talking with teams across the country. He is looking for a training environment that fits his next two years.",
+      "url": "https://swimswam.com/2024-olympian-josh-matheny-announces-departure-from-indiana/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Thomas Ceccon",
-    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/2018-10-10_Swimming_Boys%27_50m_Freestyle_Final_at_2018_Summer_Youth_Olympics_by_Sandro_Halank%E2%80%93016_%28cropped%29.jpg/330px-2018-10-10_Swimming_Boys%27_50m_Freestyle_Final_at_2018_Summer_Youth_Olympics_by_Sandro_Halank%E2%80%93016_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Sandro Halank , Wikimedia Commons, CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Kristof Milak",
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/2018-10-07_Swimming_Boys%27_400_m_Freestyle_Final_at_2018_Summer_Youth_Olympics_%28Martin_Rulsch%29_45.jpg/330px-2018-10-07_Swimming_Boys%27_400_m_Freestyle_Final_at_2018_Summer_Youth_Olympics_%28Martin_Rulsch%29_45.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Martin Rulsch , Wikimedia Commons, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "Olympic Gold Medalist",
+      "Olympic Champion",
       "World Record Holder",
-      "World Champion",
-      "100m Backstroke Specialist"
+      "200m Butterfly Specialist",
+      "World Championship Gold"
     ],
-    "bio": "Thomas Ceccon is an Italian competitive swimmer, born on 27 January 2001 in Thiene, in the province of Vicenza, Italy. He trains under coach Alberto Burlina for Gruppo Sportivo Fiamme Oro and has held the Italian record in the long course 100 metre backstroke since December 2020.\n\nCeccon is the 2024 Olympic champion and current world record holder in the 100 metre backstroke, having set the world record at the 2022 World Aquatics Championships with a time of 51.60 seconds. He has won four Olympic medals in total, along with three World Championship titles and four European Championship titles in long course competition."
+    "bio": "Kristóf Milák is a Hungarian professional swimmer, born on 20 February 2000. He competes primarily in butterfly events and has established himself as one of the world's leading swimmers in the discipline, holding the world record in the long course 200 metre butterfly and the European record in the long course 100 metre butterfly.\n\nAt the 2020 Summer Olympics, Milák won gold in the 200 metre butterfly and silver in the 100 metre butterfly. He has won three gold medals and one silver at the World Aquatics Championships, three gold medals at the European Aquatics Championships, and three gold medals at the 2018 Summer Youth Olympics."
   },
   "events": []
 }
