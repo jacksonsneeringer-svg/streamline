@@ -1,67 +1,67 @@
 {
-  "date": "2026-08-31",
-  "issueDateLabel": "August 31, 2026",
-  "subject": "ISL is back, Marchand goes freestyle & more",
-  "preheader": "Plus: para-swimming world records, a coach story worth reading, and today's threshold set.",
+  "date": "2026-09-07",
+  "issueDateLabel": "September 7, 2026",
+  "subject": "Regan Smith opens up on Bob Bowman & the perfect taper",
+  "preheader": "Plus: Pan Pacs drew 13K fans, Dressel vs. ocean fish, and today's set.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Leon Marchand may not stop at butterfly and IM -- there's real talk about him racing freestyle at LA28, and the implications are wild.",
+  "heroTeaser": "Regan Smith is talking openly about training under Bob Bowman, chasing the perfect taper, and what it takes to stay on top of the most competitive backstroke field in U.S. history.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Aug 31 &middot; Distance freestyle threshold in the pool, rotational core stability on land",
+    "dateLabel": "Mon, Sep 7 &middot; freestyle aerobic endurance in the pool, core rotation &amp; stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard aerobic threshold session built around sustained distance freestyle repeats that train your body to hold power deep into fatigue."
+      "description": "A 3,050-yard freestyle aerobic builder built around negative splits -- smooth and controlled on the first half of each rep, then press the accelerator on the back half."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A rotational power and anti-rotation stability workout targeting the core demands of freestyle and backstroke -- the kind of work that pays off at the wall."
+      "description": "A core rotation and anti-rotation stability session targeting the mid-body control that drives clean freestyle and backstroke through the water."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "marchands-freestyle-potential-us-pros-relocating-isls-return-swimswam-breakdown",
-      "icon": "trend",
-      "title": "Marchand freestyle, ISL return, and a pro training shake-up",
-      "body": "<strong>Leon Marchand</strong> competing in freestyle at <strong>LA28</strong> is now a genuine conversation -- and it is not the only big storyline brewing. <strong>US pros</strong> are reportedly seeking new training bases, and the <strong>International Swimming League</strong> is on its way back.",
-      "url": "https://swimswam.com/marchands-freestyle-potential-us-pros-relocating-isls-return-swimswam-breakdown/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "2026-para-pan-pacific-championships-day-2-recap",
+      "topicSlug": "regan-smith-on-training-under-bowman-chasing-the-perfect-taper-and-the-road-ahead",
       "icon": "medal",
-      "title": "More world records fall at Para Pan Pacs",
-      "body": "Day 2 of the <strong>2026 Para Pan Pacific Championships</strong> in Walnut delivered two more World Records, adding to the pair that dropped on Day 1. A stack of <strong>American Records</strong> also went down, making it one of the more electric early-week performances of the year.",
-      "url": "https://swimswam.com/2026-para-pan-pacific-championships-day-2-recap/",
+      "title": "Regan Smith opens up on Bowman, tapering, and what's next",
+      "body": "<strong>Regan Smith</strong> sat down for a candid conversation about what it's like training under <strong>Bob Bowman</strong>, her ongoing pursuit of the perfect taper, and the state of U.S. backstroke. She also touched on <strong>Kaylee McKeown</strong>'s season away and how a loaded American backstroke field is pushing everyone to be better.",
+      "url": "https://swimswam.com/regan-smith-on-training-under-bowman-chasing-the-perfect-taper-and-the-road-ahead/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "swim-coach-tracy-slusser-opens-up-about-motherhood-coaching-and-the-myth-that-you-cant-have-both",
+      "topicSlug": "usa-swimming-reports-attendance-numbers-for-2026-nationals-pan-pacs-in-irvine",
+      "icon": "trend",
+      "title": "Nationals drew 18K fans in Irvine -- here's how Pan Pacs compared",
+      "body": "<strong>USA Swimming</strong> released official attendance figures for both events held in Irvine, with <strong>U.S. Nationals</strong> pulling in 18,701 over five days and <strong>Pan Pacs</strong> coming in at 13,439. The gap reflects the significantly smaller athlete field at Pan Pacs rather than a drop in fan interest.",
+      "url": "https://swimswam.com/usa-swimming-reports-attendance-numbers-for-2026-nationals-pan-pacs-in-irvine/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "caeleb-dressel-tests-his-power-in-the-water-against-ocean-game-fish",
       "icon": "doc",
-      "title": "One coach's honest take on motherhood and the pool deck",
-      "body": "<strong>Tracy Slusser</strong> is speaking openly about how swimming's coaching culture has historically forced women to choose between having a family and having a career. It is a candid, worthwhile read for anyone who cares about who is building this sport from the inside.",
-      "url": "https://swimswam.com/swim-coach-tracy-slusser-opens-up-about-motherhood-coaching-and-the-myth-that-you-cant-have-both/",
+      "title": "Dressel vs. ocean fish: how does his power actually stack up?",
+      "body": "In a new \"Man vs Fish\" challenge, <strong>Caeleb Dressel</strong> strapped into a harness to measure his pulling power against some massive ocean game fish. It's a fun look at just how much raw strength one of the sport's most explosive swimmers actually generates.",
+      "url": "https://swimswam.com/caeleb-dressel-tests-his-power-in-the-water-against-ocean-game-fish/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "2024-olympian-josh-matheny-announces-departure-from-indiana",
+      "topicSlug": "kocaeli-ready-to-host-2026-world-para-swimming-european-championships",
       "icon": "globe",
-      "title": "Olympian Josh Matheny leaves Indiana, weighs his options",
-      "body": "<strong>Josh Matheny</strong>, who competed at the <strong>2024 Olympics</strong>, has announced he is departing <strong>Indiana</strong> and will spend the coming weeks talking with teams across the country. He is looking for a training environment that fits his next two years.",
-      "url": "https://swimswam.com/2024-olympian-josh-matheny-announces-departure-from-indiana/",
+      "title": "400+ para swimmers head to Turkey for the year's biggest para meet",
+      "body": "The <strong>Gebze Olympic Swimming Pool</strong> in Kocaeli, Turkey will host the <strong>2026 World Para Swimming European Championships</strong>, welcoming more than 400 athletes from 38 nations. It stands as the largest para swimming event of the year.",
+      "url": "https://swimswam.com/kocaeli-ready-to-host-2026-world-para-swimming-european-championships/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Kristof Milak",
-    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/2018-10-07_Swimming_Boys%27_400_m_Freestyle_Final_at_2018_Summer_Youth_Olympics_%28Martin_Rulsch%29_45.jpg/330px-2018-10-07_Swimming_Boys%27_400_m_Freestyle_Final_at_2018_Summer_Youth_Olympics_%28Martin_Rulsch%29_45.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Martin Rulsch , Wikimedia Commons, CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Summer McIntosh",
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Summer_McIntosh_at_the_2024_Summer_Olympic_Games.webp/330px-Summer_McIntosh_at_the_2024_Summer_Olympic_Games.webp?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Unknown author Unknown author, CC0, via Wikimedia Commons",
     "badges": [
-      "Olympic Champion",
-      "World Record Holder",
-      "200m Butterfly Specialist",
-      "World Championship Gold"
+      "2024 Olympic 3x Gold",
+      "World Champion",
+      "Canadian Record Holder",
+      "World Record Holder"
     ],
-    "bio": "Kristóf Milák is a Hungarian professional swimmer, born on 20 February 2000. He competes primarily in butterfly events and has established himself as one of the world's leading swimmers in the discipline, holding the world record in the long course 200 metre butterfly and the European record in the long course 100 metre butterfly.\n\nAt the 2020 Summer Olympics, Milák won gold in the 200 metre butterfly and silver in the 100 metre butterfly. He has won three gold medals and one silver at the World Aquatics Championships, three gold medals at the European Aquatics Championships, and three gold medals at the 2018 Summer Youth Olympics."
+    "bio": "Summer McIntosh is a Canadian competitive swimmer born on August 18, 2006. The daughter of former Canadian Olympic swimmer Jill Horstead, she grew up competing in both swimming and figure skating before focusing entirely on swimming. She first gained international attention at age 14 as the youngest member of the Canadian team at the 2020 Summer Olympics.\n\nMcIntosh is a three-time Olympic champion, eight-time World Aquatics champion, and two-time Commonwealth Games gold medallist. She holds world records in the 200 meter butterfly, 200 and 400 meter individual medley, and 400 meter freestyle. At the 2024 Summer Olympics she won four individual medals, including three gold."
   },
   "events": []
 }
