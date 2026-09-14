@@ -1,67 +1,67 @@
 {
-  "date": "2026-09-07",
-  "issueDateLabel": "September 7, 2026",
-  "subject": "Regan Smith opens up on Bob Bowman & the perfect taper",
-  "preheader": "Plus: Pan Pacs drew 13K fans, Dressel vs. ocean fish, and today's set.",
+  "date": "2026-09-14",
+  "issueDateLabel": "September 14, 2026",
+  "subject": "Sara Curtis stole a world record. Kaylee wants it back.",
+  "preheader": "Plus: Brendan Hansen's wild injury, Kate Douglass eyes sub-23, and your Monday set.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Regan Smith is talking openly about training under Bob Bowman, chasing the perfect taper, and what it takes to stay on top of the most competitive backstroke field in U.S. history.",
+  "heroTeaser": "Kaylee McKeown just found out what it feels like to lose a world record to Sara Curtis, and her response is the most competitive thing you'll read all week.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Sep 7 &middot; freestyle aerobic endurance in the pool, core rotation &amp; stability on land",
+    "dateLabel": "Mon, Sep 14 &middot; Distance freestyle aerobic endurance in the pool, rotational power &amp; glute stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard freestyle aerobic builder built around negative splits -- smooth and controlled on the first half of each rep, then press the accelerator on the back half."
+      "description": "A 3,000-yard aerobic freestyle builder focused on smooth rhythm and an efficient catch, finishing with a strong negative-split block to sharpen your back-half speed."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A core rotation and anti-rotation stability session targeting the mid-body control that drives clean freestyle and backstroke through the water."
+      "description": "A core and stability session targeting rotational power and glute stability, with emphasis on movements that carry over directly to freestyle and backstroke."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "regan-smith-on-training-under-bowman-chasing-the-perfect-taper-and-the-road-ahead",
+      "topicSlug": "kaylee-mckeown-on-sara-curtis-breaking-her-50-back-wr-it-fuels-the-fire-im-all-for-taking-people-down",
       "icon": "medal",
-      "title": "Regan Smith opens up on Bowman, tapering, and what's next",
-      "body": "<strong>Regan Smith</strong> sat down for a candid conversation about what it's like training under <strong>Bob Bowman</strong>, her ongoing pursuit of the perfect taper, and the state of U.S. backstroke. She also touched on <strong>Kaylee McKeown</strong>'s season away and how a loaded American backstroke field is pushing everyone to be better.",
-      "url": "https://swimswam.com/regan-smith-on-training-under-bowman-chasing-the-perfect-taper-and-the-road-ahead/",
+      "title": "McKeown lost her 50 back WR. She's not taking it lying down.",
+      "body": "<strong>Kaylee McKeown</strong> had her 50-meter backstroke world record broken by <strong>Sara Curtis</strong> this summer, and her reaction was about as fierce as you'd expect: she says it fuels the fire and she's all for taking people down.",
+      "url": "https://swimswam.com/kaylee-mckeown-on-sara-curtis-breaking-her-50-back-wr-it-fuels-the-fire-im-all-for-taking-people-down/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "usa-swimming-reports-attendance-numbers-for-2026-nationals-pan-pacs-in-irvine",
-      "icon": "trend",
-      "title": "Nationals drew 18K fans in Irvine -- here's how Pan Pacs compared",
-      "body": "<strong>USA Swimming</strong> released official attendance figures for both events held in Irvine, with <strong>U.S. Nationals</strong> pulling in 18,701 over five days and <strong>Pan Pacs</strong> coming in at 13,439. The gap reflects the significantly smaller athlete field at Pan Pacs rather than a drop in fan interest.",
-      "url": "https://swimswam.com/usa-swimming-reports-attendance-numbers-for-2026-nationals-pan-pacs-in-irvine/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "caeleb-dressel-tests-his-power-in-the-water-against-ocean-game-fish",
+      "topicSlug": "us-national-junior-team-director-olympic-medalist-brendan-hansen-recovering-from-double-patellar-tendon-tear-in-knees",
       "icon": "doc",
-      "title": "Dressel vs. ocean fish: how does his power actually stack up?",
-      "body": "In a new \"Man vs Fish\" challenge, <strong>Caeleb Dressel</strong> strapped into a harness to measure his pulling power against some massive ocean game fish. It's a fun look at just how much raw strength one of the sport's most explosive swimmers actually generates.",
-      "url": "https://swimswam.com/caeleb-dressel-tests-his-power-in-the-water-against-ocean-game-fish/",
+      "title": "Brendan Hansen tore both patellar tendons in a cannonball contest",
+      "body": "Six-time Olympic medalist and <strong>USA Swimming</strong> National Junior Team Director <strong>Brendan Hansen</strong> tore both patellar tendons during a July 4th cannonball contest and is now five weeks into rehab. A reminder that the pool is sometimes the safest place to be.",
+      "url": "https://swimswam.com/us-national-junior-team-director-olympic-medalist-brendan-hansen-recovering-from-double-patellar-tendon-tear-in-knees/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "kocaeli-ready-to-host-2026-world-para-swimming-european-championships",
+      "topicSlug": "kate-douglass-on-chasing-sub-23-50-free-and-her-road-to-la-2028",
+      "icon": "trend",
+      "title": "Kate Douglass has a number in mind: 22-point-something",
+      "body": "<strong>Kate Douglass</strong> confirmed in a <strong>SwimSwam</strong> podcast with Mel Stewart that breaking the 23-second barrier in the 50-meter freestyle is on the table, and she's already mapping the road to <strong>LA 2028</strong>.",
+      "url": "https://swimswam.com/kate-douglass-on-chasing-sub-23-50-free-and-her-road-to-la-2028/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "two-of-the-top-2027s-luka-mijatovic-and-ian-call-arriving-at-texas-in-december-2026",
       "icon": "globe",
-      "title": "400+ para swimmers head to Turkey for the year's biggest para meet",
-      "body": "The <strong>Gebze Olympic Swimming Pool</strong> in Kocaeli, Turkey will host the <strong>2026 World Para Swimming European Championships</strong>, welcoming more than 400 athletes from 38 nations. It stands as the largest para swimming event of the year.",
-      "url": "https://swimswam.com/kocaeli-ready-to-host-2026-world-para-swimming-european-championships/",
+      "title": "Texas lands two top-ranked recruits early",
+      "body": "The <strong>University of Texas</strong> will get a December head start with top-ranked 2027 recruit <strong>Luka Mijatovic</strong> and highly rated <strong>Ian Call</strong> both arriving on campus before the new year.",
+      "url": "https://swimswam.com/two-of-the-top-2027s-luka-mijatovic-and-ian-call-arriving-at-texas-in-december-2026/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Summer McIntosh",
-    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Summer_McIntosh_at_the_2024_Summer_Olympic_Games.webp/330px-Summer_McIntosh_at_the_2024_Summer_Olympic_Games.webp?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Unknown author Unknown author, CC0, via Wikimedia Commons",
+    "name": "Sara Curtis",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Sara_Curtis_after_racing_50m_backstroke.png/330px-Sara_Curtis_after_racing_50m_backstroke.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Agnagnas, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "2024 Olympic 3x Gold",
-      "World Champion",
-      "Canadian Record Holder",
-      "World Record Holder"
+      "50m Back World Record",
+      "NCAA Champion",
+      "Virginia Cavalier",
+      "2026 Breakout Star"
     ],
-    "bio": "Summer McIntosh is a Canadian competitive swimmer born on August 18, 2006. The daughter of former Canadian Olympic swimmer Jill Horstead, she grew up competing in both swimming and figure skating before focusing entirely on swimming. She first gained international attention at age 14 as the youngest member of the Canadian team at the 2020 Summer Olympics.\n\nMcIntosh is a three-time Olympic champion, eight-time World Aquatics champion, and two-time Commonwealth Games gold medallist. She holds world records in the 200 meter butterfly, 200 and 400 meter individual medley, and 400 meter freestyle. At the 2024 Summer Olympics she won four individual medals, including three gold."
+    "bio": "Sara Curtis, born on 19 August 2006 in Savigliano, Italy, is an Italian competitive swimmer specializing in sprint freestyle and backstroke events. She was born to an Italian father and a Nigerian mother and trains under coach Thomas Maggiora with Team Dimensione Nuoto.\n\nCurtis holds the long course world record in the 50 metre backstroke. At the 2022 World Junior Championships she won silver medals in the 50 metre freestyle, 4x100 metre medley relay, and 4x100 metre mixed medley relay, along with a bronze in the 50 metre backstroke. At the 2022 European Junior Championships she won gold in the 4x100 metre freestyle relay and bronze medals in the 50 metre freestyle and 4x100 metre medley relay."
   },
   "events": []
 }
