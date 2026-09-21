@@ -1,67 +1,67 @@
 {
-  "date": "2026-09-14",
-  "issueDateLabel": "September 14, 2026",
-  "subject": "Sara Curtis stole a world record. Kaylee wants it back.",
-  "preheader": "Plus: Brendan Hansen's wild injury, Kate Douglass eyes sub-23, and your Monday set.",
+  "date": "2026-09-21",
+  "issueDateLabel": "September 21, 2026",
+  "subject": "A 13-year-old just rewrote history at the Asian Games",
+  "preheader": "Plus aerobic distance work in the pool and rotational core on land this Monday.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Kaylee McKeown just found out what it feels like to lose a world record to Sara Curtis, and her response is the most competitive thing you'll read all week.",
+  "heroTeaser": "A 13-year-old named Yu Zidi just swam herself to second place on the all-time 200 IM list, and the sport is still catching its breath.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Sep 14 &middot; Distance freestyle aerobic endurance in the pool, rotational power &amp; glute stability on land",
+    "dateLabel": "Mon, Sep 21 &middot; distance freestyle in the pool, rotational core on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,000-yard aerobic freestyle builder focused on smooth rhythm and an efficient catch, finishing with a strong negative-split block to sharpen your back-half speed."
+      "description": "A 3,050-yard aerobic distance session focused on finding a sustainable pace through long freestyle repeats, then finishing each block with a small acceleration to practice surging when fatigued."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A core and stability session targeting rotational power and glute stability, with emphasis on movements that carry over directly to freestyle and backstroke."
+      "description": "A rotational power and anti-extension core session aimed at building the midline stability that drives cleaner freestyle and backstroke through the water."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "kaylee-mckeown-on-sara-curtis-breaking-her-50-back-wr-it-fuels-the-fire-im-all-for-taking-people-down",
+      "topicSlug": "13-year-old-yu-zidi-swims-206-10-in-the-200-im-moves-to-2-all-time",
       "icon": "medal",
-      "title": "McKeown lost her 50 back WR. She's not taking it lying down.",
-      "body": "<strong>Kaylee McKeown</strong> had her 50-meter backstroke world record broken by <strong>Sara Curtis</strong> this summer, and her reaction was about as fierce as you'd expect: she says it fuels the fire and she's all for taking people down.",
-      "url": "https://swimswam.com/kaylee-mckeown-on-sara-curtis-breaking-her-50-back-wr-it-fuels-the-fire-im-all-for-taking-people-down/",
+      "title": "13-year-old Yu Zidi is now second all-time in the 200 IM",
+      "body": "<strong>Yu Zidi</strong> of <strong>China</strong>, just 13 years old, swam a 2:06.10 in the women's 200 IM at the 2026 Asian Games to claim the World Junior Record, the Asian Record, the Asian Games Record, and the second-fastest performance in the history of the event. Let that sink in for a second.",
+      "url": "https://swimswam.com/13-year-old-yu-zidi-swims-206-10-in-the-200-im-moves-to-2-all-time/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "us-national-junior-team-director-olympic-medalist-brendan-hansen-recovering-from-double-patellar-tendon-tear-in-knees",
-      "icon": "doc",
-      "title": "Brendan Hansen tore both patellar tendons in a cannonball contest",
-      "body": "Six-time Olympic medalist and <strong>USA Swimming</strong> National Junior Team Director <strong>Brendan Hansen</strong> tore both patellar tendons during a July 4th cannonball contest and is now five weeks into rehab. A reminder that the pool is sometimes the safest place to be.",
-      "url": "https://swimswam.com/us-national-junior-team-director-olympic-medalist-brendan-hansen-recovering-from-double-patellar-tendon-tear-in-knees/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "kate-douglass-on-chasing-sub-23-50-free-and-her-road-to-la-2028",
+      "topicSlug": "south-koreas-kim-youngboem-20-sets-asian-games-record-in-mens-50-free",
       "icon": "trend",
-      "title": "Kate Douglass has a number in mind: 22-point-something",
-      "body": "<strong>Kate Douglass</strong> confirmed in a <strong>SwimSwam</strong> podcast with Mel Stewart that breaking the 23-second barrier in the 50-meter freestyle is on the table, and she's already mapping the road to <strong>LA 2028</strong>.",
-      "url": "https://swimswam.com/kate-douglass-on-chasing-sub-23-50-free-and-her-road-to-la-2028/",
+      "title": "Kim Youngboem breaks the Asian Games 50 free record at 20",
+      "body": "<strong>Kim Youngboem</strong> of <strong>South Korea</strong> set a new Asian Games Record in the men's 50 freestyle, breaking the mark previously held by his countryman <strong>Ji Yuchan</strong> from the last edition of the Games.",
+      "url": "https://swimswam.com/south-koreas-kim-youngboem-20-sets-asian-games-record-in-mens-50-free/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "two-of-the-top-2027s-luka-mijatovic-and-ian-call-arriving-at-texas-in-december-2026",
+      "topicSlug": "2026-asian-games-day-two-finals-live-recap",
       "icon": "globe",
-      "title": "Texas lands two top-ranked recruits early",
-      "body": "The <strong>University of Texas</strong> will get a December head start with top-ranked 2027 recruit <strong>Luka Mijatovic</strong> and highly rated <strong>Ian Call</strong> both arriving on campus before the new year.",
-      "url": "https://swimswam.com/two-of-the-top-2027s-luka-mijatovic-and-ian-call-arriving-at-texas-in-december-2026/",
+      "title": "Qin vs. Ohashi: the 100 breast showdown is on",
+      "body": "Day two finals at the 2026 Asian Games set up a marquee men's 100m breaststroke clash between <strong>China</strong>'s <strong>Qin Haiyang</strong> and <strong>Japan</strong>'s rising sensation <strong>Shin Ohashi</strong>, two of the most compelling breaststrokers in the world right now.",
+      "url": "https://swimswam.com/2026-asian-games-day-two-finals-live-recap/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "best-of-the-rest-backstroker-nora-mccarthy-verbally-commits-to-swim-for-princeton-in-2027-28",
+      "icon": "doc",
+      "title": "Backstroker Nora McCarthy is headed to Princeton",
+      "body": "<strong>Nora McCarthy</strong> of <strong>Seattle Metropolitan Aquatic Club</strong> has verbally committed to swim for <strong>Princeton</strong> starting in 2027-28, bringing Ivy 'A' final-worthy times in the 100 and 200 backstroke to the Tigers' class of 2031.",
+      "url": "https://swimswam.com/best-of-the-rest-backstroker-nora-mccarthy-verbally-commits-to-swim-for-princeton-in-2027-28/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Sara Curtis",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Sara_Curtis_after_racing_50m_backstroke.png/330px-Sara_Curtis_after_racing_50m_backstroke.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Agnagnas, CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Qin Haiyang",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Qin_Haiyang_%28CHN%29_2023.jpg/330px-Qin_Haiyang_%28CHN%29_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: 喂！三点多啦，做么鬼！, CC BY 3.0, via Wikimedia Commons",
     "badges": [
-      "50m Back World Record",
-      "NCAA Champion",
-      "Virginia Cavalier",
-      "2026 Breakout Star"
+      "World Champion",
+      "Olympic Medalist",
+      "200/400 IM specialist",
+      "Chinese National Record holder"
     ],
-    "bio": "Sara Curtis, born on 19 August 2006 in Savigliano, Italy, is an Italian competitive swimmer specializing in sprint freestyle and backstroke events. She was born to an Italian father and a Nigerian mother and trains under coach Thomas Maggiora with Team Dimensione Nuoto.\n\nCurtis holds the long course world record in the 50 metre backstroke. At the 2022 World Junior Championships she won silver medals in the 50 metre freestyle, 4x100 metre medley relay, and 4x100 metre mixed medley relay, along with a bronze in the 50 metre backstroke. At the 2022 European Junior Championships she won gold in the 4x100 metre freestyle relay and bronze medals in the 50 metre freestyle and 4x100 metre medley relay."
+    "bio": "Qin Haiyang, born on 17 May 1999, is a Chinese swimmer who specializes in the breaststroke and individual medley. He trains under coach Cui Dengrong and made his first major international appearance at the 2018 Asian Games, where he won gold in the 4x100 metre medley relay.\n\nAt the 2023 World Aquatics Championships, Qin became the first swimmer in history to win all three breaststroke events at a single edition and set the world record in the 200m breaststroke. He won five gold medals at the 2022 Asian Games, was named its MVP, and became the first Asian swimmer named Male Swimmer of the Year by World Aquatics."
   },
   "events": []
 }
