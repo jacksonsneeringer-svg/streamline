@@ -1,67 +1,67 @@
 {
-  "date": "2026-09-21",
-  "issueDateLabel": "September 21, 2026",
-  "subject": "A 13-year-old just rewrote history at the Asian Games",
-  "preheader": "Plus aerobic distance work in the pool and rotational core on land this Monday.",
+  "date": "2026-09-28",
+  "issueDateLabel": "September 28, 2026",
+  "subject": "College season is here + taper secrets unlocked",
+  "preheader": "The CSL is live, early dual meets are in the books, and your Monday set is ready.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "A 13-year-old named Yu Zidi just swam herself to second place on the all-time 200 IM list, and the sport is still catching its breath.",
+  "heroTeaser": "The College Swimming League has officially tipped off, and Night Swim's Elvis Burroughs and Dax Hill joined SwimSwam to break down whether the first two matches lived up to the hype.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Sep 21 &middot; distance freestyle in the pool, rotational core on land",
+    "dateLabel": "Mon, Sep 28 &middot; distance freestyle threshold in the pool, core and stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard aerobic distance session focused on finding a sustainable pace through long freestyle repeats, then finishing each block with a small acceleration to practice surging when fatigued."
+      "description": "A 3,050-yard aerobic builder focused on holding controlled threshold pace across longer freestyle efforts to train your body to sustain speed under fatigue."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A rotational power and anti-extension core session aimed at building the midline stability that drives cleaner freestyle and backstroke through the water."
+      "description": "An anti-rotation stability and rotational power session targeting the core with a freestyle and backstroke emphasis to build the steady platform your stroke depends on."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "13-year-old-yu-zidi-swims-206-10-in-the-200-im-moves-to-2-all-time",
-      "icon": "medal",
-      "title": "13-year-old Yu Zidi is now second all-time in the 200 IM",
-      "body": "<strong>Yu Zidi</strong> of <strong>China</strong>, just 13 years old, swam a 2:06.10 in the women's 200 IM at the 2026 Asian Games to claim the World Junior Record, the Asian Record, the Asian Games Record, and the second-fastest performance in the history of the event. Let that sink in for a second.",
-      "url": "https://swimswam.com/13-year-old-yu-zidi-swims-206-10-in-the-200-im-moves-to-2-all-time/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "south-koreas-kim-youngboem-20-sets-asian-games-record-in-mens-50-free",
+      "topicSlug": "night-swim-joins-breakdown-to-discuss-csl-premiere-swimswam-breakdown",
       "icon": "trend",
-      "title": "Kim Youngboem breaks the Asian Games 50 free record at 20",
-      "body": "<strong>Kim Youngboem</strong> of <strong>South Korea</strong> set a new Asian Games Record in the men's 50 freestyle, breaking the mark previously held by his countryman <strong>Ji Yuchan</strong> from the last edition of the Games.",
-      "url": "https://swimswam.com/south-koreas-kim-youngboem-20-sets-asian-games-record-in-mens-50-free/",
+      "title": "Night Swim breaks down the CSL's opening matches",
+      "body": "<strong>Elvis Burroughs</strong> and <strong>Dax Hill</strong>, the duo known as <strong>Night Swim</strong>, joined the SwimSwam Breakdown podcast to dissect the first two matches of the new <strong>College Swimming League</strong>. Worth a listen if you want the inside read on how the debut actually went.",
+      "url": "https://swimswam.com/night-swim-joins-breakdown-to-discuss-csl-premiere-swimswam-breakdown/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "2026-asian-games-day-two-finals-live-recap",
-      "icon": "globe",
-      "title": "Qin vs. Ohashi: the 100 breast showdown is on",
-      "body": "Day two finals at the 2026 Asian Games set up a marquee men's 100m breaststroke clash between <strong>China</strong>'s <strong>Qin Haiyang</strong> and <strong>Japan</strong>'s rising sensation <strong>Shin Ohashi</strong>, two of the most compelling breaststrokers in the world right now.",
-      "url": "https://swimswam.com/2026-asian-games-day-two-finals-live-recap/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "best-of-the-rest-backstroker-nora-mccarthy-verbally-commits-to-swim-for-princeton-in-2027-28",
+      "topicSlug": "tapering-for-swimmers-you-cant-out-taper-poor-recovery",
       "icon": "doc",
-      "title": "Backstroker Nora McCarthy is headed to Princeton",
-      "body": "<strong>Nora McCarthy</strong> of <strong>Seattle Metropolitan Aquatic Club</strong> has verbally committed to swim for <strong>Princeton</strong> starting in 2027-28, bringing Ivy 'A' final-worthy times in the 100 and 200 backstroke to the Tigers' class of 2031.",
-      "url": "https://swimswam.com/best-of-the-rest-backstroker-nora-mccarthy-verbally-commits-to-swim-for-princeton-in-2027-28/",
+      "title": "You can't out-taper bad recovery habits",
+      "body": "A sharp piece from <strong>Olivier Poirier-Leroy</strong> on SwimSwam makes the case that taper is only as good as the recovery you've built before it starts. If your body is already in a hole when taper kicks off, all the rest in the world won't dig you out.",
+      "url": "https://swimswam.com/tapering-for-swimmers-you-cant-out-taper-poor-recovery/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "florida-women-sweep-their-way-to-victory-in-season-opener-against-vanderbilt",
+      "icon": "medal",
+      "title": "Florida women go 14-for-14 to open the season",
+      "body": "<strong>University of Florida</strong> women's swimming won every single event in their season opener against <strong>Vanderbilt</strong>, finishing 206 to 55. That's the kind of statement meet that sets a tone for the whole year.",
+      "url": "https://swimswam.com/florida-women-sweep-their-way-to-victory-in-season-opener-against-vanderbilt/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "multiple-swimmers-earn-potential-slots-on-south-african-short-course-worlds-roster",
+      "icon": "globe",
+      "title": "South Africa's Short Course Worlds roster is taking shape",
+      "body": "Several <strong>South African</strong> swimmers punched potential tickets to the <strong>World Short Course Championships</strong> on the final day of the <strong>2026 South African Short Course Championships</strong>. A reminder that the international calendar is already moving fast.",
+      "url": "https://swimswam.com/multiple-swimmers-earn-potential-slots-on-south-african-short-course-worlds-roster/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Qin Haiyang",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Qin_Haiyang_%28CHN%29_2023.jpg/330px-Qin_Haiyang_%28CHN%29_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: 喂！三点多啦，做么鬼！, CC BY 3.0, via Wikimedia Commons",
+    "name": "Caeleb Dressel",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Caeleb_Dressel_before_winning_100_fly_%2842769914221%29_%28cropped%29.jpg/330px-Caeleb_Dressel_before_winning_100_fly_%2842769914221%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: JD Lasica from Pleasanton, CA, US, CC BY 2.0, via Wikimedia Commons",
     "badges": [
-      "World Champion",
-      "Olympic Medalist",
-      "200/400 IM specialist",
-      "Chinese National Record holder"
+      "7x Olympic Gold",
+      "Multi-World Champ",
+      "100m Freestyle",
+      "Butterfly Specialist"
     ],
-    "bio": "Qin Haiyang, born on 17 May 1999, is a Chinese swimmer who specializes in the breaststroke and individual medley. He trains under coach Cui Dengrong and made his first major international appearance at the 2018 Asian Games, where he won gold in the 4x100 metre medley relay.\n\nAt the 2023 World Aquatics Championships, Qin became the first swimmer in history to win all three breaststroke events at a single edition and set the world record in the 200m breaststroke. He won five gold medals at the 2022 Asian Games, was named its MVP, and became the first Asian swimmer named Male Swimmer of the Year by World Aquatics."
+    "bio": "Caeleb Dressel is an American competitive swimmer born on August 16, 1996, in Green Cove Springs, Florida. He specializes in freestyle, butterfly, and individual medley events. He attended Clay High School and later swam collegiately at the University of Florida, where he is widely regarded as one of the greatest sprinters in swimming history.\n\nDressel is a nine-time Olympic gold medalist, including five golds at the 2020 Tokyo Olympics. He won a record seven gold medals at the 2017 World Aquatics Championships and holds world records in the 100 meter butterfly and 100 meter individual medley. He also won NCAA titles in the 50 yard freestyle, 100 yard freestyle, and 100 yard butterfly."
   },
   "events": []
 }
