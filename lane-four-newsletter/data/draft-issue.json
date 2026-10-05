@@ -1,67 +1,67 @@
 {
-  "date": "2026-09-28",
-  "issueDateLabel": "September 28, 2026",
-  "subject": "College season is here + taper secrets unlocked",
-  "preheader": "The CSL is live, early dual meets are in the books, and your Monday set is ready.",
+  "date": "2026-10-05",
+  "issueDateLabel": "October 5, 2026",
+  "subject": "Lani Pallister stuns Ledecky + your Monday set",
+  "preheader": "A new era in swimming's greatest rivalry, plus aerobic builders to start your week.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "The College Swimming League has officially tipped off, and Night Swim's Elvis Burroughs and Dax Hill joined SwimSwam to break down whether the first two matches lived up to the hype.",
+  "heroTeaser": "Lani Pallister just handed Katie Ledecky a loss at Pan Pacs, and it has everyone asking whether swimming's greatest rivalry is about to flip.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Sep 28 &middot; distance freestyle threshold in the pool, core and stability on land",
+    "dateLabel": "Mon, Oct 5 &middot; freestyle aerobic work in the pool, rotational power and glute stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard aerobic builder focused on holding controlled threshold pace across longer freestyle efforts to train your body to sustain speed under fatigue."
+      "description": "Steady, controlled freestyle over longer repeats to build your aerobic engine and teach your body to hold pace when fatigue arrives."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "An anti-rotation stability and rotational power session targeting the core with a freestyle and backstroke emphasis to build the steady platform your stroke depends on."
+      "description": "A core and stability session focused on rotational power and glute-driven control, dialed in for freestyle and backstroke athletes."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "night-swim-joins-breakdown-to-discuss-csl-premiere-swimswam-breakdown",
-      "icon": "trend",
-      "title": "Night Swim breaks down the CSL's opening matches",
-      "body": "<strong>Elvis Burroughs</strong> and <strong>Dax Hill</strong>, the duo known as <strong>Night Swim</strong>, joined the SwimSwam Breakdown podcast to dissect the first two matches of the new <strong>College Swimming League</strong>. Worth a listen if you want the inside read on how the debut actually went.",
-      "url": "https://swimswam.com/night-swim-joins-breakdown-to-discuss-csl-premiere-swimswam-breakdown/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "tapering-for-swimmers-you-cant-out-taper-poor-recovery",
-      "icon": "doc",
-      "title": "You can't out-taper bad recovery habits",
-      "body": "A sharp piece from <strong>Olivier Poirier-Leroy</strong> on SwimSwam makes the case that taper is only as good as the recovery you've built before it starts. If your body is already in a hole when taper kicks off, all the rest in the world won't dig you out.",
-      "url": "https://swimswam.com/tapering-for-swimmers-you-cant-out-taper-poor-recovery/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "florida-women-sweep-their-way-to-victory-in-season-opener-against-vanderbilt",
-      "icon": "medal",
-      "title": "Florida women go 14-for-14 to open the season",
-      "body": "<strong>University of Florida</strong> women's swimming won every single event in their season opener against <strong>Vanderbilt</strong>, finishing 206 to 55. That's the kind of statement meet that sets a tone for the whole year.",
-      "url": "https://swimswam.com/florida-women-sweep-their-way-to-victory-in-season-opener-against-vanderbilt/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "multiple-swimmers-earn-potential-slots-on-south-african-short-course-worlds-roster",
+      "topicSlug": "australia-vs-usa-swimmings-greatest-rivalry-enters-a-new-era",
       "icon": "globe",
-      "title": "South Africa's Short Course Worlds roster is taking shape",
-      "body": "Several <strong>South African</strong> swimmers punched potential tickets to the <strong>World Short Course Championships</strong> on the final day of the <strong>2026 South African Short Course Championships</strong>. A reminder that the international calendar is already moving fast.",
-      "url": "https://swimswam.com/multiple-swimmers-earn-potential-slots-on-south-african-short-course-worlds-roster/",
+      "title": "Pallister Upsets Ledecky. A Rivalry Reborn.",
+      "body": "<strong>Lani Pallister</strong> scored a significant upset over <strong>Katie Ledecky</strong> in the women's 800 free at Pan Pacs, adding fresh fuel to the <strong>Australia vs. USA</strong> rivalry heading into the 2028 Olympic cycle. The win signals that the distance freestyle conversation is no longer a one-country story.",
+      "url": "https://swimswam.com/australia-vs-usa-swimmings-greatest-rivalry-enters-a-new-era/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "northwestern-sweeps-miami-oh-in-dual-meet-lillie-nordmann-time-trials-pool-record-155-44-200-fly",
+      "icon": "medal",
+      "title": "Nordmann Breaks the Pool Record in the 200 Fly",
+      "body": "<strong>Lillie Nordmann</strong> time-trialed a pool record 1:55.44 in the 200 butterfly as <strong>Northwestern</strong> swept <strong>Miami (OH)</strong> in a dual meet in Evanston. It is the kind of early-season marker that sets a tone for an entire program.",
+      "url": "https://swimswam.com/northwestern-sweeps-miami-oh-in-dual-meet-lillie-nordmann-time-trials-pool-record-155-44-200-fly/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "david-sammons-2-in-the-class-of-2028-hands-cal-men-their-4th-top-20-ranked-verbal-commitment",
+      "icon": "trend",
+      "title": "Cal Men Are Quietly Building Something Special",
+      "body": "<strong>David Sammons</strong>, ranked number 2 in the Class of 2028, has verbally committed to <strong>Cal</strong>, giving the program the number 1, 2, 9, and 13-ranked recruits in that class. That is not an accident -- that is a program on a serious run.",
+      "url": "https://swimswam.com/david-sammons-2-in-the-class-of-2028-hands-cal-men-their-4th-top-20-ranked-verbal-commitment/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "visualization-for-swimmers-dont-just-see-it-feel-it",
+      "icon": "doc",
+      "title": "Visualization Works Better When You Feel It",
+      "body": "A new piece on <strong>SwimSwam</strong> makes the case that effective visualization is not just about picturing your race -- it is about recreating the physical sensation of swimming it. If you are only watching yourself from the outside, you are leaving performance on the table.",
+      "url": "https://swimswam.com/visualization-for-swimmers-dont-just-see-it-feel-it/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Caeleb Dressel",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Caeleb_Dressel_before_winning_100_fly_%2842769914221%29_%28cropped%29.jpg/330px-Caeleb_Dressel_before_winning_100_fly_%2842769914221%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: JD Lasica from Pleasanton, CA, US, CC BY 2.0, via Wikimedia Commons",
+    "name": "Lillie Nordmann",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Lillie_Nordmann%2C_2023_Pac-12_Championships%2C_200_yard_freestyle_preliminaries%2C_waiting_-_24_February_2023.jpg/330px-Lillie_Nordmann%2C_2023_Pac-12_Championships%2C_200_yard_freestyle_preliminaries%2C_waiting_-_24_February_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Tanis Coralee Leonhardi, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "7x Olympic Gold",
-      "Multi-World Champ",
-      "100m Freestyle",
-      "Butterfly Specialist"
+      "NCAA All-American",
+      "200 Fly Pool Record Holder",
+      "Northwestern Wildcat",
+      "Junior National Qualifier"
     ],
-    "bio": "Caeleb Dressel is an American competitive swimmer born on August 16, 1996, in Green Cove Springs, Florida. He specializes in freestyle, butterfly, and individual medley events. He attended Clay High School and later swam collegiately at the University of Florida, where he is widely regarded as one of the greatest sprinters in swimming history.\n\nDressel is a nine-time Olympic gold medalist, including five golds at the 2020 Tokyo Olympics. He won a record seven gold medals at the 2017 World Aquatics Championships and holds world records in the 100 meter butterfly and 100 meter individual medley. He also won NCAA titles in the 50 yard freestyle, 100 yard freestyle, and 100 yard butterfly."
+    "bio": "Lillie Nordmann is an American competitive swimmer born on August 5, 2002, who specializes in butterfly and freestyle events. She grew up in The Woodlands, Texas, where she trained with club teams and attended The Woodlands High School. She comes from an athletic family, with both parents having competed collegiately in their respective sports. She began attending Stanford University in 2021.\n\nAt the 2019 World Junior Swimming Championships in Budapest, Hungary, Nordmann won three gold medals, in the 200 meter butterfly, the 4x200 meter freestyle relay, and the 4x100 meter medley relay. She also won State Championships titles in the 200 yard freestyle and 100 yard butterfly in high school."
   },
   "events": []
 }
