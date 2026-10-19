@@ -1,67 +1,67 @@
 {
-  "date": "2026-10-05",
-  "issueDateLabel": "October 5, 2026",
-  "subject": "Lani Pallister stuns Ledecky + your Monday set",
-  "preheader": "A new era in swimming's greatest rivalry, plus aerobic builders to start your week.",
+  "date": "2026-10-19",
+  "issueDateLabel": "October 19, 2026",
+  "subject": "Korstanje's setback + Masters records shattered",
+  "preheader": "Plus a teenage South American record-breaker and 88 straight for the Aztecs.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Lani Pallister just handed Katie Ledecky a loss at Pan Pacs, and it has everyone asking whether swimming's greatest rivalry is about to flip.",
+  "heroTeaser": "Nyls Korstanje finally made it back to the blocks in Aachen — and then things took a turn.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Oct 5 &middot; freestyle aerobic work in the pool, rotational power and glute stability on land",
+    "dateLabel": "Mon, Oct 19 &middot; freestyle aerobic endurance in the pool, rotational core stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "Steady, controlled freestyle over longer repeats to build your aerobic engine and teach your body to hold pace when fatigue arrives."
+      "description": "A 3,050-yard steady-state session built around longer freestyle repeats at a controlled, consistent tempo to develop your aerobic engine."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A core and stability session focused on rotational power and glute-driven control, dialed in for freestyle and backstroke athletes."
+      "description": "A core and stability session focused on rotational power and anti-extension control, with direct carry-over to freestyle and backstroke mechanics."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "australia-vs-usa-swimmings-greatest-rivalry-enters-a-new-era",
-      "icon": "globe",
-      "title": "Pallister Upsets Ledecky. A Rivalry Reborn.",
-      "body": "<strong>Lani Pallister</strong> scored a significant upset over <strong>Katie Ledecky</strong> in the women's 800 free at Pan Pacs, adding fresh fuel to the <strong>Australia vs. USA</strong> rivalry heading into the 2028 Olympic cycle. The win signals that the distance freestyle conversation is no longer a one-country story.",
-      "url": "https://swimswam.com/australia-vs-usa-swimmings-greatest-rivalry-enters-a-new-era/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "northwestern-sweeps-miami-oh-in-dual-meet-lillie-nordmann-time-trials-pool-record-155-44-200-fly",
-      "icon": "medal",
-      "title": "Nordmann Breaks the Pool Record in the 200 Fly",
-      "body": "<strong>Lillie Nordmann</strong> time-trialed a pool record 1:55.44 in the 200 butterfly as <strong>Northwestern</strong> swept <strong>Miami (OH)</strong> in a dual meet in Evanston. It is the kind of early-season marker that sets a tone for an entire program.",
-      "url": "https://swimswam.com/northwestern-sweeps-miami-oh-in-dual-meet-lillie-nordmann-time-trials-pool-record-155-44-200-fly/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "david-sammons-2-in-the-class-of-2028-hands-cal-men-their-4th-top-20-ranked-verbal-commitment",
+      "topicSlug": "nyls-korstanje-suffers-injury-setback-after-return-to-racing-in-aachen",
       "icon": "trend",
-      "title": "Cal Men Are Quietly Building Something Special",
-      "body": "<strong>David Sammons</strong>, ranked number 2 in the Class of 2028, has verbally committed to <strong>Cal</strong>, giving the program the number 1, 2, 9, and 13-ranked recruits in that class. That is not an accident -- that is a program on a serious run.",
-      "url": "https://swimswam.com/david-sammons-2-in-the-class-of-2028-hands-cal-men-their-4th-top-20-ranked-verbal-commitment/",
+      "title": "Korstanje's comeback hits another wall",
+      "body": "<strong>Nyls Korstanje</strong> returned to competition at the <strong>Aachen Swim Festival</strong>, a moment worth celebrating on its own. But the Dutch Olympian suffered an injury setback during the meet, making what looked like a promising return a lot more complicated.",
+      "url": "https://swimswam.com/nyls-korstanje-suffers-injury-setback-after-return-to-racing-in-aachen/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "visualization-for-swimmers-dont-just-see-it-feel-it",
-      "icon": "doc",
-      "title": "Visualization Works Better When You Feel It",
-      "body": "A new piece on <strong>SwimSwam</strong> makes the case that effective visualization is not just about picturing your race -- it is about recreating the physical sensation of swimming it. If you are only watching yourself from the outside, you are leaving performance on the table.",
-      "url": "https://swimswam.com/visualization-for-swimmers-dont-just-see-it-feel-it/",
+      "topicSlug": "ashley-twichell-kelly-palace-penny-noyes-break-masters-world-records-at-tac-scm-meet",
+      "icon": "medal",
+      "title": "Three Masters world records in one meet",
+      "body": "<strong>Ashley Twichell</strong>, <strong>Kelly Palace</strong>, and <strong>Penny Noyes</strong> each broke Masters world records at a short course meters meet hosted by <strong>TAC</strong>. Three swimmers, three world records, one session — that's a good day at the pool by any standard.",
+      "url": "https://swimswam.com/ashley-twichell-kelly-palace-penny-noyes-break-masters-world-records-at-tac-scm-meet/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "agostina-hein-returns-from-surgery-with-another-south-american-record",
+      "icon": "globe",
+      "title": "18-year-old Hein breaks South American record — again",
+      "body": "<strong>Agostina Hein</strong> returned from surgery and promptly swam her way to a 4th South American Record and 12th national record, this time in the short course IM events. The 18-year-old Argentine is making a strong case for being one of the most exciting young swimmers in the hemisphere.",
+      "url": "https://swimswam.com/agostina-hein-returns-from-surgery-with-another-south-american-record/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "san-diego-state-tops-pepperdine-for-88th-consecutive-dual-meet-victory",
+      "icon": "trend",
+      "title": "SDSU runs the streak to 88",
+      "body": "<strong>San Diego State</strong> defeated <strong>Pepperdine</strong> 84-59 at Raleigh Runnels Memorial Pool, extending their dual-meet winning streak to 88 consecutive victories. At some point a streak stops being a streak and starts being an institution.",
+      "url": "https://swimswam.com/san-diego-state-tops-pepperdine-for-88th-consecutive-dual-meet-victory/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Lillie Nordmann",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Lillie_Nordmann%2C_2023_Pac-12_Championships%2C_200_yard_freestyle_preliminaries%2C_waiting_-_24_February_2023.jpg/330px-Lillie_Nordmann%2C_2023_Pac-12_Championships%2C_200_yard_freestyle_preliminaries%2C_waiting_-_24_February_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Tanis Coralee Leonhardi, CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Florent Manaudou",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Florent_Manaudou_%28FRA%29_2015.JPG/330px-Florent_Manaudou_%28FRA%29_2015.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Oleg Bkhambri (Voltmetro), CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "NCAA All-American",
-      "200 Fly Pool Record Holder",
-      "Northwestern Wildcat",
-      "Junior National Qualifier"
+      "Olympic Gold Medalist",
+      "World Champion",
+      "50m Freestyle Specialist",
+      "Multiple World Records"
     ],
-    "bio": "Lillie Nordmann is an American competitive swimmer born on August 5, 2002, who specializes in butterfly and freestyle events. She grew up in The Woodlands, Texas, where she trained with club teams and attended The Woodlands High School. She comes from an athletic family, with both parents having competed collegiately in their respective sports. She began attending Stanford University in 2021.\n\nAt the 2019 World Junior Swimming Championships in Budapest, Hungary, Nordmann won three gold medals, in the 200 meter butterfly, the 4x200 meter freestyle relay, and the 4x100 meter medley relay. She also won State Championships titles in the 200 yard freestyle and 100 yard butterfly in high school."
+    "bio": "Florent Manaudou is a French competitive swimmer born on 12 November 1990, with a French father and a Dutch mother. He joined the swimming club of Marseilles and later the French Army in 2009. He is the younger brother of Laure Manaudou, a 2004 Olympic gold medalist, and the two are the first siblings to both win Olympic gold medals in swimming. For his 2012 performances, he was awarded the Knight of the French National Order of the Légion d'Honneur.\n\nManaudou is an Olympic champion, world champion, and multiple-time world record holder, regarded as one of the greatest sprinters in history. He won Olympic gold in the 50-meter freestyle at the 2012 London Olympics and three gold medals at the 2015 World Aquatics Championships. He broke world records in the 50-meter backstroke and freestyle at the 2014 World Short Course Championships and won six medals at those same championships, including three golds."
   },
   "events": []
 }
