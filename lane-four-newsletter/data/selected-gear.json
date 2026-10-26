@@ -1,10 +1,10 @@
 [
   {
-    "slug": "speedo-silicone",
-    "name": "Speedo silicone swim cap",
-    "url": "https://winlanefour.com/best-swim-caps#pick-speedo-silicone",
-    "imageUrl": "https://winlanefour.com/gear/cap-speedo-silicone.jpg",
-    "description": "The reliable default. Durable, comfortable, gentle on hair, and easy to pull on without the hair-yanking drama of latex."
+    "slug": "shokz-openswim",
+    "name": "Shokz OpenSwim bone-conduction swimming headphones",
+    "url": "https://winlanefour.com/best-waterproof-headphones-swimming#pick-shokz-openswim",
+    "imageUrl": "https://winlanefour.com/gear/headphones-shokz-openswim.jpg",
+    "description": "The crowd favorite for a reason. Bone conduction plus onboard storage means no phone and no dropouts, the wraparound band stays put through flip turns, and it's fully waterproof."
   },
   {
     "slug": "finis-team",
@@ -14,17 +14,17 @@
     "description": "The smart buy for a team, a family, or anyone who loses caps constantly. Team packs in silicone or cheaper latex cover the basics without the per-cap premium."
   },
   {
-    "slug": "arena-powerfin-pro",
-    "name": "Arena Powerfin Pro open-heel training fins",
-    "url": "https://winlanefour.com/best-swim-fins#pick-arena-powerfin-pro",
-    "imageUrl": "https://winlanefour.com/gear/fins-arena-powerfin-pro.jpg",
-    "description": "The open-heel pocket is the comfort winner for big yardage — no heel blisters, and easy on and off with cold, pruny hands. The short, stiff blade still delivers real propulsion without slowing your tempo."
+    "slug": "speedo-team-buoy",
+    "name": "Speedo Team Pull Buoy",
+    "url": "https://winlanefour.com/best-pull-buoys#pick-speedo-team-buoy",
+    "imageUrl": "https://winlanefour.com/gear/buoy-speedo-team.jpg",
+    "description": "The bulk-bin workhorse — cheap, durable, and perfectly functional. It survives being thrown in a bag, stepped on, and left in a hot car all summer, which is why clubs buy it by the dozen."
   },
   {
-    "slug": "finis-foam",
-    "name": "FINIS Foam Pull Buoy",
-    "url": "https://winlanefour.com/best-pull-buoys#pick-finis-foam",
-    "imageUrl": "https://winlanefour.com/gear/buoy-finis-foam.jpg",
-    "description": "The no-nonsense classic done right. Solid EVA foam, a comfortable contour, and buoyancy that suits most adult swimmers — it won't waterlog or crack, and it costs almost nothing."
+    "slug": "tyr-pull-float",
+    "name": "TYR Junior and Standard Pull Float",
+    "url": "https://winlanefour.com/best-pull-buoys#pick-tyr-pull-float",
+    "imageUrl": "https://winlanefour.com/gear/buoy-tyr-pull-float.jpg",
+    "description": "The one to buy when a standard buoy has always sat wrong. Clearly sized options let you match the float to your body, so it doesn't shove a smaller swimmer too high or leave a bigger swimmer's legs dragging."
   }
 ]

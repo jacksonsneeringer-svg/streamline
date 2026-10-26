@@ -1,67 +1,67 @@
 {
-  "date": "2026-10-19",
-  "issueDateLabel": "October 19, 2026",
-  "subject": "Korstanje's setback + Masters records shattered",
-  "preheader": "Plus a teenage South American record-breaker and 88 straight for the Aztecs.",
+  "date": "2026-10-26",
+  "issueDateLabel": "October 26, 2026",
+  "subject": "Irvine's new pool, Xu's world record & your Monday set",
+  "preheader": "A $42M expansion, a backstroke record, and aerobic builders to start your week.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Nyls Korstanje finally made it back to the blocks in Aachen — and then things took a turn.",
+  "heroTeaser": "Xu Jiayu just rewrote the record books in the 50 back, and we've got everything you need to know about the world record plus a full week of news and training to kick off your Monday.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Oct 19 &middot; freestyle aerobic endurance in the pool, rotational core stability on land",
+    "dateLabel": "Mon, Oct 26 &middot; Distance freestyle aerobic builders in the pool, rotational core and anti-extension stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard steady-state session built around longer freestyle repeats at a controlled, consistent tempo to develop your aerobic engine."
+      "description": "3,050 yards of negative-split aerobic freestyle work, building your engine through longer repeats where the second half of each swim should feel steadier and more controlled than the first."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A core and stability session focused on rotational power and anti-extension control, with direct carry-over to freestyle and backstroke mechanics."
+      "description": "A stability-focused dryland session targeting rotational core strength and anti-extension control, with direct carryover to freestyle and backstroke body position in the water."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "nyls-korstanje-suffers-injury-setback-after-return-to-racing-in-aachen",
-      "icon": "trend",
-      "title": "Korstanje's comeback hits another wall",
-      "body": "<strong>Nyls Korstanje</strong> returned to competition at the <strong>Aachen Swim Festival</strong>, a moment worth celebrating on its own. But the Dutch Olympian suffered an injury setback during the meet, making what looked like a promising return a lot more complicated.",
-      "url": "https://swimswam.com/nyls-korstanje-suffers-injury-setback-after-return-to-racing-in-aachen/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "ashley-twichell-kelly-palace-penny-noyes-break-masters-world-records-at-tac-scm-meet",
+      "topicSlug": "xus-world-record-richards-to-uf-csl-match-6-scm-us-trials-preview-swimswam-breakdown",
       "icon": "medal",
-      "title": "Three Masters world records in one meet",
-      "body": "<strong>Ashley Twichell</strong>, <strong>Kelly Palace</strong>, and <strong>Penny Noyes</strong> each broke Masters world records at a short course meters meet hosted by <strong>TAC</strong>. Three swimmers, three world records, one session — that's a good day at the pool by any standard.",
-      "url": "https://swimswam.com/ashley-twichell-kelly-palace-penny-noyes-break-masters-world-records-at-tac-scm-meet/",
+      "title": "Xu Jiayu sets a 50 back world record",
+      "body": "<strong>Xu Jiayu</strong> has broken the world record in the 50 backstroke, one of several big stories covered in this week's SwimSwam Breakdown alongside <strong>Matt Richards</strong> committing to the <strong>University of Florida</strong> and a preview of the SCM US Trials.",
+      "url": "https://swimswam.com/xus-world-record-richards-to-uf-csl-match-6-scm-us-trials-preview-swimswam-breakdown/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "agostina-hein-returns-from-surgery-with-another-south-american-record",
-      "icon": "globe",
-      "title": "18-year-old Hein breaks South American record — again",
-      "body": "<strong>Agostina Hein</strong> returned from surgery and promptly swam her way to a 4th South American Record and 12th national record, this time in the short course IM events. The 18-year-old Argentine is making a strong case for being one of the most exciting young swimmers in the hemisphere.",
-      "url": "https://swimswam.com/agostina-hein-returns-from-surgery-with-another-south-american-record/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "san-diego-state-tops-pepperdine-for-88th-consecutive-dual-meet-victory",
+      "topicSlug": "irvine-breaks-ground-on-42-million-expansion-project-at-woollett-aquatics-center",
       "icon": "trend",
-      "title": "SDSU runs the streak to 88",
-      "body": "<strong>San Diego State</strong> defeated <strong>Pepperdine</strong> 84-59 at Raleigh Runnels Memorial Pool, extending their dual-meet winning streak to 88 consecutive victories. At some point a streak stops being a streak and starts being an institution.",
-      "url": "https://swimswam.com/san-diego-state-tops-pepperdine-for-88th-consecutive-dual-meet-victory/",
+      "title": "Irvine's iconic aquatics center is getting a third 50-meter pool",
+      "body": "<strong>Woollett Aquatics Center</strong> in <strong>Irvine, California</strong> broke ground on a <strong>$42 million expansion</strong> this week. The project will add a third 50-meter pool to one of the country's most significant aquatic facilities, with completion expected by spring 2028.",
+      "url": "https://swimswam.com/irvine-breaks-ground-on-42-million-expansion-project-at-woollett-aquatics-center/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "ncaa-division-i-hofstra-university-announces-addition-of-mens-and-womens-swimming-diving-programs",
+      "icon": "doc",
+      "title": "Hofstra is bringing back swim and dive at the Division I level",
+      "body": "<strong>Hofstra University</strong>, an NCAA Division I school in Uniondale, New York competing in the <strong>Coastal Athletic Association</strong>, has announced the addition of both men's and women's swimming and diving programs. The teams are set to begin competition in the 2027-28 season.",
+      "url": "https://swimswam.com/ncaa-division-i-hofstra-university-announces-addition-of-mens-and-womens-swimming-diving-programs/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "open-water-national-junior-teamer-violet-rutter-2028-verbally-commits-to-wisconsin",
+      "icon": "globe",
+      "title": "Open water junior national teamer picks Wisconsin",
+      "body": "<strong>Violet Rutter</strong> of <strong>Santa Clara Swim Club</strong>, a Summer Nationals qualifier in five events and open water national junior team member, has verbally committed to the <strong>University of Wisconsin</strong> for the fall of 2028.",
+      "url": "https://swimswam.com/open-water-national-junior-teamer-violet-rutter-2028-verbally-commits-to-wisconsin/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Florent Manaudou",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Florent_Manaudou_%28FRA%29_2015.JPG/330px-Florent_Manaudou_%28FRA%29_2015.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Oleg Bkhambri (Voltmetro), CC BY-SA 4.0, via Wikimedia Commons",
+    "name": "Xu Jiayu",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Xu_at_the_2014_Asian_Games_Men%27s_4%C3%97100_m_medley_award_ceremony.jpg/330px-Xu_at_the_2014_Asian_Games_Men%27s_4%C3%97100_m_medley_award_ceremony.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: English: Korea.net / Korean Culture and Information Service (Jeon Han) Français , CC BY-SA 2.0, via Wikimedia Commons",
     "badges": [
-      "Olympic Gold Medalist",
+      "World Record Holder",
+      "2x Olympic Medalist",
       "World Champion",
-      "50m Freestyle Specialist",
-      "Multiple World Records"
+      "50 & 100 Back Specialist"
     ],
-    "bio": "Florent Manaudou is a French competitive swimmer born on 12 November 1990, with a French father and a Dutch mother. He joined the swimming club of Marseilles and later the French Army in 2009. He is the younger brother of Laure Manaudou, a 2004 Olympic gold medalist, and the two are the first siblings to both win Olympic gold medals in swimming. For his 2012 performances, he was awarded the Knight of the French National Order of the Légion d'Honneur.\n\nManaudou is an Olympic champion, world champion, and multiple-time world record holder, regarded as one of the greatest sprinters in history. He won Olympic gold in the 50-meter freestyle at the 2012 London Olympics and three gold medals at the 2015 World Aquatics Championships. He broke world records in the 50-meter backstroke and freestyle at the 2014 World Short Course Championships and won six medals at those same championships, including three golds."
+    "bio": "Xu Jiayu is a Chinese competitive swimmer born on 19 August 1995 in Wenzhou, Zhejiang. He specializes in the backstroke and is an alumnus of Shanghai Jiao Tong University. His mother, Yu Zhenzhen, is a former swimmer who specialized in the butterfly, and she guided Xu in learning to swim from the age of four.\n\nXu is a two-time Olympic silver medalist in the 100 meters backstroke, winning at the 2016 Rio de Janeiro and 2024 Paris Games. He is also a twice consecutive world champion in the same event, claiming gold at the 2017 Budapest and 2019 Gwangju World Championships. At the 2018 FINA World Cup in Tokyo, he broke the short course 100 meters backstroke world record."
   },
   "events": []
 }
