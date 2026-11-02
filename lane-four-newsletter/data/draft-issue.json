@@ -1,67 +1,67 @@
 {
-  "date": "2026-10-26",
-  "issueDateLabel": "October 26, 2026",
-  "subject": "Irvine's new pool, Xu's world record & your Monday set",
-  "preheader": "A $42M expansion, a backstroke record, and aerobic builders to start your week.",
+  "date": "2026-11-02",
+  "issueDateLabel": "November 2, 2026",
+  "subject": "Urlando's AR, hot water in Dakar & MSU's new pool",
+  "preheader": "Plus the SCM Trials records roundup and what's on deck this Monday.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Xu Jiayu just rewrote the record books in the 50 back, and we've got everything you need to know about the world record plus a full week of news and training to kick off your Monday.",
+  "heroTeaser": "Luca Urlando was so happy after his 200 fly American Record at the SCM Trials that he could barely contain it — and honestly, same.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Oct 26 &middot; Distance freestyle aerobic builders in the pool, rotational core and anti-extension stability on land",
+    "dateLabel": "Mon, Nov 2 &middot; distance freestyle in the pool, rotational core &amp; glute stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "3,050 yards of negative-split aerobic freestyle work, building your engine through longer repeats where the second half of each swim should feel steadier and more controlled than the first."
+      "description": "A 3,050-yard aerobic distance freestyle session built around steady, controlled effort — hold your pace, don't chase splits."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A stability-focused dryland session targeting rotational core strength and anti-extension control, with direct carryover to freestyle and backstroke body position in the water."
+      "description": "A stability-focused rotational core and anti-rotation glute session dialed in for freestyle and backstroke athletes."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "xus-world-record-richards-to-uf-csl-match-6-scm-us-trials-preview-swimswam-breakdown",
+      "topicSlug": "luca-urlando-was-visibly-giddy-after-200-fly-american-record-the-energy-took-over",
       "icon": "medal",
-      "title": "Xu Jiayu sets a 50 back world record",
-      "body": "<strong>Xu Jiayu</strong> has broken the world record in the 50 backstroke, one of several big stories covered in this week's SwimSwam Breakdown alongside <strong>Matt Richards</strong> committing to the <strong>University of Florida</strong> and a preview of the SCM US Trials.",
-      "url": "https://swimswam.com/xus-world-record-richards-to-uf-csl-match-6-scm-us-trials-preview-swimswam-breakdown/",
+      "title": "Urlando breaks the 200 fly American Record",
+      "body": "<strong>Luca Urlando</strong> won the 200 butterfly at the <strong>U.S. SCM World Championship Trials</strong> in Westmont and came away with a new American Record. He described the moment simply: \"The energy took over.\" Worth savoring.",
+      "url": "https://swimswam.com/luca-urlando-was-visibly-giddy-after-200-fly-american-record-the-energy-took-over/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "irvine-breaks-ground-on-42-million-expansion-project-at-woollett-aquatics-center",
+      "topicSlug": "pool-temperatures-soar-to-32celsius-89-fahrenheit-at-youth-olympic-games",
       "icon": "trend",
-      "title": "Irvine's iconic aquatics center is getting a third 50-meter pool",
-      "body": "<strong>Woollett Aquatics Center</strong> in <strong>Irvine, California</strong> broke ground on a <strong>$42 million expansion</strong> this week. The project will add a third 50-meter pool to one of the country's most significant aquatic facilities, with completion expected by spring 2028.",
-      "url": "https://swimswam.com/irvine-breaks-ground-on-42-million-expansion-project-at-woollett-aquatics-center/",
+      "title": "89°F pool water at the Youth Olympics",
+      "body": "Pool temperatures in <strong>Dakar, Senegal</strong> have been measuring above 32°C (89°F) during the <strong>2026 Youth Olympic Games</strong> -- at times warmer than the air outside. That is not a training pool in July; that is a hot tub at a competition.",
+      "url": "https://swimswam.com/pool-temperatures-soar-to-32celsius-89-fahrenheit-at-youth-olympic-games/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "ncaa-division-i-hofstra-university-announces-addition-of-mens-and-womens-swimming-diving-programs",
+      "topicSlug": "michigan-state-universitys-new-50-meter-pool-nearly-finalized",
       "icon": "doc",
-      "title": "Hofstra is bringing back swim and dive at the Division I level",
-      "body": "<strong>Hofstra University</strong>, an NCAA Division I school in Uniondale, New York competing in the <strong>Coastal Athletic Association</strong>, has announced the addition of both men's and women's swimming and diving programs. The teams are set to begin competition in the 2027-28 season.",
-      "url": "https://swimswam.com/ncaa-division-i-hofstra-university-announces-addition-of-mens-and-womens-swimming-diving-programs/",
+      "title": "MSU's new 10-lane 50-meter pool is almost ready",
+      "body": "<strong>Michigan State University</strong> is putting the finishing touches on a brand-new 10-lane, 50-meter by 25-yard pool with two removable bulkheads and a pair of video boards. New facilities like this matter for the long-term health of the sport in the US.",
+      "url": "https://swimswam.com/michigan-state-universitys-new-50-meter-pool-nearly-finalized/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "open-water-national-junior-teamer-violet-rutter-2028-verbally-commits-to-wisconsin",
+      "topicSlug": "ioc-reconfirms-7-bidders-for-2036-olympic-games-moves-to-continuous-dialogue-phase",
       "icon": "globe",
-      "title": "Open water junior national teamer picks Wisconsin",
-      "body": "<strong>Violet Rutter</strong> of <strong>Santa Clara Swim Club</strong>, a Summer Nationals qualifier in five events and open water national junior team member, has verbally committed to the <strong>University of Wisconsin</strong> for the fall of 2028.",
-      "url": "https://swimswam.com/open-water-national-junior-teamer-violet-rutter-2028-verbally-commits-to-wisconsin/",
+      "title": "Seven countries still chasing the 2036 Olympics",
+      "body": "The <strong>IOC</strong> has confirmed seven countries remain in the running for the <strong>2036 Summer Olympic Games</strong> and the process is now moving into a continuous dialogue phase. Of the seven, only <strong>Germany</strong> has previously hosted the Summer Games -- back in 1936.",
+      "url": "https://swimswam.com/ioc-reconfirms-7-bidders-for-2036-olympic-games-moves-to-continuous-dialogue-phase/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Xu Jiayu",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Xu_at_the_2014_Asian_Games_Men%27s_4%C3%97100_m_medley_award_ceremony.jpg/330px-Xu_at_the_2014_Asian_Games_Men%27s_4%C3%97100_m_medley_award_ceremony.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: English: Korea.net / Korean Culture and Information Service (Jeon Han) Français , CC BY-SA 2.0, via Wikimedia Commons",
+    "name": "Adam Peaty",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Adam_Peaty_Olympics_2016_%28cropped%29.jpg/330px-Adam_Peaty_Olympics_2016_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Fernando Frazão/Agência Brasil, CC BY 3.0 br, via Wikimedia Commons",
     "badges": [
+      "3x Olympic Gold",
       "World Record Holder",
-      "2x Olympic Medalist",
-      "World Champion",
-      "50 & 100 Back Specialist"
+      "100m Breast Icon",
+      "Multiple World Titles"
     ],
-    "bio": "Xu Jiayu is a Chinese competitive swimmer born on 19 August 1995 in Wenzhou, Zhejiang. He specializes in the backstroke and is an alumnus of Shanghai Jiao Tong University. His mother, Yu Zhenzhen, is a former swimmer who specialized in the butterfly, and she guided Xu in learning to swim from the age of four.\n\nXu is a two-time Olympic silver medalist in the 100 meters backstroke, winning at the 2016 Rio de Janeiro and 2024 Paris Games. He is also a twice consecutive world champion in the same event, claiming gold at the 2017 Budapest and 2019 Gwangju World Championships. At the 2018 FINA World Cup in Tokyo, he broke the short course 100 meters backstroke world record."
+    "bio": "Adam George Ramsay-Peaty is an English competitive swimmer born on 28 December 1994 in Uttoxeter, Staffordshire. He specialises in sprint breaststroke events and did not take swimming seriously until age 17, when he committed fully to the sport after learning a fellow junior swimmer had reached the Olympic semi-finals.\n\nRamsay-Peaty won gold in the 100 metre breaststroke at both the 2016 and 2020 Summer Olympics, becoming the first British swimmer to retain an Olympic title. He is an eight-time World Champion, sixteen-time European Champion, and four-time Commonwealth Champion. He holds world records in the 50 and 100 metre breaststroke and has broken 14 world records in total."
   },
   "events": []
 }
