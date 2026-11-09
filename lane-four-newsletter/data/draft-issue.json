@@ -1,67 +1,67 @@
 {
-  "date": "2026-11-02",
-  "issueDateLabel": "November 2, 2026",
-  "subject": "Urlando's AR, hot water in Dakar & MSU's new pool",
-  "preheader": "Plus the SCM Trials records roundup and what's on deck this Monday.",
+  "date": "2026-11-09",
+  "issueDateLabel": "November 9, 2026",
+  "subject": "Charlotte Crush leads CSL's inaugural season",
+  "preheader": "Plus a 49-second butterfly, Florida state champions, and your Monday set.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "Luca Urlando was so happy after his 200 fly American Record at the SCM Trials that he could barely contain it — and honestly, same.",
+  "heroTeaser": "A Tennessee freshman just dominated the entire inaugural College Swimming League season, and the numbers are genuinely wild.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Nov 2 &middot; distance freestyle in the pool, rotational core &amp; glute stability on land",
+    "dateLabel": "Mon, Nov 9 &middot; Distance freestyle in the pool, rotational core stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A 3,050-yard aerobic distance freestyle session built around steady, controlled effort — hold your pace, don't chase splits."
+      "description": "A steady aerobic distance freestyle session focused on locking in your rhythm and settling into a sustainable pace across longer repeats."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A stability-focused rotational core and anti-rotation glute session dialed in for freestyle and backstroke athletes."
+      "description": "A rotational power and anti-extension core stability session built for freestyle and backstroke swimmers who want a stronger, more connected body position in the water."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "luca-urlando-was-visibly-giddy-after-200-fly-american-record-the-energy-took-over",
+      "topicSlug": "2026-college-swimming-league-stats-charlotte-crush-kaii-winkler-lead-inaugural-season-scoring",
       "icon": "medal",
-      "title": "Urlando breaks the 200 fly American Record",
-      "body": "<strong>Luca Urlando</strong> won the 200 butterfly at the <strong>U.S. SCM World Championship Trials</strong> in Westmont and came away with a new American Record. He described the moment simply: \"The energy took over.\" Worth savoring.",
-      "url": "https://swimswam.com/luca-urlando-was-visibly-giddy-after-200-fly-american-record-the-energy-took-over/",
+      "title": "Crush and Winkler own the CSL's first season",
+      "body": "<strong>Charlotte Crush</strong>, a freshman at <strong>Tennessee</strong>, led all swimmers with 209.5 points across the inaugural <strong>College Swimming League</strong> season, picking up nine jackpots along the way. On the men's side, <strong>Kaii Winkler</strong> paced the field. It's a remarkable debut for a competition format still finding its footing.",
+      "url": "https://swimswam.com/2026-college-swimming-league-stats-charlotte-crush-kaii-winkler-lead-inaugural-season-scoring/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "pool-temperatures-soar-to-32celsius-89-fahrenheit-at-youth-olympic-games",
+      "topicSlug": "egor-kornev-rips-49-51-100fly-lifetime-best-at-russian-sc-championships",
       "icon": "trend",
-      "title": "89°F pool water at the Youth Olympics",
-      "body": "Pool temperatures in <strong>Dakar, Senegal</strong> have been measuring above 32°C (89°F) during the <strong>2026 Youth Olympic Games</strong> -- at times warmer than the air outside. That is not a training pool in July; that is a hot tub at a competition.",
-      "url": "https://swimswam.com/pool-temperatures-soar-to-32celsius-89-fahrenheit-at-youth-olympic-games/",
+      "title": "Kornev breaks the 50-second barrier in the 100 fly",
+      "body": "Russia's <strong>Egor Kornev</strong> clocked a 49.51 in the 100m butterfly at the <strong>Russian Short Course Championships</strong>, a lifetime best and his first time under 50 seconds. That kind of breakthrough mid-season is the sort of thing that gets people talking about <strong>Worlds</strong>.",
+      "url": "https://swimswam.com/egor-kornev-rips-49-51-100fly-lifetime-best-at-russian-sc-championships/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "michigan-state-universitys-new-50-meter-pool-nearly-finalized",
-      "icon": "doc",
-      "title": "MSU's new 10-lane 50-meter pool is almost ready",
-      "body": "<strong>Michigan State University</strong> is putting the finishing touches on a brand-new 10-lane, 50-meter by 25-yard pool with two removable bulkheads and a pair of video boards. New facilities like this matter for the long-term health of the sport in the US.",
-      "url": "https://swimswam.com/michigan-state-universitys-new-50-meter-pool-nearly-finalized/",
+      "topicSlug": "jupiter-boys-claim-first-title-riverview-sarasota-girls-reign-again-at-florida-4a-state-meet",
+      "icon": "medal",
+      "title": "Jupiter boys win their first-ever Florida 4A title",
+      "body": "The <strong>Jupiter</strong> boys claimed their first state championship at the <strong>Florida 4A State Meet</strong>, edging runner-up <strong>Cypress Bay</strong> by just 5.5 points after winning the 400 free relay. The <strong>Riverview Sarasota</strong> girls defended their title on the other side of the psych sheet.",
+      "url": "https://swimswam.com/jupiter-boys-claim-first-title-riverview-sarasota-girls-reign-again-at-florida-4a-state-meet/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "ioc-reconfirms-7-bidders-for-2036-olympic-games-moves-to-continuous-dialogue-phase",
-      "icon": "globe",
-      "title": "Seven countries still chasing the 2036 Olympics",
-      "body": "The <strong>IOC</strong> has confirmed seven countries remain in the running for the <strong>2036 Summer Olympic Games</strong> and the process is now moving into a continuous dialogue phase. Of the seven, only <strong>Germany</strong> has previously hosted the Summer Games -- back in 1936.",
-      "url": "https://swimswam.com/ioc-reconfirms-7-bidders-for-2036-olympic-games-moves-to-continuous-dialogue-phase/",
+      "topicSlug": "owen-ekk-sets-new-200-im-record-ponte-vedra-girls-st-petersburg-boys-win-team-titles-at-florida-3a-state-meet",
+      "icon": "trend",
+      "title": "Ekk shatters the Florida 3A 200 IM record",
+      "body": "<strong>Owen Ekk</strong> went 1:43.62 in the 200 IM at the <strong>Florida 3A State Meet</strong>, demolishing the previous record of 1:45.02 that had stood since 2022. <strong>Ponte Vedra</strong> took the girls team title and <strong>St. Petersburg</strong> won the boys crown.",
+      "url": "https://swimswam.com/owen-ekk-sets-new-200-im-record-ponte-vedra-girls-st-petersburg-boys-win-team-titles-at-florida-3a-state-meet/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Adam Peaty",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Adam_Peaty_Olympics_2016_%28cropped%29.jpg/330px-Adam_Peaty_Olympics_2016_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: Fernando Frazão/Agência Brasil, CC BY 3.0 br, via Wikimedia Commons",
+    "name": "Torri Huske",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Torri_Huske_at_the_White_House_in_2024.jpg/330px-Torri_Huske_at_the_White_House_in_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: The White House, Public domain, via Wikimedia Commons",
     "badges": [
-      "3x Olympic Gold",
-      "World Record Holder",
-      "100m Breast Icon",
-      "Multiple World Titles"
+      "2x Olympic Gold",
+      "World Champion",
+      "American Record Holder",
+      "NCAA Champion"
     ],
-    "bio": "Adam George Ramsay-Peaty is an English competitive swimmer born on 28 December 1994 in Uttoxeter, Staffordshire. He specialises in sprint breaststroke events and did not take swimming seriously until age 17, when he committed fully to the sport after learning a fellow junior swimmer had reached the Olympic semi-finals.\n\nRamsay-Peaty won gold in the 100 metre breaststroke at both the 2016 and 2020 Summer Olympics, becoming the first British swimmer to retain an Olympic title. He is an eight-time World Champion, sixteen-time European Champion, and four-time Commonwealth Champion. He holds world records in the 50 and 100 metre breaststroke and has broken 14 world records in total."
+    "bio": "Torri Huske is an American competitive swimmer born on December 7, 2002, from Arlington, Virginia. She has a Chinese given name, 簡愛, reflecting her heritage through her mother, who immigrated from China. Huske began swimming at age six with the Arlington Aquatic Club and attended Yorktown High School, where she became a decorated competitor before going on to represent the United States internationally.\n\nHuske is the reigning Olympic champion in the 100-meter butterfly and holds world records in the 4x100-meter medley and 4x100-meter mixed medley relays. At the 2024 Summer Olympics she won three gold and two silver medals. At the 2022 World Championships she won three gold and three bronze medals, and at the 2020 Olympics she earned a silver medal in the 4x100-meter medley relay."
   },
   "events": []
 }

@@ -1,17 +1,10 @@
 [
   {
-    "slug": "speedo-short-blade",
-    "name": "Speedo Short Blade training fin",
-    "url": "https://winlanefour.com/best-swim-fins#pick-speedo-short-blade",
-    "imageUrl": "https://winlanefour.com/gear/fins-speedo-short-blade.jpg",
-    "description": "The core short-blade job for less money. Not as refined as the Zoomer or as plush as the Arena, but a reasonable, low-risk way to try fin work — or to outfit a kid who'll grow out of them by spring."
-  },
-  {
-    "slug": "tyr-catalyst",
-    "name": "TYR Catalyst swim paddles",
-    "url": "https://winlanefour.com/best-swim-paddles#pick-tyr-catalyst",
-    "imageUrl": "https://winlanefour.com/gear/paddle-tyr-catalyst.jpg",
-    "description": "A power-builder's paddle — clear size options, a contoured shape, and adjustable straps that hold securely for heavy pull sets with a buoy. For experienced swimmers with solid technique who want to load the catch."
+    "slug": "finis-long-floating",
+    "name": "FINIS Long Floating Fins for beginners",
+    "url": "https://winlanefour.com/best-swim-fins#pick-finis-long-floating",
+    "imageUrl": "https://winlanefour.com/gear/fins-finis-long-floating.jpg",
+    "description": "The exception to the short-blade rule, and the fin nearly every swimmer starts on. The extra length and float give true beginners the propulsion and flotation to learn the kicking motion."
   },
   {
     "slug": "budget-mp3",
@@ -21,10 +14,17 @@
     "description": "The low-risk way to find out whether you like swimming to music. Confirm real onboard storage and an IPX8 rating before you buy, then upgrade later if you get hooked."
   },
   {
-    "slug": "dmc-elite",
-    "name": "DMC Elite training fins",
-    "url": "https://winlanefour.com/best-swim-fins#pick-dmc-elite",
-    "imageUrl": "https://winlanefour.com/gear/fins-dmc-elite.jpg",
-    "description": "The elite-deck fin. A slightly longer, angled blade rewards a strong, technically sound kick with serious propulsion for underwater dolphin work."
+    "slug": "tyr-pull-float",
+    "name": "TYR Junior and Standard Pull Float",
+    "url": "https://winlanefour.com/best-pull-buoys#pick-tyr-pull-float",
+    "imageUrl": "https://winlanefour.com/gear/buoy-tyr-pull-float.jpg",
+    "description": "The one to buy when a standard buoy has always sat wrong. Clearly sized options let you match the float to your body, so it doesn't shove a smaller swimmer too high or leave a bigger swimmer's legs dragging."
+  },
+  {
+    "slug": "sony-walkman-sports",
+    "name": "Sony Sports Walkman with headphones",
+    "url": "https://winlanefour.com/best-waterproof-headphones-swimming#pick-sony-walkman-sports",
+    "imageUrl": "https://winlanefour.com/gear/headphones-sony-walkman-sports.jpg",
+    "description": "If sound quality is the priority, in-ear wins. The seal inside your ear delivers fuller, bassier audio than bone conduction can."
   }
 ]
