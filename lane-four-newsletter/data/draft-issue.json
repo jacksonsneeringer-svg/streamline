@@ -1,67 +1,67 @@
 {
-  "date": "2026-11-09",
-  "issueDateLabel": "November 9, 2026",
-  "subject": "Charlotte Crush leads CSL's inaugural season",
-  "preheader": "Plus a 49-second butterfly, Florida state champions, and your Monday set.",
+  "date": "2026-11-16",
+  "issueDateLabel": "November 16, 2026",
+  "subject": "Tatjana Smith heads to the Netherlands",
+  "preheader": "Plus Bolles keeps its dynasty alive and a coach needs the swim community's support.",
   "heroHeading": "Good morning swimmers and happy Monday",
-  "heroTeaser": "A Tennessee freshman just dominated the entire inaugural College Swimming League season, and the numbers are genuinely wild.",
+  "heroTeaser": "Tatjana Smith is switching flags to the Netherlands, and the story of how that split happened is messier than you might expect.",
   "outroLine": "That's the week in the water. Happy swimming,",
   "workout": {
-    "dateLabel": "Mon, Nov 9 &middot; Distance freestyle in the pool, rotational core stability on land",
+    "dateLabel": "Mon, Nov 16 &middot; Distance freestyle in the pool, core and stability on land",
     "swimSet": {
       "title": "Today's Swim Set",
-      "description": "A steady aerobic distance freestyle session focused on locking in your rhythm and settling into a sustainable pace across longer repeats."
+      "description": "Long aerobic freestyle repeats designed to build your engine -- the goal is holding clean form and a consistent stroke count all the way through, even when fatigue sets in."
     },
     "lift": {
       "title": "Today's Lift",
-      "description": "A rotational power and anti-extension core stability session built for freestyle and backstroke swimmers who want a stronger, more connected body position in the water."
+      "description": "An anti-rotation stability and rotational power session targeting the core patterns that drive freestyle and backstroke -- exactly the foundation that pays off in the water on a heavy aerobic week."
     }
   },
   "newsItems": [
     {
-      "topicSlug": "2026-college-swimming-league-stats-charlotte-crush-kaii-winkler-lead-inaugural-season-scoring",
+      "topicSlug": "tatjana-sabotaged-herself-swimming-sa-operations-manager-details-countrys-breakup-with-smith",
+      "icon": "doc",
+      "title": "Swimming SA puts its side of the Tatjana story on the record",
+      "body": "<strong>Swimming SA</strong> operations manager <strong>Mafata Modutoane</strong> has gone public with the federation's account of its breakup with <strong>Tatjana Smith</strong>, centering on Smith wearing <strong>Speedo</strong> at the 2023 World Championships instead of the team-mandated <strong>Arena</strong> kit. Whether you sympathize with the athlete or the federation, it is a rare and candid look at how these sponsor disputes can quietly fracture a national team relationship.",
+      "url": "https://swimswam.com/tatjana-sabotaged-herself-swimming-sa-operations-manager-details-countrys-breakup-with-smith/",
+      "source": "SwimSwam"
+    },
+    {
+      "topicSlug": "bolles-boys-girls-dominate-once-again-at-florida-1a-state-championships",
       "icon": "medal",
-      "title": "Crush and Winkler own the CSL's first season",
-      "body": "<strong>Charlotte Crush</strong>, a freshman at <strong>Tennessee</strong>, led all swimmers with 209.5 points across the inaugural <strong>College Swimming League</strong> season, picking up nine jackpots along the way. On the men's side, <strong>Kaii Winkler</strong> paced the field. It's a remarkable debut for a competition format still finding its footing.",
-      "url": "https://swimswam.com/2026-college-swimming-league-stats-charlotte-crush-kaii-winkler-lead-inaugural-season-scoring/",
+      "title": "Bolles just keeps winning -- 39 boys titles in a row",
+      "body": "The <strong>Bolles School</strong> boys captured their <strong>39th consecutive Florida 1A state championship</strong>, while the girls added their <strong>36th straight title</strong>. Both teams won in dominant fashion, cementing a dynasty that has simply no comparison in American high school swimming.",
+      "url": "https://swimswam.com/bolles-boys-girls-dominate-once-again-at-florida-1a-state-championships/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "egor-kornev-rips-49-51-100fly-lifetime-best-at-russian-sc-championships",
+      "topicSlug": "abi-burke-1-this-season-for-15-16-girls-in-100-200-free-leads-barron-collier-girls-to-florida-2a-state-title",
       "icon": "trend",
-      "title": "Kornev breaks the 50-second barrier in the 100 fly",
-      "body": "Russia's <strong>Egor Kornev</strong> clocked a 49.51 in the 100m butterfly at the <strong>Russian Short Course Championships</strong>, a lifetime best and his first time under 50 seconds. That kind of breakthrough mid-season is the sort of thing that gets people talking about <strong>Worlds</strong>.",
-      "url": "https://swimswam.com/egor-kornev-rips-49-51-100fly-lifetime-best-at-russian-sc-championships/",
+      "title": "Abi Burke breaks a 10-year-old Florida state meet record",
+      "body": "<strong>Abi Burke</strong> of <strong>Barron Collier</strong> set a Florida 2A state meet record in the 200 freestyle, breaking a mark that had stood since 2016 when <strong>Morgan Tankersley</strong> swam it at <strong>Tampa Plant</strong>. Burke is currently ranked number one in the country for 15-16 girls in both the 100 and 200 free, and she led Barron Collier to the team title in the process.",
+      "url": "https://swimswam.com/abi-burke-1-this-season-for-15-16-girls-in-100-200-free-leads-barron-collier-girls-to-florida-2a-state-title/",
       "source": "SwimSwam"
     },
     {
-      "topicSlug": "jupiter-boys-claim-first-title-riverview-sarasota-girls-reign-again-at-florida-4a-state-meet",
-      "icon": "medal",
-      "title": "Jupiter boys win their first-ever Florida 4A title",
-      "body": "The <strong>Jupiter</strong> boys claimed their first state championship at the <strong>Florida 4A State Meet</strong>, edging runner-up <strong>Cypress Bay</strong> by just 5.5 points after winning the 400 free relay. The <strong>Riverview Sarasota</strong> girls defended their title on the other side of the psych sheet.",
-      "url": "https://swimswam.com/jupiter-boys-claim-first-title-riverview-sarasota-girls-reign-again-at-florida-4a-state-meet/",
-      "source": "SwimSwam"
-    },
-    {
-      "topicSlug": "owen-ekk-sets-new-200-im-record-ponte-vedra-girls-st-petersburg-boys-win-team-titles-at-florida-3a-state-meet",
-      "icon": "trend",
-      "title": "Ekk shatters the Florida 3A 200 IM record",
-      "body": "<strong>Owen Ekk</strong> went 1:43.62 in the 200 IM at the <strong>Florida 3A State Meet</strong>, demolishing the previous record of 1:45.02 that had stood since 2022. <strong>Ponte Vedra</strong> took the girls team title and <strong>St. Petersburg</strong> won the boys crown.",
-      "url": "https://swimswam.com/owen-ekk-sets-new-200-im-record-ponte-vedra-girls-st-petersburg-boys-win-team-titles-at-florida-3a-state-meet/",
+      "topicSlug": "beloved-club-coach-mavi-sampaio-wife-ana-suffer-serious-injuries-from-head-on-collision",
+      "icon": "doc",
+      "title": "A coach and his family need the community right now",
+      "body": "<strong>Mavi Sampaio</strong>, head coach of <strong>Palm Desert Swim Club</strong>, and his wife <strong>Ana \"Tuca\" Sampaio</strong>, a swim instructor, were both seriously injured in a head-on collision last Monday. If your club or team has a moment to reach out or support this family, now is the time.",
+      "url": "https://swimswam.com/beloved-club-coach-mavi-sampaio-wife-ana-suffer-serious-injuries-from-head-on-collision/",
       "source": "SwimSwam"
     }
   ],
   "athlete": {
-    "name": "Torri Huske",
-    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Torri_Huske_at_the_White_House_in_2024.jpg/330px-Torri_Huske_at_the_White_House_in_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "photoCredit": "Photo: The White House, Public domain, via Wikimedia Commons",
+    "name": "Hubert Kos",
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Hubert_K%C3%B3s%2C_2023_Pac-12_Championships%2C_400_yard_individual_medley_preliminaries_-_3_March_2023.jpg/330px-Hubert_K%C3%B3s%2C_2023_Pac-12_Championships%2C_400_yard_individual_medley_preliminaries_-_3_March_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "photoCredit": "Photo: Tanis Coralee Leonhardi, CC BY-SA 4.0, via Wikimedia Commons",
     "badges": [
-      "2x Olympic Gold",
-      "World Champion",
-      "American Record Holder",
-      "NCAA Champion"
+      "Olympic Gold, Paris 2024",
+      "World Record Holder",
+      "2026 World #1 400 IM",
+      "Hungarian National Champion"
     ],
-    "bio": "Torri Huske is an American competitive swimmer born on December 7, 2002, from Arlington, Virginia. She has a Chinese given name, 簡愛, reflecting her heritage through her mother, who immigrated from China. Huske began swimming at age six with the Arlington Aquatic Club and attended Yorktown High School, where she became a decorated competitor before going on to represent the United States internationally.\n\nHuske is the reigning Olympic champion in the 100-meter butterfly and holds world records in the 4x100-meter medley and 4x100-meter mixed medley relays. At the 2024 Summer Olympics she won three gold and two silver medals. At the 2022 World Championships she won three gold and three bronze medals, and at the 2020 Olympics she earned a silver medal in the 4x100-meter medley relay."
+    "bio": "Hubert Kos is a Hungarian swimmer born on 28 March 2003 and a member of the University of Texas swim team. He has family connections to Ireland through his paternal grandmother and spent time in Cork as a child. He studied at the American International School of Budapest and has two younger siblings, Olivér and Alison, who are also swimmers.\n\nKos holds a world junior record in the 200 metre individual medley. He won bronze at the 2021 European Short Course Championships in the 400 metre individual medley, gold at the 2022 European Aquatics Championships in the 200 metre individual medley, bronze at the 2023 NCAA Division I Championships in the 200 yard backstroke, and gold in the 200 metre backstroke at the 2024 Summer Olympics in Paris."
   },
   "events": []
 }
